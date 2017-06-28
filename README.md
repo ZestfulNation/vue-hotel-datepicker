@@ -1,6 +1,9 @@
 # vue-hotel-datepicker
 A Vue component based on the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez
 
+## Demo
+[https://krystalcampioni.github.io/vue-hotel-datepicker/](https://krystalcampioni.github.io/vue-hotel-datepicker/)
+
 ## Installation
 
 #### NPM
