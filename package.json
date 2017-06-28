@@ -6,8 +6,7 @@
   "license": "MIT",
   "main": "dist/vue-hotel-datepicker.min.js",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --open --config build/webpack.dev.conf.js",
