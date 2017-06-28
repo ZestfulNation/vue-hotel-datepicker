@@ -213,15 +213,15 @@ $dark-gray: #2d3047;
 
   &__input {
   	border: solid 1px #dbdbdb;
-  	height: 24px;
-    background: url('calendar_icon.svg') no-repeat 5px center / 16px;
+  	height: 30px;
+    background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
+    box-sizing: border-box;
     color: gray;
     font-size: 12px;
-    padding-left: 28px;
-    width: 175px;
-    word-spacing: 5px;
-    padding-top: 3px;
     outline: none;
+    padding: 3px 0 2px 30px;
+    width: 206px;
+    word-spacing: 5px;
 
     &:focus {
       outline: none;
