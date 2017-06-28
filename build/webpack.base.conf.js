@@ -1,59 +1,58 @@
-const path = require('path')
+var path = require('path')
+var utils = require('./utils')
+var config = require('../config')
+var vueLoaderConfig = require('./vue-loader.conf')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
   entry: {
-    main: [path.resolve(__dirname, '../src/main.js')],
+    app: './src/main.js'
   },
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/',
-    filename: 'build.js',
+    path: config.build.assetsRoot,
+    filename: '[name].js',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.json', '.js', '.vue'],
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      components: path.resolve(__dirname, '../src/components'),
-    },
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('src')
+    }
   },
   module: {
     rules: [
-        {
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {
-          loaders: {
-            scss: 'vue-style-loader!css-loader!sass-loader', // <style lang="scss">
-            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax' // <style lang="sass">
-          }
-        }
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        loader: 'babel-loader',
+        include: [resolve('src'), resolve('test')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: 'images/[name].[hash:7].[ext]',
-          },
-        },
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
       },
-
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: 'fonts/[name].[hash:7].[ext]',
-          },
-        },
-      },
-
-    ],
-  },
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        }
+      }
+    ]
+  }
 }
