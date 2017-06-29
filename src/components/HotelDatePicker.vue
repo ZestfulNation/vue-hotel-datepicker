@@ -488,11 +488,11 @@ $dark-gray: #2d3047;
 
 @media (min-width: 320px) {
   .datepicker {
-    width: 300px;
+    width: 270px;
   }
 }
 
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .datepicker {
     width: 460px;
   }
