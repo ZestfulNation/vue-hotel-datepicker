@@ -201,3 +201,6 @@ i18n: {
 
 ### dateChanged
 Emited everytime a new date is selected, passing the new date and the previously selected date
+
+## Contributing
+Just submit a pull request explaining what you changed :) 
