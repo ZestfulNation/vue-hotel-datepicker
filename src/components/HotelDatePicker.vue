@@ -219,8 +219,8 @@ $dark-gray: #2d3047;
     color: gray;
     font-size: 12px;
     outline: none;
-    padding: 3px 0 2px 30px;
-    width: 206px;
+    padding: 4px 30px 2px 30px;
+    width: 234px;
     word-spacing: 5px;
 
     &:focus {
@@ -445,6 +445,22 @@ $dark-gray: #2d3047;
     position: absolute;
     right: -18px;
     top: -17px;
+    transform: rotate(45deg);
+  }
+
+  &__clear-button {
+    appearence: none;
+    background: transparent;
+    border: 0;
+    color: $main-color;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    outline: 0;
+    position: absolute;
+    right: 0;
+    top: 3px;
     transform: rotate(45deg);
   }
 

@@ -107,6 +107,11 @@ export default class HotelDatepicker {
         return 'close-' + this.generateId();
     }
 
+    getClearButtonId() {
+        // Get close button ID
+        return 'clear-' + this.generateId();
+    }
+
     getTooltipId() {
         // Get close button ID
         return 'tooltip-' + this.generateId();
@@ -230,6 +235,9 @@ export default class HotelDatepicker {
         // Close the datepicker on the button click
         document.getElementById(this.getCloseButtonId()).addEventListener('click', evt => this.closeDatepicker(evt));
 
+        // Clear the datepicker on the button click
+        document.getElementById(this.getClearButtonId()).addEventListener('click', evt => this.clearSelection());
+
         // Close the datepicker on resize?
         // The problem is that mobile keyboards trigger the resize event closing
         // the datepicker. There are some workarounds (http://stackoverflow.com/q/14902321)
@@ -291,7 +299,8 @@ export default class HotelDatepicker {
 
     createDatepickerDomString() {
         // Generate our datepicker
-        let html = '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
+        let html = '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
+        '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
 
         html += '<div class="datepicker__inner">';
 
@@ -543,14 +552,14 @@ export default class HotelDatepicker {
 
     documentHover(evt) {
         // Check if the hover is on a calendar day
-        if (evt.target.tagName.toLowerCase() === 'td') {
+        if (evt.target.tagName && evt.target.tagName.toLowerCase() === 'td') {
             this.dayHovering(evt.target);
         }
     }
 
     documentMouseOut(evt) {
         // Check if the mouseout is on a calendar day
-        if (evt.target.tagName.toLowerCase() === 'td') {
+        if (evt.target.tagName && evt.target.tagName.toLowerCase() === 'td') {
             // Hide the tooltip
             const tooltipContainer = document.getElementById(this.getTooltipId());
             tooltipContainer.style.display = 'none';
@@ -696,6 +705,7 @@ export default class HotelDatepicker {
         const elEnd = selectedInfo.getElementsByClassName('datepicker__info-text--end-day')[0];
         const elSelected = selectedInfo.getElementsByClassName('datepicker__info-text--selected-days')[0];
         const closeButton = document.getElementById(this.getCloseButtonId());
+        const clearButton = document.getElementById(this.getClearButtonId());
 
 		// TODO
         // Set default text and hide the count element
