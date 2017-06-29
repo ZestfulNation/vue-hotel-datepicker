@@ -1198,6 +1198,7 @@ export default class HotelDatepicker {
                     else if( this.minNights > 1 && time > this.start && time <= minDate.getTime() ) {
                         this.addClass(days[i], 'datepicker__month-day--invalid');
                         this.addClass(days[i], 'datepicker__month-day--invalid-range');
+                        this.addClass(days[i], 'datepicker__month-day--tmp');
                         this.removeClass(days[i], 'datepicker__month-day--valid');
                     }
 
@@ -1304,6 +1305,7 @@ export default class HotelDatepicker {
             this.removeClass(days[i], 'datepicker__month-day--selected');
             this.removeClass(days[i], 'datepicker__month-day--first-day-selected');
             this.removeClass(days[i], 'datepicker__month-day--last-day-selected');
+            this.removeClass(days[i], 'datepicker__month-day--invalid-range');
         }
 
         // Reset input
@@ -1317,6 +1319,9 @@ export default class HotelDatepicker {
 
         // Show selected days in the calendar
         this.showSelectedDays();
+
+        //Update selectable range
+        this.updateSelectableRange();
     }
 
     parseDisabledDates() {

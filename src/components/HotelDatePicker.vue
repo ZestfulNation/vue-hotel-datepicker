@@ -492,7 +492,7 @@ $dark-gray: #2d3047;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .datepicker {
     width: 460px;
   }
