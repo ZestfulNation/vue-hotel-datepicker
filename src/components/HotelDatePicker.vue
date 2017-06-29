@@ -202,7 +202,7 @@ $dark-gray: #2d3047;
     position: absolute;
     top: 0;
     left: 0;
-    width: 206px;
+    width: 234px;
     height: 2px;
   }
 
