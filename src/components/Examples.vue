@@ -1,7 +1,8 @@
 <template>
   <div class="examples">
     <div class="box">
-      <h3>Check in only on saturday and minimum stay of 10 days</h3>
+      <h3>Examples</h3>
+      <h4>Check in only on saturday and minimum stay of 10 days</h4>
       <DatePicker
         DatePickerID="01"
         :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
@@ -11,7 +12,7 @@
     </div>
 
     <div class="box">
-      <h3>Check in and check-out only on saturday and minimum stay of 10 days</h3>
+      <h4>Check in and check-out only on saturday and minimum stay of 10 days</h4>
       <DatePicker
         DatePickerID="02"
         :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
@@ -21,7 +22,7 @@
     </div>
 
     <div class="box">
-      <h3>Block all dates after December 31st of the current year</h3>
+      <h4>Block all dates after December 31st of the current year</h4>
       <DatePicker
         DatePickerID="DatePickerID0"
         :endDate="new Date(new Date().getFullYear(), 11, 31)"
@@ -29,7 +30,7 @@
     </div>
 
     <div class="box">
-      <h3>Block all dates after September 15th</h3>
+      <h4>Block all dates after September 15th</h4>
       <DatePicker
         DatePickerID="DatePickerID1"
         :endDate="new Date(new Date().getFullYear(), 8, 15)"
@@ -37,7 +38,7 @@
     </div>
 
     <div class="box">
-      <h3>Block all date ranges of more than 30 days</h3>
+      <h4>Block all date ranges of more than 30 days</h4>
       <DatePicker
         DatePickerID="DatePickerID2"
         :maxNights="30"
@@ -46,7 +47,7 @@
     </div>
 
     <div class="box">
-      <h3>Minimum stay of 3 days</h3>
+      <h4>Minimum stay of 3 days</h4>
       <DatePicker
         DatePickerID="DatePickerID3"
         :minNights="3"
@@ -56,7 +57,7 @@
 
 
     <div class="box">
-      <h3>Certain dates blocked</h3>
+      <h4>Certain dates blocked</h4>
       <DatePicker
         DatePickerID="DatePickerID5"
         :disabledDates="[
@@ -68,7 +69,7 @@
     </div>
 
     <div class="box">
-      <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
+      <h4>Allow setting a default date range ( can be used to set a range from a url param )</h4>
       <DatePicker
         DatePickerID="DatePickerID6"
         :endDate="new Date(new Date().getFullYear(), 8, 15)"
@@ -77,7 +78,7 @@
     </div>
 
     <div class="box">
-      <h3>Ranges of 7, 10 or 14 days and checkin only on saturdays</h3>
+      <h4>Ranges of 7, 10 or 14 days and checkin only on saturdays</h4>
       <DatePicker
         DatePickerID="DatePickerID7"
         :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
@@ -100,49 +101,15 @@ export default {
 }
 </script>
 
-<style>
-body,
-html {
-  padding: 0;
-  margin: 0;
-}
-
-h3 {
+<style scoped>
+h4 {
+  color: #5d524b;
+  font-weight: lighter;
   font-size: 14px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-
-header {
-  background: #42b983;
-  color: white;
-  float: left;
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 24px;
-  padding: 2vh;
-  width: 100%;
-}
-
-.examples {
-  padding: 2vw;
 }
 
 .box {
   margin-bottom: 30px;
   padding-bottom: 30px;
-  border-bottom: 1px dashed #ebebeb;
 }
 </style>

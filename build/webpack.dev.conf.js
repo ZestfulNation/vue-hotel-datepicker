@@ -1,35 +1,42 @@
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('../config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const config = require('./webpack.base.conf')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+const path = require('path')
 
-// add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
+config.devtool = '#eval-source-map'
 
-module.exports = merge(baseWebpackConfig, {
-  module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+config.devServer = {
+  host: 'localhost',
+  port: 1805,
+  historyApiFallback: true,
+  hotOnly: true,
+  overlay: true,
+  noInfo: true,
+}
+
+config.module.rules = (config.module.rules || []).concat([
+  {
+    test: /\.css$/,
+    use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' },
+    ],
   },
-  // cheap-module-eval-source-map is faster for development
-  devtool: '#cheap-module-eval-source-map',
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': config.dev.env
-    }),
-    // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
-    }),
-    new FriendlyErrorsPlugin()
-  ]
-})
+])
+
+config.plugins = (config.plugins || []).concat([
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  }),
+
+  new HtmlWebpackPlugin({
+    title: 'BookUp',
+    filename: 'index.html',
+    template: path.resolve(__dirname, '../src/index.html'),
+  }),
+
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
+])
+
+module.exports = config

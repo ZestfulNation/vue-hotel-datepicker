@@ -1,59 +1,69 @@
 {
-  "name": "vue-hotel-datepicker-demo",
-  "version": "1.0.0",
-  "description": "vue-hotel-datepicker demo page",
+  "name": "vue-number-input-spinner",
+  "version": "0.0.2",
+  "description": "A Vue number spinner component that only allows the user to type in numbers",
   "author": "krystalcampioni <hello@krystalcampioni.com>",
-  "private": true,
+  "license": "MIT",
+  "main": "dist/vue-number-input-spinner.min.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "dev": "webpack-dev-server --inline --hot --open --config build/webpack.dev.conf.js",
+    "build": "rimraf dist && webpack --progress --hide-modules --config build/webpack.prod.conf.js",
+    "lint": "eslint */*.vue */*.js --quiet"
   },
-  "dependencies": {
-    "vue": "^2.3.3"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krystalcampioni/vue-number-input-spinner"
   },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "number",
+    "numeric",
+    "input",
+    "spinner",
+    "number input",
+    "number spinner",
+    "numeric input",
+    "numeric spinner"
+  ],
+  "bugs": {
+    "url": "https://github.com/krystalcampioni/vue-number-input-spinner/issues"
+  },
+  "homepage": "https://github.com/krystalcampioni/vue-number-input-spinner",
   "devDependencies": {
-    "autoprefixer": "^6.7.2",
-    "babel-core": "^6.22.1",
-    "babel-loader": "^6.2.10",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-env": "^1.3.2",
-    "babel-preset-stage-2": "^6.22.0",
-    "babel-register": "^6.22.0",
-    "chalk": "^1.1.3",
-    "connect-history-api-fallback": "^1.3.0",
-    "copy-webpack-plugin": "^4.0.1",
-    "css-loader": "^0.28.0",
-    "eventsource-polyfill": "^0.9.6",
-    "express": "^4.14.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-runtime": "^6.23.0",
+    "css-loader": "^0.28.2",
+    "eslint": "^3.19.0",
+    "eslint-plugin-html": "^2.0.3",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.11.1",
-    "friendly-errors-webpack-plugin": "^1.1.3",
     "html-webpack-plugin": "^2.28.0",
-    "http-proxy-middleware": "^0.17.3",
-    "webpack-bundle-analyzer": "^2.2.1",
-    "semver": "^5.3.0",
-    "shelljs": "^0.7.6",
-    "opn": "^4.0.2",
-    "optimize-css-assets-webpack-plugin": "^1.3.0",
-    "ora": "^1.2.0",
-    "rimraf": "^2.6.0",
-    "url-loader": "^0.5.8",
+    "node-sass": "^4.5.3",
+    "optimize-css-assets-webpack-plugin": "^1.3.2",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.13.1",
+    "uglifyjs-webpack-plugin": "^0.4.3",
+    "url-loader": "^0.5.7",
+    "vue": "^2.3.3",
     "vue-loader": "^12.1.0",
-    "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^2.6.1",
-    "webpack-dev-middleware": "^1.10.0",
-    "webpack-hot-middleware": "^2.18.0",
-    "webpack-merge": "^4.1.0"
+    "webpack": "^2.6.0",
+    "webpack-dev-server": "^2.4.5"
   },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "dependencies": {
+    "vue-highlightjs": "^1.3.3",
+    "vue-hotel-datepicker": "^0.1.7"
+  }
 }
