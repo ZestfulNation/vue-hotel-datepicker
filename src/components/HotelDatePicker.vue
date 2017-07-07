@@ -6,7 +6,8 @@
       :id="DatePickerID"
       :placeholder="placeholder"
       type="text"
-      v-on:change="updateValues"/>
+      v-on:change="updateValues"
+      readonly/>
   </div>
 </template>
 
