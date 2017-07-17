@@ -206,7 +206,15 @@ $dark-gray: #2d3047;
   width: 260px;
   z-index: 1;
 
-  &--open ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
+  &--closed {
+    display: none;
+  }
+
+  &--open {
+    display: block;
+    
+     ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
+  }
 
   &__wrapper {
     position: relative;
@@ -359,9 +367,9 @@ $dark-gray: #2d3047;
   }
 
   &__month-day {
-    transition-duration: 0.1s;
-    transition-property: all;
-    transition-timing-function: ease-in-out;
+    // transition-duration: 0.1s;
+    // transition-property: all;
+    // transition-timing-function: ease-in-out;
     will-change: auto;
     color: #acb2c1;
     padding: 0;
@@ -404,8 +412,6 @@ $dark-gray: #2d3047;
 
         &::before,
         &::after {
-          transition: all .2s ease;
-          transition-delay: 2s;
           position: absolute;
           background-color: #fff;
           border-radius: 50%;
@@ -468,9 +474,9 @@ $dark-gray: #2d3047;
   }
 
   &__month-button {
-    transition-duration: 0.2s;
-    transition-property: color, background-color, border-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    // transition-duration: 0.2s;
+    // transition-property: color, background-color, border-color;
+    // transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #9da6b8;
     display: inline-block;
 

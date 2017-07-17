@@ -280,7 +280,7 @@ export default class HotelDatepicker {
         // Generate our datepicker
         let html =
         '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
-        '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
+        '<div id="' + this.getDatepickerId() + '" class="datepicker datepicker--closed">';
 
         html += '<div class="datepicker__inner">';
 
@@ -479,9 +479,6 @@ export default class HotelDatepicker {
             // Set (and check) the range value based on the current input value
             this.checkAndSetDefaultValue();
 
-            // Slide down the datepicker
-            this.slideDown(this.datepicker, this.animationSpeed);
-
             // Set flag
             this.isOpen = true;
 
@@ -503,8 +500,6 @@ export default class HotelDatepicker {
         this.removeClass(this.datepicker, 'datepicker--open');
         this.addClass(this.datepicker, 'datepicker--closed');
 
-        // Slide up the datepicker
-        this.slideUp(this.datepicker, this.animationSpeed);
         this.isOpen = false;
     }
 
@@ -1356,31 +1351,6 @@ export default class HotelDatepicker {
     isVisible(element) {
         // Check if a DOM element is visible
         return (element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-    }
-
-    slideDown(element, speed) {
-        // Slide down an element
-        element.style.display = '';
-        const h = element.getBoundingClientRect().height;
-        element.style.height = 0;
-        this.recalc(element.offsetHeight);
-        element.style.transition = 'height ' + speed;
-        element.style.height = h + 'px';
-        element.addEventListener('transitionend', () => {
-            element.style.height = element.style.transition = element.style.display = '';
-        });
-    }
-
-    slideUp(element, speed) {
-        // Slide up an element
-        const h = element.getBoundingClientRect().height;
-        element.style.height = h + 'px';
-        this.recalc(element.offsetHeight);
-        element.style.transition = 'height ' + speed;
-        element.style.height = 0;
-        element.addEventListener('transitionend', () => {
-            element.style.display = 'none';
-        });
     }
 
     recalc(element) {
