@@ -20,6 +20,8 @@ const defaulti18n = {
     night: 'Night',
     nights: 'Nights',
     button: 'Close',
+    'check-in': 'Check-in',
+    'check-out': 'Check-Out',
     'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     'error-more': 'Date range should not be more than 1 night',
@@ -200,7 +202,7 @@ $dark-gray: #2d3047;
 .datepicker {
   box-sizing: border-box;
   left: 0;
-  // overflow: hidden;
+  top: 48px;
   position: absolute;
   width: 260px;
   z-index: 1;
@@ -211,7 +213,7 @@ $dark-gray: #2d3047;
     position: absolute;
     top: 0;
     left: 0;
-    width: 234px;
+    width: 100%;
     height: 2px;
   }
 
@@ -254,8 +256,12 @@ $dark-gray: #2d3047;
   }
 
   &__dummy-input {
-    border: 1px solid $primary-color;
+    color: $medium-gray;
+    border: 1px solid $medium-gray;
     float: left;
+    height: 48px;
+    line-height: 3;
+    text-align: center;
     width: calc(50% - 2px);
   }
 

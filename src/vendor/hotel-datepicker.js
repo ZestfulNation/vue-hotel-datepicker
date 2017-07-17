@@ -31,6 +31,8 @@ export default class HotelDatepicker {
             night: 'Night',
             nights: 'Nights',
             button: 'Close',
+            'check-in': 'Check-in',
+            'check-out': 'Check-out',
             'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
             'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             'error-more': 'Date range should not be more than 1 night',
@@ -235,8 +237,6 @@ export default class HotelDatepicker {
 
         // Open the datepicker on the input click
         this.input.addEventListener('click', evt => this.openDatepicker(evt));
-
-        console.log(document.querySelector('#dummyWrapper' + this.getDatepickerId()))
         document.querySelector('#dummyWrapper' + this.getDatepickerId()).addEventListener('click', evt => this.openDatepicker(evt))
 
         // Close the datepicker on the button click
@@ -291,7 +291,7 @@ export default class HotelDatepicker {
     createDatepickerDomString() {
         // Generate our datepicker
         let html = '<div id="dummyWrapper' + this.getDatepickerId() + '" class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? 'x ' : ' -is-hidden') +  '">' +
-        '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">x</div> ' + '<div class="datepicker__dummy-input" id="' + this.getDatepickerId() + '_date2">x</div> </div>' +
+        '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">' + this.lang('check-in') + '</div> ' + '<div class="datepicker__dummy-input" id="' + this.getDatepickerId() + '_date2">' + this.lang('check-out') + '</div> </div>' +
         '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
         '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
 
@@ -738,6 +738,9 @@ export default class HotelDatepicker {
     }
 
     dayClicked(day) {
+        var startDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date1');
+        var endDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date2');
+
         if (this.hasClass(day, 'datepicker__month-day--invalid')) {
             return;
         }
@@ -750,14 +753,13 @@ export default class HotelDatepicker {
             this.end = false;
 
             // update Dummy Input
-            var startDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date1');
             startDummyInput.innerHTML = this.getDateString(new Date(this.start));
+            endDummyInput.innerHTML = this.lang('check-out');
 
         } else if (this.start) {
             this.end = time;
 
             // update Dummy Input
-            var endDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date2');
             endDummyInput.innerHTML = this.getDateString(new Date(this.end));
         }
 
@@ -1313,8 +1315,8 @@ export default class HotelDatepicker {
         // Reset input
         this.setValue('');
 
-        document.querySelector('#datepicker-' + this.DatePickerID + '_date1').innerHTML = ' ';
-        document.querySelector('#datepicker-' + this.DatePickerID + '_date2').innerHTML = ' ';
+        document.querySelector('#datepicker-' + this.DatePickerID + '_date1').innerHTML = this.lang('check-in');
+        document.querySelector('#datepicker-' + this.DatePickerID + '_date2').innerHTML = this.lang('check-out');
 
         // Check the selection
         this.checkSelection();
