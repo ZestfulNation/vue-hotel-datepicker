@@ -221,12 +221,13 @@ $dark-gray: #2d3047;
     display: inline-block;
     width: 100%;
     height: 48px;
+    background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
   }
 
   &__input {
   	border: solid 1px #dbdbdb;
+    background: transparent;
     height: 48px;
-    background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
     box-sizing: border-box;
     color: gray;
     font-size: 12px;
