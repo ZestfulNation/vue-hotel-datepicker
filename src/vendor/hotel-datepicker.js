@@ -493,6 +493,7 @@ export default class HotelDatepicker {
             // Add/remove helper classes
             this.removeClass(this.datepicker, 'datepicker--closed');
             this.addClass(this.datepicker, 'datepicker--open');
+            document.querySelector('#datepicker-' + this.DatePickerID + '_date1').classList.add('datepicker__dummy-input--is-active');
 
             // Set (and check) the range value based on the current input value
             this.checkAndSetDefaultValue();
@@ -754,13 +755,15 @@ export default class HotelDatepicker {
 
             // update Dummy Input
             startDummyInput.innerHTML = this.getDateString(new Date(this.start));
-            endDummyInput.innerHTML = this.lang('check-out');
+            startDummyInput.classList.remove('datepicker__dummy-input--is-active');
+            endDummyInput.classList.add('datepicker__dummy-input--is-active');
 
         } else if (this.start) {
             this.end = time;
 
             // update Dummy Input
             endDummyInput.innerHTML = this.getDateString(new Date(this.end));
+            endDummyInput.classList.remove('datepicker__dummy-input--is-active');
         }
 
         // Swap dates if they are inverted

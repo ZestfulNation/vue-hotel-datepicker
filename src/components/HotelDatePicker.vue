@@ -1,6 +1,5 @@
 <template>
   <div class="datepicker__wrapper">
-<!-- v-show="!useDummyInputs" -->
     <input
       class="datepicker__input"
       :value="value"
@@ -263,6 +262,11 @@ $dark-gray: #2d3047;
     line-height: 3;
     text-align: center;
     width: calc(50% - 2px);
+
+    &--is-active {
+      border: 1px solid $primary-color;
+      color: $primary-color;
+    }
   }
 
   &__inner {
@@ -352,9 +356,10 @@ $dark-gray: #2d3047;
   }
 
   &__month-day {
-    transition-duration: 0.2s;
-    transition-property: color, background-color, border-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.1s;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    will-change: auto;
     color: #acb2c1;
     padding: 6px 0;
     border-bottom: 5px solid white;
@@ -362,14 +367,10 @@ $dark-gray: #2d3047;
     height: 20px;
 
     &--invalid-range {
-      background: rgba($main-color, 0.3);
-      color: #fff;
+      background-color: rgba($main-color, 0.3);
+      color: #e8ebf4;
       cursor: not-allowed;
       position: relative;
-    }
-
-    &--tmp {
-      // background: red !important;
     }
 
     &--invalid {
@@ -391,6 +392,38 @@ $dark-gray: #2d3047;
     &--hovering {
       background-color: rgba($main-color, 0.5);
       color: #fff;
+
+      &.datepicker__month-day--valid:hover {
+        background-color: #fff;
+        color: $primary-color;
+        z-index: 1;
+        position: relative;
+
+        &::before,
+        &::after {
+          transition: all .2s ease;
+          transition-delay: 2s;
+          position: absolute;
+          background-color: #fff;
+          border-radius: 50%;
+          content: ' ';
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+        }
+
+        &:before {
+          content: ' ';
+          border-radius: 0 50% 50% 0;
+          background-color: rgba($main-color, 0.5);
+        }
+
+        &:after {
+          box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
+        }
+      }
     }
 
     &--today {
