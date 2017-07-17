@@ -218,6 +218,8 @@ $dark-gray: #2d3047;
   &__wrapper {
     position: relative;
     display: inline-block;
+    width: 100%;
+    height: 48px;
   }
 
   &__input {
@@ -244,6 +246,18 @@ $dark-gray: #2d3047;
     }
   }
 
+  &__dummy-wrapper {
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 100%;
+  }
+
+  &__dummy-input {
+    border: 1px solid $primary-color;
+    float: left;
+    width: calc(50% - 2px);
+  }
 
   &__inner {
     // overflow: hidden;

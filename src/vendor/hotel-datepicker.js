@@ -113,7 +113,7 @@ export default class HotelDatepicker {
     }
 
     getTooltipId() {
-        // Get close button ID
+        // Get tooltip button ID
         return 'tooltip-' + this.DatePickerID;
     }
 
@@ -142,6 +142,10 @@ export default class HotelDatepicker {
     }
 
     init() {
+        // Check if we should use dummy inputs or not
+        if (this.useDummyInputs == true) {
+            this.input.style.display = 'none';
+        }
         // DOM container
         this.parent = this.container ? this.container : this.input.parentElement;
 
@@ -231,7 +235,9 @@ export default class HotelDatepicker {
 
         // Open the datepicker on the input click
         this.input.addEventListener('click', evt => this.openDatepicker(evt));
-        // this.dummyInput.addEventListener('click', evt => this.openDatepicker(evt));
+
+        console.log(document.querySelector('#dummyWrapper' + this.getDatepickerId()))
+        document.querySelector('#dummyWrapper' + this.getDatepickerId()).addEventListener('click', evt => this.openDatepicker(evt))
 
         // Close the datepicker on the button click
         document.getElementById(this.getCloseButtonId()).addEventListener('click', evt => this.closeDatepicker(evt));
@@ -284,7 +290,7 @@ export default class HotelDatepicker {
 
     createDatepickerDomString() {
         // Generate our datepicker
-        let html = '<div class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? 'x ' : ' -is-hidden') +  '">' +
+        let html = '<div id="dummyWrapper' + this.getDatepickerId() + '" class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? 'x ' : ' -is-hidden') +  '">' +
         '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">x</div> ' + '<div class="datepicker__dummy-input" id="' + this.getDatepickerId() + '_date2">x</div> </div>' +
         '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
         '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
