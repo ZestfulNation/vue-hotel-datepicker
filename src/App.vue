@@ -81,6 +81,7 @@
         <h3>Ranges of 7, 10 or 14 days and checkin only on saturdays</h3>
         <DatePicker
             DatePickerID="aa01"
+            :useDummyInputs="true"
             :minNights="10"
             :endDate="new Date(new Date().getFullYear(), 11, 31)"
             :disabledDates="[

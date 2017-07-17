@@ -1,5 +1,6 @@
 <template>
   <div class="datepicker__wrapper">
+<!-- v-show="!useDummyInputs" -->
     <input
       class="datepicker__input"
       :value="value"
@@ -38,6 +39,10 @@ export default {
     props: {
         value: {
           type: String
+        },
+        useDummyInputs: {
+          default: false,
+          type: Boolean
         },
         placeholder: {
           default: 'Check-in ► Check-out',
@@ -145,6 +150,8 @@ export default {
 
 		mounted: function() {
 			var hdpkr = new HotelDatepicker(document.getElementById(this.DatePickerID), {
+          DatePickerID: this.DatePickerID,
+          useDummyInputs: this.useDummyInputs,
           format: this.format,
           infoFormat: this.infoFormat,
           separator: this.separator,
@@ -182,7 +189,8 @@ export default {
 /* =============================================================
  * VARIABLES
  * ============================================================*/
-$main-color: #17867f;
+$primary-color: #00ca9d;
+$main-color: $primary-color;
 $medium-gray: #999999;
 $dark-gray: #2d3047;
 
@@ -214,7 +222,7 @@ $dark-gray: #2d3047;
 
   &__input {
   	border: solid 1px #dbdbdb;
-  	height: 30px;
+    height: 48px;
     background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
     box-sizing: border-box;
     color: gray;
@@ -328,7 +336,10 @@ $dark-gray: #2d3047;
     transition-property: color, background-color, border-color;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #acb2c1;
-    padding: 9px 7px;
+    padding: 6px 0;
+    border-bottom: 5px solid white;
+    width: 33px;
+    height: 20px;
 
     &--invalid-range {
       background: rgba($main-color, 0.3);
@@ -358,7 +369,7 @@ $dark-gray: #2d3047;
     }
 
     &--hovering {
-      background-color: rgba($main-color, 0.3);
+      background-color: rgba($main-color, 0.5);
       color: #fff;
     }
 
@@ -369,13 +380,35 @@ $dark-gray: #2d3047;
 
     &--first-day-selected,
     &--last-day-selected {
-      background-color: $main-color;
-      color: #fff;
+      background-color: #fff;
+      z-index: 1;
+      position: relative;
+      &::before,
+      &::after {
+        position: absolute;
+        background-color: $primary-color;
+        border-radius: 50%;
+        content: ' ';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
     }
 
-    &--last-day-selected:after {
-      content: none;
+    &--first-day-selected:before {
+      content: ' ';
+      border-radius: 50% 0 0 50%;
+      background-color: rgba($main-color, 0.5);
     }
+
+    &--last-day-selected:before {
+      content: ' ';
+      border-radius: 0 50% 50% 0;
+      background-color: rgba($main-color, 0.5);
+    }
+
   }
 
   &__month-button {
@@ -453,15 +486,15 @@ $dark-gray: #2d3047;
     appearence: none;
     background: transparent;
     border: 0;
-    color: $main-color;
+    color: $primary-color;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 0;
     outline: 0;
     position: absolute;
-    right: 0;
-    top: 3px;
+    right: 4px;
+    top: 7px;
     transform: rotate(45deg);
   }
 
@@ -472,6 +505,7 @@ $dark-gray: #2d3047;
     font-size: 11px;
     margin-top: -5px;
     padding: 5px 10px;
+    z-index: 5;
 
     &:after {
       border-left: 4px solid transparent;
@@ -498,7 +532,8 @@ $dark-gray: #2d3047;
     width: 460px;
   }
   .datepicker__months {
-    // overflow: hidden;
+    display: inline-block;
+    width: 100%;
   }
   .datepicker__month {
     width: 200px;
@@ -517,16 +552,16 @@ $dark-gray: #2d3047;
     position: relative;
   }
   // Display a line between the months
-  // .datepicker__months:before {
-  //   background: #dcdcdc;
-  //   bottom: 0;
-  //   content: '';
-  //   display: block;
-  //   left: 50%;
-  //   position: absolute;
-  //   top: 0;
-  //   width: 1px;
-  // }
+  .datepicker__months:before {
+    background: #dcdcdc;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    width: 1px;
+  }
 }
 
 @media (min-width: 768px) {

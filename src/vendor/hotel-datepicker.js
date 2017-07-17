@@ -1,12 +1,11 @@
 import fecha from 'fecha';
 import _ from 'lodash';
-/* global fecha, DocumentTouch */
 
 export default class HotelDatepicker {
     constructor(input, options) {
         // Set default values
         const opts = options || {};
-
+        this.DatePickerID = opts.DatePickerID || null;
         this.format = opts.format || 'YYYY-MM-DD';
         this.infoFormat = opts.infoFormat || this.format;
         this.separator = opts.separator || ' - ';
@@ -26,6 +25,7 @@ export default class HotelDatepicker {
         this.autoClose = opts.autoClose === undefined ? true : opts.autoClose;
         this.showBottombar = opts.showBottombar || true;
         this.showCloseButton = opts.showCloseButton || false;
+        this.useDummyInputs = opts.useDummyInputs || false;
         this.i18n = opts.i18n || {
             selected: 'Your stay:',
             night: 'Night',
@@ -48,7 +48,7 @@ export default class HotelDatepicker {
         this.setValue = opts.setValue || function (s) {
             input.value = s;
             if(this.changed) {
-				//Dispatch on change event to update vue component
+                //Dispatch on change event to update vue component
                 var event = document.createEvent('Event');
                 event.initEvent('change', true, true);
                 input.dispatchEvent(event);
@@ -94,27 +94,27 @@ export default class HotelDatepicker {
 
     getDatepickerId() {
         // Get datepicker ID
-        return 'datepicker-' + this.generateId();
+        return 'datepicker-' + this.DatePickerID;
     }
 
     getMonthTableId(month) {
         // Get month table ID
-        return 'month-' + month + '-' + this.generateId();
+        return 'month-' + month + '-' + this.DatePickerID;
     }
 
     getCloseButtonId() {
         // Get close button ID
-        return 'close-' + this.generateId();
+        return 'close-' + this.DatePickerID;
     }
 
     getClearButtonId() {
         // Get close button ID
-        return 'clear-' + this.generateId();
+        return 'clear-' + this.DatePickerID;
     }
 
     getTooltipId() {
         // Get close button ID
-        return 'tooltip-' + this.generateId();
+        return 'tooltip-' + this.DatePickerID;
     }
 
     getNextMonth(month) {
@@ -231,6 +231,7 @@ export default class HotelDatepicker {
 
         // Open the datepicker on the input click
         this.input.addEventListener('click', evt => this.openDatepicker(evt));
+        // this.dummyInput.addEventListener('click', evt => this.openDatepicker(evt));
 
         // Close the datepicker on the button click
         document.getElementById(this.getCloseButtonId()).addEventListener('click', evt => this.closeDatepicker(evt));
@@ -271,22 +272,6 @@ export default class HotelDatepicker {
         }
     }
 
-    generateId() {
-        // Generate an unique ID for each datepicker
-        let id = '';
-
-        // Use input ID if set
-        if (this.input.id) {
-            id += this.input.id;
-        // Otherwise create a random string
-        } else {
-            // @todo - Is a date string unique enough?
-            id += Date.now();
-        }
-
-        return id;
-    }
-
     createDom() {
         const domString = this.createDatepickerDomString();
 
@@ -299,7 +284,9 @@ export default class HotelDatepicker {
 
     createDatepickerDomString() {
         // Generate our datepicker
-        let html = '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
+        let html = '<div class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? 'x ' : ' -is-hidden') +  '">' +
+        '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">x</div> ' + '<div class="datepicker__dummy-input" id="' + this.getDatepickerId() + '_date2">x</div> </div>' +
+        '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
         '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
 
         html += '<div class="datepicker__inner">';
@@ -755,8 +742,17 @@ export default class HotelDatepicker {
         if ((this.start && this.end) || (!this.start && !this.end)) {
             this.start = time;
             this.end = false;
+
+            // update Dummy Input
+            var startDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date1');
+            startDummyInput.innerHTML = this.getDateString(new Date(this.start));
+
         } else if (this.start) {
             this.end = time;
+
+            // update Dummy Input
+            var endDummyInput = document.querySelector('#datepicker-' + this.DatePickerID + '_date2');
+            endDummyInput.innerHTML = this.getDateString(new Date(this.end));
         }
 
         // Swap dates if they are inverted
@@ -1310,6 +1306,9 @@ export default class HotelDatepicker {
 
         // Reset input
         this.setValue('');
+
+        document.querySelector('#datepicker-' + this.DatePickerID + '_date1').innerHTML = ' ';
+        document.querySelector('#datepicker-' + this.DatePickerID + '_date2').innerHTML = ' ';
 
         // Check the selection
         this.checkSelection();
