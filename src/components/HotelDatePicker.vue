@@ -193,9 +193,13 @@ $dark-gray: #2d3047;
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
+ *,
+ *:after,
+ *:before {
+   box-sizing: border-box;
+ }
 
 .datepicker {
-  box-sizing: border-box;
   left: 0;
   top: 50px;
   position: absolute;
@@ -216,7 +220,6 @@ $dark-gray: #2d3047;
   	background: transparent;
     border: 0;
     height: 48px;
-    box-sizing: border-box;
     color: gray;
     font-size: 12px;
     outline: none;
@@ -361,10 +364,10 @@ $dark-gray: #2d3047;
     transition-timing-function: ease-in-out;
     will-change: auto;
     color: #acb2c1;
-    padding: 6px 0;
+    padding: 0;
     border-bottom: 5px solid white;
+    height: 36px;
     width: 33px;
-    height: 20px;
 
     &--invalid-range {
       background-color: rgba($primary-color, 0.3);
