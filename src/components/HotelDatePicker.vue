@@ -276,10 +276,6 @@ $dark-gray: #2d3047;
     }
   }
 
-  &__inner {
-    // overflow: hidden;
-  }
-
   &__month {
     border-collapse: collapse;
     text-align: center;
@@ -340,7 +336,7 @@ $dark-gray: #2d3047;
 .datepicker {
   background-color: #fff;
   color: #484c55;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 14px;
   overflow: hidden;
 
@@ -349,13 +345,13 @@ $dark-gray: #2d3047;
   &__month { font-size: 12px; }
 
   &__month-caption {
-    border-bottom: 1px solid #dcdcdc;
     height: 2.5em;
     vertical-align: middle;
   }
 
   &__month-name {
-    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
   }
 
   &__week-days {
@@ -364,15 +360,13 @@ $dark-gray: #2d3047;
   }
 
   &__week-name {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
-    text-transform: uppercase;
+    font-weight: lighter;
+    color: #9599aa;
   }
 
   &__month-day {
-    // transition-duration: 0.1s;
-    // transition-property: all;
-    // transition-timing-function: ease-in-out;
     will-change: auto;
     color: #acb2c1;
     padding: 0;
@@ -477,9 +471,6 @@ $dark-gray: #2d3047;
   }
 
   &__month-button {
-    // transition-duration: 0.2s;
-    // transition-property: color, background-color, border-color;
-    // transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #9da6b8;
     display: inline-block;
 
