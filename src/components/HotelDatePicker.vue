@@ -191,49 +191,43 @@ export default {
  * VARIABLES
  * ============================================================*/
 $primary-color: #00ca9d;
-$main-color: $primary-color;
+$primary-color: $primary-color;
 $medium-gray: #999999;
 $dark-gray: #2d3047;
 
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
+
 .datepicker {
   box-sizing: border-box;
   left: 0;
-  top: 48px;
+  top: 50px;
   position: absolute;
   width: 260px;
   z-index: 1;
 
-  &--open:before {
-    content: '';
-    background: $main-color;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-  }
+  &--open ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
 
   &__wrapper {
+    border: solid 1px #dbdbdb;
     position: relative;
     display: inline-block;
     width: 100%;
     height: 48px;
-    background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
+    background: #fff url('calendar_icon.svg') no-repeat 10px center / 16px;
   }
 
   &__input {
-  	border: solid 1px #dbdbdb;
-    background: transparent;
+  	background: transparent;
+    border: 0;
     height: 48px;
     box-sizing: border-box;
     color: gray;
     font-size: 12px;
     outline: none;
     padding: 4px 30px 2px 30px;
-    width: 234px;
+    width: 100%;
     word-spacing: 5px;
 
     &:focus {
@@ -257,15 +251,17 @@ $dark-gray: #2d3047;
 
   &__dummy-input {
     color: $medium-gray;
-    border: 1px solid $medium-gray;
     float: left;
     height: 48px;
     line-height: 3;
     text-align: center;
     width: calc(50% - 2px);
 
+    &:first-child {
+      background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
+    }
+
     &--is-active {
-      border: 1px solid $primary-color;
       color: $primary-color;
     }
   }
@@ -368,7 +364,7 @@ $dark-gray: #2d3047;
     height: 20px;
 
     &--invalid-range {
-      background-color: rgba($main-color, 0.3);
+      background-color: rgba($primary-color, 0.3);
       color: #e8ebf4;
       cursor: not-allowed;
       position: relative;
@@ -386,12 +382,12 @@ $dark-gray: #2d3047;
     }
 
     &--selected {
-      background-color: rgba($main-color, 0.5);
+      background-color: rgba($primary-color, 0.5);
       color: #fff;
     }
 
     &--hovering {
-      background-color: rgba($main-color, 0.5);
+      background-color: rgba($primary-color, 0.5);
       color: #fff;
 
       &.datepicker__month-day--valid:hover {
@@ -418,7 +414,7 @@ $dark-gray: #2d3047;
         &:before {
           content: ' ';
           border-radius: 0 50% 50% 0;
-          background-color: rgba($main-color, 0.5);
+          background-color: rgba($primary-color, 0.5);
         }
 
         &:after {
@@ -454,13 +450,13 @@ $dark-gray: #2d3047;
     &--first-day-selected:before {
       content: ' ';
       border-radius: 50% 0 0 50%;
-      background-color: rgba($main-color, 0.5);
+      background-color: rgba($primary-color, 0.5);
     }
 
     &--last-day-selected:before {
       content: ' ';
       border-radius: 0 50% 50% 0;
-      background-color: rgba($main-color, 0.5);
+      background-color: rgba($primary-color, 0.5);
     }
 
   }
@@ -524,7 +520,7 @@ $dark-gray: #2d3047;
     appearence: none;
     background: transparent;
     border: 0;
-    color: $main-color;
+    color: $primary-color;
     cursor: pointer;
     font-size: 21px;
     font-weight: bold;

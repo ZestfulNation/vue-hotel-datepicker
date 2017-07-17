@@ -278,8 +278,7 @@ export default class HotelDatepicker {
 
     createDatepickerDomString() {
         // Generate our datepicker
-        let html = '<div id="dummyWrapper' + this.getDatepickerId() + '" class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? 'x ' : ' -is-hidden') +  '">' +
-        '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">' + this.lang('check-in') + '</div> ' + '<div class="datepicker__dummy-input" id="' + this.getDatepickerId() + '_date2">' + this.lang('check-out') + '</div> </div>' +
+        let html =
         '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
         '<div id="' + this.getDatepickerId() + '" style="display:none" class="datepicker datepicker--closed">';
 
@@ -298,18 +297,6 @@ export default class HotelDatepicker {
             html += '<table id="' + this.getMonthTableId(i) + '" class="datepicker__month datepicker__month--month' + i + '"><thead><tr class="datepicker__month-caption"><th><span class="datepicker__month-button datepicker__month-button--prev" month="' + i + '">&lt;</span></th><th colspan="5" class="datepicker__month-name"></th><th><span class="datepicker__month-button datepicker__month-button--next" month="' + i + '">&gt;</span></th></tr><tr class="datepicker__week-days">' + this.getWeekDayNames(i) + '</tr></thead><tbody></tbody></table>';
         }
 
-		// Bottom bar section
-        // html += '<div class="datepicker__bottombar' + (this.showBottombar == true ? ' ' : ' -is-hidden') +  '">' +
-		// 			'<div class="datepicker__info datepicker__info--selected"><span class="datepicker__info datepicker__info--selected-label">'
-		// 			+ this.lang('selected') + ' </span> <strong class="datepicker__info-text datepicker__info-text--start-day">...</strong>' +
-		// 			' <span class="datepicker__info-text datepicker__info--separator">'
-		// 			+ this.separator +
-		// 			'</span> <strong class="datepicker__info-text datepicker__info-text--end-day">...</strong>'
-		// 			+ ' <em class="datepicker__info-text datepicker__info-text--selected-days">(<span></span>)</em>' +
-		// 			'</div>' + '<div class="datepicker__info datepicker__info--feedback"></div>' +
-		// 		'</div>';
-
-
         html += '</div>';
 
         // Tooltip
@@ -318,6 +305,12 @@ export default class HotelDatepicker {
         html += '</div>';
 
         html += '</div>';
+
+        html +=
+        '<div id="dummyWrapper' + this.getDatepickerId() + '" class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? ' ' : ' -is-hidden') +  '">' +
+            '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">' + this.lang('check-in') + '</div> ' +
+            '<div id="' + this.getDatepickerId() + '_date2" class="datepicker__dummy-input">' + this.lang('check-out') + '</div>' +
+        '</div>';
 
         return html;
     }

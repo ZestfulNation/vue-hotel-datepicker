@@ -43,6 +43,7 @@
           DatePickerID="DatePickerID2"
           :maxNights="30"
           :showBottomBar="false"
+          :selectForward="false"
           />
       </div>
 
