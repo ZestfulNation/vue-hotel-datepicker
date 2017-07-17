@@ -24,7 +24,7 @@ export default class HotelDatepicker {
         this.hoveringTooltip = opts.hoveringTooltip || false; // Or a function
         this.autoClose = opts.autoClose === undefined ? true : opts.autoClose;
         this.showCloseButton = opts.showCloseButton || false;
-        this.useDummyInputs = opts.useDummyInputs || false;
+        this.useDummyInputs = opts.useDummyInputs || true;
         this.i18n = opts.i18n || {
             selected: 'Your stay:',
             night: 'Night',
@@ -294,7 +294,7 @@ export default class HotelDatepicker {
 
         // Print single months
         for (let i = 1; i <= 2; i++) {
-            html += '<table id="' + this.getMonthTableId(i) + '" class="datepicker__month datepicker__month--month' + i + '"><thead><tr class="datepicker__month-caption"><th><span class="datepicker__month-button datepicker__month-button--prev" month="' + i + '">&lt;</span></th><th colspan="5" class="datepicker__month-name"></th><th><span class="datepicker__month-button datepicker__month-button--next" month="' + i + '">&gt;</span></th></tr><tr class="datepicker__week-days">' + this.getWeekDayNames(i) + '</tr></thead><tbody></tbody></table>';
+            html += '<table id="' + this.getMonthTableId(i) + '" class="datepicker__month datepicker__month--month' + i + '"><thead><tr class="datepicker__month-caption"><th><span class="datepicker__month-button datepicker__month-button--prev" month="' + i + '"></span></th><th colspan="5" class="datepicker__month-name"></th><th><span class="datepicker__month-button datepicker__month-button--next" month="' + i + '"></span></th></tr><tr class="datepicker__week-days">' + this.getWeekDayNames(i) + '</tr></thead><tbody></tbody></table>';
         }
 
         html += '</div>';

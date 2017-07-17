@@ -122,10 +122,6 @@ export default {
           default: false,
           type: Boolean
         },
-        showBottomBar: {
-          default: true,
-          type: Boolean
-        },
         autoClose: {
           default: true,
           type: Boolean
@@ -170,7 +166,6 @@ export default {
           animationSpeed: this.animationSpeed,
           hoveringTooltip: this.hoveringTooltip,
           showCloseButton: this.showCloseButton,
-          showBottomBar: this.showBottomBar,
           autoClose: this.autoClose,
           i18n: this.i18n,
       });
@@ -293,6 +288,14 @@ $dark-gray: #2d3047;
 
   &__month-button {
     cursor: pointer;
+    background: transparent url('ic-arrow-right-green.svg') no-repeat right center / 8px;
+    width: 100%;
+    height: 48px;
+
+
+    &--prev {
+      transform: rotateY(180deg);
+    }
 
     &--locked {
       opacity: .2;
@@ -467,7 +470,6 @@ $dark-gray: #2d3047;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #9da6b8;
     display: inline-block;
-    padding: 5px 10px;
 
     &:hover {
       color: darken(#9da6b8, 10%);
@@ -476,15 +478,6 @@ $dark-gray: #2d3047;
 
   &__topbar {
     height: 20px;
-  }
-
-  &__bottombar {
-    float: left;
-    position: relative;
-    width: 100%;
-    background: white;
-    margin-bottom: 0;
-    padding: 10px 0 20px;
   }
 
   &__info-text {
