@@ -19,6 +19,8 @@ const defaulti18n = {
     night: 'Night',
     nights: 'Nights',
     button: 'Close',
+    'check-in': 'Check-in',
+    'check-out': 'Check-Out',
     'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     'error-more': 'Date range should not be more than 1 night',
@@ -38,6 +40,10 @@ export default {
     props: {
         value: {
           type: String
+        },
+        useDummyInputs: {
+          default: false,
+          type: Boolean
         },
         placeholder: {
           default: 'Check-in ► Check-out',
@@ -116,10 +122,6 @@ export default {
           default: false,
           type: Boolean
         },
-        showBottomBar: {
-          default: true,
-          type: Boolean
-        },
         autoClose: {
           default: true,
           type: Boolean
@@ -145,6 +147,8 @@ export default {
 
 		mounted: function() {
 			var hdpkr = new HotelDatepicker(document.getElementById(this.DatePickerID), {
+          DatePickerID: this.DatePickerID,
+          useDummyInputs: this.useDummyInputs,
           format: this.format,
           infoFormat: this.infoFormat,
           separator: this.separator,
@@ -162,7 +166,6 @@ export default {
           animationSpeed: this.animationSpeed,
           hoveringTooltip: this.hoveringTooltip,
           showCloseButton: this.showCloseButton,
-          showBottomBar: this.showBottomBar,
           autoClose: this.autoClose,
           i18n: this.i18n,
       });
@@ -182,46 +185,43 @@ export default {
 /* =============================================================
  * VARIABLES
  * ============================================================*/
-$main-color: #17867f;
+$primary-color: #00ca9d;
+$primary-color: $primary-color;
 $medium-gray: #999999;
 $dark-gray: #2d3047;
 
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
+
 .datepicker {
   box-sizing: border-box;
   left: 0;
-  // overflow: hidden;
+  top: 50px;
   position: absolute;
   width: 260px;
   z-index: 1;
 
-  &--open:before {
-    content: '';
-    background: $main-color;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 234px;
-    height: 2px;
-  }
+  &--open ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
 
   &__wrapper {
     position: relative;
     display: inline-block;
+    width: 100%;
+    height: 48px;
+    background: #fff url('calendar_icon.svg') no-repeat 10px center / 16px;
   }
 
   &__input {
-  	border: solid 1px #dbdbdb;
-  	height: 30px;
-    background: #fff url('calendar_icon.svg') no-repeat 5px center / 16px;
+  	background: transparent;
+    border: 0;
+    height: 48px;
     box-sizing: border-box;
     color: gray;
     font-size: 12px;
     outline: none;
     padding: 4px 30px 2px 30px;
-    width: 234px;
+    width: 100%;
     word-spacing: 5px;
 
     &:focus {
@@ -236,6 +236,30 @@ $dark-gray: #2d3047;
     }
   }
 
+  &__dummy-wrapper {
+    border: solid 1px #dbdbdb;
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 100%;
+  }
+
+  &__dummy-input {
+    color: $medium-gray;
+    float: left;
+    height: 48px;
+    line-height: 3;
+    text-align: center;
+    width: calc(50% - 2px);
+
+    &:first-child {
+      background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
+    }
+
+    &--is-active {
+      color: $primary-color;
+    }
+  }
 
   &__inner {
     // overflow: hidden;
@@ -264,6 +288,14 @@ $dark-gray: #2d3047;
 
   &__month-button {
     cursor: pointer;
+    background: transparent url('ic-arrow-right-green.svg') no-repeat right center / 8px;
+    width: 100%;
+    height: 48px;
+
+
+    &--prev {
+      transform: rotateY(180deg);
+    }
 
     &--locked {
       opacity: .2;
@@ -324,21 +356,21 @@ $dark-gray: #2d3047;
   }
 
   &__month-day {
-    transition-duration: 0.2s;
-    transition-property: color, background-color, border-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.1s;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    will-change: auto;
     color: #acb2c1;
-    padding: 9px 7px;
+    padding: 6px 0;
+    border-bottom: 5px solid white;
+    width: 33px;
+    height: 20px;
 
     &--invalid-range {
-      background: rgba($main-color, 0.3);
-      color: #fff;
+      background-color: rgba($primary-color, 0.3);
+      color: #e8ebf4;
       cursor: not-allowed;
       position: relative;
-    }
-
-    &--tmp {
-      // background: red !important;
     }
 
     &--invalid {
@@ -353,13 +385,45 @@ $dark-gray: #2d3047;
     }
 
     &--selected {
-      background-color: rgba($main-color, 0.5);
+      background-color: rgba($primary-color, 0.5);
       color: #fff;
     }
 
     &--hovering {
-      background-color: rgba($main-color, 0.3);
+      background-color: rgba($primary-color, 0.5);
       color: #fff;
+
+      &.datepicker__month-day--valid:hover {
+        background-color: #fff;
+        color: $primary-color;
+        z-index: 1;
+        position: relative;
+
+        &::before,
+        &::after {
+          transition: all .2s ease;
+          transition-delay: 2s;
+          position: absolute;
+          background-color: #fff;
+          border-radius: 50%;
+          content: ' ';
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+        }
+
+        &:before {
+          content: ' ';
+          border-radius: 0 50% 50% 0;
+          background-color: rgba($primary-color, 0.5);
+        }
+
+        &:after {
+          box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
+        }
+      }
     }
 
     &--today {
@@ -369,13 +433,35 @@ $dark-gray: #2d3047;
 
     &--first-day-selected,
     &--last-day-selected {
-      background-color: $main-color;
-      color: #fff;
+      background-color: #fff;
+      z-index: 1;
+      position: relative;
+      &::before,
+      &::after {
+        position: absolute;
+        background-color: $primary-color;
+        border-radius: 50%;
+        content: ' ';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
     }
 
-    &--last-day-selected:after {
-      content: none;
+    &--first-day-selected:before {
+      content: ' ';
+      border-radius: 50% 0 0 50%;
+      background-color: rgba($primary-color, 0.5);
     }
+
+    &--last-day-selected:before {
+      content: ' ';
+      border-radius: 0 50% 50% 0;
+      background-color: rgba($primary-color, 0.5);
+    }
+
   }
 
   &__month-button {
@@ -384,7 +470,6 @@ $dark-gray: #2d3047;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #9da6b8;
     display: inline-block;
-    padding: 5px 10px;
 
     &:hover {
       color: darken(#9da6b8, 10%);
@@ -393,15 +478,6 @@ $dark-gray: #2d3047;
 
   &__topbar {
     height: 20px;
-  }
-
-  &__bottombar {
-    float: left;
-    position: relative;
-    width: 100%;
-    background: white;
-    margin-bottom: 0;
-    padding: 10px 0 20px;
   }
 
   &__info-text {
@@ -437,7 +513,7 @@ $dark-gray: #2d3047;
     appearence: none;
     background: transparent;
     border: 0;
-    color: $main-color;
+    color: $primary-color;
     cursor: pointer;
     font-size: 21px;
     font-weight: bold;
@@ -453,15 +529,15 @@ $dark-gray: #2d3047;
     appearence: none;
     background: transparent;
     border: 0;
-    color: $main-color;
+    color: $primary-color;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 0;
     outline: 0;
     position: absolute;
-    right: 0;
-    top: 3px;
+    right: 4px;
+    top: 7px;
     transform: rotate(45deg);
   }
 
@@ -472,6 +548,7 @@ $dark-gray: #2d3047;
     font-size: 11px;
     margin-top: -5px;
     padding: 5px 10px;
+    z-index: 5;
 
     &:after {
       border-left: 4px solid transparent;
@@ -498,7 +575,8 @@ $dark-gray: #2d3047;
     width: 460px;
   }
   .datepicker__months {
-    // overflow: hidden;
+    display: inline-block;
+    width: 100%;
   }
   .datepicker__month {
     width: 200px;
@@ -517,16 +595,16 @@ $dark-gray: #2d3047;
     position: relative;
   }
   // Display a line between the months
-  // .datepicker__months:before {
-  //   background: #dcdcdc;
-  //   bottom: 0;
-  //   content: '';
-  //   display: block;
-  //   left: 50%;
-  //   position: absolute;
-  //   top: 0;
-  //   width: 1px;
-  // }
+  .datepicker__months:before {
+    background: #dcdcdc;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    width: 1px;
+  }
 }
 
 @media (min-width: 768px) {

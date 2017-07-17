@@ -43,6 +43,7 @@
           DatePickerID="DatePickerID2"
           :maxNights="30"
           :showBottomBar="false"
+          :selectForward="false"
           />
       </div>
 
@@ -80,21 +81,12 @@
       <div class="box">
         <h3>Ranges of 7, 10 or 14 days and checkin only on saturdays</h3>
         <DatePicker
-            DatePickerID="aa01"
-            :minNights="10"
-            :endDate="new Date(new Date().getFullYear(), 11, 31)"
-            :disabledDates="[
-              '2017-07-14',
-              '2017-07-26',
-            ]"
-            />
-        <!-- <DatePicker
           DatePickerID="DatePickerID7"
           :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
           :enableCheckout="true"
           :allowedRanges="[7,10,14]"
           :minNights="7"
-          /> -->
+          />
       </div>
     </div>
   </div>
@@ -115,5 +107,9 @@ export default {
 body,
 html {
   font-family: 'Source Sans Pro', sans-serif;
+}
+
+.box {
+  width: 360px;
 }
 </style>

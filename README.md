@@ -1,5 +1,5 @@
 # vue-hotel-datepicker
-A Vue component based on the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez
+A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
 
 ## Demo
 [https://krystalcampioni.github.io/vue-hotel-datepicker/](https://krystalcampioni.github.io/vue-hotel-datepicker/)
@@ -203,4 +203,7 @@ i18n: {
 Emited everytime a new date is selected, passing the new date and the previously selected date
 
 ## Contributing
-Just submit a pull request explaining what you changed :) 
+Just submit a pull request explaining what you changed :)
+
+## Credits
+This componend was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. It diverted from the original implementation though, implementing extra features (e.g. allowedRanges and dummyInputs) and removing others (e.g. topbar)
