@@ -205,7 +205,6 @@ $dark-gray: #2d3047;
   &--open ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
 
   &__wrapper {
-    border: solid 1px #dbdbdb;
     position: relative;
     display: inline-block;
     width: 100%;
@@ -238,6 +237,7 @@ $dark-gray: #2d3047;
   }
 
   &__dummy-wrapper {
+    border: solid 1px #dbdbdb;
     cursor: pointer;
     display: block;
     float: left;
