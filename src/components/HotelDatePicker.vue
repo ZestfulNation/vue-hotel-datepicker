@@ -205,14 +205,18 @@ $dark-gray: #2d3047;
   position: absolute;
   width: 260px;
   z-index: 1;
+  transition:  max-height .5s ease-in-out, box-shadow .2s ease-in-out;
 
   &--closed {
-    display: none;
+    box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0);
+    max-height: 0px;
+    transition:  max-height .5s ease-in-out, box-shadow .2s ease .4s;
   }
 
   &--open {
-    display: block;
-    
+    box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.08);
+    max-height: 900px;
+
      ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
   }
 
@@ -335,7 +339,6 @@ $dark-gray: #2d3047;
  * ============================================================*/
 .datepicker {
   background-color: #fff;
-  box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.08);
   color: #484c55;
   font-size: 14px;
   line-height: 14px;
