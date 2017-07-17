@@ -1,6 +1,10 @@
 # vue-hotel-datepicker
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
 
+
+![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo_gif.gif?raw=true)
+
+
 ## Demo
 [https://krystalcampioni.github.io/vue-hotel-datepicker/](https://krystalcampioni.github.io/vue-hotel-datepicker/)
 
@@ -30,6 +34,11 @@ export default {
 
 
 ## Props/Options
+
+### useDummyInputs
+- Type: `Boolean`
+- Default: `true`
+This option hides the input and displays divs that act as dummy input fields. This allows us have an "active" state in the input that changes the placeholder text colour indicating which date is being selected.
 
 ### placeholder
 - Type: `String`
