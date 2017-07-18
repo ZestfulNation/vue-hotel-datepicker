@@ -11,11 +11,7 @@
     <div>
     <div class="grid">
       <div class="grid__full">
-        <h2>A Vue datepicker component based on the
-          <a href="https://github.com/benitolopez/hotel-datepicker">Hotel Datepicker</a> by @benitolopez
-        </h2>
-
-
+        <h2>A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.</h2>
       </div>
 
       <div class="grid__half">

@@ -1,7 +1,7 @@
 {
   "name": "vue-number-input-spinner",
   "version": "0.0.2",
-  "description": "A Vue number spinner component that only allows the user to type in numbers",
+  "description": "A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.",
   "author": "krystalcampioni <hello@krystalcampioni.com>",
   "license": "MIT",
   "main": "dist/vue-number-input-spinner.min.js",
@@ -64,6 +64,6 @@
   },
   "dependencies": {
     "vue-highlightjs": "^1.3.3",
-    "vue-hotel-datepicker": "^0.2.3"
+    "vue-hotel-datepicker": "^0.2.4"
   }
 }
