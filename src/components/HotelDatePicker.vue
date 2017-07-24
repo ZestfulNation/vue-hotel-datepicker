@@ -394,6 +394,10 @@ $desktopLayoutWidth: 1020px;
     vertical-align: middle;
   }
 
+  &__week-row {
+    border-bottom: 5px solid white;
+  }
+
   &__week-name {
     font-size: 12px;
     font-weight: 400;
@@ -405,10 +409,11 @@ $desktopLayoutWidth: 1020px;
   &__month-day {
     will-change: auto;
     color: #acb2c1;
-    padding: 0;
-    border-bottom: 5px solid white;
     height: 39px;
     width: 34px;
+    margin: 0;
+    border: 0;
+    padding: 0;
 
     &--invalid-range {
       background-color: rgba($primary-color, 0.3);
