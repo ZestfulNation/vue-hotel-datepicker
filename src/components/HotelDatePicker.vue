@@ -236,7 +236,6 @@ $desktopLayoutWidth: 1020px;
 
   &__input {
   	background: transparent;
-    border: 0;
     height: 60px;
     color: gray;
     font-size: 12px;
@@ -244,6 +243,7 @@ $desktopLayoutWidth: 1020px;
     padding: 4px 30px 2px 30px;
     width: 100%;
     word-spacing: 5px;
+    border: 0;
 
     &:focus {
       outline: none;
@@ -271,13 +271,13 @@ $desktopLayoutWidth: 1020px;
     float: left;
     height: 60px;
     line-height: 3.6;
-    text-indent: 10px;
     text-align: left;
-    width: calc(50% - 2px);
+    text-indent: 35px;
+    width: calc(50% + 4px);
 
     &:first-child {
       background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
-      text-indent: 35px;
+      width: calc(50% - 4px)
     }
 
     &--is-active {
@@ -555,8 +555,8 @@ $desktopLayoutWidth: 1020px;
     margin-top: 0;
     outline: 0;
     position: absolute;
-    right: 4px;
-    top: 11px;
+    right: -1px;
+    top: 13px;
     transform: rotate(45deg);
   }
 
