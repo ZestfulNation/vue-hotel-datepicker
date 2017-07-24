@@ -396,6 +396,7 @@ $desktopLayoutWidth: 1020px;
 
   &__week-row {
     border-bottom: 5px solid white;
+    height: 38px;
   }
 
   &__week-name {
@@ -409,8 +410,6 @@ $desktopLayoutWidth: 1020px;
   &__month-day {
     will-change: auto;
     color: #acb2c1;
-    height: 39px;
-    width: 34px;
     margin: 0;
     border: 0;
     padding: 0;
@@ -450,14 +449,14 @@ $desktopLayoutWidth: 1020px;
 
         &::before,
         &::after {
-          position: absolute;
           background-color: #fff;
           border-radius: 50%;
           content: ' ';
-          top: 0;
+          height: 100%;
           left: 0;
-          width: 34px;
-          height: 34px;
+          position: absolute;
+          top: 0;
+          width: 100%;
           z-index: -1;
         }
 
@@ -479,10 +478,10 @@ $desktopLayoutWidth: 1020px;
     }
 
     &--first-day-selected {
-      background: $white url('range_start.jpg') no-repeat center right / 34px;
+      background: $white url('range_start.jpg') no-repeat center right / 100% 100%;
     }
     &--last-day-selected {
-      background: $white url('range_end.png') no-repeat center left / 34px;
+      background: $white url('range_end.png') no-repeat center left / 100% 100%;
     }
   }
 
@@ -632,6 +631,7 @@ $desktopLayoutWidth: 1020px;
   }
   .datepicker__month {
     width: 240px;
+    table-layout: fixed;
   }
 }
 
