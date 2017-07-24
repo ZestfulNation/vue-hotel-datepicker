@@ -8,6 +8,7 @@
           :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
           :enableCheckout="true"
           :minNights="10"
+          :useDummyInputs="false"
           />
       </div>
 

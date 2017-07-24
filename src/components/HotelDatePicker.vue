@@ -42,7 +42,7 @@ export default {
           type: String
         },
         useDummyInputs: {
-          default: false,
+          default: true,
           type: Boolean
         },
         placeholder: {
@@ -182,26 +182,32 @@ export default {
 };
 </script>
 <style lang="scss">
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* =============================================================
  * VARIABLES
  * ============================================================*/
+$white: #fff;
 $primary-color: #00ca9d;
 $primary-color: $primary-color;
 $medium-gray: #999999;
+$light-gray: #ededed;
 $dark-gray: #2d3047;
 
+
+$desktopLayoutWidth: 1020px;
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
- *,
- *:after,
- *:before {
-   box-sizing: border-box;
- }
+
 
 .datepicker {
   left: 0;
-  top: 50px;
+  top: 60px;
   position: absolute;
   width: 260px;
   z-index: 1;
@@ -224,14 +230,14 @@ $dark-gray: #2d3047;
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 48px;
+    height: 60px;
     background: #fff url('calendar_icon.svg') no-repeat 10px center / 16px;
   }
 
   &__input {
   	background: transparent;
     border: 0;
-    height: 48px;
+    height: 60px;
     color: gray;
     font-size: 12px;
     outline: none;
@@ -257,18 +263,21 @@ $dark-gray: #2d3047;
     display: block;
     float: left;
     width: 100%;
+    height: 100%;
   }
 
   &__dummy-input {
     color: $medium-gray;
     float: left;
-    height: 48px;
-    line-height: 3;
-    text-align: center;
+    height: 60px;
+    line-height: 3.6;
+    text-indent: 10px;
+    text-align: left;
     width: calc(50% - 2px);
 
     &:first-child {
       background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
+      text-indent: 35px;
     }
 
     &--is-active {
@@ -279,7 +288,7 @@ $dark-gray: #2d3047;
   &__month {
     border-collapse: collapse;
     text-align: center;
-    width: 100%;
+    margin: 0 auto;
 
     &--month2 {
       display: none;
@@ -301,7 +310,7 @@ $dark-gray: #2d3047;
     cursor: pointer;
     background: transparent url('ic-arrow-right-green.svg') no-repeat right center / 8px;
     width: 100%;
-    height: 48px;
+    height: 60px;
 
 
     &--prev {
@@ -340,6 +349,31 @@ $dark-gray: #2d3047;
   line-height: 14px;
   overflow: hidden;
 
+  &--is-small {
+
+    .datepicker__wrapper { background-position: 8px 14px; }
+
+    .datepicker__dummy-wrapper { height: 44px; }
+
+    .datepicker__dummy-input {
+      height: 44px;
+      line-height: 2.5;
+    }
+
+    .datepicker__clear-button {
+      top: 3px;
+      right: -3px;
+    }
+
+    &.datepicker__wrapper { background-position: 8px 13px; }
+
+    .datepicker {
+      right: 0;
+      left: auto;
+      top: 44px;
+    }
+  }
+
   &__inner { padding: 20px; }
 
   &__month { font-size: 12px; }
@@ -350,8 +384,9 @@ $dark-gray: #2d3047;
   }
 
   &__month-name {
-    font-weight: bold;
+    font-weight: 500;
     font-size: 16px;
+    text-align: center;
   }
 
   &__week-days {
@@ -364,6 +399,7 @@ $dark-gray: #2d3047;
     font-weight: 400;
     font-weight: lighter;
     color: #9599aa;
+    text-align: center;
   }
 
   &__month-day {
@@ -371,8 +407,8 @@ $dark-gray: #2d3047;
     color: #acb2c1;
     padding: 0;
     border-bottom: 5px solid white;
-    height: 36px;
-    width: 33px;
+    height: 39px;
+    width: 34px;
 
     &--invalid-range {
       background-color: rgba($primary-color, 0.3);
@@ -415,8 +451,8 @@ $dark-gray: #2d3047;
           content: ' ';
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
+          width: 34px;
+          height: 34px;
           z-index: -1;
         }
 
@@ -433,41 +469,16 @@ $dark-gray: #2d3047;
     }
 
     &--today {
-      background-color: #484c55;
-      color: #fff;
+      background-color: $light-gray;
+      color: $medium-gray;
     }
 
-    &--first-day-selected,
+    &--first-day-selected {
+      background: $white url('range_start.jpg') no-repeat center right / 34px;
+    }
     &--last-day-selected {
-      background-color: #fff;
-      z-index: 1;
-      position: relative;
-      &::before,
-      &::after {
-        position: absolute;
-        background-color: $primary-color;
-        border-radius: 50%;
-        content: ' ';
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-      }
+      background: $white url('range_end.png') no-repeat center left / 34px;
     }
-
-    &--first-day-selected:before {
-      content: ' ';
-      border-radius: 50% 0 0 50%;
-      background-color: rgba($primary-color, 0.5);
-    }
-
-    &--last-day-selected:before {
-      content: ' ';
-      border-radius: 0 50% 50% 0;
-      background-color: rgba($primary-color, 0.5);
-    }
-
   }
 
   &__month-button {
@@ -540,7 +551,7 @@ $dark-gray: #2d3047;
     outline: 0;
     position: absolute;
     right: 4px;
-    top: 7px;
+    top: 11px;
     transform: rotate(45deg);
   }
 
@@ -569,11 +580,11 @@ $dark-gray: #2d3047;
 
 @media (min-width: 320px) {
   .datepicker {
-    width: 270px;
+    width: 300px;
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: $desktopLayoutWidth) {
   .datepicker {
     width: 460px;
   }
@@ -610,7 +621,7 @@ $dark-gray: #2d3047;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: $desktopLayoutWidth) {
   .datepicker {
     width: 560px;
   }
@@ -618,6 +629,8 @@ $dark-gray: #2d3047;
     width: 240px;
   }
 }
+
+
 
 // Modifiers
 .-is-hidden { display: none; }

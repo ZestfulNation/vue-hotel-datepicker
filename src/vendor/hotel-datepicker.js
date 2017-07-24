@@ -24,7 +24,7 @@ export default class HotelDatepicker {
         this.hoveringTooltip = opts.hoveringTooltip || false; // Or a function
         this.autoClose = opts.autoClose === undefined ? true : opts.autoClose;
         this.showCloseButton = opts.showCloseButton || false;
-        this.useDummyInputs = opts.useDummyInputs || true;
+        this.useDummyInputs = opts.useDummyInputs === undefined ? true : opts.useDummyInputs;
         this.i18n = opts.i18n || {
             selected: 'Your stay:',
             night: 'Night',
@@ -135,6 +135,7 @@ export default class HotelDatepicker {
     }
 
     init() {
+        console.log(this.useDummyInputs)
         // Check if we should use dummy inputs or not
         if (this.useDummyInputs == true) {
             this.input.style.display = 'none';
