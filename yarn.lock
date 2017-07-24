@@ -4698,9 +4698,9 @@ vue-hot-reload-api@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.1.0.tgz#9ca58a6e0df9078554ce1708688b6578754d86de"
 
-vue-hotel-datepicker@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/vue-hotel-datepicker/-/vue-hotel-datepicker-0.2.4.tgz#d84362f0d92b6205b713ae09cd5bad42c4e0818a"
+vue-hotel-datepicker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-hotel-datepicker/-/vue-hotel-datepicker-1.0.1.tgz#a393c0cb583af8a5452f870ee1cc640c14d0071c"
   dependencies:
     fecha "^2.3.1"
     lodash "^4.17.4"

@@ -64,6 +64,6 @@
   },
   "dependencies": {
     "vue-highlightjs": "^1.3.3",
-    "vue-hotel-datepicker": "^0.2.4"
+    "vue-hotel-datepicker": "^1.0.1"
   }
 }
