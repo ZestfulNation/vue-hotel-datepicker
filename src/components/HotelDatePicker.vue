@@ -195,7 +195,7 @@ $white: #fff;
 $primary-color: #00ca9d;
 $primary-color: $primary-color;
 $medium-gray: #999999;
-$light-gray: #ededed;
+$light-gray: #d7d9e2;
 $dark-gray: #2d3047;
 
 
