@@ -207,7 +207,7 @@ $desktopLayoutWidth: 1020px;
 
 .datepicker {
   left: 0;
-  top: 60px;
+  top: 48px;
   position: absolute;
   width: 260px;
   z-index: 1;
@@ -230,13 +230,13 @@ $desktopLayoutWidth: 1020px;
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 60px;
+    height: 48px;
     background: #fff url('calendar_icon.svg') no-repeat 10px center / 16px;
   }
 
   &__input {
   	background: transparent;
-    height: 60px;
+    height: 48px;
     color: gray;
     font-size: 12px;
     outline: none;
@@ -258,7 +258,7 @@ $desktopLayoutWidth: 1020px;
   }
 
   &__dummy-wrapper {
-    border: solid 1px #dbdbdb;
+    border: solid 1px $light-gray;
     cursor: pointer;
     display: block;
     float: left;
@@ -269,8 +269,8 @@ $desktopLayoutWidth: 1020px;
   &__dummy-input {
     color: $medium-gray;
     float: left;
-    height: 60px;
-    line-height: 3.6;
+    height: 48px;
+    line-height: 3.1;
     text-align: left;
     text-indent: 35px;
     width: calc(50% + 4px);
@@ -554,8 +554,8 @@ $desktopLayoutWidth: 1020px;
     margin-top: 0;
     outline: 0;
     position: absolute;
-    right: -1px;
-    top: 13px;
+    right: -2px;
+    top: 8px;
     transform: rotate(45deg);
   }
 
