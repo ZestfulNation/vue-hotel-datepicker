@@ -210,7 +210,7 @@ $desktopLayoutWidth: 1020px;
   top: 48px;
   position: absolute;
   width: 260px;
-  z-index: 1;
+  z-index: 10;
   transition:  max-height .5s ease-in-out, box-shadow .2s ease-in-out;
 
   &--closed {
@@ -566,7 +566,7 @@ $desktopLayoutWidth: 1020px;
     font-size: 11px;
     margin-top: -5px;
     padding: 5px 10px;
-    z-index: 5;
+    z-index: 50;
 
     &:after {
       border-left: 4px solid transparent;

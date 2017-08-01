@@ -135,7 +135,6 @@ export default class HotelDatepicker {
     }
 
     init() {
-        console.log(this.useDummyInputs)
         // Check if we should use dummy inputs or not
         if (this.useDummyInputs == true) {
             this.input.style.display = 'none';
@@ -260,10 +259,10 @@ export default class HotelDatepicker {
         document.addEventListener('keydown', KeyCheck);
 
         function KeyCheck(event) {
-		   var KeyID = event.keyCode;
-		   if (KeyID === 8 || KeyID === 46) {
-			   self.clearSelection();
-		   }
+            var KeyID = event.keyCode;
+            if (KeyID === 8 || KeyID === 46) {
+                self.clearSelection();
+            }
         }
     }
 
@@ -673,7 +672,6 @@ export default class HotelDatepicker {
     showSelectedInfo() {
         // If both dates are set, show the count and set the value of our input
         if (this.start && this.end) {
-            const count = this.countDays(this.end, this.start) - 1;
             const dateRangeValue = this.getDateString(new Date(this.start)) + this.separator + this.getDateString(new Date(this.end));
             this.setValue(dateRangeValue, this.getDateString(new Date(this.start)), this.getDateString(new Date(this.end)));
             this.changed = true;
@@ -789,7 +787,7 @@ export default class HotelDatepicker {
             if (this.allowedRanges.length !== 0) {
                 var allowedCheckoutDays = [];
 
-                function updateDatesByRanges(element, index, array) {
+                function updateDatesByRanges(element) {
                     var someDate = new Date(self.start);
                     someDate.setDate(someDate.getDate() + element);
                     allowedCheckoutDays.push(someDate.getTime());
@@ -821,10 +819,6 @@ export default class HotelDatepicker {
                 this.removeClass(days[i], 'datepicker__month-day--first-day-selected');
                 this.removeClass(days[i], 'datepicker__month-day--last-day-selected');
             }
-
-            // Show error in top bar
-            const errorValue = this.maxDays - 1;
-            // this.bottomBarErrorText(bar, 'error-more', errorValue);
         } else if (this.minDays && numberOfDays < this.minDays) {
             this.start = false;
             this.end = false;
@@ -837,18 +831,7 @@ export default class HotelDatepicker {
                 this.removeClass(days[i], 'datepicker__month-day--last-day-selected');
             }
 
-            // Show error in top bar
-            const errorValue = this.minDays - 1;
         }
-        // else if (this.start || this.end) {
-        //     // Remove error and help classes from top bar
-        //     this.removeClass(bar, 'datepicker__info--error');
-        //     this.removeClass(bar, 'datepicker__info--help');
-        // } else {
-        //     // Show help message
-        //     this.removeClass(bar, 'datepicker__info--error');
-        //     this.addClass(bar, 'datepicker__info--help');
-        // }
     }
 
     addDays(date, days) {
@@ -1090,8 +1073,8 @@ export default class HotelDatepicker {
             // Update day classes during the date range selection
             if (isSelecting) {
                 if (this.hasClass(days[i], 'datepicker__month-day--visibleMonth') &&
-				   (this.hasClass(days[i], 'datepicker__month-day--valid') ||
-				    this.hasClass(days[i], 'datepicker__month-day--disabled'))) {
+                    (this.hasClass(days[i], 'datepicker__month-day--valid') ||
+                    this.hasClass(days[i], 'datepicker__month-day--disabled'))) {
 
                     const time = parseInt(days[i].getAttribute('time'), 10);
                     var minDate = new Date(this.start + (this.minNights * 86400000));
