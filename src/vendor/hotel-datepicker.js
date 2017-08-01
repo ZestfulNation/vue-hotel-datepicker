@@ -110,6 +110,7 @@ export default class HotelDatepicker {
         return 'tooltip-' + this.DatePickerID;
     }
 
+
     getNextMonth(month) {
         // Get next month date
         const _m = new Date(month.valueOf());
@@ -181,11 +182,11 @@ export default class HotelDatepicker {
         // Set default time
         let defaultTime = new Date();
 
-        if (this.startDate && this.compareMonth(defaultTime, this.startDate) < 0) {
+        if (this.startDate && this.compareDates(defaultTime, this.startDate, 'YYYYMM') < 0) {
             defaultTime = this.startDate;
         }
 
-        if (this.endDate && this.compareMonth(this.getNextMonth(defaultTime), this.endDate) > 0) {
+        if (this.endDate && this.compareDates(this.getNextMonth(defaultTime), this.endDate, 'YYYYMM') > 0) {
             defaultTime = this.getPrevMonth(this.endDate);
         }
 
@@ -337,6 +338,14 @@ export default class HotelDatepicker {
         this['month' + month] = date;
     }
 
+    isDayBeforeStartDate(_day) {
+        return this.startDate && this.compareDates(_day, this.startDate, 'YYYYMMDD') < 0;
+    }
+
+    isDayAfterEndDate(_day){
+        return this.endDate && this.compareDates(_day, this.endDate, 'YYYYMMDD') > 0;
+    }
+
     createMonthDomString(_date) {
         const days = [];
         let html = '';
@@ -345,6 +354,7 @@ export default class HotelDatepicker {
 
         let dayOfWeek = _date.getDay();
         const currentMonth = _date.getMonth();
+
 
         if ((dayOfWeek === 0) && (this.startOfWeek === 'monday')) {
             // Add one week
@@ -362,7 +372,7 @@ export default class HotelDatepicker {
                 // Check if the day is valid. And pass this property to the days object
                 valid = this.isValidDate(_day.getTime());
 
-                if ((this.startDate && this.compareDay(_day, this.startDate) < 0) || (this.endDate && this.compareDay(_day, this.endDate) > 0)) {
+                if (this.isDayBeforeStartDate(_day) || this.isDayAfterEndDate(_day) ) {
                     valid = false;
                 }
 
@@ -388,7 +398,7 @@ export default class HotelDatepicker {
             // Check if the day is valid. And pass this property to the days object
             valid = this.isValidDate(_day.getTime());
 
-            if ((this.startDate && this.compareDay(_day, this.startDate) < 0) || (this.endDate && this.compareDay(_day, this.endDate) > 0)) {
+            if (this.isDayBeforeStartDate(_day)  || this.isDayAfterEndDate(_day) ) {
                 valid = false;
             }
 
@@ -579,7 +589,7 @@ export default class HotelDatepicker {
         let valid = true;
 
         // Check the validity of the dates
-        if ((this.startDate && this.compareDay(date1, this.startDate) < 0) || (this.endDate && this.compareDay(date2, this.endDate) > 0)) {
+        if ((this.startDate && this.compareDates(date1, this.startDate, 'YYYYMMDD') < 0) || (this.endDate && this.compareDates(date2, this.endDate, 'YYYYMMDD') > 0)) {
             valid = false;
         }
 
@@ -602,11 +612,11 @@ export default class HotelDatepicker {
         this.start = date1.getTime();
         this.end = date2.getTime();
 
-        if ((this.compareDay(date1, date2) > 0 && this.compareMonth(date1, date2) === 0)) {
+        if ((this.compareDates(date1, date2, 'YYYYMMDD') > 0 && this.compareDates(date1, date2, 'YYYYMM') === 0)) {
             date2 = this.getNextMonth(date1);
         }
 
-        if (this.compareMonth(date1, date2) === 0) {
+        if (this.compareDates(date1, date2, 'YYYYMM') === 0) {
             date2 = this.getNextMonth(date1);
         }
 
@@ -646,15 +656,17 @@ export default class HotelDatepicker {
         for (let i = 0; i < days.length; i++) {
             const time = parseInt(days[i].getAttribute('time'), 10);
 
+            let isStartEqualsTime = this.getDateString(this.start, 'YYYY-MM-DD') === this.getDateString(time, 'YYYY-MM-DD');
+
             // Add selected class
-            if ((this.start && this.end && this.end >= time && this.start <= time) || (this.start && !this.end && this.getDateString(this.start, 'YYYY-MM-DD') === this.getDateString(time, 'YYYY-MM-DD'))) {
+            if ((this.start && this.end && this.end >= time && this.start <= time) || (this.start && !this.end && isStartEqualsTime)) {
                 this.addClass(days[i], 'datepicker__month-day--selected');
             } else {
                 this.removeClass(days[i], 'datepicker__month-day--selected');
             }
 
             // Add class to the first day of the range
-            if (this.start && this.getDateString(this.start, 'YYYY-MM-DD') === this.getDateString(time, 'YYYY-MM-DD')) {
+            if (this.start && isStartEqualsTime) {
                 this.addClass(days[i], 'datepicker__month-day--first-day-selected');
             } else {
                 this.removeClass(days[i], 'datepicker__month-day--first-day-selected');
@@ -748,7 +760,7 @@ export default class HotelDatepicker {
         // Check if the date is valid
         time = parseInt(time, 10);
 
-        if ((this.startDate && this.compareDay(time, this.startDate) < 0) || (this.endDate && this.compareDay(time, this.endDate) > 0)) {
+        if ((this.startDate && this.compareDates(time, this.startDate, 'YYYYMMDD') < 0) || (this.endDate && this.compareDates(time, this.endDate, 'YYYYMMDD') > 0)) {
             return false;
         }
 
@@ -768,11 +780,11 @@ export default class HotelDatepicker {
             if (this.disabledDates.length > 0) {
                 const limit = this.getClosestDates(new Date(parseInt(this.start, 10)));
 
-                if (limit[0] && this.compareDay(time, limit[0]) <= 0) {
+                if (limit[0] && this.compareDates(time, limit[0], 'YYYYMMDD') <= 0) {
                     return false;
                 }
 
-                if (limit[1] && this.compareDay(time, limit[1]) >= 0) {
+                if (limit[1] && this.compareDates(time, limit[1], 'YYYYMMDD') >= 0) {
                     return false;
                 }
             }
@@ -847,32 +859,13 @@ export default class HotelDatepicker {
         return Math.abs(this.daysFrom1970(start) - this.daysFrom1970(end)) + 1;
     }
 
-    compareDay(day1, day2) {
-        // Compare two days: check if day1 is before/after/same day of day2
-        const p = parseInt(this.getDateString(day1, 'YYYYMMDD'), 10) - parseInt(this.getDateString(day2, 'YYYYMMDD'), 10);
+    compareDates( date1, date2, format ) {
+        // Compare two dates: check if date1 is before/after/same  date2
+        const p = parseInt(this.getDateString(date1, format), 10) - parseInt(this.getDateString(date2, format), 10);
 
-        if (p > 0) {
-            return 1;
-        }
+        if (p > 0) { return 1; }
 
-        if (p === 0) {
-            return 0;
-        }
-
-        return -1;
-    }
-
-    compareMonth(month1, month2) {
-        // Compare two months: check if month1 is before/after/same month of month2
-        const p = parseInt(this.getDateString(month1, 'YYYYMM'), 10) - parseInt(this.getDateString(month2, 'YYYYMM'), 10);
-
-        if (p > 0) {
-            return 1;
-        }
-
-        if (p === 0) {
-            return 0;
-        }
+        if (p === 0) { return 0; }
 
         return -1;
     }
@@ -918,7 +911,7 @@ export default class HotelDatepicker {
         prevMonth = this.getPrevMonth(prevMonth);
         let currentMonth = this.getNextMonth(prevMonth);
 
-        if ((isMonth2 && this.compareMonth(prevMonth, this.month1) <= 0) || this.isMonthOutOfRange(prevMonth)) {
+        if ((isMonth2 && this.compareDates(prevMonth, this.month1, 'YYYYMM') <= 0) || this.isMonthOutOfRange(prevMonth)) {
             return;
         }
 
@@ -938,7 +931,7 @@ export default class HotelDatepicker {
         nextMonth = this.getNextMonth(nextMonth);
         let currentMonth = this.getPrevMonth(nextMonth);
 
-        if ((!this.isSingleMonth() && !isMonth2 && this.compareMonth(nextMonth, this.month2) >= 0)
+        if ((!this.isSingleMonth() && !isMonth2 && this.compareDates(nextMonth, this.month2, 'YYYYMM') >= 0)
 			|| this.isMonthOutOfRange(nextMonth)) {
             return;
         }
@@ -1032,16 +1025,15 @@ export default class HotelDatepicker {
                     var minDate = new Date(this.start + (this.minNights * 86400000));
 
                     if (this.isValidDate(time)) {
-                        this.addClass(days[i], 'datepicker__month-day--valid');
                         this.addClass(days[i], 'datepicker__month-day--tmp');
-                        this.removeClass(days[i], 'datepicker__month-day--invalid');
+                        this.addClass(days[i], 'datepicker__month-day--valid');
                         this.removeClass(days[i], 'datepicker__month-day--disabled');
+                        this.removeClass(days[i], 'datepicker__month-day--invalid');
                     }
 
-
                     else if( this.minNights > 1 && time > this.start && time <= minDate.getTime() ) {
-                        this.addClass(days[i], 'datepicker__month-day--invalid');
                         this.addClass(days[i], 'datepicker__month-day--invalid-range');
+                        this.addClass(days[i], 'datepicker__month-day--invalid');
                         this.addClass(days[i], 'datepicker__month-day--tmp');
                         this.removeClass(days[i], 'datepicker__month-day--valid');
                     }
