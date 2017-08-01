@@ -806,7 +806,6 @@ export default class HotelDatepicker {
 
     checkSelection() {
         const numberOfDays = Math.ceil((this.end - this.start) / 86400000) + 1;
-        // const bar = this.datepicker.getElementsByClassName('datepicker__info--feedback')[0];
 
         if (this.maxDays && numberOfDays > this.maxDays) {
             this.start = false;
@@ -949,53 +948,6 @@ export default class HotelDatepicker {
         this.showSelectedDays();
         this.disableNextPrevButtons();
 
-    }
-
-    goToNextMonth(e) {
-        // Go to the next month
-        const thisMonth = e.target.getAttribute('month');
-        const isMonth2 = thisMonth > 1;
-        let nextMonth = isMonth2 ? this.month2 : this.month1;
-
-        nextMonth = this.getNextMonth(nextMonth);
-
-        // Dont't go to the next month if:
-        // 1. The second month is visible and it is the next month after
-        //    our current month
-        // 2. The month is after the (optional) endDate. There's no need
-        //    to show other months in this case.
-        if ((!this.isSingleMonth() && !isMonth2 && this.compareMonth(nextMonth, this.month2) >= 0)
-			|| this.isMonthOutOfRange(nextMonth)) {
-            return;
-        }
-
-        // We can now show the month and proceed
-        this.showMonth(nextMonth, thisMonth);
-        this.showSelectedDays();
-        this.disableNextPrevButtons();
-    }
-
-    goToPreviousMonth(e) {
-        // Go to the previous month
-        const thisMonth = e.target.getAttribute('month');
-        const isMonth2 = thisMonth > 1;
-        let prevMonth = isMonth2 ? this.month2 : this.month1;
-
-        prevMonth = this.getPrevMonth(prevMonth);
-
-        // Dont't go to the previous month if:
-        // 1. The click it's in the second month and the month we need is already
-        //    shown in the first month
-        // 2. The month is before the (optional) startDate. There's no need
-        //    to show other months in this case.
-        if ((isMonth2 && this.compareMonth(prevMonth, this.month1) <= 0) || this.isMonthOutOfRange(prevMonth)) {
-            return;
-        }
-
-        // We can now show the month and proceed
-        this.showMonth(prevMonth, thisMonth);
-        this.showSelectedDays();
-        this.disableNextPrevButtons();
     }
 
     isSingleMonth() {
