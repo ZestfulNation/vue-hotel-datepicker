@@ -1392,7 +1392,7 @@ cssesc@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-0.1.0.tgz#c814903e45623371a0477b40109aaafbeeaddbb4"
 
-"cssnano@>=2.6.1 <4", cssnano@^3.4.0:
+"cssnano@>=2.6.1 <4", cssnano@^3.10.0, cssnano@^3.4.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-3.10.0.tgz#4f38f6cea2b9b17fa01490f23f1dc68ea65c1c38"
   dependencies:
@@ -4698,10 +4698,11 @@ vue-hot-reload-api@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.1.0.tgz#9ca58a6e0df9078554ce1708688b6578754d86de"
 
-vue-hotel-datepicker@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vue-hotel-datepicker/-/vue-hotel-datepicker-1.0.1.tgz#a393c0cb583af8a5452f870ee1cc640c14d0071c"
+vue-hotel-datepicker@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-hotel-datepicker/-/vue-hotel-datepicker-1.1.4.tgz#1ffe8b7e596881830dceef8810c63a910041697a"
   dependencies:
+    cssnano "^3.10.0"
     fecha "^2.3.1"
     lodash "^4.17.4"
 
