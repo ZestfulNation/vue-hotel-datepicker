@@ -21,10 +21,19 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
+            preserveWhitespace: false,
+          postcss: [
+            require('autoprefixer')({
+              browsers: ['last 10 versions', 'ie 11']
+            }),
+            require('cssnano')({
+              discardComments: { removeAll: true },
+            }),
+          ],
+
           loaders: {
-            scss: 'vue-style-loader!css-loader!sass-loader', // <style lang="scss">
-            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax' // <style lang="sass">
-          }
+            scss: 'vue-style-loader!css-loader!sass-loader?minimize?{discardComments:{removeAll:true}}',
+          },
         }
       },
       {

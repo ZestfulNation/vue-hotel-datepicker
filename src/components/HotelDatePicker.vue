@@ -450,7 +450,7 @@ $desktopLayoutWidth: 1020px;
         &::before,
         &::after {
           background-color: #fff;
-          border-radius: 50%;
+          // border-radius: 50%;
           content: ' ';
           height: 100%;
           left: 0;
@@ -478,10 +478,12 @@ $desktopLayoutWidth: 1020px;
     }
 
     &--first-day-selected {
-      background: $white url('range_start.jpg') no-repeat center right / 100% 100%;
+      background: $primary-color;
+      // background: $white url('range_start.jpg') no-repeat center right / 100% 100%;
     }
     &--last-day-selected {
-      background: $white url('range_end.png') no-repeat center left / 100% 100%;
+      background: $primary-color;
+      // background: $white url('range_end.png') no-repeat center left / 100% 100%;
     }
   }
 
@@ -551,12 +553,18 @@ $desktopLayoutWidth: 1020px;
     cursor: pointer;
     font-size: 25px;
     font-weight: bold;
-    margin-top: 0;
+    height: 40px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: -2px;
+    margin-top: 4px;
     outline: 0;
+    padding: 0;
     position: absolute;
-    right: -2px;
-    top: 8px;
+    right: 0px;
+    top: 0;
     transform: rotate(45deg);
+    width: 40px;
   }
 
   &__tooltip {
