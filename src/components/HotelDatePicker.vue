@@ -4,7 +4,6 @@
       class="datepicker__input"
       :value="value"
       :id="DatePickerID"
-      :placeholder="placeholder"
       type="text"
       v-on:change="updateValues"
       readonly/>
@@ -44,10 +43,6 @@ export default {
         useDummyInputs: {
           default: true,
           type: Boolean
-        },
-        placeholder: {
-          default: 'Check-in ► Check-out',
-          type: String
         },
         DatePickerID: {
           default: '1',
