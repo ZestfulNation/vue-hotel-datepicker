@@ -43,7 +43,7 @@ This option hides the input and displays divs that act as dummy input fields. Th
 ### placeholder
 - Type: `String`
 - Default: `Check-in ► Check-out`
-The input placeholder text
+The input placeholder text (only used if dummy inputs are turned off)
 
 ### value
 - Type: `String`
@@ -193,6 +193,8 @@ i18n: {
     night: 'Night',
     nights: 'Nights',
     button: 'Close',
+    'check-in': 'Check-In',
+    'check-out': 'Check-Out',
     'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     'error-more': 'Date range should not be more than 1 night',
