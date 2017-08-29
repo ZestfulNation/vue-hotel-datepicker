@@ -284,8 +284,11 @@ export default class HotelDatepicker {
         if(this.useDummyInputs && this.input.value) {
             let preselectDates = this.input.value.split(this.separator);
 
-            startDummyText = preselectDates[0];
-            endDummyText = preselectDates[1];
+            // check if the input value can be splitted, has two parts and set it to the text output
+            if(preselectDates.isArray() && preselectDates.length === 2) {
+                startDummyText = preselectDates[0];
+                endDummyText = preselectDates[1];
+            }
         }
 
         // Generate our datepicker
