@@ -40,6 +40,11 @@ export default {
 - Default: `true`
 This option hides the input and displays divs that act as dummy input fields. This allows us have an "active" state in the input that changes the placeholder text colour indicating which date is being selected.
 
+### placeholder
+- Type: `String`
+- Default: `Check-in ► Check-out`
+The input placeholder text (only used if dummy inputs are turned off)
+
 ### value
 - Type: `String`
 - Default: `' '`
