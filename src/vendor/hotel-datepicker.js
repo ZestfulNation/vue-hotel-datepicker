@@ -285,7 +285,7 @@ export default class HotelDatepicker {
             let preselectDates = this.input.value.split(this.separator);
 
             // check if the input value can be splitted, has two parts and set it to the text output
-            if(preselectDates.isArray() && preselectDates.length === 2) {
+            if(preselectDates instanceof Array && preselectDates.length === 2) {
                 startDummyText = preselectDates[0];
                 endDummyText = preselectDates[1];
             }
