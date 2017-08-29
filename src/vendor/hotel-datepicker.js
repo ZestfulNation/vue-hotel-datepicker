@@ -277,6 +277,17 @@ export default class HotelDatepicker {
     }
 
     createDatepickerDomString() {
+        let startDummyText = this.lang('check-in'),
+            endDummyText = this.lang('check-out');
+
+        // check if a date is preselected and overwrite the dummy input field texts on init
+        if(this.useDummyInputs && this.input.value) {
+            let preselectDates = this.input.value.split(this.separator);
+
+            startDummyText = this.getDateString(new Date(preselectDates[0]));
+            endDummyText = this.getDateString(new Date(preselectDates[1]));
+        }
+
         // Generate our datepicker
         let html =
         '<button type="button" id="' + this.getClearButtonId() + '" class="datepicker__clear-button">＋</button>' +
@@ -308,8 +319,8 @@ export default class HotelDatepicker {
 
         html +=
         '<div id="dummyWrapper' + this.getDatepickerId() + '" class="datepicker__dummy-wrapper '  + (this.useDummyInputs == true ? ' ' : ' -is-hidden') +  '">' +
-            '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">' + this.lang('check-in') + '</div> ' +
-            '<div id="' + this.getDatepickerId() + '_date2" class="datepicker__dummy-input">' + this.lang('check-out') + '</div>' +
+            '<div id="' + this.getDatepickerId() + '_date1" class="datepicker__dummy-input">' + startDummyText + '</div> ' +
+            '<div id="' + this.getDatepickerId() + '_date2" class="datepicker__dummy-input">' + endDummyText + '</div>' +
         '</div>';
 
         return html;
