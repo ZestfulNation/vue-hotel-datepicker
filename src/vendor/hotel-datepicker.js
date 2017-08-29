@@ -284,8 +284,8 @@ export default class HotelDatepicker {
         if(this.useDummyInputs && this.input.value) {
             let preselectDates = this.input.value.split(this.separator);
 
-            startDummyText = this.getDateString(new Date(preselectDates[0]));
-            endDummyText = this.getDateString(new Date(preselectDates[1]));
+            startDummyText = preselectDates[0];
+            endDummyText = preselectDates[1];
         }
 
         // Generate our datepicker
