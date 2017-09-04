@@ -74,8 +74,7 @@
         <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
         <DatePicker
           DatePickerID="DatePickerID6"
-          :endDate="new Date(new Date().getFullYear(), 8, 15)"
-          :value="'2017-07-14 ► 2017-07-20'"
+          :value="'2020-07-14 ► 2020-07-20'"
         />
       </div>
 
