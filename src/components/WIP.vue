@@ -18,21 +18,31 @@
               tr.datepicker__month-caption
                 th
                   span.datepicker__month-button.datepicker__month-button--prev(:month='month')
-                th.datepicker__month-name(colspan='5' v-text='month')
+                th.datepicker__month-name(colspan='5' v-text='month' )
                 th
                   span.datepicker__month-button.datepicker__month-button--next(:month='month')
               tr.datepicker__week-days
     div
-      div(
-        style='width: calc(100% / 7); float: left'
-        v-for='day in month1.days'
-        v-text='getDay(day.date)')
-    //- hr
-    //- div
-    //-   div(
-    //-     style='width: calc(100% / 7); float: left'
-    //-     v-for='day in month2'
-    //-     v-text='getDay(day.date)')
+      .datepicker__month-day(
+        @click='setCheckIn(day.date)'
+        v-for='day in months[0]'
+        :style='` width: calc(100% / 7);\
+                 float: left;\
+                 color: ${day.belongsToThisMonth ? "" : "white" } `'
+
+        v-text='getDay(day.date)'
+      )
+    hr
+    div
+      .datepicker__month-day(
+        @click='setCheckIn(day.date)'
+        v-for='day in months[1]'
+        :style='` width: calc(100% / 7);\
+                 float: left;\
+                 color: ${day.belongsToThisMonth ? "" : "white" } `'
+
+        v-text='getDay(day.date)'
+      )
 </template>
 
 <script>
@@ -159,17 +169,8 @@ export default {
 
   data: function () {
     return {
-        days: [],
-        weeks: [],
         currentDate: new Date(),
-        month1: {
-          firstSunday: 'ah',
-          days: []
-        },
-        month2: {
-          firstSunday: 'ah',
-          days: []
-        },
+        months: []
     };
   },
 
@@ -180,6 +181,10 @@ export default {
   },
 
   methods: {
+    setCheckIn(date) {
+      console.log(date)
+    },
+
     getFirstSunday(date) {
       var firstDay =  this.getFirstDayOfMonth(date);
       return new Date(
@@ -201,6 +206,18 @@ export default {
       return fecha.format(date, 'D')
     },
 
+    getNextMonth(date){
+      let nextMonth;
+
+      if (date.getMonth() == 11) {
+        nextMonth = new Date(date.getFullYear() + 1, 0, 1);
+      } else {
+        nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+      }
+
+      return nextMonth;
+    },
+
     addDays(date, quantity) {
       let result = new Date(date);
       result.setDate(result.getDate() + quantity);
@@ -208,18 +225,23 @@ export default {
     },
 
     createMonths(date){
-      var firstSunday = this.getFirstSunday(date)
+      const firstSunday = this.getFirstSunday(date);
+      let month = [];
 
       for (let i = 0; i < 42; i++) {
-        this.month1.days.push({
-          date: this.addDays(firstSunday, i)
-        })
+        month.push({
+          date: this.addDays(firstSunday, i),
+          belongsToThisMonth: this.addDays(firstSunday, i).getMonth() === date.getMonth(),
+        });
       }
+
+      this.months.push(month);
     }
   },
 
   beforeMount() {
-    this.createMonths(this.currentDate)
+    this.createMonths(this.currentDate);
+    this.createMonths(this.getNextMonth(this.currentDate));
   }
 };
 </script>
