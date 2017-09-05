@@ -10,7 +10,7 @@
     )
     button.datepicker__clear-button
     span.datepicker__month-button.datepicker__month-button--prev(
-
+      @click='renderPreviousMonth'
     )
 
     span.datepicker__month-button.datepicker__month-button--next(
@@ -177,6 +177,15 @@ export default {
   },
 
   methods: {
+    renderPreviousMonth(){
+      if (this.activeMonthIndex >= 1) {
+        this.activeMonthIndex--
+      }
+      else {
+        return
+      }
+    },
+
     renderNextMonth(){
       const firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
         'belongsToThisMonth': true
