@@ -16,11 +16,10 @@
     span.datepicker__month-button.datepicker__month-button--next(
       @click='renderNextMonth'
     )
-
     div(style='float: left; widht: 50%')
       .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-      div(v-for='day in months[activeMonthIndex].days'
-        @mouseover='hoveringDate = day.date' )
+      .square(v-for='day in months[activeMonthIndex].days'
+        @mouseover='hoveringDate = day.date')
         Day(
           @dayClicked='handleDayClick($event)'
           :date='day.date'
@@ -30,8 +29,6 @@
           :checkIn='checkIn'
           :checkOut='checkOut'
         )
-
-      hr
     div(style='float: left; widht: 50%')
       .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
       .square(v-for='day in months[activeMonthIndex+1].days'

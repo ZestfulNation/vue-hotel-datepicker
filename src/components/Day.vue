@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .datepicker__month-day.square(
+  .datepicker__month-day(
     @click='dayClicked(date)'
     v-text='dayNumber'
     :style='`background: ${this.isHighlightable ? "blue" : "white"};\
@@ -54,12 +54,9 @@ export default {
   watch: {
     hoveringDate: function(date) {
       if ( this.checkIn !== null  && this.checkOut == null ) {
-        if ( this.compareDates(this.checkIn, this.date) &&
-             this.compareDates(this.date, this.hoveringDate)
-        ) { this.isHighlightable =  true; }
-        else {
-          this.isHighlightable =  false;
-        }
+        this.compareDates(this.checkIn, this.date) &&
+        this.compareDates(this.date, this.hoveringDate) ?
+        this.isHighlightable = true : this.isHighlightable = false
       }
       else { this.isHighlightable =  false; }
     }
