@@ -9,41 +9,25 @@
       readonly
     )
     button.datepicker__clear-button
-    .datepicker.datepicker--closed(id="test")
-    .datepicker__inner
-      .datepicker__months
-        div(v-for='month in 2')
-          table.datepicker__month.i(id='`test__${month}`', class='datepicker__month--month')
-            thead
-              tr.datepicker__month-caption
-                th
-                  span.datepicker__month-button.datepicker__month-button--prev(:month='month')
-                th.datepicker__month-name(colspan='5' v-text='month' )
-                th
-                  span.datepicker__month-button.datepicker__month-button--next(:month='month')
-              tr.datepicker__week-days
+    span.datepicker__month-button.datepicker__month-button--prev(
+
+    )
+
+    span.datepicker__month-button.datepicker__month-button--next(
+      @click='renderNextMonth'
+    )
     .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-    div
+    div(v-for='month in months' v-if='month.active')
       .datepicker__month-day(
+        v-for='day in month.days'
         @click='setCheckIn(day.date)'
-        v-for='day in months[0]'
         :style='` width: calc(100% / 7);\
                  float: left;\
                  color: ${day.belongsToThisMonth ? "" : "white" } `'
 
         v-text='getDay(day.date)'
       )
-    hr
-    div
-      .datepicker__month-day(
-        @click='setCheckIn(day.date)'
-        v-for='day in months[1]'
-        :style='` width: calc(100% / 7);\
-                 float: left;\
-                 color: ${day.belongsToThisMonth ? "" : "white" } `'
-
-        v-text='getDay(day.date)'
-      )
+      hr
 </template>
 
 <script>
@@ -182,6 +166,18 @@ export default {
   },
 
   methods: {
+    renderNextMonth(){
+      const firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
+        'belongsToThisMonth': true
+      });
+
+      this.createMonth(
+        this.getNextMonth(
+          firstDayOfLastMonth[0].date
+        )
+      );
+    },
+
     setCheckIn(date) {
       console.log(date)
     },
@@ -223,12 +219,15 @@ export default {
       return result;
     },
 
-    createMonths(date){
+    createMonth(date){
       const firstSunday = this.getFirstSunday(date);
-      let month = [];
+      let month = {
+        active: true,
+        days: []
+      };
 
       for (let i = 0; i < 42; i++) {
-        month.push({
+        month.days.push({
           date: this.addDays(firstSunday, i),
           belongsToThisMonth: this.addDays(firstSunday, i).getMonth() === date.getMonth(),
         });
@@ -239,8 +238,8 @@ export default {
   },
 
   beforeMount() {
-    this.createMonths(this.currentDate);
-    this.createMonths(this.getNextMonth(this.currentDate));
+    this.createMonth(this.currentDate);
+    this.createMonth(this.getNextMonth(this.currentDate));
   }
 };
 </script>

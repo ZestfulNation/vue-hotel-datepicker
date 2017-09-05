@@ -3,7 +3,6 @@
     div
       .box
         WIP
-      hr
       //- .box
       //-   DatePicker(
       //-     datepickerid='HDR',
