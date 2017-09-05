@@ -17,9 +17,9 @@
       @click='renderNextMonth'
     )
     .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-    div(v-for='month in months' v-if='month.active')
+    div
       .datepicker__month-day(
-        v-for='day in month.days'
+        v-for='day in months[activeMonthIndex].days'
         @click='setCheckIn(day.date)'
         :style='` width: calc(100% / 7);\
                  float: left;\
@@ -28,6 +28,16 @@
         v-text='getDay(day.date)'
       )
       hr
+    .datepicker__month-day(
+      v-for='day in months[activeMonthIndex+1].days'
+      @click='setCheckIn(day.date)'
+      :style='` width: calc(100% / 7);\
+               float: left;\
+               color: ${day.belongsToThisMonth ? "" : "white" } `'
+
+      v-text='getDay(day.date)'
+    )
+    hr
 </template>
 
 <script>
@@ -154,8 +164,9 @@ export default {
 
   data: function () {
     return {
-        currentDate: new Date(),
-        months: []
+      currentDate: new Date(),
+      months: [],
+      activeMonthIndex: 0,
     };
   },
 
@@ -176,6 +187,8 @@ export default {
           firstDayOfLastMonth[0].date
         )
       );
+
+      this.activeMonthIndex++;
     },
 
     setCheckIn(date) {
@@ -222,7 +235,6 @@ export default {
     createMonth(date){
       const firstSunday = this.getFirstSunday(date);
       let month = {
-        active: true,
         days: []
       };
 
