@@ -25,8 +25,14 @@
     div
       div(
         style='width: calc(100% / 7); float: left'
-        v-for='day in days'
+        v-for='day in month1.days'
         v-text='getDay(day.date)')
+    //- hr
+    //- div
+    //-   div(
+    //-     style='width: calc(100% / 7); float: left'
+    //-     v-for='day in month2'
+    //-     v-text='getDay(day.date)')
 </template>
 
 <script>
@@ -156,24 +162,15 @@ export default {
         days: [],
         weeks: [],
         currentDate: new Date(),
+        month1: {
+          firstSunday: 'ah',
+          days: []
+        },
+        month2: {
+          firstSunday: 'ah',
+          days: []
+        },
     };
-  },
-
-  computed: {
-    firstDayCurrentMonth() {
-      return new Date(
-        this.currentDate.getFullYear(),
-        this.currentDate.getMonth(), 1
-      )
-    },
-    firstSunday() {
-      return new Date(
-        this.firstDayCurrentMonth.setDate(
-          this.firstDayCurrentMonth.getDate()
-          -this.firstDayCurrentMonth.getDay()
-        )
-      )
-    }
   },
 
   watch: {
@@ -183,6 +180,23 @@ export default {
   },
 
   methods: {
+    getFirstSunday(date) {
+      var firstDay =  this.getFirstDayOfMonth(date);
+      return new Date(
+        firstDay.setDate(
+          firstDay.getDate()
+          -firstDay.getDay()
+        )
+      )
+    },
+
+    getFirstDayOfMonth(date) {
+      return new Date(
+        date.getFullYear(),
+        date.getMonth(), 1
+      )
+    },
+
     getDay(date) {
       return fecha.format(date, 'D')
     },
@@ -193,21 +207,19 @@ export default {
       return result;
     },
 
-    removeDays(date, quantity) {
-      return date.setDate(date.getDate() - quantity);
-    },
+    createMonths(date){
+      var firstSunday = this.getFirstSunday(date)
 
-    createWeeks(){
       for (let i = 0; i < 42; i++) {
-        this.days.push({
-          date: this.addDays(this.firstSunday, i)
+        this.month1.days.push({
+          date: this.addDays(firstSunday, i)
         })
       }
     }
   },
 
   beforeMount() {
-    this.createWeeks()
+    this.createMonths(this.currentDate)
   }
 };
 </script>
