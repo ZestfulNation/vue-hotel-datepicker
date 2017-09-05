@@ -389,6 +389,8 @@ export default class HotelDatepicker {
                     time: _day.getTime(),
                     valid
                 });
+
+                console.log(days)
             }
         }
 

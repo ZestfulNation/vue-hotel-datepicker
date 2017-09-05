@@ -1,21 +1,37 @@
-<template>
-  <div>
-    <!-- <div class="datepicker__mobile-layer"></div> -->
-    <div class="datepicker__wrapper">
-      <input
-        class="datepicker__input"
-        :value="value"
-        :id="DatePickerID"
-        :placeholder="placeholder"
-        type="text"
-        v-on:change="updateValues"
-        readonly/>
-    </div>
-  </div>
+<template lang='pug'>
+  .datepicker__wrapper
+    input(
+      class="datepicker__input"
+      :value="value"
+      :id="DatePickerID"
+      :placeholder="placeholder"
+      type="text"
+      readonly
+    )
+    button.datepicker__clear-button
+    .datepicker.datepicker--closed(id="test")
+    .datepicker__inner
+      .datepicker__months
+        div(v-for='month in 2')
+          table.datepicker__month.i(id='`test__${month}`', class='datepicker__month--month')
+            thead
+              tr.datepicker__month-caption
+                th
+                  span.datepicker__month-button.datepicker__month-button--prev(:month='month')
+                th.datepicker__month-name(colspan='5' v-text='month')
+                th
+                  span.datepicker__month-button.datepicker__month-button--next(:month='month')
+              tr.datepicker__week-days
+    div
+      div(
+        style='width: calc(100% / 7); float: left'
+        v-for='day in days'
+        v-text='getDay(day.date)')
 </template>
 
 <script>
-import HotelDatepicker from '../vendor/hotel-datepicker.js';
+import fecha from 'fecha';
+import _ from 'lodash';
 
 const defaulti18n = {
     selected: 'Your stay:',
@@ -36,155 +52,166 @@ const defaulti18n = {
     'info-default': 'Please select a date range'
 };
 
-
 export default {
-    name: 'DatePicker',
+  name: 'WIP',
 
-    props: {
-        value: {
-          type: String
-        },
-        useDummyInputs: {
-          default: true,
-          type: Boolean
-        },
-        placeholder: {
-          default: 'Check-in ► Check-out',
-          type: String
-        },
-        DatePickerID: {
-          default: '1',
-          type: String
-        },
-        format: {
-            default: 'YYYY-MM-DD',
-            type: String
-        },
-        infoFormat: {
-          default: 'YYYY-MM-DD',
-          type: String
-        },
-        separator: {
-          default: ' ► ',
-          type: String
-        },
-        startOfWeek: {
-          default: 'monday',
-          type: String
-        },
-        startDate: {
-          default: function() {
-            return new Date()
-          },
-          type: [ Date, String ]
-        },
-        endDate: {
-          type: [ Date, String, Boolean ]
-        },
-        minNights: {
-          default: 1,
-          type: Number
-        },
-        maxNights: {
-          default: 0,
-          type: Number
-        },
-        selectForward: {
-          default: true,
-          type: Boolean,
-        },
-        disabledDates: {
-          default: function(){ return [] },
-          type: Array
-        },
-        disabledDaysOfWeek: {
-          default: function(){ return [] },
-          type: Array
-        },
-        allowedRanges: {
-          default: function(){ return [] },
-          type: Array
-        },
-        enableCheckout: {
-          default: false,
-          type: Boolean
-        },
-        container: {
-          default: '',
-          type: String
-        },
-        animationSpeed: {
-          default: '.2s',
-          type: String
-        },
-        hoveringTooltip: {
-          default: true,
-          type: [Boolean, Function]
-        },
-        showCloseButton: {
-          default: false,
-          type: Boolean
-        },
-        autoClose: {
-          default: true,
-          type: Boolean
-        },
-        i18n: {
-          default: () => defaulti18n,
-          type: Object
-        }
+  props: {
+    value: {
+      type: String
+    },
+    useDummyInputs: {
+      default: true,
+      type: Boolean
+    },
+    placeholder: {
+      default: 'Check-in ► Check-out',
+      type: String
+    },
+    DatePickerID: {
+      default: '1',
+      type: String
+    },
+    format: {
+        default: 'YYYY-MM-DD',
+        type: String
+    },
+    infoFormat: {
+      default: 'YYYY-MM-DD',
+      type: String
+    },
+    separator: {
+      default: ' ► ',
+      type: String
+    },
+    startOfWeek: {
+      default: 'monday',
+      type: String
+    },
+    startDate: {
+      default: function() {
+        return new Date()
+      },
+      type: [ Date, String ]
+    },
+    endDate: {
+      type: [ Date, String, Boolean ]
+    },
+    minNights: {
+      default: 1,
+      type: Number
+    },
+    maxNights: {
+      default: 0,
+      type: Number
+    },
+    selectForward: {
+      default: true,
+      type: Boolean,
+    },
+    disabledDates: {
+      default: function(){ return [] },
+      type: Array
+    },
+    disabledDaysOfWeek: {
+      default: function(){ return [] },
+      type: Array
+    },
+    allowedRanges: {
+      default: function(){ return [] },
+      type: Array
+    },
+    enableCheckout: {
+      default: false,
+      type: Boolean
+    },
+    container: {
+      default: '',
+      type: String
+    },
+    animationSpeed: {
+      default: '.2s',
+      type: String
+    },
+    hoveringTooltip: {
+      default: true,
+      type: [Boolean, Function]
+    },
+    showCloseButton: {
+      default: false,
+      type: Boolean
+    },
+    autoClose: {
+      default: true,
+      type: Boolean
+    },
+    i18n: {
+      default: () => defaulti18n,
+      type: Object
+    }
 
+  },
+
+  data: function () {
+    return {
+        days: [],
+        weeks: [],
+        currentDate: new Date(),
+    };
+  },
+
+  computed: {
+    firstDayCurrentMonth() {
+      return new Date(
+        this.currentDate.getFullYear(),
+        this.currentDate.getMonth(), 1
+      )
+    },
+    firstSunday() {
+      return new Date(
+        this.firstDayCurrentMonth.setDate(
+          this.firstDayCurrentMonth.getDate()
+          -this.firstDayCurrentMonth.getDay()
+        )
+      )
+    }
+  },
+
+  watch: {
+    date: function(val, oldVal){
+      this.$emit('dateChanged', val, oldVal );
+    }
+  },
+
+  methods: {
+    getDay(date) {
+      return fecha.format(date, 'D')
     },
 
-    data: function () {
-        return {
-            date: '',
-        };
+    addDays(date, quantity) {
+      let result = new Date(date);
+      result.setDate(result.getDate() + quantity);
+      return result;
     },
 
-    watch: {
-        date: function(val, oldVal){
-          this.$emit('dateChanged', val, oldVal );
-        }
+    removeDays(date, quantity) {
+      return date.setDate(date.getDate() - quantity);
     },
 
-		mounted: function() {
-			window.hdpkr = new HotelDatepicker(document.getElementById(this.DatePickerID), {
-          DatePickerID: this.DatePickerID,
-          useDummyInputs: this.useDummyInputs,
-          format: this.format,
-          infoFormat: this.infoFormat,
-          separator: this.separator,
-          startOfWeek: this.startOfWeek,
-          startDate: this.startDate,
-          endDate: this.endDate,
-          minNights: this.minNights,
-          maxNights: this.maxNights,
-          selectForward: this.selectForward,
-          disabledDates: this.disabledDates,
-          disabledDaysOfWeek: this.disabledDaysOfWeek,
-          allowedRanges: this.allowedRanges,
-          enableCheckout: this.enableCheckout,
-          container: this.container,
-          animationSpeed: this.animationSpeed,
-          hoveringTooltip: this.hoveringTooltip,
-          showCloseButton: this.showCloseButton,
-          autoClose: this.autoClose,
-          i18n: this.i18n,
-      });
-
-      this.updateValues()
-		},
-
-    methods: {
-      updateValues() {
-        console.log(hdpkr)
-        var currentDate = document.getElementById(this.DatePickerID).value;
-        this.date = currentDate;
+    createWeeks(){
+      for (let i = 0; i < 42; i++) {
+        this.days.push({
+          date: this.addDays(this.firstSunday, i)
+        })
       }
     }
+  },
+
+  beforeMount() {
+    this.createWeeks()
+  }
 };
 </script>
+
 <style lang="scss">
 *,
 *::before,
@@ -294,9 +321,9 @@ $desktopLayoutWidth: 1020px;
     text-align: center;
     margin: 0 auto;
 
-    // &--month2 {
-    //   display: none;
-    // }
+    &--month2 {
+      display: none;
+    }
   }
 
   &__month-day {
@@ -409,15 +436,6 @@ $desktopLayoutWidth: 1020px;
     font-weight: lighter;
     color: #9599aa;
     text-align: center;
-  }
-
-  &__mobile-layer {
-    background: rgba(0,0,0,0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
   }
 
   &__month-day {
@@ -605,7 +623,7 @@ $desktopLayoutWidth: 1020px;
 
 @media (min-width: 320px) {
   .datepicker {
-    width: 100%;
+    width: 300px;
   }
 }
 
