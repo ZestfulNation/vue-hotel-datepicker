@@ -390,7 +390,6 @@ export default class HotelDatepicker {
                     valid
                 });
 
-                console.log(days)
             }
         }
 

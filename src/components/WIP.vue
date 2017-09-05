@@ -22,6 +22,7 @@
                 th
                   span.datepicker__month-button.datepicker__month-button--next(:month='month')
               tr.datepicker__week-days
+    .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
     div
       .datepicker__month-day(
         @click='setCheckIn(day.date)'
@@ -54,9 +55,9 @@ const defaulti18n = {
     night: 'Night',
     nights: 'Nights',
     button: 'Close',
+    'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'check-in': 'Check-in',
     'check-out': 'Check-Out',
-    'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     'error-more': 'Date range should not be more than 1 night',
     'error-more-plural': 'Date range should not be more than %d nights',
@@ -202,9 +203,7 @@ export default {
       )
     },
 
-    getDay(date) {
-      return fecha.format(date, 'D')
-    },
+    getDay(date) { return fecha.format(date, 'D') },
 
     getNextMonth(date){
       let nextMonth;
@@ -247,6 +246,12 @@ export default {
 </script>
 
 <style lang="scss">
+
+.square {
+  width: calc(100% / 7);
+  float: left;
+}
+
 *,
 *::before,
 *::after {
