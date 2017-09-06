@@ -1,5 +1,6 @@
 <template lang='pug'>
-  .datepicker__wrapper
+  .datepicker__wrapper(v-if='show')
+    button(@click='clearSelection') Clear selection
     input(
       class="datepicker__input"
       :value="value"
@@ -186,6 +187,7 @@ export default {
       months: [],
       activeMonthIndex: 0,
       nextDisabledDate: null,
+      show: true,
     };
   },
 
@@ -196,6 +198,25 @@ export default {
   },
 
   methods: {
+    clearSelection(){
+      this.veringDate = null;
+      this.checkIn = null;
+      this.checkOut = null;
+      this.currentDate = new Date();
+      this.months = [];
+      this.activeMonthIndex = 0;
+      this.nextDisabledDate = null;
+      this.show = true;
+
+      this.createMonth(this.currentDate);
+      this.createMonth(this.getNextMonth(this.currentDate));
+      this.parseDisabledDates();
+
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true;
+      })
+    },
     handleDayClick(event) {
       if (this.checkIn == null) {
         this.checkIn = event.date;
