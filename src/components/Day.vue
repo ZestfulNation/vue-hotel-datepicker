@@ -56,9 +56,26 @@ export default {
     disabledDates: {
       type: Array
     },
+    nextDisabledDate: {
+      type: Date
+    },
   },
 
   methods: {
+    getNextDate(datesArray, referenceDate){
+      var now = new Date(referenceDate);
+      var closest = Infinity;
+
+      datesArray.forEach(function(d) {
+        var date = new Date(d);
+        if (date >= now && date < closest) {
+          closest = d;
+        }
+      });
+
+      return closest
+    },
+
     compareDates(time1, time2) {
       return new Date(time1) < new Date(time2);
     },
@@ -67,20 +84,23 @@ export default {
       if (this.isDisabled) {
         return
       } else {
-        this.$emit('dayClicked', date);
+        const nextDisabledDate = this.getNextDate(this.disabledDates, this.date);
+        this.$emit('dayClicked', { date, nextDisabledDate});
       }
     },
 
-    checkIfDisabled: function(){
+    checkIfDisabled(){
       _.forEach(this.disabledDates, (date) => {
-          this.isDisabled = (fecha.format(date, 'mediumDate') == fecha.format(this.date, 'mediumDate'))
-       });
+        if (fecha.format(date, 'mediumDate') == fecha.format(this.date, 'mediumDate')) {
+          this.isDisabled = true
+        }
+      });
     },
   },
 
   watch: {
     hoveringDate: function(date) {
-      if ( this.checkIn !== null  && this.checkOut == null ) {
+      if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
         this.compareDates(this.checkIn, this.date) &&
         this.compareDates(this.date, this.hoveringDate) ?
         this.isHighlightable = true : this.isHighlightable = false
@@ -92,7 +112,12 @@ export default {
           this.compareDates(this.date, this.checkOut) ?
           this.isHighlightable = true : this.isHighlightable = false
       }
-    }
+    },
+    nextDisabledDate: function(date) {
+      if ( !this.compareDates(this.date, this.nextDisabledDate) ) {
+        this.isDisabled = true;
+      }
+    },
   },
 
   beforeMount(){

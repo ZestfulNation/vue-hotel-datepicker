@@ -23,6 +23,7 @@
           @dayClicked='handleDayClick($event)'
           :date='day.date'
           :disabledDates='sortedDisabledDates'
+          :nextDisabledDate='nextDisabledDate'
           :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
@@ -38,6 +39,7 @@
           @dayClicked='handleDayClick($event)'
           :date='day.date'
           :disabledDates='sortedDisabledDates'
+          :nextDisabledDate='nextDisabledDate'
           :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
@@ -183,6 +185,7 @@ export default {
       currentDate: new Date(),
       months: [],
       activeMonthIndex: 0,
+      nextDisabledDate: null,
     };
   },
 
@@ -193,16 +196,17 @@ export default {
   },
 
   methods: {
-    handleDayClick(date) {
+    handleDayClick(event) {
       if (this.checkIn == null) {
-        this.checkIn = date;
+        this.checkIn = event.date;
       } else if ( this.checkIn !== null && this.checkOut == null ) {
-        this.checkOut = date;
+        this.checkOut = event.date;
       }
       else {
         this.checkOut = null;
-        this.checkIn = date;
+        this.checkIn = event.date;
       }
+      this.nextDisabledDate = event.nextDisabledDate
     },
 
     renderPreviousMonth(){
@@ -234,10 +238,6 @@ export default {
 
     setCheckOut(date) {
       this.checkOut = date;
-    },
-
-    compareDates(time1, time2) {
-        return new Date(time1) < new Date(time2);
     },
 
     getFirstSunday(date) {
