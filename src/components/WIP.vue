@@ -3,7 +3,6 @@
     input(
       class="datepicker__input"
       :value="value"
-      :id="DatePickerID"
       :placeholder="placeholder"
       type="text"
       readonly
@@ -23,6 +22,7 @@
         Day(
           @dayClicked='handleDayClick($event)'
           :date='day.date'
+          :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
           :belongsToThisMonth='day.belongsToThisMonth'
@@ -36,6 +36,7 @@
         Day(
           @dayClicked='handleDayClick($event)'
           :date='day.date'
+          :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
           :belongsToThisMonth='day.belongsToThisMonth'

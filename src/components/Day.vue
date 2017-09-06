@@ -2,9 +2,8 @@
   .datepicker__month-day(
     @click='dayClicked(date)'
     v-text='dayNumber'
-    :style='`background: ${this.isHighlightable ? "blue" : "white"};\
-             color: ${belongsToThisMonth ? "" : "white" };\
-              `'
+    :style='`background: ${this.isHighlightable ? "blue" : "white"};`'
+    :class='`${belongsToThisMonth ? "" : "datepicker__month-day--hidden"}`'
   )
 </template>
 
@@ -34,6 +33,9 @@ export default {
     belongsToThisMonth: {
       type: Boolean
     },
+    activeMonthIndex: {
+      type: Number
+    },
     date: {
       type: Date
     },
@@ -58,7 +60,13 @@ export default {
         this.compareDates(this.date, this.hoveringDate) ?
         this.isHighlightable = true : this.isHighlightable = false
       }
-      else { this.isHighlightable =  false; }
+    },
+    activeMonthIndex: function(index) {
+      if ( this.checkIn !== null  && this.checkOut !== null ) {
+          this.compareDates(this.checkIn, this.date) &&
+          this.compareDates(this.date, this.checkOut) ?
+          this.isHighlightable = true : this.isHighlightable = false
+      }
     }
   },
 }
@@ -185,13 +193,15 @@ $desktopLayoutWidth: 1020px;
   }
 
   &__month-day {
+    visibility: visible;
     &--valid {
       cursor: pointer;
     }
 
-    &--lastMonth,
-    &--nextMonth {
+    &--hidden {
       visibility: hidden;
+      color: white;
+      pointer-events: none;
     }
   }
 
