@@ -63,8 +63,8 @@
         <DatePicker
           DatePickerID="DatePickerID5"
           :disabledDates="[
-              '2017-07-14',
-              '2017-07-26',
+              '2017-09-14',
+              '2017-09-26',
           ]"
           :showCloseButton="true"
           />
