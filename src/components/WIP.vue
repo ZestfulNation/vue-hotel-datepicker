@@ -15,13 +15,14 @@
     span.datepicker__month-button.datepicker__month-button--next(
       @click='renderNextMonth'
     )
-    div(style='float: left; widht: 50%')
+    div(style='float: left; width: 50%')
       .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
       .square(v-for='day in months[activeMonthIndex].days'
         @mouseover='hoveringDate = day.date')
         Day(
           @dayClicked='handleDayClick($event)'
           :date='day.date'
+          :disabledDates='sortedDisabledDates'
           :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
@@ -29,13 +30,14 @@
           :checkIn='checkIn'
           :checkOut='checkOut'
         )
-    div(style='float: left; widht: 50%')
+    div(style='float: left; width: 50%')
       .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
       .square(v-for='day in months[activeMonthIndex+1].days'
         @mouseover='hoveringDate = day.date')
         Day(
           @dayClicked='handleDayClick($event)'
           :date='day.date'
+          :disabledDates='sortedDisabledDates'
           :activeMonthIndex='activeMonthIndex'
           :hoveringDate='hoveringDate'
           :dayNumber='getDay(day.date)'
@@ -184,6 +186,12 @@ export default {
     };
   },
 
+  computed: {
+    sortedDisabledDates: function(){
+      return this.parseDisabledDates();
+    },
+  },
+
   methods: {
     handleDayClick(date) {
       if (this.checkIn == null) {
@@ -284,12 +292,24 @@ export default {
       }
 
       this.months.push(month);
+    },
+    ///// Handle options
+    parseDisabledDates() {
+      const sortedDates = [];
+
+      for (let i = 0; i < this.disabledDates.length; i++) {
+        sortedDates[i] = new Date(this.disabledDates[i]);
+      }
+
+      sortedDates.sort((a, b) =>  a - b );
+      return sortedDates;
     }
   },
 
   beforeMount() {
     this.createMonth(this.currentDate);
     this.createMonth(this.getNextMonth(this.currentDate));
+    this.parseDisabledDates();
   }
 };
 </script>

@@ -3,18 +3,29 @@
     @click='dayClicked(date)'
     v-text='dayNumber'
     :style='`background: ${this.isHighlightable ? "blue" : "white"};`'
-    :class='`${belongsToThisMonth ? "" : "datepicker__month-day--hidden"}`'
+    :class='dayClass'
   )
 </template>
 
 <script>
+import fecha from 'fecha';
+import _ from 'lodash';
+
 export default {
   name: 'Day',
 
   data() {
     return {
       isHighlightable: false,
+      isDisabled: false,
     };
+  },
+
+  computed: {
+    dayClass: function(){
+      if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
+      if ( this.isDisabled ) { return "datepicker__month-day--disabled"}
+    },
   },
 
   props: {
@@ -41,16 +52,30 @@ export default {
     },
     dayNumber: {
       type: String
-    }
+    },
+    disabledDates: {
+      type: Array
+    },
   },
 
   methods: {
     compareDates(time1, time2) {
       return new Date(time1) < new Date(time2);
     },
+
     dayClicked(date) {
-      this.$emit('dayClicked', date);
-    }
+      if (this.isDisabled) {
+        return
+      } else {
+        this.$emit('dayClicked', date);
+      }
+    },
+
+    checkIfDisabled: function(){
+      _.forEach(this.disabledDates, (date) => {
+          this.isDisabled = (fecha.format(date, 'mediumDate') == fecha.format(this.date, 'mediumDate'))
+       });
+    },
   },
 
   watch: {
@@ -69,6 +94,12 @@ export default {
       }
     }
   },
+
+  beforeMount(){
+    // console.log(this.disabledDates[0], this.date)
+    // console.log(this.disabledDates[0].setHours(0, 0, 0, 0) == this.date.setHours(0, 0, 0, 0))
+    this.checkIfDisabled()
+  }
 }
 </script>
 

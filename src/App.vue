@@ -2,7 +2,7 @@
   #app(style='text-align: left; padding: 10vw')
     div
       .box
-        WIP
+        WIP( :disabledDates="[ '2017-09-01', '2017-09-26', '2017-10-01',]" )
       //- .box
       //-   DatePicker(
       //-     datepickerid='HDR',
