@@ -114,6 +114,8 @@ export default {
       }
     },
     activeMonthIndex: function(index) {
+      this.checkIfDisabled()
+      this.checkIfHighlighted()
       if ( this.checkIn !== null  && this.checkOut !== null) {
           this.compareDates(this.checkIn, this.date) &&
           this.compareDates(this.date, this.checkOut) ?
@@ -121,12 +123,11 @@ export default {
       } else {
         return
       }
-      this.checkIfDisabled()
-      this.checkIfHighlighted()
+
     },
     nextDisabledDate: function(date) {
       console.log(date)
-      if ( !this.compareDates(this.date, this.nextDisabledDate) ) {
+      if ( !this.compareDates(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
         this.isDisabled = true;
       } else {
         return
