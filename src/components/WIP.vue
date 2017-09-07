@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .datepicker__wrapper(v-if='show')
+  .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__dummy-wrapper(@click='isOpen = !isOpen')
       input.datepicker__dummy-input.datepicker__dummy-input--is-active(
         class="datepicker__input"
@@ -249,6 +249,9 @@ export default {
       this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
       this.reRender()
+    },
+    hideDatepicker(){
+      this.isOpen = false;
     },
     handleDayClick(event) {
       if (this.checkIn == null) {
