@@ -1,53 +1,64 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show')
-    button(@click='clearSelection') Clear selection
-    input(
-      class="datepicker__input"
-      :value="value"
-      :placeholder="placeholder"
-      type="text"
-      readonly
-    )
-    button.datepicker__clear-button
-    span.datepicker__month-button.datepicker__month-button--prev(
-      @click='renderPreviousMonth'
-    )
-
-    span.datepicker__month-button.datepicker__month-button--next(
-      @click='renderNextMonth'
-    )
-    div(style='float: left; width: 50%')
-      .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-      .square(v-for='day in months[activeMonthIndex].days'
-        @mouseover='hoveringDate = day.date')
-        Day(
-          @dayClicked='handleDayClick($event)'
-          :date='day.date'
-          :disabledDates='sortedDisabledDates'
-          :nextDisabledDate='nextDisabledDate'
-          :activeMonthIndex='activeMonthIndex'
-          :hoveringDate='hoveringDate'
-          :dayNumber='getDay(day.date)'
-          :belongsToThisMonth='day.belongsToThisMonth'
-          :checkIn='checkIn'
-          :checkOut='checkOut'
-        )
-    div(style='float: left; width: 50%')
-      .square(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-      .square(v-for='day in months[activeMonthIndex+1].days'
-        @mouseover='hoveringDate = day.date')
-        Day(
-          @dayClicked='handleDayClick($event)'
-          :date='day.date'
-          :disabledDates='sortedDisabledDates'
-          :nextDisabledDate='nextDisabledDate'
-          :activeMonthIndex='activeMonthIndex'
-          :hoveringDate='hoveringDate'
-          :dayNumber='getDay(day.date)'
-          :belongsToThisMonth='day.belongsToThisMonth'
-          :checkIn='checkIn'
-          :checkOut='checkOut'
-        )
+    .datepicker__dummy-wrapper
+      input.datepicker__dummy-input.datepicker__dummy-input--is-active(
+        class="datepicker__input"
+        :value="`${checkIn ? formatDate(checkIn) : ''}`"
+        :placeholder="i18n['check-in']"
+        type="text"
+        readonly
+      )
+      input.datepicker__dummy-input(
+        class="datepicker__input"
+        :value="`${checkOut ? formatDate(checkOut) : ''}`"
+        :placeholder="i18n['check-out']"
+        type="text"
+        readonly
+      )
+    button.datepicker__clear-button(@click='clearSelection') ＋
+    .datepicker.datepicker--open
+      .datepicker__inner
+        .datepicker__header
+          span.datepicker__month-button.datepicker__month-button--prev(
+            @click='renderPreviousMonth'
+          )
+          span.datepicker__month-button.datepicker__month-button--next(
+            @click='renderNextMonth'
+          )
+        .datepicker__months
+          div.datepicker__month
+            h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex].days[15].date)')
+            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .square(v-for='day in months[activeMonthIndex].days' @mouseover='hoveringDate = day.date')
+              Day(
+                @dayClicked='handleDayClick($event)'
+                :date='day.date'
+                :disabledDates='sortedDisabledDates'
+                :nextDisabledDate='nextDisabledDate'
+                :activeMonthIndex='activeMonthIndex'
+                :hoveringDate='hoveringDate'
+                :dayNumber='getDay(day.date)'
+                :belongsToThisMonth='day.belongsToThisMonth'
+                :checkIn='checkIn'
+                :checkOut='checkOut'
+              )
+          div.datepicker__month
+            h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+1].days[15].date)')
+            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .square(v-for='day in months[activeMonthIndex+1].days'
+              @mouseover='hoveringDate = day.date')
+              Day(
+                @dayClicked='handleDayClick($event)'
+                :date='day.date'
+                :disabledDates='sortedDisabledDates'
+                :nextDisabledDate='nextDisabledDate'
+                :activeMonthIndex='activeMonthIndex'
+                :hoveringDate='hoveringDate'
+                :dayNumber='getDay(day.date)'
+                :belongsToThisMonth='day.belongsToThisMonth'
+                :checkIn='checkIn'
+                :checkOut='checkOut'
+              )
 </template>
 
 <script>
@@ -197,9 +208,34 @@ export default {
     },
   },
 
+  watch: {
+    checkOut: function(date) {
+      this.hoveringDate = null;
+      this.months = [];
+      this.activeMonthIndex = 0;
+      this.nextDisabledDate = null;
+      this.show = true;
+
+      this.createMonth(this.currentDate);
+      this.createMonth(this.getNextMonth(this.currentDate));
+      this.parseDisabledDates();
+
+      if ( this.checkOut !== null && this.checkOut !== null ) {
+        this.reRender()
+        console.log('rerender')
+      }
+    },
+  },
+
   methods: {
+    reRender() {
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true;
+      })
+    },
     clearSelection(){
-      this.veringDate = null;
+      this.hoveringDate = null,
       this.checkIn = null;
       this.checkOut = null;
       this.currentDate = new Date();
@@ -211,16 +247,13 @@ export default {
       this.createMonth(this.currentDate);
       this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
-
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true;
-      })
+      this.reRender()
     },
     handleDayClick(event) {
       if (this.checkIn == null) {
         this.checkIn = event.date;
-      } else if ( this.checkIn !== null && this.checkOut == null ) {
+      }
+      else if ( this.checkIn !== null && this.checkOut == null ) {
         this.checkOut = event.date;
       }
       else {
@@ -280,6 +313,10 @@ export default {
 
     getDay(date) { return fecha.format(date, 'D') },
 
+    getMonth(date) { return fecha.format(date, 'MMMM') },
+
+    formatDate(date) { return fecha.format(date, this.format) },
+
     getNextMonth(date){
       let nextMonth;
 
@@ -332,5 +369,7 @@ export default {
     this.createMonth(this.getNextMonth(this.currentDate));
     this.parseDisabledDates();
   }
+
+
 };
 </script>
