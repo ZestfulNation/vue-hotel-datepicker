@@ -2,7 +2,6 @@
   .datepicker__month-day(
     @click='dayClicked(date)'
     v-text='dayNumber'
-    :style='`background: ${this.isHighlighted ? "blue" : "white"};`'
     :class='dayClass'
   )
 </template>
@@ -57,7 +56,10 @@ export default {
   computed: {
     dayClass: function(){
       if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
-      if ( this.isDisabled ) { return "datepicker__month-day--disabled"}
+      if ( this.isHighlighted && !this.isDisabled) { return " datepicker__month-day--selected"}
+      if ( this.isDisabled ) { return "datepicker__month-day--disabled" }
+      else {  return "datepicker__month-day--valid" }
+
     },
   },
 
@@ -134,7 +136,11 @@ export default {
     disableNextDays(){
       if ( !this.compareDates(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
         this.isDisabled = true;
-      } else {
+      }
+      else if ( this.compareDates(this.date, this.checkIn) ) {
+        this.isDisabled = true;
+      }
+      else {
         return
       }
     },
@@ -352,7 +358,10 @@ $desktopLayoutWidth: 1020px;
     }
   }
 
-  &__inner { padding: 20px; }
+  &__inner {
+    padding: 20px;
+    float: left;
+  }
 
   &__month { font-size: 12px; }
 
@@ -410,6 +419,14 @@ $desktopLayoutWidth: 1020px;
       cursor: not-allowed;
     }
 
+    &--valid:hover {
+      background-color: #fff;
+      color: $primary-color;
+      z-index: 1;
+      position: relative;
+      box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
+    }
+
     &--disabled {
       color: #e8ebf4;
       cursor: not-allowed;
@@ -419,6 +436,14 @@ $desktopLayoutWidth: 1020px;
     &--selected {
       background-color: rgba($primary-color, 0.5);
       color: #fff;
+
+      &:hover {
+        background-color: #fff;
+        color: $primary-color;
+        z-index: 1;
+        position: relative;
+        box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
+      }
     }
 
     &--hovering {
@@ -448,10 +473,6 @@ $desktopLayoutWidth: 1020px;
           content: ' ';
           border-radius: 0 50% 50% 0;
           background-color: rgba($primary-color, 0.5);
-        }
-
-        &:after {
-          box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
         }
       }
     }
