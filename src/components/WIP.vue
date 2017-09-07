@@ -1,6 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show')
-    .datepicker__dummy-wrapper
+    .datepicker__dummy-wrapper(@click='isOpen = !isOpen')
       input.datepicker__dummy-input.datepicker__dummy-input--is-active(
         class="datepicker__input"
         :value="`${checkIn ? formatDate(checkIn) : ''}`"
@@ -16,7 +16,7 @@
         readonly
       )
     button.datepicker__clear-button(@click='clearSelection') ＋
-    .datepicker.datepicker--open
+    .datepicker(:class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .datepicker__inner
         .datepicker__header
           span.datepicker__month-button.datepicker__month-button--prev(
@@ -199,6 +199,7 @@ export default {
       activeMonthIndex: 0,
       nextDisabledDate: null,
       show: true,
+      isOpen: false,
     };
   },
 
@@ -221,6 +222,8 @@ export default {
       this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
       this.reRender()
+
+      this.isOpen = false;
       }
     },
   },
