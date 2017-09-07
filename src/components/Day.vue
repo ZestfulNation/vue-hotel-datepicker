@@ -360,6 +360,7 @@ $desktopLayoutWidth: 1020px;
     font-size: 16px;
     text-align: center;
     margin-top: -36px;
+    pointer-events: none;
   }
 
   &__week-days {
