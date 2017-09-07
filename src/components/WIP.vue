@@ -210,6 +210,7 @@ export default {
 
   watch: {
     checkOut: function(date) {
+      if ( this.checkOut !== null && this.checkOut !== null ) {
       this.hoveringDate = null;
       this.months = [];
       this.activeMonthIndex = 0;
@@ -219,10 +220,7 @@ export default {
       this.createMonth(this.currentDate);
       this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
-
-      if ( this.checkOut !== null && this.checkOut !== null ) {
-        this.reRender()
-        console.log('rerender')
+      this.reRender()
       }
     },
   },

@@ -77,7 +77,7 @@ export default {
     },
 
     compareDates(time1, time2) {
-      return new Date(time1) < new Date(time2);
+      return new Date(time1) <= new Date(time2);
     },
 
     dayClicked(date) {
@@ -125,6 +125,7 @@ export default {
       this.checkIfHighlighted()
     },
     nextDisabledDate: function(date) {
+      console.log(date)
       if ( !this.compareDates(this.date, this.nextDisabledDate) ) {
         this.isDisabled = true;
       } else {
