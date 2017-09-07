@@ -90,13 +90,18 @@ export default {
     },
 
     checkIfDisabled(){
-      _.forEach(this.disabledDates, (date) => {
-        if (fecha.format(date, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')) {
-          this.isDisabled = true
-        } else {
-          this.isDisabled = false
+      var self = this;
+      if (this.date !== undefined ){
+        for (var i = 0; i < self.disabledDates.length; i++) {
+          if ( fecha.format(self.disabledDates[i], 'YYYYMMDD') == fecha.format(self.date, 'YYYYMMDD') ){
+            this.isDisabled = true;
+            break
+          }
+          else  {
+            this.isDisabled = false
+          }
         }
-      });
+      }
     },
 
     checkIfHighlighted(){
