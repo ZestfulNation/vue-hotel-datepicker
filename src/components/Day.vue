@@ -14,20 +14,6 @@ import _ from 'lodash';
 export default {
   name: 'Day',
 
-  data() {
-    return {
-      isHighlighted: false,
-      isDisabled: false,
-    };
-  },
-
-  computed: {
-    dayClass: function(){
-      if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
-      if ( this.isDisabled ) { return "datepicker__month-day--disabled"}
-    },
-  },
-
   props: {
     checkIn: {
       type: Date
@@ -58,6 +44,47 @@ export default {
     },
     nextDisabledDate: {
       type: [Date, Number]
+    },
+  },
+
+  data() {
+    return {
+      isHighlighted: false,
+      isDisabled: false,
+    };
+  },
+
+  computed: {
+    dayClass: function(){
+      if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
+      if ( this.isDisabled ) { return "datepicker__month-day--disabled"}
+    },
+  },
+
+  watch: {
+    hoveringDate: function(date) {
+      if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
+        this.compareDates(this.checkIn, this.date) &&
+        this.compareDates(this.date, this.hoveringDate) ?
+        this.isHighlighted = true : this.isHighlighted = false
+      }
+    },
+    activeMonthIndex: function(index) {
+      this.checkIfDisabled()
+      this.checkIfHighlighted()
+      if ( this.checkIn !== null  && this.checkOut !== null ) {
+          this.compareDates(this.checkIn, this.date) &&
+          this.compareDates(this.date, this.checkOut) ?
+          this.isHighlighted = true : this.isHighlighted = false
+      } else if ( this.checkIn !== null  && this.checkOut == null ) {
+        this.disableNextDays()
+      } else {
+        return
+      }
+
+    },
+    nextDisabledDate: function() {
+      this.disableNextDays()
     },
   },
 
@@ -103,30 +130,8 @@ export default {
         this.isHighlighted = true : this.isHighlighted = false
       }
     },
-  },
 
-  watch: {
-    hoveringDate: function(date) {
-      if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
-        this.compareDates(this.checkIn, this.date) &&
-        this.compareDates(this.date, this.hoveringDate) ?
-        this.isHighlighted = true : this.isHighlighted = false
-      }
-    },
-    activeMonthIndex: function(index) {
-      this.checkIfDisabled()
-      this.checkIfHighlighted()
-      if ( this.checkIn !== null  && this.checkOut !== null) {
-          this.compareDates(this.checkIn, this.date) &&
-          this.compareDates(this.date, this.checkOut) ?
-          this.isHighlighted = true : this.isHighlighted = false
-      } else {
-        return
-      }
-
-    },
-    nextDisabledDate: function(date) {
-      console.log(date)
+    disableNextDays(){
       if ( !this.compareDates(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
         this.isDisabled = true;
       } else {
