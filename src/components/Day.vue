@@ -158,6 +158,19 @@ export default {
 </script>
 
 <style lang="scss">
+/* =============================================================
+ * RESPONSIVE LAYOUT HELPERS
+ * ============================================================*/
+$tablet: '(min-width: 30em) and (max-width: 49em)';
+$phone: '(max-width: 30em)';
+$desktop: '(min-width: 49em)';
+$tablet-up: '(min-width: 30em)';
+$up-to-tablet: '(max-width: 49em)';
+$extra-small-screen: '(max-width: 23em)';
+
+@mixin device($device-widths) {
+  @media screen and #{$device-widths} { @content }
+}
 
 .square {
   width: calc(100% / 7);
@@ -180,8 +193,6 @@ $medium-gray: #999999;
 $light-gray: #d7d9e2;
 $dark-gray: #2d3047;
 
-
-$desktopLayoutWidth: 1020px;
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
@@ -245,7 +256,7 @@ $desktopLayoutWidth: 1020px;
     height: 100%;
 
     &--is-active {
-      border: 1px solid $primary-color; 
+      border: 1px solid $primary-color;
     }
   }
 
@@ -268,17 +279,6 @@ $desktopLayoutWidth: 1020px;
     &--is-active::-moz-placeholder { color: $primary-color; }
     &--is-active:-ms-input-placeholder { color: $primary-color; }
     &--is-active:-moz-placeholder { color: $primary-color; }
-  }
-
-  &__month {
-    float: left;
-    width: 50%;
-    padding-right: 10px;
-
-    &:last-child {
-      padding-right: 0;
-      padding-left: 10px;
-    }
   }
 
   &__month-day {
@@ -337,37 +337,43 @@ $desktopLayoutWidth: 1020px;
   line-height: 14px;
   overflow: hidden;
 
-  &--is-small {
-
-    .datepicker__wrapper { background-position: 8px 14px; }
-
-    .datepicker__dummy-wrapper { height: 44px; }
-
-    .datepicker__dummy-input {
-      height: 44px;
-      line-height: 2.5;
-    }
-
-    .datepicker__clear-button {
-      top: 3px;
-      right: -3px;
-    }
-
-    &.datepicker__wrapper { background-position: 8px 13px; }
-
-    .datepicker {
-      right: 0;
-      left: auto;
-      top: 44px;
-    }
-  }
-
   &__inner {
     padding: 20px;
     float: left;
   }
 
-  &__month { font-size: 12px; }
+  &__months {
+    &:before {
+      background: #dcdcdc;
+      bottom: 0;
+      content: '';
+      display: block;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      width: 1px;
+
+      @include device($up-to-tablet) { transform: rotate(90deg); }
+    }
+  }
+
+  &__month {
+    font-size: 12px;
+    float: left;
+    width: 50%;
+    padding-right: 10px;
+
+    @include device($up-to-tablet) {
+      width: 100%;
+
+      &:last-of-type { margin-top: 10px; }
+    }
+
+    &:last-child {
+      padding-right: 0;
+      padding-left: 10px;
+    }
+  }
 
   &__month-caption {
     height: 2.5em;
@@ -598,45 +604,45 @@ $desktopLayoutWidth: 1020px;
   }
 }
 
-@media (min-width: $desktopLayoutWidth) {
-  .datepicker {
-    width: 460px;
-  }
-  .datepicker__months {
-    display: inline-block;
-    width: 100%;
-  }
-  .datepicker__month--month1 {
-    float: left;
-  }
-  .datepicker__month--month2 {
-    display: table;
-    float: right;
-  }
-  .datepicker__month-button--disabled {
-    visibility: hidden;
-  }
-  .datepicker__months {
-    position: relative;
-  }
-  // Display a line between the months
-  .datepicker__months:before {
-    background: #dcdcdc;
-    bottom: 0;
-    content: '';
-    display: block;
-    left: 50%;
-    position: absolute;
-    top: 0;
-    width: 1px;
-  }
-}
-
-@media (min-width: $desktopLayoutWidth) {
-  .datepicker {
-    width: 560px;
-  }
-}
+// @media (min-width: $desktopLayoutWidth) {
+//   .datepicker {
+//     width: 460px;
+//   }
+//   .datepicker__months {
+//     display: inline-block;
+//     width: 100%;
+//   }
+//   .datepicker__month--month1 {
+//     float: left;
+//   }
+//   .datepicker__month--month2 {
+//     display: table;
+//     float: right;
+//   }
+//   .datepicker__month-button--disabled {
+//     visibility: hidden;
+//   }
+//   .datepicker__months {
+//     position: relative;
+//   }
+//   // Display a line between the months
+//   .datepicker__months:before {
+//     background: #dcdcdc;
+//     bottom: 0;
+//     content: '';
+//     display: block;
+//     left: 50%;
+//     position: absolute;
+//     top: 0;
+//     width: 1px;
+//   }
+// }
+//
+// @media (min-width: $desktopLayoutWidth) {
+//   .datepicker {
+//     width: 560px;
+//   }
+// }
 
 
 
