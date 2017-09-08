@@ -17,6 +17,22 @@
       )
     button.datepicker__clear-button(@click='clearSelection') ＋
     .datepicker(:class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
+      .-hide-on-desktop
+        .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
+          input.datepicker__dummy-input.datepicker__input(
+            :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
+            :value="`${checkIn ? formatDate(checkIn) : ''}`"
+            :placeholder="i18n['check-in']"
+            type="text"
+            readonly
+          )
+          input.datepicker__dummy-input.datepicker__input(
+            :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
+            :value="`${checkOut ? formatDate(checkOut) : ''}`"
+            :placeholder="i18n['check-out']"
+            type="text"
+            readonly
+          )
       .datepicker__inner
         .datepicker__header
           span.datepicker__month-button.datepicker__month-button--prev(
@@ -28,7 +44,8 @@
         .datepicker__months
           div.datepicker__month
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex].days[15].date)')
-            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .datepicker__week-row
+              .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex].days' @mouseover='hoveringDate = day.date')
               Day(
                 @dayClicked='handleDayClick($event)'
@@ -44,7 +61,8 @@
               )
           div.datepicker__month
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+1].days[15].date)')
-            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .datepicker__week-row.-hide-up-to-tablet
+              .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex+1].days'
               @mouseover='hoveringDate = day.date')
               Day(

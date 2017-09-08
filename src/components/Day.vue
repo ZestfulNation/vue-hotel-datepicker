@@ -214,6 +214,15 @@ $dark-gray: #2d3047;
   &--open {
     box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.08);
     max-height: 900px;
+
+    @include device($up-to-tablet) {
+      box-shadow: none;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
   }
 
   &__wrapper {
@@ -254,6 +263,8 @@ $dark-gray: #2d3047;
     float: left;
     width: 100%;
     height: 100%;
+
+    &--no-border.datepicker__dummy-wrapper { border: 0; }
 
     &--is-active {
       border: 1px solid $primary-color;
@@ -340,10 +351,14 @@ $dark-gray: #2d3047;
   &__inner {
     padding: 20px;
     float: left;
+
+    @include device($up-to-tablet) {
+      padding: 0;
+    }
   }
 
   &__months {
-    &:before {
+    &::before {
       background: #dcdcdc;
       bottom: 0;
       content: '';
@@ -353,7 +368,10 @@ $dark-gray: #2d3047;
       top: 0;
       width: 1px;
 
-      @include device($up-to-tablet) { transform: rotate(90deg); }
+      @include device($up-to-tablet) {
+        transform: rotate(90deg);
+        margin-top: -38px;
+      }
     }
   }
 
@@ -365,13 +383,19 @@ $dark-gray: #2d3047;
 
     @include device($up-to-tablet) {
       width: 100%;
+      padding-right: 0;
 
-      &:last-of-type { margin-top: 10px; }
+      &:last-of-type {
+        padding-top: 70px;
+        padding-left: 0;
+      }
     }
 
-    &:last-child {
-      padding-right: 0;
-      padding-left: 10px;
+    @include device($tablet-up) {
+      &:last-of-type {
+        padding-right: 0;
+        padding-left: 10px;
+      }
     }
   }
 
@@ -381,11 +405,12 @@ $dark-gray: #2d3047;
   }
 
   &__month-name {
-    font-weight: 500;
     font-size: 16px;
-    text-align: center;
-    margin-top: -36px;
+    font-weight: 500;
+    margin-top: -40px;
+    padding-bottom: 17px;
     pointer-events: none;
+    text-align: center;
   }
 
   &__week-days {
@@ -396,6 +421,10 @@ $dark-gray: #2d3047;
   &__week-row {
     border-bottom: 5px solid white;
     height: 38px;
+
+    @include device($up-to-tablet) {
+      box-shadow: 0 13px 18px -8px rgba(29,29,38,.07);
+    }
   }
 
   &__week-name {
@@ -604,49 +633,19 @@ $dark-gray: #2d3047;
   }
 }
 
-// @media (min-width: $desktopLayoutWidth) {
-//   .datepicker {
-//     width: 460px;
-//   }
-//   .datepicker__months {
-//     display: inline-block;
-//     width: 100%;
-//   }
-//   .datepicker__month--month1 {
-//     float: left;
-//   }
-//   .datepicker__month--month2 {
-//     display: table;
-//     float: right;
-//   }
-//   .datepicker__month-button--disabled {
-//     visibility: hidden;
-//   }
-//   .datepicker__months {
-//     position: relative;
-//   }
-//   // Display a line between the months
-//   .datepicker__months:before {
-//     background: #dcdcdc;
-//     bottom: 0;
-//     content: '';
-//     display: block;
-//     left: 50%;
-//     position: absolute;
-//     top: 0;
-//     width: 1px;
-//   }
-// }
-//
-// @media (min-width: $desktopLayoutWidth) {
-//   .datepicker {
-//     width: 560px;
-//   }
-// }
-
-
-
 // Modifiers
 .-is-hidden { display: none; }
+
+.-hide-up-to-tablet {
+  @include device($up-to-tablet) {
+    display: none;
+  }
+}
+
+.-hide-on-desktop {
+  @include device($desktop) {
+    display: none;
+  }
+}
 
 </style>

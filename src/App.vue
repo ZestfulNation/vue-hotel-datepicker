@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #app(style='text-align: left; padding: 10vw')
+  #app
     div(style='float: left; width: 100%;' )
       WIP(
         :disabledDates="[ '2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
