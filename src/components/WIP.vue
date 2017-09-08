@@ -1,6 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    .datepicker__dummy-wrapper(@click='isOpen = !isOpen')
+    .datepicker__dummy-wrapper(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
       input.datepicker__dummy-input.datepicker__input(
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
         :value="`${checkIn ? formatDate(checkIn) : ''}`"

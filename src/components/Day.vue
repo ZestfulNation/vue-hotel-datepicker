@@ -203,8 +203,6 @@ $desktopLayoutWidth: 1020px;
   &--open {
     box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.08);
     max-height: 900px;
-
-     ~ .datepicker__dummy-wrapper { border: 1px solid $primary-color; }
   }
 
   &__wrapper {
@@ -245,6 +243,10 @@ $desktopLayoutWidth: 1020px;
     float: left;
     width: 100%;
     height: 100%;
+
+    &--is-active {
+      border: 1px solid $primary-color; 
+    }
   }
 
   &__dummy-input {
