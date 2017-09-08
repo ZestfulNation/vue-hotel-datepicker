@@ -1,5 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
+    .datepicker__close-button.-hide-on-desktop ＋
     .datepicker__dummy-wrapper(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
       input.datepicker__dummy-input.datepicker__input(
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
@@ -35,16 +36,22 @@
           )
       .datepicker__inner
         .datepicker__header
-          span.datepicker__month-button.datepicker__month-button--prev(
+          span.datepicker__month-button.datepicker__month-button--prev.-hide-up-to-tablet(
             @click='renderPreviousMonth'
           )
-          span.datepicker__month-button.datepicker__month-button--next(
+          span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
             @click='renderNextMonth'
           )
-        .datepicker__months
+        .datepicker__week-row.-hide-on-desktop
+          .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+        v-touch.datepicker__months(
+          id="swiperWrapper"
+          @swipeup='swipeAfterScroll(renderNextMonth, "down")'
+          @swipedown='swipeAfterScroll(renderPreviousMonth, "up")'
+        )
           div.datepicker__month
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex].days[15].date)')
-            .datepicker__week-row
+            .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex].days' @mouseover='hoveringDate = day.date')
               Day(
@@ -272,6 +279,16 @@ export default {
         this.checkIn = event.date;
       }
       this.nextDisabledDate = event.nextDisabledDate
+    },
+
+    swipeAfterScroll(action, option){
+      const swiperWrapper = document.getElementById("swiperWrapper")
+      if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)
+        && option === 'down') {
+        action()
+      } else if ( swiperWrapper.scrollTop === 0 && option === 'up'){
+        action()
+      }
     },
 
     renderPreviousMonth(){

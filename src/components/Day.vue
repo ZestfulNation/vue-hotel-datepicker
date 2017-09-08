@@ -264,7 +264,10 @@ $dark-gray: #2d3047;
     width: 100%;
     height: 100%;
 
-    &--no-border.datepicker__dummy-wrapper { border: 0; }
+    &--no-border.datepicker__dummy-wrapper {
+      margin-top: 15px;
+      border: 0;
+    }
 
     &--is-active {
       border: 1px solid $primary-color;
@@ -358,6 +361,16 @@ $dark-gray: #2d3047;
   }
 
   &__months {
+
+    @include device($up-to-tablet) {
+      margin-top: 92px;
+      height: calc(100% - 65px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: scroll;
+    }
+
     &::before {
       background: #dcdcdc;
       bottom: 0;
@@ -368,10 +381,7 @@ $dark-gray: #2d3047;
       top: 0;
       width: 1px;
 
-      @include device($up-to-tablet) {
-        transform: rotate(90deg);
-        margin-top: -38px;
-      }
+      @include device($up-to-tablet) { display: none; }
     }
   }
 
@@ -382,12 +392,14 @@ $dark-gray: #2d3047;
     padding-right: 10px;
 
     @include device($up-to-tablet) {
-      width: 100%;
-      padding-right: 0;
+    width: 100%;
+    padding-right: 0;
+    padding-top: 45px;
 
       &:last-of-type {
-        padding-top: 70px;
+        padding-top: 0;
         padding-left: 0;
+        margin-top: 35px;
       }
     }
 
@@ -411,6 +423,13 @@ $dark-gray: #2d3047;
     padding-bottom: 17px;
     pointer-events: none;
     text-align: center;
+
+    @include device($up-to-tablet) {
+      margin-top: -25px;
+      margin-bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
   }
 
   &__week-days {
@@ -424,6 +443,11 @@ $dark-gray: #2d3047;
 
     @include device($up-to-tablet) {
       box-shadow: 0 13px 18px -8px rgba(29,29,38,.07);
+      height: 25px;
+      left: 0;
+      top: 65px;
+      position: absolute;
+      width: 100%;
     }
   }
 
@@ -583,9 +607,10 @@ $dark-gray: #2d3047;
     font-weight: bold;
     margin-top: 0;
     outline: 0;
-    position: absolute;
-    right: -18px;
-    top: -17px;
+    z-index: 10000;
+    position: fixed;
+    left: 7px;
+    top: 5px;
     transform: rotate(45deg);
   }
 
