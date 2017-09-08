@@ -213,13 +213,8 @@ export default {
     checkOut: function(date) {
       if ( this.checkOut !== null && this.checkOut !== null ) {
       this.hoveringDate = null;
-      this.months = [];
-      this.activeMonthIndex = 0;
       this.nextDisabledDate = null;
       this.show = true;
-
-      this.createMonth(this.currentDate);
-      this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
       this.reRender()
 
@@ -239,14 +234,8 @@ export default {
       this.hoveringDate = null,
       this.checkIn = null;
       this.checkOut = null;
-      this.currentDate = new Date();
-      this.months = [];
-      this.activeMonthIndex = 0;
       this.nextDisabledDate = null;
       this.show = true;
-
-      this.createMonth(this.currentDate);
-      this.createMonth(this.getNextMonth(this.currentDate));
       this.parseDisabledDates();
       this.reRender()
     },
