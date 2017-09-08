@@ -1,15 +1,15 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__dummy-wrapper(@click='isOpen = !isOpen')
-      input.datepicker__dummy-input.datepicker__dummy-input--is-active(
-        class="datepicker__input"
+      input.datepicker__dummy-input.datepicker__input(
+        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
         :value="`${checkIn ? formatDate(checkIn) : ''}`"
         :placeholder="i18n['check-in']"
         type="text"
         readonly
       )
-      input.datepicker__dummy-input(
-        class="datepicker__input"
+      input.datepicker__dummy-input.datepicker__input(
+        :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
         :value="`${checkOut ? formatDate(checkOut) : ''}`"
         :placeholder="i18n['check-out']"
         type="text"

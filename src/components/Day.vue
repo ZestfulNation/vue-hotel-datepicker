@@ -114,7 +114,7 @@ export default {
         return
       } else {
         const nextDisabledDate = this.getNextDate(this.disabledDates, this.date) || null;
-        this.$emit('dayClicked', { date, nextDisabledDate});
+        this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },
 
@@ -261,9 +261,11 @@ $desktopLayoutWidth: 1020px;
       width: calc(50% - 4px)
     }
 
-    &--is-active {
-      color: $primary-color;
-    }
+    &--is-active { color: $primary-color; }
+    &--is-active::placeholder { color: $primary-color; }
+    &--is-active::-moz-placeholder { color: $primary-color; }
+    &--is-active:-ms-input-placeholder { color: $primary-color; }
+    &--is-active:-moz-placeholder { color: $primary-color; }
   }
 
   &__month {
