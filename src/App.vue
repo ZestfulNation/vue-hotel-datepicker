@@ -1,6 +1,6 @@
 <template lang='pug'>
   #app
-    div(style='float: left; width: 100%;' )
+    div
       WIP(
         :disabledDates="[ '2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
         endDate="2018-12-31")

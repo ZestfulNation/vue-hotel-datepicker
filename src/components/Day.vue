@@ -169,6 +169,17 @@ export default {
 </script>
 
 <style lang="scss">
+.list-item {
+  opacity: 1;
+}
+.list-enter-active, .list-leave-active {
+  transition: all .5s;
+  opacity: 1;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
 /* =============================================================
  * RESPONSIVE LAYOUT HELPERS
  * ============================================================*/
@@ -308,6 +319,7 @@ $dark-gray: #2d3047;
 
   &__month-day {
     visibility: visible;
+
     &--valid {
       cursor: pointer;
     }
