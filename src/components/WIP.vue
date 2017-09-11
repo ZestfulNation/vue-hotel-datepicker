@@ -1,6 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    .datepicker__close-button.-hide-on-desktop ＋
+    .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
     .datepicker__dummy-wrapper(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
       input.datepicker__dummy-input.datepicker__input(
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
@@ -19,7 +19,10 @@
     button.datepicker__clear-button(@click='clearSelection') ＋
     .datepicker(:class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
-        .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
+        .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
+          @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
+          v-if='isOpen'
+        )
           input.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
             :value="`${checkIn ? formatDate(checkIn) : ''}`"
@@ -61,6 +64,7 @@
                 :checkIn='checkIn'
                 :checkOut='checkOut'
               )
+
         .datepicker__week-row(v-if='screenSize !== "desktop"')
           .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
         .datepicker__months#swiperWrapper(v-if='screenSize !== "desktop"')
@@ -244,7 +248,6 @@ export default {
       this.show = true;
       this.parseDisabledDates();
       this.reRender()
-
       this.isOpen = false;
       }
     },
