@@ -44,6 +44,15 @@ export default {
     nextDisabledDate: {
       type: [Date, Number]
     },
+    startDate: {
+      default: function() {
+        return new Date()
+      },
+      type: [ Date, String ]
+    },
+    endDate: {
+      type: [ Date, String, Boolean ]
+    },
   },
 
   data() {
@@ -120,6 +129,17 @@ export default {
       return new Date(time1) <= new Date(time2);
     },
 
+    compareDay(day1, day2) {
+      const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
+      const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
+
+      if (date1 > date2) { return 1; }
+
+      else if (date1 == date2) { return 0; }
+
+      else if (date1 < date2) { return -1; }
+    },
+
     dayClicked(date) {
       if (this.isDisabled) {
         return
@@ -129,11 +149,18 @@ export default {
       }
     },
 
-    checkIfDisabled(){
-      this.isDisabled = _.some(
-        this.disabledDates, (i) =>
-        fecha.format(i, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')
-      )
+    checkIfDisabled() {
+      this.isDisabled =
+        // If this day is equals any of the disabled dates
+        _.some(
+          this.disabledDates, (i) =>
+          fecha.format(i, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')
+        )
+        // Or is before the start date
+        || this.compareDay(this.date, this.startDate) == -1
+        // Or is after the end date
+        || this.compareDay(this.date, this.endDate) == 1 
+
     },
 
     checkIfHighlighted(){
@@ -305,6 +332,8 @@ $dark-gray: #2d3047;
     text-indent: 35px;
     width: calc(50% + 4px);
 
+    @include device($phone) { text-indent: 10px; }
+
     &:first-child {
       background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
       width: calc(50% - 4px)
@@ -384,6 +413,7 @@ $dark-gray: #2d3047;
   }
 
   &__months {
+    @include device($desktop) { width: 650px; }
 
     @include device($up-to-tablet) {
       margin-top: 92px;

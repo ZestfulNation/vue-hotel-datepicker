@@ -53,6 +53,8 @@
             .square(v-for='day in months[activeMonthIndex+n].days'
               @mouseover='hoveringDate = day.date')
               Day(
+                :startDate='startDate'
+                :endDate='endDate'
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
                 :disabledDates='sortedDisabledDates'
@@ -75,6 +77,8 @@
             .square(v-for='day in months[n].days'
               @mouseover='hoveringDate = day.date')
               Day(
+                :startDate='startDate'
+                :endDate='endDate'
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
                 :disabledDates='sortedDisabledDates'
