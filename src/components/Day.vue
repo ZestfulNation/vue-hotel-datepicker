@@ -188,10 +188,6 @@ export default {
     this.checkIfDisabled()
     this.checkIfHighlighted()
   },
-
-  mounted(){
-
-  }
 }
 </script>
 
@@ -417,7 +413,7 @@ $dark-gray: #2d3047;
 
     @include device($up-to-tablet) {
       margin-top: 92px;
-      height: calc(100% - 65px);
+      height: calc(100% - 92px);
       position: absolute;
       left: 0;
       top: 0;
