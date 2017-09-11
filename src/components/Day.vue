@@ -55,11 +55,22 @@ export default {
 
   computed: {
     dayClass: function(){
+      if ( this.checkIn !== null ) {
+        if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
+          return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
+        }
+      }
+      if ( this.checkOut !== null ) {
+        if ( fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
+          return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
+        }
+      }
       if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
       if ( this.isHighlighted && !this.isDisabled) { return " datepicker__month-day--selected"}
       if ( this.isDisabled ) { return "datepicker__month-day--disabled" }
-      else {  return "datepicker__month-day--valid" }
 
+
+      else {  return "datepicker__month-day--valid" }
     },
   },
 
@@ -545,13 +556,10 @@ $dark-gray: #2d3047;
       color: $medium-gray;
     }
 
-    &--first-day-selected {
-      background: $primary-color;
-      // background: $white url('range_start.jpg') no-repeat center right / 100% 100%;
-    }
+    &--first-day-selected,
     &--last-day-selected {
       background: $primary-color;
-      // background: $white url('range_end.png') no-repeat center left / 100% 100%;
+      color: $white;
     }
   }
 
