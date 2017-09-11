@@ -42,14 +42,33 @@
           span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
             @click='renderNextMonth'
           )
-        .datepicker__week-row.-hide-on-desktop
-          .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-        .datepicker__months#swiperWrapper
+        .datepicker__months(v-if='screenSize == "desktop"')
           div.datepicker__month(v-for='n in [0,1]')
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex+n].days'
+              @mouseover='hoveringDate = day.date')
+              Day(
+                @dayClicked='handleDayClick($event)'
+                :date='day.date'
+                :disabledDates='sortedDisabledDates'
+                :nextDisabledDate='nextDisabledDate'
+                :activeMonthIndex='activeMonthIndex'
+                :hoveringDate='hoveringDate'
+                :dayNumber='getDay(day.date)'
+                :belongsToThisMonth='day.belongsToThisMonth'
+                :checkIn='checkIn'
+                :checkOut='checkOut'
+              )
+        .datepicker__week-row(v-if='screenSize !== "desktop"')
+          .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+        .datepicker__months#swiperWrapper(v-if='screenSize !== "desktop"')
+          div.datepicker__month(v-for='(a, n) in months')
+            h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
+            .datepicker__week-row.-hide-up-to-tablet
+              .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
+            .square(v-for='day in months[n].days'
               @mouseover='hoveringDate = day.date')
               Day(
                 @dayClicked='handleDayClick($event)'

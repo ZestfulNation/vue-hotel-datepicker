@@ -55,12 +55,12 @@ export default {
 
   computed: {
     dayClass: function(){
-      if ( this.checkIn !== null ) {
+      if ( this.checkIn !== null && this.belongsToThisMonth ) {
         if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
           return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
         }
       }
-      if ( this.checkOut !== null ) {
+      if ( this.checkOut !== null && this.belongsToThisMonth ) {
         if ( fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
           return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
         }
