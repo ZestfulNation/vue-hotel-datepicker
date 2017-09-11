@@ -3,7 +3,7 @@
     div
       WIP(
         :disabledDates="[ '2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
-        endDate="2017-12-31")
+        endDate="2018-01-15")
 </template>
 
 <script>
@@ -11,10 +11,10 @@ import DatePicker from 'components/HotelDatePicker.vue';
 import WIP from 'components/WIP.vue';
 
 export default {
-    components: {
-        DatePicker,
-        WIP
-    },
+  components: {
+    DatePicker,
+    WIP
+  },
 };
 
 </script>

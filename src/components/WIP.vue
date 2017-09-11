@@ -304,6 +304,13 @@ export default {
         'belongsToThisMonth': true
       });
 
+      if (!!this.endDate){
+        if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
+            fecha.format(new Date(this.endDate), 'YYYYMM')) {
+          return
+        }
+      }
+
       this.createMonth(
         this.getNextMonth(
           firstDayOfLastMonth[0].date
@@ -352,7 +359,6 @@ export default {
       } else {
         nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
       }
-
       return nextMonth;
     },
 

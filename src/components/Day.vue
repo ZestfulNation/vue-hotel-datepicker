@@ -154,12 +154,12 @@ export default {
         // If this day is equals any of the disabled dates
         _.some(
           this.disabledDates, (i) =>
-          fecha.format(i, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')
+          this.compareDay(i, this.date) == 0
         )
         // Or is before the start date
         || this.compareDay(this.date, this.startDate) == -1
         // Or is after the end date
-        || this.compareDay(this.date, this.endDate) == 1 
+        || this.compareDay(this.date, this.endDate) == 1
 
     },
 
