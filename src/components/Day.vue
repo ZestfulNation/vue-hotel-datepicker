@@ -41,6 +41,10 @@ export default {
     disabledDates: {
       type: Array
     },
+    disabledDaysOfWeek: {
+      default: function(){ return [] },
+      type: Array
+    },
     nextDisabledDate: {
       type: [Date, Number]
     },
@@ -86,8 +90,8 @@ export default {
   watch: {
     hoveringDate: function(date) {
       if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
-        this.compareDates(this.checkIn, this.date) &&
-        this.compareDates(this.date, this.hoveringDate) ?
+        this.isDateLessOrEquals(this.checkIn, this.date) &&
+        this.isDateLessOrEquals(this.date, this.hoveringDate) ?
         this.isHighlighted = true : this.isHighlighted = false
       }
     },
@@ -95,8 +99,8 @@ export default {
       this.checkIfDisabled()
       this.checkIfHighlighted()
       if ( this.checkIn !== null  && this.checkOut !== null ) {
-          this.compareDates(this.checkIn, this.date) &&
-          this.compareDates(this.date, this.checkOut) ?
+          this.isDateLessOrEquals(this.checkIn, this.date) &&
+          this.isDateLessOrEquals(this.date, this.checkOut) ?
           this.isHighlighted = true : this.isHighlighted = false
       } else if ( this.checkIn !== null  && this.checkOut == null ) {
         this.disableNextDays()
@@ -125,7 +129,7 @@ export default {
       return closest
     },
 
-    compareDates(time1, time2) {
+    isDateLessOrEquals(time1, time2) {
       return new Date(time1) <= new Date(time2);
     },
 
@@ -151,7 +155,7 @@ export default {
 
     checkIfDisabled() {
       this.isDisabled =
-        // If this day is equals any of the disabled dates
+        // If this day is equal any of the disabled dates
         _.some(
           this.disabledDates, (i) =>
           this.compareDay(i, this.date) == 0
@@ -160,22 +164,28 @@ export default {
         || this.compareDay(this.date, this.startDate) == -1
         // Or is after the end date
         || this.compareDay(this.date, this.endDate) == 1
+        // Or is in one of the disabled days of the week
+        || _.some(
+          this.disabledDaysOfWeek, (i) =>
+          i == fecha.format(this.date, 'dddd')
+        )
+
 
     },
 
     checkIfHighlighted(){
       if ( this.checkIn !== null  && this.checkOut !== null && this.isDisabled == false) {
-        this.compareDates(this.checkIn, this.date) &&
-        this.compareDates(this.date, this.checkOut) ?
+        this.isDateLessOrEquals(this.checkIn, this.date) &&
+        this.isDateLessOrEquals(this.date, this.checkOut) ?
         this.isHighlighted = true : this.isHighlighted = false
       }
     },
 
     disableNextDays(){
-      if ( !this.compareDates(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
+      if ( !this.isDateLessOrEquals(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
         this.isDisabled = true;
       }
-      else if ( this.compareDates(this.date, this.checkIn) ) {
+      else if ( this.isDateLessOrEquals(this.date, this.checkIn) ) {
         this.isDisabled = true;
       }
       else {
@@ -328,7 +338,10 @@ $dark-gray: #2d3047;
     text-indent: 35px;
     width: calc(50% + 4px);
 
-    @include device($phone) { text-indent: 10px; }
+    @include device($phone) {
+      text-indent: 0;
+      text-align: center;
+    }
 
     &:first-child {
       background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
