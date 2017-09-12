@@ -1,9 +1,14 @@
 <template lang='pug'>
   #app
     div
+      //- WIP(
+      //-   :disabledDates="['2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
+      //-   :disabledDaysOfWeek='["Monday", "Tuesday"]'
+      //-   :allowedRanges="['7,10,14']"
+      //-   endDate="2017-12-31")
       WIP(
         :disabledDates="['2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
-        :disabledDaysOfWeek='["Monday", "Tuesday"]'
+        :allowedRanges="[7,10,14]"
         endDate="2017-12-31")
 </template>
 

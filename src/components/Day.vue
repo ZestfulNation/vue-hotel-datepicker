@@ -10,6 +10,8 @@
 import fecha from 'fecha';
 import _ from 'lodash';
 
+import Helpers from './helpers.js'
+
 export default {
   name: 'Day',
 
@@ -57,17 +59,31 @@ export default {
     endDate: {
       type: [ Date, String, Boolean ]
     },
+    allowedRanges: {
+      default: function(){ return [] },
+      type: Array
+    },
   },
 
   data() {
     return {
       isHighlighted: false,
       isDisabled: false,
+      allowedCheckoutDays: [],
     };
   },
 
   computed: {
     dayClass: function(){
+      // If the calendar has allowed ranges
+      if ( !this.isDisabled && this.checkIn !== null && this.belongsToThisMonth && this.checkOut == null ) {
+        if ( _.some(  this.allowedCheckoutDays, (i) =>
+              this.compareDay(i, this.date) == 0 ) ) {
+          return 'datepicker__month-day--valid'
+        } else {
+          return 'datepicker__month-day--disabled'
+          }
+      }
       if ( this.checkIn !== null && this.belongsToThisMonth ) {
         if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
           return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
@@ -112,9 +128,14 @@ export default {
     nextDisabledDate: function() {
       this.disableNextDays()
     },
+    checkIn: function() {
+      this.createAllowedCheckoutDays()
+    }
   },
 
   methods: {
+    ...Helpers,
+
     getNextDate(datesArray, referenceDate){
       var now = new Date(referenceDate);
       var closest = Infinity;
@@ -169,8 +190,6 @@ export default {
           this.disabledDaysOfWeek, (i) =>
           i == fecha.format(this.date, 'dddd')
         )
-
-
     },
 
     checkIfHighlighted(){
@@ -178,6 +197,16 @@ export default {
         this.isDateLessOrEquals(this.checkIn, this.date) &&
         this.isDateLessOrEquals(this.date, this.checkOut) ?
         this.isHighlighted = true : this.isHighlighted = false
+      }
+    },
+
+    createAllowedCheckoutDays(){
+      if (this.checkIn !== null && this.checkOut == null) {
+        this.allowedCheckoutDays = [];
+        _.forEach(
+          this.allowedRanges, (i) =>
+          this.allowedCheckoutDays.push(this.addDays(this.checkIn, i))
+        )
       }
     },
 
