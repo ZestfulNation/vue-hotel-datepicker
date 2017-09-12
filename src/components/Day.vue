@@ -76,28 +76,27 @@ export default {
   computed: {
     dayClass: function(){
       // If the calendar has allowed ranges
-      if ( !this.isDisabled && this.checkIn !== null && this.belongsToThisMonth && this.checkOut == null ) {
-        // If the day is after the checkin but before the 1st allowed Checkout Day
-        if ( this.compareDay(this.date, this.checkIn) == 1 && this.compareDay(this.date, this.allowedCheckoutDays[0]) == -1 ) {
-          return 'datepicker__month-day--selected datepicker__month-day--valid'
+      if (this.allowedRanges.length !== 0) {
+        if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null && this.belongsToThisMonth ) {
+          // If the day is one of the allowed check out days and is not highlighted
+          if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
+            return 'datepicker__month-day--allowed-checkout'
+          }
+          // If the day is one of the allowed check out days and is highlighted
+          if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && this.isHighlighted) ) {
+            return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout'
+          }
+          // If the day is not one of the allowed Checkout Days and is highlighted
+          if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
+            return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
+          }
+          //
+          else {
+            return 'datepicker__month-day datepicker__month-day--out-of-range'
+          }
         }
-        // Or if the day is after the first allowed checkout but before the last one
-        if ( this.compareDay(this.date, this.checkIn) == 1 && this.compareDay(this.date, this.allowedCheckoutDays[this.allowedCheckoutDays.length-1]) == -1 ) {
-          return 'datepicker__month-day--out-of-range'
-        }
-        // // Or if the day is after the last allowed checkout
-        // if ( this.compareDay(this.date, this.allowedCheckoutDays[this.allowedCheckoutDays.length-1]) == -1 ) {
-        //   return 'datepicker__month-day--disabled'
-        // }
-        // If the day is one of the allowed Checkout Days
-        if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 ) ) {
-          return 'datepicker__month-day--valid datepicker__month-day--selected'
-        }
-        // If the day is not one of the allowed Checkout Days
-        // if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) ) {
-        //   return 'datepicker__month-day--valid datepicker__month-day--out-of-range'
-        // }
       }
+
       if ( this.checkIn !== null && this.belongsToThisMonth ) {
         if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
           return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
@@ -140,10 +139,10 @@ export default {
 
     },
     nextDisabledDate: function() {
-      this.disableNextDays()
+      this.disableNextDays();
     },
-    checkIn: function() {
-      this.createAllowedCheckoutDays()
+    checkIn: function(date) {
+      this.createAllowedCheckoutDays(date);
     }
   },
 
@@ -182,8 +181,14 @@ export default {
     dayClicked(date) {
       if (this.isDisabled) {
         return
-      } else {
-        const nextDisabledDate = this.getNextDate(this.disabledDates, this.date) || null;
+      }
+      else {
+        if (this.allowedRanges.length !== 0) {
+          this.createAllowedCheckoutDays(date);
+        }
+        const nextDisabledDate = this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
+                                 this.getNextDate(this.disabledDates, this.date) ||
+                                 null;
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },
@@ -214,14 +219,12 @@ export default {
       }
     },
 
-    createAllowedCheckoutDays(){
-      if (this.checkIn !== null && this.checkOut == null) {
-        this.allowedCheckoutDays = [];
-        _.forEach(
-          this.allowedRanges, (i) =>
-          this.allowedCheckoutDays.push(this.addDays(this.checkIn, i))
-        )
-      }
+    createAllowedCheckoutDays(date){
+      this.allowedCheckoutDays = [];
+      _.forEach(
+        this.allowedRanges, (i) =>
+        this.allowedCheckoutDays.push(this.addDays(date, i))
+      )
       this.allowedCheckoutDays.sort((a, b) =>  a - b );
     },
 
@@ -402,14 +405,20 @@ $dark-gray: #2d3047;
   &__month-day {
     visibility: visible;
 
+    &--allowed-checkout {
+      color: $primary-color;
+    }
+
     &--out-of-range {
-      color: red !important;
+      color: #e8ebf4;
       cursor: not-allowed;
+      position: relative;
       pointer-events: none;
     }
 
     &--valid {
       cursor: pointer;
+      color: #acb2c1;
     }
 
     &--hidden {
@@ -576,7 +585,6 @@ $dark-gray: #2d3047;
   &__month-day {
     will-change: auto;
     text-align: center;
-    color: #acb2c1;
     margin: 0;
     border: 0;
     height: 40px;
@@ -594,7 +602,8 @@ $dark-gray: #2d3047;
       cursor: not-allowed;
     }
 
-    &--valid:hover {
+    &--valid:hover,
+    &--allowed-checkout:hover {
       background-color: #fff;
       color: $primary-color;
       z-index: 1;
