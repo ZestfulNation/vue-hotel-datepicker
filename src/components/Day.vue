@@ -1,9 +1,11 @@
 <template lang='pug'>
-  .datepicker__month-day(
-    @click='dayClicked(date)'
-    v-text='dayNumber'
-    :class='dayClass'
-  )
+  div
+    .datepicker__tooltip(v-if='showTooltip') xxx
+    .datepicker__month-day(
+      @click='dayClicked(date)'
+      v-text='dayNumber'
+      :class='dayClass'
+    )
 </template>
 
 <script>
@@ -74,6 +76,10 @@ export default {
   },
 
   computed: {
+    showTooltip: function() {
+      return !this.isDisabled && this.date == this.hoveringDate
+    },
+
     dayClass: function(){
       // If the calendar has allowed ranges
       if (this.allowedRanges.length !== 0) {
@@ -90,7 +96,6 @@ export default {
           if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
             return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
           }
-          //
           else {
             return 'datepicker__month-day datepicker__month-day--out-of-range'
           }
@@ -756,10 +761,11 @@ $dark-gray: #2d3047;
 
   &__tooltip {
     background-color: $dark-gray;
-    color: #fff;
     border-radius: 2px;
+    color: #fff;
     font-size: 11px;
-    margin-top: -5px;
+    margin-left: 5px;
+    margin-top: -22px;
     padding: 5px 10px;
     z-index: 50;
 

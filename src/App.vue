@@ -8,7 +8,6 @@
       //-   endDate="2017-12-31")
       WIP(
         :allowedRanges="[7,10,14]"
-        :disabledDates="['2017-09-17']"
         endDate="2018-12-15")
 </template>
 

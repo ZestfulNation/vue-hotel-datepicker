@@ -133,32 +133,12 @@ export default {
     value: {
       type: String
     },
-    useDummyInputs: {
-      default: true,
-      type: Boolean
-    },
-    placeholder: {
-      default: 'Check-in ► Check-out',
-      type: String
-    },
     DatePickerID: {
       default: '1',
       type: String
     },
     format: {
-        default: 'YYYY-MM-DD',
-        type: String
-    },
-    infoFormat: {
       default: 'YYYY-MM-DD',
-      type: String
-    },
-    separator: {
-      default: ' ► ',
-      type: String
-    },
-    startOfWeek: {
-      default: 'monday',
       type: String
     },
     startDate: {
@@ -178,10 +158,6 @@ export default {
       default: 0,
       type: Number
     },
-    selectForward: {
-      default: true,
-      type: Boolean,
-    },
     disabledDates: {
       default: function(){ return [] },
       type: Array
@@ -197,14 +173,6 @@ export default {
     enableCheckout: {
       default: false,
       type: Boolean
-    },
-    container: {
-      default: '',
-      type: String
-    },
-    animationSpeed: {
-      default: '.2s',
-      type: String
     },
     hoveringTooltip: {
       default: true,
