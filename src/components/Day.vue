@@ -77,12 +77,26 @@ export default {
     dayClass: function(){
       // If the calendar has allowed ranges
       if ( !this.isDisabled && this.checkIn !== null && this.belongsToThisMonth && this.checkOut == null ) {
-        if ( _.some(  this.allowedCheckoutDays, (i) =>
-              this.compareDay(i, this.date) == 0 ) ) {
-          return 'datepicker__month-day--valid'
-        } else {
-          return 'datepicker__month-day--disabled'
-          }
+        // If the day is after the checkin but before the 1st allowed Checkout Day
+        if ( this.compareDay(this.date, this.checkIn) == 1 && this.compareDay(this.date, this.allowedCheckoutDays[0]) == -1 ) {
+          return 'datepicker__month-day--selected datepicker__month-day--valid'
+        }
+        // Or if the day is after the first allowed checkout but before the last one
+        if ( this.compareDay(this.date, this.checkIn) == 1 && this.compareDay(this.date, this.allowedCheckoutDays[this.allowedCheckoutDays.length-1]) == -1 ) {
+          return 'datepicker__month-day--out-of-range'
+        }
+        // // Or if the day is after the last allowed checkout
+        // if ( this.compareDay(this.date, this.allowedCheckoutDays[this.allowedCheckoutDays.length-1]) == -1 ) {
+        //   return 'datepicker__month-day--disabled'
+        // }
+        // If the day is one of the allowed Checkout Days
+        if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 ) ) {
+          return 'datepicker__month-day--valid datepicker__month-day--selected'
+        }
+        // If the day is not one of the allowed Checkout Days
+        // if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) ) {
+        //   return 'datepicker__month-day--valid datepicker__month-day--out-of-range'
+        // }
       }
       if ( this.checkIn !== null && this.belongsToThisMonth ) {
         if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
@@ -208,6 +222,7 @@ export default {
           this.allowedCheckoutDays.push(this.addDays(this.checkIn, i))
         )
       }
+      this.allowedCheckoutDays.sort((a, b) =>  a - b );
     },
 
     disableNextDays(){
@@ -386,6 +401,12 @@ $dark-gray: #2d3047;
 
   &__month-day {
     visibility: visible;
+
+    &--out-of-range {
+      color: red !important;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
     &--valid {
       cursor: pointer;
