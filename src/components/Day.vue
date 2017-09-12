@@ -1,6 +1,6 @@
 <template lang='pug'>
   div
-    .datepicker__tooltip(v-if='showTooltip') xxx
+    .datepicker__tooltip(v-if='showTooltip') {{countDays(this.checkIn, this.hoveringDate)}}
     .datepicker__month-day(
       @click='dayClicked(date)'
       v-text='dayNumber'
@@ -77,7 +77,10 @@ export default {
 
   computed: {
     showTooltip: function() {
-      return !this.isDisabled && this.date == this.hoveringDate
+      return  !this.isDisabled &&
+              this.date == this.hoveringDate &&
+              this.checkIn !== null &&
+              this.checkOut == null;
     },
 
     dayClass: function(){
