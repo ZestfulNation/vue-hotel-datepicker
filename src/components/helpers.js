@@ -22,9 +22,9 @@ module.exports = {
     },
     getFirstDayOfMonth(date) {
         return new Date(
-      date.getFullYear(),
-      date.getMonth(), 1
-    );
+          date.getFullYear(),
+          date.getMonth(), 1
+        );
     },
     getNextMonth(date){
         let nextMonth;

@@ -53,10 +53,7 @@
             .square(v-for='day in months[activeMonthIndex+n].days'
               @mouseover='hoveringDate = day.date')
               Day(
-                :disabledDaysOfWeek='disabledDaysOfWeek'
-                :allowedRanges='allowedRanges'
-                :startDate='startDate'
-                :endDate='endDate'
+                :options="$props"
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
                 :disabledDates='sortedDisabledDates'
@@ -79,10 +76,7 @@
             .square(v-for='day in months[n].days'
               @mouseover='hoveringDate = day.date')
               Day(
-                :disabledDaysOfWeek='disabledDaysOfWeek'
-                :allowedRanges='allowedRanges'
-                :startDate='startDate'
-                :endDate='endDate'
+                :options="$props"
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
                 :disabledDates='sortedDisabledDates'
@@ -104,37 +98,20 @@ import Day from './Day.vue';
 import Helpers from './helpers.js';
 
 const defaulti18n = {
-    selected: 'Your stay:',
-    night: 'Night',
-    nights: 'Nights',
-    button: 'Close',
-    'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-    'check-in': 'Check-in',
-    'check-out': 'Check-Out',
-    'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    'error-more': 'Date range should not be more than 1 night',
-    'error-more-plural': 'Date range should not be more than %d nights',
-    'error-less': 'Date range should not be less than 1 night',
-    'error-less-plural': 'Date range should not be less than %d nights',
-    'info-more': 'Please select a date range longer than 1 night',
-    'info-more-plural': 'Please select a date range longer than %d nights',
-    'info-range': 'Please select a date range between %d and %d nights',
-    'info-default': 'Please select a date range'
+  nights: 'Nights',
+  'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+  'check-in': 'Check-in',
+  'check-out': 'Check-Out',
+  'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 };
 
 export default {
   name: 'WIP',
 
-  components: {
-    Day,
-  },
+  components: { Day, },
 
   props: {
     value: {
-      type: String
-    },
-    DatePickerID: {
-      default: '1',
       type: String
     },
     format: {
@@ -151,7 +128,7 @@ export default {
       type: [ Date, String, Boolean ]
     },
     minNights: {
-      default: 1,
+      default: 5,
       type: Number
     },
     maxNights: {
@@ -169,10 +146,6 @@ export default {
     allowedRanges: {
       default: function(){ return [] },
       type: Array
-    },
-    enableCheckout: {
-      default: false,
-      type: Boolean
     },
     hoveringTooltip: {
       default: true,
@@ -232,12 +205,14 @@ export default {
 
   methods: {
     ...Helpers,
+
     reRender() {
       this.show = false
       this.$nextTick(() => {
         this.show = true;
       })
     },
+
     clearSelection(){
       this.hoveringDate = null,
       this.checkIn = null;
@@ -247,9 +222,9 @@ export default {
       this.parseDisabledDates();
       this.reRender()
     },
-    hideDatepicker(){
-      this.isOpen = false;
-    },
+
+    hideDatepicker() { this.isOpen = false; },
+
     handleDayClick(event) {
       if (this.checkIn == null) {
         this.checkIn = event.date;
@@ -264,16 +239,14 @@ export default {
       this.nextDisabledDate = event.nextDisabledDate
     },
 
-    renderPreviousMonth(){
+    renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
         this.activeMonthIndex--
       }
-      else {
-        return
-      }
+      else return
     },
 
-    renderNextMonth(){
+    renderNextMonth() {
       const firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
         'belongsToThisMonth': true
       });
@@ -294,13 +267,9 @@ export default {
       this.activeMonthIndex++;
     },
 
-    setCheckIn(date) {
-      this.checkIn = date;
-    },
+    setCheckIn(date) { this.checkIn = date; },
 
-    setCheckOut(date) {
-      this.checkOut = date;
-    },
+    setCheckOut(date) { this.checkOut = date; },
 
     getDay(date) { return fecha.format(date, 'D') },
 
@@ -310,6 +279,7 @@ export default {
 
     createMonth(date){
       const firstSunday = this.getFirstSunday(date);
+
       let month = {
         days: []
       };
@@ -325,7 +295,6 @@ export default {
       this.months.push(month);
     },
 
-    //============== Handle options ==============//
     parseDisabledDates() {
       const sortedDates = [];
 
@@ -345,6 +314,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.$props)
     document.addEventListener('touchstart', this.handleTouchStart, false);
     document.addEventListener('touchmove', this.handleTouchMove, false);
   },

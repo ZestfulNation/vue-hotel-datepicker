@@ -1,6 +1,7 @@
 <template lang='pug'>
   div
-    .datepicker__tooltip(v-if='showTooltip') {{countDays(this.checkIn, this.hoveringDate)}}
+    span
+    .datepicker__tooltip(v-if='showTooltip && this.hoveringTooltip') {{countDays(this.checkIn, this.hoveringDate)}} {{options.i18n['nights']}}
     .datepicker__month-day(
       @click='dayClicked(date)'
       v-text='dayNumber'
@@ -18,6 +19,9 @@ export default {
   name: 'Day',
 
   props: {
+    options: {
+      type: Object
+    },
     checkIn: {
       type: Date
     },
@@ -42,28 +46,12 @@ export default {
     dayNumber: {
       type: String
     },
-    disabledDates: {
-      type: Array
-    },
-    disabledDaysOfWeek: {
-      default: function(){ return [] },
-      type: Array
-    },
     nextDisabledDate: {
-      type: [Date, Number]
+      type: [Date, Number, String]
     },
-    startDate: {
-      default: function() {
-        return new Date()
-      },
-      type: [ Date, String ]
-    },
-    endDate: {
-      type: [ Date, String, Boolean ]
-    },
-    allowedRanges: {
-      default: function(){ return [] },
-      type: Array
+    hoveringTooltip: {
+      default: true,
+      type: Boolean
     },
   },
 
@@ -85,7 +73,7 @@ export default {
 
     dayClass: function(){
       // If the calendar has allowed ranges
-      if (this.allowedRanges.length !== 0) {
+      if (this.options.allowedRanges.length !== 0) {
         if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null && this.belongsToThisMonth ) {
           // If the day is one of the allowed check out days and is not highlighted
           if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
@@ -130,6 +118,9 @@ export default {
         this.isDateLessOrEquals(this.checkIn, this.date) &&
         this.isDateLessOrEquals(this.date, this.hoveringDate) ?
         this.isHighlighted = true : this.isHighlighted = false
+      }
+      if( this.checkIn !== null  && this.checkOut == null && this.allowedCheckoutDays.length !== 0){
+
       }
     },
     activeMonthIndex: function(index) {
@@ -191,11 +182,11 @@ export default {
         return
       }
       else {
-        if (this.allowedRanges.length !== 0) {
+        if (this.options.allowedRanges.length !== 0) {
           this.createAllowedCheckoutDays(date);
         }
         const nextDisabledDate = this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
-                                 this.getNextDate(this.disabledDates, this.date) ||
+                                 this.getNextDate(this.options.disabledDates, this.date) ||
                                  null;
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
@@ -205,16 +196,16 @@ export default {
       this.isDisabled =
         // If this day is equal any of the disabled dates
         _.some(
-          this.disabledDates, (i) =>
+          this.options.disabledDates, (i) =>
           this.compareDay(i, this.date) == 0
         )
         // Or is before the start date
-        || this.compareDay(this.date, this.startDate) == -1
+        || this.compareDay(this.date, this.options.startDate) == -1
         // Or is after the end date
-        || this.compareDay(this.date, this.endDate) == 1
+        || this.compareDay(this.date, this.options.endDate) == 1
         // Or is in one of the disabled days of the week
         || _.some(
-          this.disabledDaysOfWeek, (i) =>
+          this.options.disabledDaysOfWeek, (i) =>
           i == fecha.format(this.date, 'dddd')
         )
     },
@@ -230,7 +221,7 @@ export default {
     createAllowedCheckoutDays(date){
       this.allowedCheckoutDays = [];
       _.forEach(
-        this.allowedRanges, (i) =>
+        this.options.allowedRanges, (i) =>
         this.allowedCheckoutDays.push(this.addDays(date, i))
       )
       this.allowedCheckoutDays.sort((a, b) =>  a - b );
@@ -414,7 +405,7 @@ $dark-gray: #2d3047;
     visibility: visible;
 
     &--allowed-checkout {
-      color: $primary-color;
+      color: #acb2c1;
     }
 
     &--out-of-range {
