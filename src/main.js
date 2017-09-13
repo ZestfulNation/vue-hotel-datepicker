@@ -9,6 +9,6 @@ Vue.use(VueTouch, {name: 'v-touch'});
 Vue.use(screenSizeChecker);
 
 new Vue({
-    el: '#app',
-    render: h => h(App)
+  el: '#app',
+  render: h => h(App)
 });

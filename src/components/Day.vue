@@ -74,7 +74,7 @@ export default {
     dayClass: function(){
       if (this.belongsToThisMonth) {
 
-        // If the calendar has min nights
+        // If the calendar has a minimum number of nights
         if ( !this.isDisabled &&
              this.compareDay(this.date, this.checkIn) == 1 &&
              this.options.minNights !== 0 &&
@@ -84,6 +84,7 @@ export default {
               ) == -1) {
             return 'datepicker__month-day--selected datepicker__month-day--out-of-range'
         }
+
         // If the calendar has allowed ranges
         if (this.options.allowedRanges.length !== 0) {
           if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null ) {
@@ -104,7 +105,8 @@ export default {
             }
           }
         }
-
+        // Highlight the selected dates and prevent the user from selecting
+        // the same date for checkout and checkin
         if ( this.checkIn !== null ) {
           if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
             return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
@@ -115,7 +117,7 @@ export default {
             return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
           }
         }
-
+        // Only highlight dates that are not disabled
         if ( this.isHighlighted && !this.isDisabled) { return " datepicker__month-day--selected"}
         if ( this.isDisabled ) { return "datepicker__month-day--disabled" }
       }
@@ -198,10 +200,11 @@ export default {
         if (this.options.allowedRanges.length !== 0) {
           this.createAllowedCheckoutDays(date);
         }
-        const nextDisabledDate = ( this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
-                                 this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
-                                 this.getNextDate(this.options.disabledDates, this.date) ||
-                                 null;
+        const nextDisabledDate =
+          (this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
+          this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
+          this.getNextDate(this.options.disabledDates, this.date) ||
+          null;
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },
