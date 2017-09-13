@@ -125,6 +125,7 @@ export default {
       type: [ Date, String ]
     },
     endDate: {
+      default: Infinity,
       type: [ Date, String, Boolean ]
     },
     minNights: {
@@ -132,7 +133,7 @@ export default {
       type: Number
     },
     maxNights: {
-      default: 0,
+      default: null,
       type: Number
     },
     disabledDates: {
@@ -314,7 +315,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.$props)
     document.addEventListener('touchstart', this.handleTouchStart, false);
     document.addEventListener('touchmove', this.handleTouchMove, false);
   },

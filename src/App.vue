@@ -6,7 +6,7 @@
       //-   :disabledDaysOfWeek='["Monday", "Tuesday"]'
       //-   endDate="2017-12-31")
       WIP(
-        :allowedRanges="[7,10,14]"
+        :maxNights='10'
         endDate="2018-12-15")
 </template>
 

@@ -185,9 +185,11 @@ export default {
         if (this.options.allowedRanges.length !== 0) {
           this.createAllowedCheckoutDays(date);
         }
-        const nextDisabledDate = this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
+        const nextDisabledDate = ( this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
+                                 this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
                                  this.getNextDate(this.options.disabledDates, this.date) ||
                                  null;
+        console.log(this.addDays(this.date, this.options.maxNights))
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },
