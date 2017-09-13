@@ -72,42 +72,55 @@ export default {
     },
 
     dayClass: function(){
-      // If the calendar has allowed ranges
-      if (this.options.allowedRanges.length !== 0) {
-        if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null && this.belongsToThisMonth ) {
-          // If the day is one of the allowed check out days and is not highlighted
-          if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
-            return 'datepicker__month-day--allowed-checkout'
-          }
-          // If the day is one of the allowed check out days and is highlighted
-          if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && this.isHighlighted) ) {
-            return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout'
-          }
-          // If the day is not one of the allowed Checkout Days and is highlighted
-          if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
-            return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
-          }
-          else {
-            return 'datepicker__month-day datepicker__month-day--out-of-range'
+      if (this.belongsToThisMonth) {
+
+        // If the calendar has min nights
+        if ( !this.isDisabled &&
+             this.compareDay(this.date, this.checkIn) == 1 &&
+             this.options.minNights !== 0 &&
+             this.compareDay(
+                this.date,
+                this.addDays(this.checkIn, this.options.minNights)
+              ) == -1) {
+            return 'datepicker__month-day--selected datepicker__month-day--out-of-range'
+        }
+        // If the calendar has allowed ranges
+        if (this.options.allowedRanges.length !== 0) {
+          if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null ) {
+            // If the day is one of the allowed check out days and is not highlighted
+            if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
+              return 'datepicker__month-day--allowed-checkout'
+            }
+            // If the day is one of the allowed check out days and is highlighted
+            if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && this.isHighlighted) ) {
+              return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout'
+            }
+            // If the day is not one of the allowed Checkout Days and is highlighted
+            if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
+              return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
+            }
+            else {
+              return 'datepicker__month-day datepicker__month-day--out-of-range'
+            }
           }
         }
-      }
 
-      if ( this.checkIn !== null && this.belongsToThisMonth ) {
-        if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
-          return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
+        if ( this.checkIn !== null ) {
+          if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
+            return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
+          }
         }
-      }
-      if ( this.checkOut !== null && this.belongsToThisMonth ) {
-        if ( fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
-          return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
+        if ( this.checkOut !== null ) {
+          if ( fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
+            return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
+          }
         }
+
+        if ( this.isHighlighted && !this.isDisabled) { return " datepicker__month-day--selected"}
+        if ( this.isDisabled ) { return "datepicker__month-day--disabled" }
       }
-      if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
-      if ( this.isHighlighted && !this.isDisabled) { return " datepicker__month-day--selected"}
-      if ( this.isDisabled ) { return "datepicker__month-day--disabled" }
 
-
+      else if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
       else {  return "datepicker__month-day--valid" }
     },
   },
@@ -189,7 +202,6 @@ export default {
                                  this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
                                  this.getNextDate(this.options.disabledDates, this.date) ||
                                  null;
-        console.log(this.addDays(this.date, this.options.maxNights))
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },

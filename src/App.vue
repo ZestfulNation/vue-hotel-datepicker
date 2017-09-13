@@ -7,6 +7,7 @@
       //-   endDate="2017-12-31")
       WIP(
         :maxNights='10'
+        :minNights='4'
         endDate="2018-12-15")
 </template>
 
