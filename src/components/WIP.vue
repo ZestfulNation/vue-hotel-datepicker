@@ -98,6 +98,7 @@ import Day from './Day.vue';
 import Helpers from './helpers.js';
 
 const defaulti18n = {
+  night: 'Night',
   nights: 'Nights',
   'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
   'check-in': 'Check-in',
