@@ -1,4 +1,7 @@
 module.exports = {
+  isDateLessOrEquals(time1, time2) {
+    return new Date(time1) <= new Date(time2);
+  },
   countDays(start, end) {
     const oneDay = 24 * 60 * 60 * 1000;
     const firstDate = new Date(start);
@@ -36,20 +39,17 @@ module.exports = {
     }
     return nextMonth;
   },
-//============== Handle mobile gestures ==============//
+
   swipeAfterScroll(direction){
     const swiperWrapper = document.getElementById('swiperWrapper');
 
-
-        // If wrapper has vertical scroll
+    // If wrapper has vertical scroll
     if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
       if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) ) {
         this.renderNextMonth();
-            // swiperWrapper.scrollTop = 0;
       }
       else if ( swiperWrapper.scrollTop === 0){
         this.renderPreviousMonth();
-            // swiperWrapper.scrollTop = 0;
       }
       else { return; }
     }
@@ -77,16 +77,16 @@ module.exports = {
 
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
       if ( xDiff > 0 ) {
-            //   swipe right
+        // swipe right
       } else {
-            //   swipe left
+        // swipe left
       }
     } else {
       if ( yDiff > 0 ) {
-            //   swipe up
+        // swipe up
         this.swipeAfterScroll('up');
       } else {
-            //   swipe down
+        // swipe down
         this.swipeAfterScroll('down');
       }
     }

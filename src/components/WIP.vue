@@ -1,8 +1,9 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper(@click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
+    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
       input.datepicker__dummy-input.datepicker__input(
+        data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
         :value="`${checkIn ? formatDate(checkIn) : ''}`"
         :placeholder="i18n['check-in']"
@@ -56,7 +57,7 @@
                 :options="$props"
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
-                :disabledDates='sortedDisabledDates'
+                :sortedDisabledDates='sortedDisabledDates'
                 :nextDisabledDate='nextDisabledDate'
                 :activeMonthIndex='activeMonthIndex'
                 :hoveringDate='hoveringDate'
@@ -69,17 +70,19 @@
         .datepicker__week-row(v-if='screenSize !== "desktop"')
           .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
         .datepicker__months#swiperWrapper(v-if='screenSize !== "desktop"')
-          div.datepicker__month(v-for='(a, n) in months')
+          div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
             h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[n].days'
-              @mouseover='hoveringDate = day.date')
+              @mouseover='hoveringDate = day.date'
+              v-bind:key='day.date'
+              )
               Day(
                 :options="$props"
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
-                :disabledDates='sortedDisabledDates'
+                :sortedDisabledDates='sortedDisabledDates'
                 :nextDisabledDate='nextDisabledDate'
                 :activeMonthIndex='activeMonthIndex'
                 :hoveringDate='hoveringDate'
@@ -107,7 +110,7 @@ const defaulti18n = {
 };
 
 export default {
-  name: 'WIP',
+  name: 'DatePicker',
 
   components: { Day, },
 
@@ -127,7 +130,7 @@ export default {
     },
     endDate: {
       default: Infinity,
-      type: [ Date, String, Boolean ]
+      type: [ Date, String, Number ]
     },
     minNights: {
       default: 5,
@@ -183,13 +186,8 @@ export default {
       yDown: null,
       xUp: null,
       yUp: null,
+      sortedDisabledDates: null,
     };
-  },
-
-  computed: {
-    sortedDisabledDates: function(){
-      return this.parseDisabledDates();
-    },
   },
 
   watch: {
@@ -249,11 +247,11 @@ export default {
     },
 
     renderNextMonth() {
-      const firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
+      const firstDayOfLastMonth = _.filter(this.months[this.activeMonthIndex+1].days, {
         'belongsToThisMonth': true
       });
 
-      if (!!this.endDate){
+      if (this.endDate !== Infinity){
         if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
             fecha.format(new Date(this.endDate), 'YYYYMM')) {
           return
@@ -305,7 +303,8 @@ export default {
       }
 
       sortedDates.sort((a, b) =>  a - b );
-      return sortedDates;
+
+      this.sortedDisabledDates = sortedDates;
     }
   },
 

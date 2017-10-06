@@ -19,6 +19,9 @@ export default {
   name: 'Day',
 
   props: {
+    sortedDisabledDates: {
+      type: Array
+    },
     options: {
       type: Object
     },
@@ -185,10 +188,6 @@ export default {
       return closest
     },
 
-    isDateLessOrEquals(time1, time2) {
-      return new Date(time1) <= new Date(time2);
-    },
-
     compareDay(day1, day2) {
       const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
       const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
@@ -208,12 +207,19 @@ export default {
         if (this.options.allowedRanges.length !== 0) {
           this.createAllowedCheckoutDays(date);
         }
+
         const nextDisabledDate =
           (this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
           this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
-          this.getNextDate(this.options.disabledDates, this.date) ||
+          this.getNextDate(this.sortedDisabledDates, this.date) ||
           null;
         this.$emit('dayClicked', { date, nextDisabledDate });
+      }
+    },
+
+    compareEndDay() {
+      if (this.options.endDate !== Infinity) {
+        return ( this.compareDay(this.date, this.options.endDate) == 1 )
       }
     },
 
@@ -221,13 +227,13 @@ export default {
       this.isDisabled =
         // If this day is equal any of the disabled dates
         _.some(
-          this.options.disabledDates, (i) =>
+          this.sortedDisabledDates, (i) =>
           this.compareDay(i, this.date) == 0
         )
         // Or is before the start date
         || this.compareDay(this.date, this.options.startDate) == -1
         // Or is after the end date
-        || this.compareDay(this.date, this.options.endDate) == 1
+        || this.compareEndDay()
         // Or is in one of the disabled days of the week
         || _.some(
           this.options.disabledDaysOfWeek, (i) =>
@@ -253,8 +259,9 @@ export default {
     },
 
     disableNextDays(){
-      if ( !this.isDateLessOrEquals(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
-        this.isDisabled = true;
+      if ( !this.isDateLessOrEquals(this.date, this.nextDisabledDate)
+            && this.nextDisabledDate !== Infinity) {
+              this.isDisabled = true;
       }
       else if ( this.isDateLessOrEquals(this.date, this.checkIn) ) {
         this.isDisabled = true;
@@ -271,6 +278,7 @@ export default {
   },
 }
 </script>
+
 
 <style lang="scss">
 .list-item {
@@ -313,32 +321,41 @@ $extra-small-screen: '(max-width: 23em)';
  * VARIABLES
  * ============================================================*/
 $white: #fff;
+$black:                #000;
+$gray:                 #424b53;
+$primary-text-color:   #35343d;
+$lightest-gray:        #f3f5f8;
 $primary-color: #00ca9d;
 $primary-color: $primary-color;
 $medium-gray: #999999;
 $light-gray: #d7d9e2;
 $dark-gray: #2d3047;
 
+$font-small: 14px;
+
 /* =============================================================
  * BASE STYLES
  * ============================================================*/
 
-
 .datepicker {
+  transition: all .2s ease-in-out;
+  background-color: $white;
+  color: $gray;
+  font-size: 16px;
+  line-height: 14px;
+  overflow: hidden;
   left: 0;
   top: 48px;
   position: absolute;
   z-index: 10;
-  transition:  max-height .5s ease-in-out, box-shadow .2s ease-in-out;
 
   &--closed {
-    box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0);
-    max-height: 0px;
-    transition:  max-height .5s ease-in-out, box-shadow .2s ease .4s;
+    box-shadow: 0 15px 30px 10px rgba($black, 0);
+    max-height: 0;
   }
 
   &--open {
-    box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 15px 30px 10px rgba($black, .08);
     max-height: 900px;
 
     @include device($up-to-tablet) {
@@ -356,16 +373,16 @@ $dark-gray: #2d3047;
     display: inline-block;
     width: 100%;
     height: 48px;
-    background: #fff url('calendar_icon.svg') no-repeat 10px center / 16px;
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
   }
 
   &__input {
-  	background: transparent;
+    background: transparent;
     height: 48px;
-    color: gray;
+    color: $primary-text-color;
     font-size: 12px;
     outline: none;
-    padding: 4px 30px 2px 30px;
+    padding: 4px 30px 2px;
     width: 100%;
     word-spacing: 5px;
     border: 0;
@@ -377,8 +394,8 @@ $dark-gray: #2d3047;
     &::-webkit-input-placeholder,
     &::-moz-placeholder,
     &:-ms-input-placeholder,
-    &:-moz-placeholder{
-      color: pink;
+    &:-moz-placeholder {
+      color: $primary-text-color;
     }
   }
 
@@ -401,12 +418,14 @@ $dark-gray: #2d3047;
   }
 
   &__dummy-input {
-    color: $medium-gray;
+    color: $primary-text-color;
+    padding-top: 0;
+    font-size: $font-small;
     float: left;
     height: 48px;
     line-height: 3.1;
     text-align: left;
-    text-indent: 35px;
+    text-indent: 5px;
     width: calc(50% + 4px);
 
     @include device($phone) {
@@ -415,8 +434,9 @@ $dark-gray: #2d3047;
     }
 
     &:first-child {
-      background: transparent url('ic-arrow-right.svg') no-repeat right center / 8px;
-      width: calc(50% - 4px)
+      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+      width: calc(50% - 4px);
+      text-indent: 20px;
     }
 
     &--is-active { color: $primary-color; }
@@ -428,13 +448,70 @@ $dark-gray: #2d3047;
 
   &__month-day {
     visibility: visible;
+    will-change: auto;
+    text-align: center;
+    margin: 0;
+    border: 0;
+    height: 40px;
+    padding-top: 15px;
+
+    &--invalid-range {
+      background-color: rgba($primary-color, .3);
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    &--invalid {
+      color: $lightest-gray;
+      cursor: not-allowed;
+    }
+
+    &--valid:hover,
+    &--allowed-checkout:hover {
+      background-color: $white;
+      color: $primary-color;
+      z-index: 1;
+      position: relative;
+      box-shadow: 0 0 10px 3px rgba($gray, .4);
+    }
+
+    &--disabled {
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    &--selected {
+      background-color: rgba($primary-color, .5);
+      color: $white;
+
+      &:hover {
+        background-color: $white;
+        color: $primary-color;
+        z-index: 1;
+        position: relative;
+        box-shadow: 0 0 10px 3px rgba($gray, .4);
+      }
+    }
+
+    &--today {
+      background-color: $light-gray;
+      color: $medium-gray;
+    }
+
+    &--first-day-selected,
+    &--last-day-selected {
+      background: $primary-color;
+      color: $white;
+    }
 
     &--allowed-checkout {
-      color: #acb2c1;
+      color: $medium-gray;
     }
 
     &--out-of-range {
-      color: #e8ebf4;
+      color: $lightest-gray;
       cursor: not-allowed;
       position: relative;
       pointer-events: none;
@@ -442,22 +519,22 @@ $dark-gray: #2d3047;
 
     &--valid {
       cursor: pointer;
-      color: #acb2c1;
+      color: $medium-gray;
     }
 
     &--hidden {
       visibility: hidden;
-      color: white;
+      color: $white;
       pointer-events: none;
     }
   }
 
   &__month-button {
+    background: transparent url('ic-arrow-right-green.regular.svg') no-repeat right center / 8px;
     cursor: pointer;
-    background: transparent url('ic-arrow-right-green.svg') no-repeat right center / 8px;
-    width: 60px;
+    display: inline-block;
     height: 60px;
-
+    width: 60px;
 
     &--prev { transform: rotateY(180deg); }
 
@@ -469,39 +546,11 @@ $dark-gray: #2d3047;
     }
   }
 
-  &__info {
-    &--feedback {
-      display: none;
-    }
-
-    &--error,
-    &--help {
-      display: block;
-    }
-  }
-
-  &__tooltip {
-    position: absolute;
-  }
-}
-
-/* =============================================================
- * THEME
- * ============================================================*/
-.datepicker {
-  background-color: #fff;
-  color: #484c55;
-  font-size: 16px;
-  line-height: 14px;
-  overflow: hidden;
-
   &__inner {
     padding: 20px;
     float: left;
 
-    @include device($up-to-tablet) {
-      padding: 0;
-    }
+    @include device($up-to-tablet) { padding: 0; }
   }
 
   &__months {
@@ -514,10 +563,12 @@ $dark-gray: #2d3047;
       left: 0;
       top: 0;
       overflow: scroll;
+      right: 0;
+      bottom: 0;
     }
 
     &::before {
-      background: #dcdcdc;
+      background: $light-gray;
       bottom: 0;
       content: '';
       display: block;
@@ -537,9 +588,9 @@ $dark-gray: #2d3047;
     padding-right: 10px;
 
     @include device($up-to-tablet) {
-    width: 100%;
-    padding-right: 0;
-    padding-top: 45px;
+      width: 100%;
+      padding-right: 0;
+      padding-top: 45px;
 
       &:last-of-type {
         padding-top: 0;
@@ -583,11 +634,11 @@ $dark-gray: #2d3047;
   }
 
   &__week-row {
-    border-bottom: 5px solid white;
+    border-bottom: 5px solid $white;
     height: 38px;
 
     @include device($up-to-tablet) {
-      box-shadow: 0 13px 18px -8px rgba(29,29,38,.07);
+      box-shadow: 0 13px 18px -8px rgba($black, .07);
       height: 25px;
       left: 0;
       top: 65px;
@@ -601,142 +652,8 @@ $dark-gray: #2d3047;
     float: left;
     font-size: 12px;
     font-weight: 400;
-    font-weight: lighter;
-    color: #9599aa;
+    color: $medium-gray;
     text-align: center;
-  }
-
-  &__month-day {
-    will-change: auto;
-    text-align: center;
-    margin: 0;
-    border: 0;
-    height: 40px;
-    padding-top: 15px;
-
-    &--invalid-range {
-      background-color: rgba($primary-color, 0.3);
-      color: #e8ebf4;
-      cursor: not-allowed;
-      position: relative;
-    }
-
-    &--invalid {
-      color: #e8ebf4;
-      cursor: not-allowed;
-    }
-
-    &--valid:hover,
-    &--allowed-checkout:hover {
-      background-color: #fff;
-      color: $primary-color;
-      z-index: 1;
-      position: relative;
-      box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
-    }
-
-    &--disabled {
-      color: #e8ebf4;
-      cursor: not-allowed;
-      position: relative;
-    }
-
-    &--selected {
-      background-color: rgba($primary-color, 0.5);
-      color: #fff;
-
-      &:hover {
-        background-color: #fff;
-        color: $primary-color;
-        z-index: 1;
-        position: relative;
-        box-shadow: 0 0 10px 3px rgba(0, 202, 157, .4);
-      }
-    }
-
-    &--hovering {
-      background-color: rgba($primary-color, 0.5);
-      color: #fff;
-
-      &.datepicker__month-day--valid:hover {
-        background-color: #fff;
-        color: $primary-color;
-        z-index: 1;
-        position: relative;
-
-        &::before,
-        &::after {
-          background-color: #fff;
-          // border-radius: 50%;
-          content: ' ';
-          height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
-          z-index: -1;
-        }
-
-        &:before {
-          content: ' ';
-          border-radius: 0 50% 50% 0;
-          background-color: rgba($primary-color, 0.5);
-        }
-      }
-    }
-
-    &--today {
-      background-color: $light-gray;
-      color: $medium-gray;
-    }
-
-    &--first-day-selected,
-    &--last-day-selected {
-      background: $primary-color;
-      color: $white;
-    }
-  }
-
-  &__month-button {
-    color: #9da6b8;
-    display: inline-block;
-
-    &:hover {
-      color: darken(#9da6b8, 10%);
-    }
-  }
-
-  &__topbar {
-    height: 20px;
-  }
-
-  &__info-text {
-    font-size: 13px;
-
-    &--selected-days {
-      font-size: 11px;
-      font-style: normal;
-    }
-  }
-
-  &__info {
-    &--selected {
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    &--selected-label { color: #acb2c1; }
-
-    &--error {
-      color: red;
-      font-size: 13px;
-      font-style: italic;
-    }
-
-    &--help {
-      color: #acb2c1;
-      font-style: italic;
-    }
   }
 
   &__close-button {
@@ -772,7 +689,7 @@ $dark-gray: #2d3047;
     outline: 0;
     padding: 0;
     position: absolute;
-    right: 0px;
+    right: 0;
     top: 0;
     transform: rotate(45deg);
     width: 40px;
@@ -781,11 +698,12 @@ $dark-gray: #2d3047;
   &__tooltip {
     background-color: $dark-gray;
     border-radius: 2px;
-    color: #fff;
+    color: $white;
     font-size: 11px;
     margin-left: 5px;
     margin-top: -22px;
     padding: 5px 10px;
+    position: absolute;
     z-index: 50;
 
     &:after {
