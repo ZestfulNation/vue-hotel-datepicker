@@ -74,9 +74,9 @@
             h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
-            .square(v-for='day in months[n].days'
+            .square(v-for='(day, index) in months[n].days'
               @mouseover='hoveringDate = day.date'
-              v-bind:key='day.date'
+              v-bind:key='index'
               )
               Day(
                 :options="$props"
@@ -247,9 +247,17 @@ export default {
     },
 
     renderNextMonth() {
-      const firstDayOfLastMonth = _.filter(this.months[this.activeMonthIndex+1].days, {
-        'belongsToThisMonth': true
-      });
+      let firstDayOfLastMonth;
+
+      if (this.screenSize !== 'desktop') {
+        firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
+          'belongsToThisMonth': true
+        });
+      } else {
+        firstDayOfLastMonth = _.filter(this.months[this.activeMonthIndex+1].days, {
+          'belongsToThisMonth': true
+        });
+      }
 
       if (this.endDate !== Infinity){
         if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==

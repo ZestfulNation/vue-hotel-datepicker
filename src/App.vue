@@ -8,7 +8,7 @@
       WIP(
         :maxNights='10'
         :minNights='4'
-        endDate="2018-12-15")
+        endDate="2018-06-15")
 </template>
 
 <script>
