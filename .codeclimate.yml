@@ -29,3 +29,4 @@ exclude_paths:
 - .idea/
 - webpack.config.js
 - .tmp/
+- tests/
