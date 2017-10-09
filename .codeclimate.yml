@@ -1,0 +1,32 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        javascript:
+          mass_threshold: 45
+  eslint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  fixme:
+    enabled: false
+ratings:
+  paths:
+  - "**.inc"
+  - "**.vue"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+- dist/
+- node_modules/
+- src/mapStyles.js
+- .idea/
+- webpack.config.js
+- .tmp/
+- tests/
