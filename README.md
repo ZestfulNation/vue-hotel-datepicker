@@ -213,8 +213,5 @@ i18n: {
 ### dateChanged
 Emited everytime a new date is selected, passing the new date and the previously selected date
 
-## Contributing
-Just submit a pull request explaining what you changed :)
-
 ## Credits
 This componend was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. It diverted from the original implementation though, implementing extra features (e.g. allowedRanges and dummyInputs) and removing others (e.g. topbar)
