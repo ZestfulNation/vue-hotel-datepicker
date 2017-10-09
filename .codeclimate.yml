@@ -28,3 +28,4 @@ exclude_paths:
 - src/mapStyles.js
 - .idea/
 - webpack.config.js
+- .tmp/
