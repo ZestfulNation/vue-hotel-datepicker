@@ -16,7 +16,7 @@ describe('Datepicker Helpers', () => {
   describe('nextDateByDayOfWeekArray', () => {
     it('should return the next date when comparing to an array days of the week', () => {
       expect(
-        DatepickerHelpers.nextDateByDayOfWeekArray(["Saturday", "Tuesday"], '11-08-2017')
+        DatepickerHelpers.nextDateByDayOfWeekArray(['Saturday', 'Tuesday'], '11-08-2017')
       ).to.eql(new Date('11-11-2017'));
     });
   });

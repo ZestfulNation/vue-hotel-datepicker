@@ -11,9 +11,9 @@ export default {
     });
 
     if (closest === Infinity) {
-      return null
+      return null;
     } else {
-      return closest
+      return closest;
     }
   },
   nextDateByDayOfWeek(weekDay, referenceDate) {
@@ -34,9 +34,9 @@ export default {
     return referenceDate.setDate(referenceDate.getDate() + daysUntilNext);
   },
   nextDateByDayOfWeekArray(daysArray, referenceDate) {
-    let tempArray = []
+    let tempArray = [];
     for (var i = 0; i < daysArray.length; i++) {
-      tempArray.push( new Date (this.nextDateByDayOfWeek(daysArray[i], referenceDate) ) )
+      tempArray.push( new Date (this.nextDateByDayOfWeek(daysArray[i], referenceDate) ) );
     }
     return this.getNextDate(tempArray, referenceDate);
   },
