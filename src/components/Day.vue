@@ -174,55 +174,6 @@ export default {
   methods: {
     ...Helpers,
 
-    getNextDate(datesArray, referenceDate){
-
-      var now = new Date(referenceDate);
-      var closest = null;
-
-      datesArray.forEach(function(d) {
-        var date = new Date(d);
-        if (date >= now && date < closest) {
-          closest = d;
-        }
-      });
-      return closest
-    },
-
-    compareDayOfWeek(daysArray, referenceDate) {
-
-
-      var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
-      function next(day) {
-
-          var today = new Date(referenceDate);
-          var today_day = today.getDay();
-          console.log(today)
-
-          day = day.toLowerCase();
-
-          for (var i = 7; i--;) {
-              if (day === days[i]) {
-                  day = (i <= today_day) ? (i + 7) : i;
-                  break;
-              }
-          }
-
-          var daysUntilNext = day - today_day;
-
-          return new Date(referenceDate).setDate(today.getDate() + daysUntilNext);
-
-      }
-
-      // insert a week day
-      var tempArray = []
-      for (var i = 0; i < daysArray.length; i++) {
-        tempArray.push( new Date (next(daysArray[i]) ) )
-      }
-      
-      return tempArray[0];
-    },
-
     compareDay(day1, day2) {
       const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
       const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
@@ -247,10 +198,9 @@ export default {
           (this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
           this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
           this.getNextDate(this.sortedDisabledDates, this.date) ||
-          this.compareDayOfWeek(this.options.disabledDaysOfWeek, this.date) ||
+          this.nextDateByDayOfWeekArray(this.options.disabledDaysOfWeek, this.date) ||
           null;
 
-          console.log(nextDisabledDate)
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },

@@ -38,14 +38,6 @@ describe('Datepicker Day', () => {
     });
   });
 
-  describe('getNextDate', () => {
-    it('should return the next day when comparing a date to a dates array', () => {
-      expect(
-        wrapper.vm.getNextDate(['10-10-2017', '10-15-2017',  '10-20-2017'], '10-12-2017')
-      ).to.equal('10-15-2017');
-    });
-  });
-
   describe('compareDay', () => {
     it('should return return -1 if the first day is before the second day', () => {
       expect(

@@ -5,7 +5,7 @@
       //-   :disabledDates="['2017-09-17', '2017-10-05', '2017-10-07', '2017-10-11']"
       //-   :disabledDaysOfWeek='["Monday", "Tuesday"]'
       //-   endDate="2017-12-31")
-      WIP(:disabledDaysOfWeek='["Monday", "Tuesday"]')
+      WIP(:disabledDaysOfWeek='["Saturday", "Tuesday"]')
 </template>
 
 <script>

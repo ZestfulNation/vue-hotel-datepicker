@@ -5,6 +5,30 @@ import DatepickerHelpers from '@/components/helpers';
 
 describe('Datepicker Helpers', () => {
 
+  describe('nextDateByDayOfWeek', () => {
+    it('should return the next given day of the week when comparing a date to a date', () => {
+      expect(new Date (
+        DatepickerHelpers.nextDateByDayOfWeek('Saturday', '10-11-2017')
+      )).to.eql(new Date('10-14-2017'));
+    });
+  });
+
+  describe('nextDateByDayOfWeekArray', () => {
+    it('should return the next date when comparing to an array days of the week', () => {
+      expect(
+        DatepickerHelpers.nextDateByDayOfWeekArray(["Saturday", "Tuesday"], '11-08-2017')
+      ).to.eql(new Date('11-11-2017'));
+    });
+  });
+
+  describe('getNextDate', () => {
+    it('should return the next day when comparing a date to a dates array', () => {
+      expect(
+        DatepickerHelpers.getNextDate(['10-10-2017', '10-15-2017',  '10-20-2017'], '10-12-2017')
+      ).to.equal('10-15-2017');
+    });
+  });
+
   describe('countDays', () => {
     it('should correctly count the number of days between two given dates', () => {
       expect(

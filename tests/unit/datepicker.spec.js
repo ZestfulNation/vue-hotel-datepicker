@@ -6,6 +6,7 @@ import Datepicker from '@/components/WIP';
 describe('Datepicker Calendar', () => {
   let wrapper = shallow(Datepicker);
 
+
   it('should correctly re-render the calendar', () => {
     expect(wrapper.vm.show).to.equal(true);
     wrapper.vm.reRender();
@@ -20,7 +21,7 @@ describe('Datepicker Calendar', () => {
 describe('Datepicker Component', () => {
   let wrapper;
 
-  before( () => {
+  beforeEach( () => {
     wrapper = shallow(Datepicker, {
       attachToDocument: true,
       propsData: {
