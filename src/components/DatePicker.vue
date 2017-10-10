@@ -133,7 +133,7 @@ export default {
       type: [ Date, String, Number ]
     },
     minNights: {
-      default: 0,
+      default: 1,
       type: Number
     },
     maxNights: {
