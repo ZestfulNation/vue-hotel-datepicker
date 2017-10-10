@@ -47,7 +47,7 @@
             @click='renderNextMonth'
           )
         .datepicker__months(v-if='screenSize == "desktop"')
-          div.datepicker__month(v-for='n in [0,1]')
+          div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
@@ -167,8 +167,11 @@ export default {
     i18n: {
       default: () => defaulti18n,
       type: Object
+    },
+    enableCheckout: {
+      default: false,
+      type: Boolean
     }
-
   },
 
   data: function () {

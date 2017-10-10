@@ -4,14 +4,13 @@
     .datepicker__tooltip(v-if='showTooltip && this.hoveringTooltip' v-text='tooltipMessage')
     .datepicker__month-day(
       @click='dayClicked(date)'
-      v-text='dayNumber'
+      v-text='`${dayNumber}`'
       :class='dayClass'
     )
 </template>
 
 <script>
 import fecha from 'fecha';
-import _ from 'lodash';
 
 import Helpers from './helpers.js'
 
@@ -194,12 +193,14 @@ export default {
           this.createAllowedCheckoutDays(date);
         }
 
-        const nextDisabledDate =
+        let nextDisabledDate =
           (this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
           this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
           this.getNextDate(this.sortedDisabledDates, this.date) ||
           this.nextDateByDayOfWeekArray(this.options.disabledDaysOfWeek, this.date) ||
           null;
+
+        if (this.options.enableCheckout) { nextDisabledDate = Infinity; }
 
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
@@ -226,7 +227,14 @@ export default {
         || _.some(
           this.options.disabledDaysOfWeek, (i) =>
           i == fecha.format(this.date, 'dddd')
-        )
+        );
+        // Handle checkout enabled
+        if ( this.options.enableCheckout ) {
+          if ( this.compareDay(this.date, this.checkIn) == 1 &&
+               this.compareDay(this.date, this.checkOut) == -1 ) {
+                this.isDisabled = false;
+          }
+        }
     },
 
     checkIfHighlighted(){
@@ -254,6 +262,9 @@ export default {
       else if ( this.isDateLessOrEquals(this.date, this.checkIn) ) {
         this.isDisabled = true;
       }
+      if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout ){
+        this.isDisabled = false
+      }
       else {
         return
       }
@@ -269,17 +280,6 @@ export default {
 
 
 <style lang="scss">
-.list-item {
-  opacity: 1;
-}
-.list-enter-active, .list-leave-active {
-  transition: all .5s;
-  opacity: 1;
-}
-.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
-}
 /* =============================================================
  * RESPONSIVE LAYOUT HELPERS
  * ============================================================*/
