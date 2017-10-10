@@ -2,9 +2,7 @@
   #app
     div
       DatePicker(
-        :enableCheckout='true'
-        endDate="02-02-2018"
-        :disabledDates="['2018-01-02','2018-01-05','2018-01-15','2018-01-22','2018-01-06']"
+        :minNights='0'
       )
 </template>
 
