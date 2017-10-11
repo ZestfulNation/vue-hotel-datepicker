@@ -18,7 +18,7 @@
         readonly
       )
     button.datepicker__clear-button(@click='clearSelection') ＋
-    .datepicker(:class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
+    .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
           @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
@@ -66,31 +66,31 @@
                 :checkIn='checkIn'
                 :checkOut='checkOut'
               )
-
-        .datepicker__week-row(v-if='screenSize !== "desktop"')
-          .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-        .datepicker__months#swiperWrapper(v-if='screenSize !== "desktop"')
-          div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
-            h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
-            .datepicker__week-row.-hide-up-to-tablet
-              .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
-            .square(v-for='(day, index) in months[n].days'
-              @mouseover='hoveringDate = day.date'
-              v-bind:key='index'
-              )
-              Day(
-                :options="$props"
-                @dayClicked='handleDayClick($event)'
-                :date='day.date'
-                :sortedDisabledDates='sortedDisabledDates'
-                :nextDisabledDate='nextDisabledDate'
-                :activeMonthIndex='activeMonthIndex'
-                :hoveringDate='hoveringDate'
-                :dayNumber='getDay(day.date)'
-                :belongsToThisMonth='day.belongsToThisMonth'
-                :checkIn='checkIn'
-                :checkOut='checkOut'
-              )
+        div(v-if='screenSize !== "desktop" && isOpen')
+          .datepicker__week-row
+            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+          .datepicker__months#swiperWrapper
+            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
+              h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
+              .datepicker__week-row.-hide-up-to-tablet
+                .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
+              .square(v-for='(day, index) in months[n].days'
+                @mouseover='hoveringDate = day.date'
+                v-bind:key='index'
+                )
+                Day(
+                  :options="$props"
+                  @dayClicked='handleDayClick($event)'
+                  :date='day.date'
+                  :sortedDisabledDates='sortedDisabledDates'
+                  :nextDisabledDate='nextDisabledDate'
+                  :activeMonthIndex='activeMonthIndex'
+                  :hoveringDate='hoveringDate'
+                  :dayNumber='getDay(day.date)'
+                  :belongsToThisMonth='day.belongsToThisMonth'
+                  :checkIn='checkIn'
+                  :checkOut='checkOut'
+                )
 </template>
 
 <script>
@@ -133,7 +133,7 @@ export default {
       type: [ Date, String, Number ]
     },
     minNights: {
-      default: 0,
+      default: 1,
       type: Number
     },
     maxNights: {
@@ -194,6 +194,18 @@ export default {
   },
 
   watch: {
+    isOpen (value) {
+      if (this.screenSize !== 'desktop') {
+        const bodyClassList = document.querySelector('body').classList;
+
+        if (value) {
+          bodyClassList.add('-overflow-hidden');
+        }
+        else {
+          bodyClassList.remove('-overflow-hidden');
+        }
+      }
+    },
     checkOut: function(date) {
       if ( this.checkOut !== null && this.checkOut !== null ) {
       this.hoveringDate = null;
@@ -337,3 +349,451 @@ export default {
 
 };
 </script>
+
+<style lang="scss">
+/* =============================================================
+ * RESPONSIVE LAYOUT HELPERS
+ * ============================================================*/
+$tablet: '(min-width: 30em) and (max-width: 49em)';
+$phone: '(max-width: 30em)';
+$desktop: '(min-width: 49em)';
+$tablet-up: '(min-width: 30em)';
+$up-to-tablet: '(max-width: 49em)';
+$extra-small-screen: '(max-width: 23em)';
+
+@mixin device($device-widths) {
+  @media screen and #{$device-widths} { @content }
+}
+
+.square {
+  width: calc(100% / 7);
+  float: left;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =============================================================
+ * VARIABLES
+ * ============================================================*/
+$white: #fff;
+$black:                #000;
+$gray:                 #424b53;
+$primary-text-color:   #35343d;
+$lightest-gray:        #f3f5f8;
+$primary-color: #00ca9d;
+$primary-color: $primary-color;
+$medium-gray: #999999;
+$light-gray: #d7d9e2;
+$dark-gray: #2d3047;
+
+$font-small: 14px;
+
+/* =============================================================
+ * BASE STYLES
+ * ============================================================*/
+
+.datepicker {
+  transition: all .2s ease-in-out;
+  background-color: $white;
+  color: $gray;
+  font-size: 16px;
+  line-height: 14px;
+  overflow: hidden;
+  left: 0;
+  top: 48px;
+  position: absolute;
+  z-index: 10;
+
+  &--closed {
+    box-shadow: 0 15px 30px 10px rgba($black, 0);
+    max-height: 0;
+  }
+
+  &--open {
+    box-shadow: 0 15px 30px 10px rgba($black, .08);
+    max-height: 900px;
+
+    @include device($up-to-tablet) {
+      box-shadow: none;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 48px;
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+  }
+
+  &__input {
+    background: transparent;
+    height: 48px;
+    color: $primary-text-color;
+    font-size: 12px;
+    outline: none;
+    padding: 4px 30px 2px;
+    width: 100%;
+    word-spacing: 5px;
+    border: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder,
+    &:-moz-placeholder {
+      color: $primary-text-color;
+    }
+  }
+
+  &__dummy-wrapper {
+    border: solid 1px $light-gray;
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100%;
+
+    &--no-border.datepicker__dummy-wrapper {
+      margin-top: 15px;
+      border: 0;
+    }
+
+    &--is-active {
+      border: 1px solid $primary-color;
+    }
+  }
+
+  &__dummy-input {
+    color: $primary-text-color;
+    padding-top: 0;
+    font-size: $font-small;
+    float: left;
+    height: 48px;
+    line-height: 3.1;
+    text-align: left;
+    text-indent: 5px;
+    width: calc(50% + 4px);
+
+    @include device($phone) {
+      text-indent: 0;
+      text-align: center;
+    }
+
+    &:first-child {
+      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+      width: calc(50% - 4px);
+      text-indent: 20px;
+    }
+
+    &--is-active { color: $primary-color; }
+    &--is-active::placeholder { color: $primary-color; }
+    &--is-active::-moz-placeholder { color: $primary-color; }
+    &--is-active:-ms-input-placeholder { color: $primary-color; }
+    &--is-active:-moz-placeholder { color: $primary-color; }
+  }
+
+  &__month-day {
+    visibility: visible;
+    will-change: auto;
+    text-align: center;
+    margin: 0;
+    border: 0;
+    height: 40px;
+    padding-top: 15px;
+
+    &--invalid-range {
+      background-color: rgba($primary-color, .3);
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    &--invalid {
+      color: $lightest-gray;
+      cursor: not-allowed;
+    }
+
+    &--valid:hover,
+    &--allowed-checkout:hover {
+      background-color: $white;
+      color: $primary-color;
+      z-index: 1;
+      position: relative;
+      box-shadow: 0 0 10px 3px rgba($gray, .4);
+    }
+
+    &--disabled {
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    &--selected {
+      background-color: rgba($primary-color, .5);
+      color: $white;
+
+      &:hover {
+        background-color: $white;
+        color: $primary-color;
+        z-index: 1;
+        position: relative;
+        box-shadow: 0 0 10px 3px rgba($gray, .4);
+      }
+    }
+
+    &--today {
+      background-color: $light-gray;
+      color: $medium-gray;
+    }
+
+    &--first-day-selected,
+    &--last-day-selected {
+      background: $primary-color;
+      color: $white;
+    }
+
+    &--allowed-checkout {
+      color: $medium-gray;
+    }
+
+    &--out-of-range {
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+      pointer-events: none;
+    }
+
+    &--valid {
+      cursor: pointer;
+      color: $medium-gray;
+    }
+
+    &--hidden {
+      visibility: hidden;
+      color: $white;
+      pointer-events: none;
+    }
+  }
+
+  &__month-button {
+    background: transparent url('ic-arrow-right-green.regular.svg') no-repeat right center / 8px;
+    cursor: pointer;
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+
+    &--prev { transform: rotateY(180deg); }
+
+    &--next { float: right; }
+
+    &--locked {
+      opacity: .2;
+      cursor: not-allowed;
+    }
+  }
+
+  &__inner {
+    padding: 20px;
+    float: left;
+
+    @include device($up-to-tablet) { padding: 0; }
+  }
+
+  &__months {
+    @include device($desktop) { width: 650px; }
+
+    @include device($up-to-tablet) {
+      margin-top: 92px;
+      height: calc(100% - 92px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: scroll;
+      right: 0;
+      bottom: 0;
+    }
+
+    &::before {
+      background: $light-gray;
+      bottom: 0;
+      content: '';
+      display: block;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      width: 1px;
+
+      @include device($up-to-tablet) { display: none; }
+    }
+  }
+
+  &__month {
+    font-size: 12px;
+    float: left;
+    width: 50%;
+    padding-right: 10px;
+
+    @include device($up-to-tablet) {
+      width: 100%;
+      padding-right: 0;
+      padding-top: 45px;
+
+      &:last-of-type {
+        padding-top: 0;
+        padding-left: 0;
+        margin-top: 35px;
+      }
+    }
+
+    @include device($tablet-up) {
+      &:last-of-type {
+        padding-right: 0;
+        padding-left: 10px;
+      }
+    }
+  }
+
+  &__month-caption {
+    height: 2.5em;
+    vertical-align: middle;
+  }
+
+  &__month-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: -40px;
+    padding-bottom: 17px;
+    pointer-events: none;
+    text-align: center;
+
+    @include device($up-to-tablet) {
+      margin-top: -25px;
+      margin-bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__week-days {
+    height: 2em;
+    vertical-align: middle;
+  }
+
+  &__week-row {
+    border-bottom: 5px solid $white;
+    height: 38px;
+
+    @include device($up-to-tablet) {
+      box-shadow: 0 13px 18px -8px rgba($black, .07);
+      height: 25px;
+      left: 0;
+      top: 65px;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__week-name {
+    width: calc(100% / 7);
+    float: left;
+    font-size: 12px;
+    font-weight: 400;
+    color: $medium-gray;
+    text-align: center;
+  }
+
+  &__close-button {
+    appearence: none;
+    background: transparent;
+    border: 0;
+    color: $primary-color;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: bold;
+    margin-top: 0;
+    outline: 0;
+    z-index: 10000;
+    position: fixed;
+    left: 7px;
+    top: 5px;
+    transform: rotate(45deg);
+  }
+
+  &__clear-button {
+    appearence: none;
+    background: transparent;
+    border: 0;
+    color: $primary-color;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+    height: 40px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: -2px;
+    margin-top: 4px;
+    outline: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: rotate(45deg);
+    width: 40px;
+  }
+
+  &__tooltip {
+    background-color: $dark-gray;
+    border-radius: 2px;
+    color: $white;
+    font-size: 11px;
+    margin-left: 5px;
+    margin-top: -22px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 50;
+
+    &:after {
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid $dark-gray;
+      bottom: -4px;
+      content: '';
+      left: 50%;
+      margin-left: -4px;
+      position: absolute;
+    }
+  }
+}
+
+// Modifiers
+
+.-overflow-hidden { overflow: hidden; }
+
+.-is-hidden { display: none; }
+
+.-hide-up-to-tablet {
+  @include device($up-to-tablet) {
+    display: none;
+  }
+}
+
+.-hide-on-desktop {
+  @include device($desktop) {
+    display: none;
+  }
+}
+
+</style>
