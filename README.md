@@ -2,7 +2,9 @@
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
 
 
-![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo_gif.gif?raw=true)
+![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/f65d2663ac08c4d2adbbe510f423bf06687de57b/desktop_demo.gif?raw=true)
+
+![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/f65d2663ac08c4d2adbbe510f423bf06687de57b/mobile_demo.gif?raw=true)
 
 
 ## Demo
