@@ -1,7 +1,7 @@
 import { shallow } from 'vue-test-utils';
 import { expect } from 'chai';
 
-import Datepicker from '@/components/WIP';
+import Datepicker from '@/components/DatePicker';
 
 describe('Datepicker Calendar', () => {
   let wrapper = shallow(Datepicker);

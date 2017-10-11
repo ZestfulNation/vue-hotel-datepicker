@@ -1,16 +1,12 @@
 const path = require('path')
 
-function resolve (dir) {
-  return path.join(__dirname, '.', dir);
-}
-
 module.exports = {
   entry: {
-    main: [path.resolve(__dirname, '../src/main.js')],
+    main: path.resolve(__dirname, '../src/main.js'),
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    publicPath: '',
+    publicPath: '/',
     filename: 'build.js',
   },
   resolve: {
