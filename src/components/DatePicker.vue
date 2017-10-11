@@ -156,14 +156,6 @@ export default {
       default: true,
       type: [Boolean, Function]
     },
-    showCloseButton: {
-      default: false,
-      type: Boolean
-    },
-    autoClose: {
-      default: true,
-      type: Boolean
-    },
     i18n: {
       default: () => defaulti18n,
       type: Object
@@ -206,16 +198,22 @@ export default {
         }
       }
     },
-    checkOut: function(date) {
-      if ( this.checkOut !== null && this.checkOut !== null ) {
-      this.hoveringDate = null;
-      this.nextDisabledDate = null;
-      this.show = true;
-      this.parseDisabledDates();
-      this.reRender()
-      this.isOpen = false;
-      }
+    checkIn(newDate) {
+      this.$emit("checkInChanged", newDate )
     },
+    checkOut(newDate) {
+      if ( this.checkOut !== null && this.checkOut !== null ) {
+        this.hoveringDate = null;
+        this.nextDisabledDate = null;
+        this.show = true;
+        this.parseDisabledDates();
+        this.reRender()
+        this.isOpen = false;
+      }
+
+      this.$emit("checkOutChanged", newDate )
+    },
+
   },
 
   methods: {

@@ -22,7 +22,6 @@ describe('Datepicker Day', () => {
         nextDisabledDate:null,
         options: {
           allowedRanges: [],
-          autoClose:true,
           disabledDates: [],
           disabledDaysOfWeek: [],
           endDate:'2017-12-30T23:00:00.000Z',
@@ -30,7 +29,6 @@ describe('Datepicker Day', () => {
           hoveringTooltip:true,
           maxNights:null,
           minNights:3,
-          showCloseButton:false,
           startDate:'2017-10-05T15:16:50.281Z',
           value:undefined
         }

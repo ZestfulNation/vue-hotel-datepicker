@@ -1,7 +1,7 @@
 <template lang='pug'>
   div
     span
-    .datepicker__tooltip(v-if='showTooltip && this.hoveringTooltip' v-text='tooltipMessage')
+    .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-text='tooltipMessage')
     .datepicker__month-day(
       @click='dayClicked(date)'
       v-text='`${dayNumber}`'
