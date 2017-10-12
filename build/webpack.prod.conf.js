@@ -8,7 +8,7 @@ config.output.filename = 'vue-hotel-datepicker.min.js'
 config.output.libraryTarget = 'umd'
 config.output.library = 'HotelDatePicker'
 
-config.entry = path.resolve(__dirname, '../src/components/HotelDatePicker.vue')
+config.entry = path.resolve(__dirname, '../src/components/DatePicker.vue')
 
 config.devtool = '#source-map'
 

@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    main: [path.resolve(__dirname, '../src/main.js')],
+    main: path.resolve(__dirname, '../src/main.js'),
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -13,6 +13,8 @@ module.exports = {
     extensions: ['.json', '.js', '.vue'],
     alias: {
       components: path.resolve(__dirname, '../src/components'),
+      '@': path.resolve(__dirname, '../src/'),
+      'vue$': 'vue/dist/vue.esm.js',
     },
   },
   module: {
