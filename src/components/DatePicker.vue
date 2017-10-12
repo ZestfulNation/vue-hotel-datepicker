@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import { directive as onClickOutside } from 'vue-on-click-outside';
+
 import fecha from 'fecha';
 import _ from 'lodash';
 
@@ -110,7 +112,11 @@ const defaulti18n = {
 };
 
 export default {
-  name: 'DatePicker',
+  name: 'HotelDatePicker',
+
+  directives: {
+    'on-click-outside': onClickOutside
+  },
 
   components: { Day, },
 
@@ -166,7 +172,7 @@ export default {
     }
   },
 
-  data: function () {
+  data() {
     return {
       hoveringDate: null,
       checkIn: null,
@@ -182,6 +188,7 @@ export default {
       xUp: null,
       yUp: null,
       sortedDisabledDates: null,
+      screenSize: this.handleWindowResize(),
     };
   },
 
@@ -218,6 +225,47 @@ export default {
 
   methods: {
     ...Helpers,
+
+    handleWindowResize() {
+      let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
+
+      if (screenSizeInEm < 31) {
+        this.screenSize = 'smartphone';
+      }
+      else if (screenSizeInEm > 30 && screenSizeInEm < 49) {
+        this.screenSize = 'tablet';
+      }
+      else if (screenSizeInEm > 48) {
+        this.screenSize = 'desktop';
+      }
+
+      return this.screenSize;
+    },
+
+    onElementHeightChange(el, callback){
+      let lastHeight = el.clientHeight;
+      let newHeight = lastHeight;
+
+      (function run(){
+        newHeight = el.clientHeight;
+
+        if( lastHeight !== newHeight ){
+          callback();
+        }
+
+        lastHeight = newHeight;
+
+        if( el.onElementHeightChangeTimer ) {
+          clearTimeout(el.onElementHeightChangeTimer);
+        }
+
+        el.onElementHeightChangeTimer = setTimeout(run, 1000);
+      })();
+    },
+
+    emitHeighChangeEvent() {
+      this.$emit('heightChanged');
+    },
 
     reRender() {
       this.show = false
@@ -338,11 +386,17 @@ export default {
   mounted() {
     document.addEventListener('touchstart', this.handleTouchStart, false);
     document.addEventListener('touchmove', this.handleTouchMove, false);
+    window.addEventListener('resize', this.handleWindowResize);
+
+    this.onElementHeightChange(document.body, () => {
+      this.emitHeighChangeEvent();
+    });
   },
 
   destroyed() {
     window.removeEventListener('touchstart', this.handleTouchMove);
     window.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('resize', this. handleWindowResize);
   }
 
 };

@@ -82,23 +82,25 @@ export default {
   },
 
   swipeAfterScroll(direction){
-    const swiperWrapper = document.getElementById('swiperWrapper');
+    if (this.screenSize !== 'desktop' && this.isOpen) {
+      const swiperWrapper = document.getElementById('swiperWrapper');
 
-    // If wrapper has vertical scroll
-    if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-      if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) ) {
+      // If wrapper has vertical scroll
+      if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
+        if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) ) {
+          this.renderNextMonth();
+        }
+        else if ( swiperWrapper.scrollTop === 0){
+          this.renderPreviousMonth();
+        }
+        else { return; }
+      }
+      else if (direction == 'up'){
         this.renderNextMonth();
       }
-      else if ( swiperWrapper.scrollTop === 0){
+      else if (direction == 'down') {
         this.renderPreviousMonth();
       }
-      else { return; }
-    }
-    else if (direction == 'up'){
-      this.renderNextMonth();
-    }
-    else if (direction == 'down') {
-      this.renderPreviousMonth();
     }
   },
 
