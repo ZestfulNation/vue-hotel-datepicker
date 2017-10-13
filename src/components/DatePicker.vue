@@ -342,7 +342,7 @@ export default {
 
     getDay(date) { return fecha.format(date, 'D') },
 
-    getMonth(date) { return fecha.format(date, 'MMMM') },
+    getMonth(date) { return this.i18n["month-names"][fecha.format(date, 'M') - 1] },
 
     formatDate(date) { return fecha.format(date, this.format) },
 
