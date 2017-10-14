@@ -198,7 +198,7 @@ export default {
           this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
           this.getNextDate(this.sortedDisabledDates, this.date) ||
           this.nextDateByDayOfWeekArray(this.options.disabledDaysOfWeek, this.date) ||
-          null;
+          Infinity;
 
         if (this.options.enableCheckout) { nextDisabledDate = Infinity; }
 
