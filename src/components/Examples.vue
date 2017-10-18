@@ -1,5 +1,5 @@
 <template>
-  <div class="examples">
+  <!-- <div class="examples">
     <div class="box">
       <h3>Examples</h3>
       <h4>Check in only on saturday and minimum stay of 10 days</h4>
@@ -87,17 +87,13 @@
         :minNights="7"
         />
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
-import DatePicker from 'vue-hotel-datepicker';
 
 export default {
   name: 'Examples',
-  components: {
-      DatePicker
-  },
 }
 </script>
 

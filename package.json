@@ -16,19 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/krystalcampioni/vue-number-input-spinner"
+    "url": "https://github.com/krystalcampioni/vue-hotel-datepicker"
   },
   "keywords": [
     "vue",
     "vuejs",
-    "number",
-    "numeric",
-    "input",
-    "spinner",
-    "number input",
-    "number spinner",
-    "numeric input",
-    "numeric spinner"
+    "datepicker"
   ],
   "bugs": {
     "url": "https://github.com/krystalcampioni/vue-number-input-spinner/issues"
@@ -51,6 +44,7 @@
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^1.3.2",
+    "pug": "^2.0.0-rc.4",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.13.1",
@@ -63,7 +57,8 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "vue-highlightjs": "^1.3.3",
-    "vue-hotel-datepicker": "^1.1.4"
+    "vue-hotel-datepicker": "^2.0.7"
   }
 }
