@@ -12,7 +12,7 @@
         .grid__main
           .grid__full#about
             h2 About
-            h3 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
+            p A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
           .grid__full#gettingStarted
             h2 Getting Started
             h3 Install the package via NPM
@@ -47,6 +47,8 @@ export default {
 </script>
 
 <style lang="scss">
+  $main-color: #15bebf;
+
   .datepicker__month-name {
     width: 100%;
     float: left;
@@ -107,12 +109,16 @@ export default {
     font-size: 14px;
     line-height: 1.5;
     font-weight: lighter;
-    white-space: pre;
+    white-space: pre-wrap;
   }
 
   a {
     color: #15bebf;
     text-decoration: none;
+
+    &:hover {
+      color: lighten($main-color, 10)
+    }
   }
 
   pre {
@@ -154,7 +160,7 @@ export default {
 
     &__main {
       float: right;
-      width: calc(100% -  250px);
+      width: calc(100% -  200px);
 
       @media screen and (max-width: 48em) {
         width: 100%;

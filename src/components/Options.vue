@@ -71,7 +71,7 @@
   .box
     Info(
       valueName="disabledDaysOfWeek"
-      description="An array of strings in this format: \n`['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']`. \nAll the days passed to the list will be disabled."
+      description="An array of strings in this format: \n['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']. \nAll the days passed to the list will be disabled."
       type="Array"
       defaultVal="[]"
     )
@@ -82,7 +82,7 @@
   .box
     Info(
       valueName="allowedRanges"
-      description="An array of numbers. \nExample: `[7,10,14]`. \n After selecting the start date the calendar will be updated only allowing the checkout 7, 10 or 14 days after."
+      description="An array of numbers. \nExample: [7,10,14]. \n After selecting the start date the calendar will be updated only allowing the checkout 7, 10 or 14 days after."
       type="Array"
       defaultVal="[]"
     )
@@ -90,6 +90,41 @@
       HotelDatePicker(:disabledDaysOfWeek="['Monday', 'Friday' ]")
     .grid__half
       Snippet(inlineCode='<HotelDatePicker\n :disabledDaysOfWeek=\"[\'Monday\', \'Friday\']\">\n</HotelDatePicker>')
+  .box
+    Info(
+      valueName="enableCheckout"
+      description="If `true`, allows the checkout on a disabled date."
+      type="Boolean"
+      defaultVal="false"
+    )
+    .grid__half
+      HotelDatePicker(:disabledDaysOfWeek="['Monday', 'Friday']" :enableCheckout="true")
+    .grid__half
+      Snippet(inlineCode='<HotelDatePicker\n :disabledDaysOfWeek=\"[\'Monday\', \'Friday\']\" :enableCheckout="true">\n</HotelDatePicker>')
+  .box
+    Info(
+      valueName="hoveringTooltip"
+      description="Shows a tooltip with the number of nights when hovering a date."
+      type="Boolean"
+      defaultVal="false"
+    )
+    .grid__half
+      HotelDatePicker(:hoveringTooltip="false")
+    .grid__half
+      Snippet(inlineCode='<HotelDatePicker\n :hoveringTooltip="false">\n</HotelDatePicker>')
+  .box
+    Info(
+      valueName="i18n"
+      description="An object with all the texts in the component. Use it to tranlate it."
+      type="Boolean"
+      defaultVal=""
+    )
+    .grid__half
+      HotelDatePicker(:i18n='ptBr')
+    .grid__half
+      Snippet(inlineCode='<HotelDatePicker\n :i18n="ptBr">\n</HotelDatePicker>')
+      br
+      Snippet(sourcePath='./dist/snippet3.txt' lang='javascript')
 </template>
 
 <script>
@@ -104,6 +139,20 @@ export default {
     Snippet,
     Info,
   },
+
+
+  data(){
+    return {
+      ptBr: {
+        night: 'Noite',
+        nights: 'Noites',
+        'day-names': ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+        'check-in': 'Chegada',
+        'check-out': 'Partida',
+        'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      }
+    }
+  }
 }
 </script>
 

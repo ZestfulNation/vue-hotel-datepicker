@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+div(:id='valueName')
   h3(v-text='valueName')
   p(v-text='description')
   p

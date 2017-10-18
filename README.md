@@ -106,7 +106,7 @@ If `true`, allows the checkout on a disabled date.
 
 ### hoveringTooltip
 
-- Type: `Boolean` or `Function`
+- Type: `Boolean`
 - Default: `true`
 
 Shows a tooltip with the number of nights when hovering a date.
