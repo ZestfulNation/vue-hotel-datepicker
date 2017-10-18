@@ -86,14 +86,14 @@ export default {
     padding-bottom: 10px;
     margin-bottom: 0;
 
-    &::before {
-      content: '';
-      background: #397e90;
-      width: 5px;
-      height: 5px;
-      display: inline-block;
-      margin-right: 10px;
-    }
+    // &::before {
+    //   content: '';
+    //   background: #397e90;
+    //   width: 5px;
+    //   height: 5px;
+    //   display: inline-block;
+    //   margin-right: 10px;
+    // }
   }
 
   h4 {

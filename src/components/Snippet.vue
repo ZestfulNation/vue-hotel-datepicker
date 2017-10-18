@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
   <div v-highlightjs v-if='this.sourceCode.length'>
-    <code class="javascript" v-text='sourceCode'></code>
+    <code :class="this.lang" v-text='sourceCode'></code>
   </div>
   <div v-highlightjs v-if='this.inlineCode'>
     <code :class="this.lang" v-text='inlineCode'></code>
