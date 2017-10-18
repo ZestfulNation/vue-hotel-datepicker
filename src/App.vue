@@ -14,6 +14,7 @@
             h2 About
             p A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
           .grid__full#gettingStarted
+            hr
             h2 Getting Started
             h3 Install the package via NPM
             Snippet(sourcePath="./dist/snippet0.txt" lang='javascript')
@@ -24,6 +25,7 @@
           .grid__full#optionsProps
             Options
           .grid__full#moreExamples
+            hr
             h2 More Examples
             Examples
 </template>
