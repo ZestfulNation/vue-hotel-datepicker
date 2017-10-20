@@ -285,6 +285,10 @@ export default {
     },
 
     hideDatepicker() { this.isOpen = false; },
+    
+    showDatepicker() { this.isOpen = true; },
+    
+    toggleDatepicker() { this.isOpen = !this.isOpen; },
 
     handleDayClick(event) {
       if (this.checkIn == null) {
