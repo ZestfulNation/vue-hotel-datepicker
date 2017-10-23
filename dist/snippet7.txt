@@ -1,6 +1,0 @@
-methods: {
-  day5nextMonth: function() {
-    var now = new Date();
-    return new Date(now.getFullYear(), now.getMonth()+1, 5);
-  }
-}

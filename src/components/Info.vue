@@ -33,6 +33,12 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-h3 { margin-left: -40px;}
+<style lang="scss" scoped>
+h3 {
+  margin-left: -40px;
+
+  @media screen and (max-width: 48em) {
+    margin-left: 0;
+  }
+}
 </style>

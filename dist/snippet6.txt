@@ -1,6 +1,0 @@
-<HotelDatePicker
-  :endDate="new Date(new Date().getFullYear(), 11, 31)"
-  :minNights='3'
-  :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
-  :enableCheckout="true"
-></HotelDatePicker>

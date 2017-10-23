@@ -154,11 +154,19 @@ export default {
     &__350 {
       float: left;
       width: 350px;
+
+      @media screen and (max-width: 48em) {
+        width: 100%;
+      }
     }
 
     &__main {
       float: right;
-      width: calc(100% - 370px)
+      width: calc(100% - 370px);
+
+      @media screen and (max-width: 48em) {
+        width: 100%;
+      }
     }
   }
 
@@ -166,6 +174,10 @@ export default {
     width: 90vw;
     max-width: 1200px;
     margin: 0 auto;
+
+    @media screen and (max-width: 48em) {
+      padding-right: 10px;
+    }
 
     &__sidebar {
       @media screen and (min-width: 48em) {
@@ -194,6 +206,10 @@ export default {
       padding: 0 20px 20px;
       width: 100%;
       float: left;
+
+      @media screen and (max-width: 48em) {
+        padding: 0;
+      }
     }
 
     &__third {
@@ -207,10 +223,10 @@ export default {
       padding: 0 20px 20px 0;
       float: left;
 
-      // @media screen and (max-width: 48em) {
-      //   width: calc(100% - 40px);
-      //   margin: 0 20px 20px;
-      // }
+      @media screen and (max-width: 48em) {
+        width: calc(100% - 40px);
+        margin: 0 20px 20px;
+      }
     }
   }
 
@@ -218,5 +234,10 @@ export default {
   width: 100%;
   float: left;
   margin-left: 40px;
+
+  @media screen and (max-width: 48em) {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 </style>
