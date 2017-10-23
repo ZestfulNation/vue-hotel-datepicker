@@ -1,8 +1,13 @@
+[![Code Climate](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/gpa.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/)
+[![Issue Count](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/issue_count.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker)
+[![dependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker) [![devDependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/dev-status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker?type=dev)
+
 # vue-hotel-datepicker
-A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
+A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localisation support and more.
 
 
-![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo_gif.gif?raw=true)
+![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo.gif?raw=true)
+
 
 
 ## Demo
@@ -15,7 +20,7 @@ A responsive date range picker for Vue.js that displays the number of nights sel
 Install the package:
 
 ```
-npm install vue-hotel-datepicker
+npm install vue-hotel-datepicker --save
 ```
 
 ```javascript
@@ -29,26 +34,11 @@ export default {
 ```
 
 ```html
-<HotelDatePicker DatePickerID="01"/>
+<HotelDatePicker />
 ```
 
 
 ## Props/Options
-
-### useDummyInputs
-- Type: `Boolean`
-- Default: `true`
-This option hides the input and displays divs that act as dummy input fields. This allows us have an "active" state in the input that changes the placeholder text colour indicating which date is being selected.
-
-### placeholder
-- Type: `String`
-- Default: `Check-in ► Check-out`
-The input placeholder text
-
-### value
-- Type: `String`
-- Default: `' '`
-The default value of the input
 
 ### format
 
@@ -56,27 +46,6 @@ The default value of the input
 - Default: `YYYY-MM-DD`
 
 The date format string.
-
-### infoFormat
-
-- Type: `String`
-- Default: `YYYY-MM-DD`
-
-The date format string in the info box. If not set, it uses the `format` option.
-
-### separator
-
-- Type: `String`
-- Default: ` ► `
-
-The separator string used between date strings.
-
-### startOfWeek
-
-- Type: `String`
-- Default: `sunday`
-
-Default start week: `sunday` or `monday`.
 
 ### startDate
 
@@ -106,13 +75,6 @@ Minimum nights required to select a range of dates.
 
 Maximum nights required to select a range of dates.
 
-### selectForward
-
-- Type: `Boolean`
-- Default: `false`
-
-If `true`, the selection of the second date must be after the first date. If `false`, you can select a range of dates in both directions.
-
 ### disabledDates
 
 - Type: `Array`
@@ -139,47 +101,16 @@ After selecting the start date the calendar will be updated only allowing the ch
 - Type: `Boolean`
 - Default: `false`
 
-If `true`, allows the checkout on a disabled date. But with a criteria. Let's say we have these disabled dates: `03 April 2020` and `04 April 2020`. With this option enabled, an user can still select the first date (`03 April 2020`) for the checkout. But not `04 April 2020`.
+If `true`, allows the checkout on a disabled date.
 
-### animationSpeed
-
-- Type: `String`
-- Default: `.5s`
-
-The duration (in seconds) of the animation (open/close datepicker).
 
 ### hoveringTooltip
 
-- Type: `Boolean` or `Function`
-- Default: `true`
-
-Shows a tooltip when hovering a date. It can be a custom function:
-
-```js
-hoveringTooltip: function(nights, startTime, hoverTime) {
-    return nights;
-}
-```
-
-### showBottomBar
-
 - Type: `Boolean`
 - Default: `true`
 
-Show/hide the toolbar.
+Shows a tooltip with the number of nights when hovering a date.
 
-### showCloseButton
-- Type: `Boolean`
-- Default: `false`
-
-Show/hide the close button.
-
-### autoClose
-
-- Type: `Boolean`
-- Default: `true`
-
-Close the datepicker after the selection of the second date.
 
 ### i18n
 
@@ -189,30 +120,22 @@ Default:
 
 ```js
 i18n: {
-    selected: 'Your stay:',
-    night: 'Night',
-    nights: 'Nights',
-    button: 'Close',
-    'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-    'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    'error-more': 'Date range should not be more than 1 night',
-    'error-more-plural': 'Date range should not be more than %d nights',
-    'error-less': 'Date range should not be less than 1 night',
-    'error-less-plural': 'Date range should not be less than %d nights',
-    'info-more': 'Please select a date range longer than 1 night',
-    'info-more-plural': 'Please select a date range longer than %d nights',
-    'info-range': 'Please select a date range between %d and %d nights',
-    'info-default': 'Please select a date range'
+  night: 'Night',
+  nights: 'Nights',
+  'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+  'check-in': 'Check-in',
+  'check-out': 'Check-Out',
+  'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 }
 ```
 
 ## Events
 
-### dateChanged
-Emited everytime a new date is selected, passing the new date and the previously selected date
+### checkInChanged
+Emitted every time a new check out date is selected with the new date as payload
 
-## Contributing
-Just submit a pull request explaining what you changed :)
+### checkOutChanged
+Emitted every time a new check out date is selected with the new date as payload
 
 ## Credits
-This componend was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. It diverted from the original implementation though, implementing extra features (e.g. allowedRanges and dummyInputs) and removing others (e.g. topbar)
+This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.
