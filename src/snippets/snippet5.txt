@@ -1,0 +1,5 @@
+<HotelDatePicker
+  :startDate="day5nextMonth()"
+  :minNights="3"
+  :maxNights="10"
+></HotelDatePicker>

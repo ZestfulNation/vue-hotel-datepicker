@@ -1,0 +1,1 @@
+npm install vue-hotel-datepicker --save
