@@ -129,6 +129,20 @@ i18n: {
 }
 ```
 
+## API
+
+### hideDatepicker()
+
+Hide datepicker
+
+### showDatepicker()
+
+Show datepicker
+
+### toggleDatepicker()
+
+Toggle datepicker
+
 ## Events
 
 ### checkInChanged
