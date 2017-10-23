@@ -9,9 +9,9 @@
       type="String"
       defaultVal="YYYY-MM-DD"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(format="DD/MM/YYYY")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker format="DD/MM/YYYY">\n</HotelDatePicker>')
   .box
     Info(
@@ -20,9 +20,9 @@
       type="Date or String"
       defaultVal="new Date()"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:startDate="new Date(new Date().getFullYear(), new Date().getMonth()+1, 1)")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :startDate="new Date(new Date().getFullYear(), new Date().getMonth()+1, 1)">\n</HotelDatePicker>')
   .box
     Info(
@@ -31,9 +31,9 @@
       type="Date, Number or String"
       defaultVal="Infinity"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:startDate="new Date(new Date().getFullYear(), 11, 31)")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :startDate="new Date(new Date().getFullYear(), 11, 31)">\n</HotelDatePicker>')
   .box
     Info(
@@ -42,9 +42,9 @@
       type="Number"
       defaultVal="1"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:minNights="5")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :minNights="5">\n</HotelDatePicker>')
   .box
     Info(
@@ -53,9 +53,9 @@
       type="Number"
       defaultVal="0"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:maxNights="10")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :maxNights="10">\n</HotelDatePicker>')
   .box
     Info(
@@ -64,9 +64,9 @@
       type="Array"
       defaultVal="[]"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:disabledDates="['2018-01-01', '2018-01-11', '2018-01-21' ]")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :disabledDates=\"[\'2018-01-01\', \'2018-01-11\', \'2018-01-21\' ]\">\n</HotelDatePicker>')
   .box
     Info(
@@ -75,9 +75,9 @@
       type="Array"
       defaultVal="[]"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:disabledDaysOfWeek="['Monday', 'Friday' ]")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :disabledDaysOfWeek=\"[\'Monday\', \'Friday\']\">\n</HotelDatePicker>')
   .box
     Info(
@@ -86,9 +86,9 @@
       type="Array"
       defaultVal="[]"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:disabledDaysOfWeek="['Monday', 'Friday' ]")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :disabledDaysOfWeek=\"[\'Monday\', \'Friday\']\">\n</HotelDatePicker>')
   .box
     Info(
@@ -97,9 +97,9 @@
       type="Boolean"
       defaultVal="false"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:disabledDaysOfWeek="['Monday', 'Friday']" :enableCheckout="true")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :disabledDaysOfWeek=\"[\'Monday\', \'Friday\']\" :enableCheckout="true">\n</HotelDatePicker>')
   .box
     Info(
@@ -108,9 +108,9 @@
       type="Boolean"
       defaultVal="false"
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:hoveringTooltip="false")
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :hoveringTooltip="false">\n</HotelDatePicker>')
   .box
     Info(
@@ -119,9 +119,9 @@
       type="Boolean"
       defaultVal=""
     )
-    .grid__half
+    .wrapper__350
       HotelDatePicker(:i18n='ptBr')
-    .grid__half
+    .wrapper__main
       Snippet(inlineCode='<HotelDatePicker\n :i18n="ptBr">\n</HotelDatePicker>')
       br
       Snippet(sourcePath='./dist/snippet3.txt' lang='javascript')
@@ -155,11 +155,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.box {
-  width: 100%;
-  float: left;
-  margin-left: 40px;
-}
-</style>

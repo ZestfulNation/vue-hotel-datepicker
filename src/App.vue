@@ -16,11 +16,17 @@
           .grid__full#gettingStarted
             hr
             h2 Getting Started
-            h3 Install the package via NPM
+            h3
+              | 1
+              span Install the package via NPM
             Snippet(sourcePath="./dist/snippet0.txt" lang='javascript')
-            h3 Load in your project
+            h3
+              | 2
+              span Load in your project
             Snippet(sourcePath="./dist/snippet1.txt" lang='javascript')
-            h3 Use the component
+            h3
+              | 3
+              span Use the component
             Snippet(sourcePath="./dist/snippet2.txt" lang='html')
           .grid__full#optionsProps
             Options
@@ -106,13 +112,16 @@ export default {
     margin-bottom: 2px;
   }
 
-  p {
+  p,
+  h3 span{
     color: #72767d;
     font-size: 14px;
     line-height: 1.5;
     font-weight: lighter;
     white-space: pre-wrap;
   }
+
+  h3 span { padding-left: 10px; }
 
   a {
     color: #15bebf;
@@ -139,6 +148,18 @@ export default {
   .vnis {
     width: 200px;
     margin: 30px 0;
+  }
+
+  .wrapper {
+    &__350 {
+      float: left;
+      width: 350px;
+    }
+
+    &__main {
+      float: right;
+      width: calc(100% - 370px)
+    }
   }
 
   .grid {
@@ -192,4 +213,10 @@ export default {
       // }
     }
   }
+
+.box {
+  width: 100%;
+  float: left;
+  margin-left: 40px;
+}
 </style>
