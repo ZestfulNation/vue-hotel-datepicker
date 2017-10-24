@@ -147,7 +147,7 @@ Toggle datepicker
 ## Events
 
 ### checkInChanged
-Emitted every time a new check out date is selected with the new date as payload
+Emitted every time a new check in date is selected with the new date as payload
 
 ### checkOutChanged
 Emitted every time a new check out date is selected with the new date as payload
