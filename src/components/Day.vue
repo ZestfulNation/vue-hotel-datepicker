@@ -87,7 +87,7 @@ export default {
         // If the calendar has a minimum number of nights
         if ( !this.isDisabled &&
              this.compareDay(this.date, this.checkIn) == 1 &&
-             this.options.minNights !== 0 &&
+             this.options.minNights > 0 &&
              this.compareDay(
                 this.date,
                 this.addDays(this.checkIn, this.options.minNights)
@@ -117,8 +117,12 @@ export default {
         }
         // Highlight the selected dates and prevent the user from selecting
         // the same date for checkout and checkin
-        if ( this.checkIn !== null ) {
-          if ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
+        if ( this.checkIn !== null &&
+            ( fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') )
+          ) {
+          if (this.options.minNights == 0) {
+            return "datepicker__month-day--first-day-selected"
+          } else {
             return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
           }
         }
@@ -259,7 +263,7 @@ export default {
             && this.nextDisabledDate !== Infinity) {
               this.isDisabled = true;
       }
-      else if ( this.isDateLessOrEquals(this.date, this.checkIn) ) {
+      else if ( this.isDateLessOrEquals(this.date, this.checkIn) && this.options.minNights > 0) {
         this.isDisabled = true;
       }
       if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout ){
