@@ -4,10 +4,7 @@
       <div class="box">
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
-          :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
-          :enableCheckout="true"
-          :minNights="10"
-          :useDummyInputs="false"
+          minNights='0'
           />
       </div>
 

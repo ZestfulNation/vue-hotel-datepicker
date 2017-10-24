@@ -285,9 +285,9 @@ export default {
     },
 
     hideDatepicker() { this.isOpen = false; },
-    
+
     showDatepicker() { this.isOpen = true; },
-    
+
     toggleDatepicker() { this.isOpen = !this.isOpen; },
 
     handleDayClick(event) {
@@ -594,6 +594,7 @@ $font-small: 14px;
     &--disabled {
       color: $lightest-gray;
       cursor: not-allowed;
+      pointer-events: none;
       position: relative;
     }
 
