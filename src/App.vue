@@ -81,7 +81,7 @@
       <div class="box">
         <h3>Custom tooltip text</h3>
         <DatePicker
-          tooltipMessage="Enjoy your stay!"
+          tooltipMessage="<strong>Enjoy</strong> your stay!"
           />
       </div>
 
