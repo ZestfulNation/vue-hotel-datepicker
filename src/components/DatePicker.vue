@@ -61,6 +61,7 @@
                 :nextDisabledDate='nextDisabledDate'
                 :activeMonthIndex='activeMonthIndex'
                 :hoveringDate='hoveringDate'
+                :tooltipMessage='tooltipMessage'
                 :dayNumber='getDay(day.date)'
                 :belongsToThisMonth='day.belongsToThisMonth'
                 :checkIn='checkIn'
@@ -86,6 +87,7 @@
                   :nextDisabledDate='nextDisabledDate'
                   :activeMonthIndex='activeMonthIndex'
                   :hoveringDate='hoveringDate'
+                  :tooltipMessage='tooltipMessage'
                   :dayNumber='getDay(day.date)'
                   :belongsToThisMonth='day.belongsToThisMonth'
                   :checkIn='checkIn'
@@ -161,6 +163,10 @@ export default {
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
+    },
+    tooltipMessage: {
+      default: null,
+      type: String
     },
     i18n: {
       default: () => defaulti18n,

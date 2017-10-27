@@ -77,6 +77,14 @@
           :minNights="7"
           />
       </div>
+
+      <div class="box">
+        <h3>Custom tooltip text</h3>
+        <DatePicker
+          tooltipMessage="Enjoy your stay!"
+          />
+      </div>
+
     </div>
   </div>
 </template>
