@@ -1,7 +1,7 @@
 <template lang='pug'>
   div
     span
-    .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-text='tooltipMessage')
+    .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-text='tooltipMessageDisplay')
     .datepicker__month-day(
       @click='dayClicked(date)'
       v-text='`${dayNumber}`'
@@ -55,6 +55,10 @@ export default {
       default: true,
       type: Boolean
     },
+    tooltipMessage: {
+      default: null,
+      type: String
+    }
   },
 
   data() {
@@ -69,10 +73,11 @@ export default {
     nightsCount: function() {
       return this.countDays(this.checkIn, this.hoveringDate);
     },
-    tooltipMessage: function() {
-      return `${this.nightsCount} ${this.nightsCount !== 1 ?
-              this.options.i18n['nights'] :
-                this.options.i18n['night']}`
+    tooltipMessageDisplay: function() {
+      return this.tooltipMessage
+      ? this.tooltipMessage
+      : `${this.nightsCount} ${this.nightsCount !== 1 ?
+              this.options.i18n['nights'] : this.options.i18n['night']}`
     },
     showTooltip: function() {
       return  !this.isDisabled &&
