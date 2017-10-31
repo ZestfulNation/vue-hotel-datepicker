@@ -58,7 +58,6 @@
           />
       </div>
 
-
       <div class="box">
         <h3>Certain dates blocked</h3>
         <DatePicker
@@ -94,6 +93,21 @@
           />
       </div>
 
+      <div class="box">
+        <h3>Changeover dates restraints</h3>
+        <p>
+          'C' checkin and checkout.
+          'I' checkin allowed only.
+          'O' checkout allowed only.
+          'X' no checkin and checkout.
+        </p>
+        <DatePicker
+          :changeover="'CCXICIOXCC'"
+          :disabledDates="[
+              '2017-12-04',
+          ]"
+        />
+      </div>
     </div>
   </div>
 </template>

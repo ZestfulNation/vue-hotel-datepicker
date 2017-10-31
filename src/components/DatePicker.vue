@@ -58,6 +58,8 @@
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
                 :sortedDisabledDates='sortedDisabledDates'
+                :sortedChangeoverDisabledCheckinDates = 'sortedChangeoverDisabledCheckinDates'
+                :sortedChangeoverDisabledCheckoutDates = 'sortedChangeoverDisabledCheckoutDates'
                 :nextDisabledDate='nextDisabledDate'
                 :activeMonthIndex='activeMonthIndex'
                 :hoveringDate='hoveringDate'
@@ -84,6 +86,8 @@
                   @dayClicked='handleDayClick($event)'
                   :date='day.date'
                   :sortedDisabledDates='sortedDisabledDates'
+                  :sortedChangeoverDisabledCheckinDates = 'sortedChangeoverDisabledCheckinDates'
+                  :sortedChangeoverDisabledCheckoutDates = 'sortedChangeoverDisabledCheckoutDates'
                   :nextDisabledDate='nextDisabledDate'
                   :activeMonthIndex='activeMonthIndex'
                   :hoveringDate='hoveringDate'
@@ -175,6 +179,10 @@ export default {
     enableCheckout: {
       default: false,
       type: Boolean
+    },
+    changeover: {
+      default: null,
+      type: String
     }
   },
 
@@ -194,6 +202,8 @@ export default {
       xUp: null,
       yUp: null,
       sortedDisabledDates: null,
+      sortedChangeoverDisabledCheckinDates: null,
+      sortedChangeoverDisabledCheckoutDates: null,
       screenSize: this.handleWindowResize(),
     };
   },
@@ -212,6 +222,8 @@ export default {
       }
     },
     checkIn(newDate) {
+      this.parseChangeoverDisabledCheckinDates()
+      this.parseChangeoverDisabledCheckoutDates()
       this.$emit("checkInChanged", newDate )
     },
     checkOut(newDate) {
@@ -220,6 +232,8 @@ export default {
         this.nextDisabledDate = null;
         this.show = true;
         this.parseDisabledDates();
+        this.parseChangeoverDisabledCheckinDates()
+        this.parseChangeoverDisabledCheckoutDates()
         this.reRender()
         this.isOpen = false;
       }
@@ -384,6 +398,39 @@ export default {
       sortedDates.sort((a, b) =>  a - b );
 
       this.sortedDisabledDates = sortedDates;
+    },
+
+    parseChangeoverDisabledCheckinDates() {
+      const sortedDates = [];
+
+      if (this.checkIn === null || (this.checkIn !== null && this.checkOut !== null)) {
+        _.forEach(this.changeover, (c, i) => {
+          if (c !== 'C' && c !== 'I') {
+            sortedDates.push(this.addDays(this.startDate, i))
+          }
+        })
+      }
+
+      sortedDates.sort((a, b) =>  a - b );
+
+      this.sortedChangeoverDisabledCheckinDates = sortedDates
+    },
+
+    parseChangeoverDisabledCheckoutDates() {
+      const sortedDates = [];
+
+      if (this.checkIn !== null && this.checkOut === null) {
+
+        _.forEach(this.changeover, (c, i) => {
+          if (c !== 'C' && c !== 'O') {
+            sortedDates.push(this.addDays(this.startDate, i))
+          }
+        })
+      }
+
+      sortedDates.sort((a, b) =>  a - b );
+
+      this.sortedChangeoverDisabledCheckoutDates = sortedDates
     }
   },
 
@@ -391,6 +438,7 @@ export default {
     this.createMonth(new Date(this.startDate));
     this.createMonth(this.getNextMonth(new Date(this.startDate)));
     this.parseDisabledDates();
+    this.parseChangeoverDisabledCheckinDates();
   },
 
   mounted() {

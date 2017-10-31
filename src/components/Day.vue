@@ -21,6 +21,12 @@ export default {
     sortedDisabledDates: {
       type: Array
     },
+    sortedChangeoverDisabledCheckinDates: {
+      type: Array
+    },
+    sortedChangeoverDisabledCheckoutDates: {
+      type: Array
+    },
     options: {
       type: Object
     },
@@ -120,6 +126,16 @@ export default {
             }
           }
         }
+
+        // If disabled changeover checkin
+        if ( _.some(this.sortedChangeoverDisabledCheckinDates, (i) => this.compareDay(i, this.date) == 0) ) {
+          return 'datepicker__month-day datepicker__month-day--out-of-range'
+        }
+        // If disabled changeover checkout
+        if ( _.some(this.sortedChangeoverDisabledCheckoutDates, (i) => this.compareDay(i, this.date) == 0) ) {
+          return 'datepicker__month-day datepicker__month-day--out-of-range'
+        }
+
         // Highlight the selected dates and prevent the user from selecting
         // the same date for checkout and checkin
         if ( this.checkIn !== null &&

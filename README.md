@@ -137,6 +137,25 @@ i18n: {
 }
 ```
 
+
+### changeover
+
+- Type: `String`
+- Default: `null`
+
+Flexible checkin and checkout setting, commonly used by cottage rental and hotel websites.
+Different from disabled day, it's the rule property owner can specify if that day can checkin or checkout, rather than saying it's unavailable or not.
+In this case, although one day may not allow checkin and checkout, it's not like disalbed day to block the following days.
+
+Example: if startDate is `2017-11-01`, and changeover is `CXIOC`, you will see these days not selectable for checkin `2017-11-02, 2017-11-04`.
+After select `2017-11-01` as checkin, these days will become not selectable for checkout `2017-11-02, 2017-11-03`, but it won't prevent you select any days after `2017-11-04`.
+```
+'C': allow checkin or checkout
+'I': allow checkin only
+'O': allow checkout only
+'X': no checkin or checkout
+```
+
 ## API
 
 ### hideDatepicker()
