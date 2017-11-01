@@ -117,7 +117,7 @@ Shows a tooltip with the number of nights when hovering a date.
 - Type: `String`
 - Default `null`
 
-If provided, it will override the default tooltip "X nights" with the text provided
+If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
 
 
 ### i18n

@@ -4,7 +4,7 @@
       <div class="box">
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
-          minNights='0'
+          :minNights='0'
           />
       </div>
 
@@ -81,7 +81,7 @@
       <div class="box">
         <h3>Custom tooltip text</h3>
         <DatePicker
-          tooltipMessage="<strong>Enjoy</strong> your stay!"
+          tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!"
           />
       </div>
 
