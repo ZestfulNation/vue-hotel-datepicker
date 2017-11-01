@@ -268,8 +268,11 @@ export default {
             && this.nextDisabledDate !== Infinity) {
               this.isDisabled = true;
       }
-      else if ( this.isDateLessOrEquals(this.date, this.checkIn) && this.options.minNights > 0) {
+      else if ( this.isDateLessOrEquals(this.date, this.checkIn) ) {
         this.isDisabled = true;
+      }
+      if ( this.compareDay(this.date, this.checkIn) == 0 && this.options.minNights == 0) {
+        this.isDisabled = false;
       }
       if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout ){
         this.isDisabled = false

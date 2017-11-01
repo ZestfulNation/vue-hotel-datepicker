@@ -2,9 +2,18 @@
   <div id="app" style="text-align: left; padding: 10vw">
     <div>
       <div class="box">
+        <h3>Allow check-in and check-out on the same day</h3>
+        <DatePicker
+          :minNights="0"
+          />
+      </div>
+
+      <div class="box">
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
-          :minNights='0'
+          :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
+          :enableCheckout="true"
+          :minNights="10"
           />
       </div>
 
