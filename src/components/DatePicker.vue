@@ -126,6 +126,14 @@ export default {
     value: {
       type: String
     },
+    startingDateValue: {
+      default: null,
+      type: Date
+    },
+    endingDateValue: {
+      default: null,
+      type: Date 
+    },
     format: {
       default: 'YYYY-MM-DD',
       type: String
@@ -181,8 +189,8 @@ export default {
   data() {
     return {
       hoveringDate: null,
-      checkIn: null,
-      checkOut: null,
+      checkIn: this.startingDateValue,
+      checkOut: this.endingDateValue,
       currentDate: new Date(),
       months: [],
       activeMonthIndex: 0,

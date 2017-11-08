@@ -73,7 +73,8 @@
       <div class="box">
         <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
         <DatePicker
-          :value="'2020-07-14 ► 2020-07-20'"
+          :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
+          :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)"
         />
       </div>
 
