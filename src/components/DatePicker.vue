@@ -17,7 +17,7 @@
         type="text"
         readonly
       )
-    button.datepicker__clear-button(@click='clearSelection') ＋
+    button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
