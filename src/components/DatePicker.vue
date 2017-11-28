@@ -404,7 +404,7 @@ export default {
   },
 
   destroyed() {
-    window.removeEventListener('touchstart', this.handleTouchMove);
+    window.removeEventListener('touchstart', this.handleTouchStart);
     window.removeEventListener('touchmove', this.handleTouchMove);
     window.removeEventListener('resize', this. handleWindowResize);
   }
