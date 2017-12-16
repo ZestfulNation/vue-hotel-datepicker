@@ -175,6 +175,10 @@ export default {
     enableCheckout: {
       default: false,
       type: Boolean
+    },
+    singleDaySelection: {
+      default: false,
+      type: Boolean
     }
   },
 
@@ -215,6 +219,7 @@ export default {
       this.$emit("checkInChanged", newDate )
     },
     checkOut(newDate) {
+
       if ( this.checkOut !== null && this.checkOut !== null ) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
@@ -297,8 +302,12 @@ export default {
     toggleDatepicker() { this.isOpen = !this.isOpen; },
 
     handleDayClick(event) {
-      if (this.checkIn == null) {
+
+      if (this.checkIn == null && this.singleDaySelection == false) {
         this.checkIn = event.date;
+      } else if (this.singleDaySelection == true){
+        this.checkIn = event.date
+        this.checkOut = event.date
       }
       else if ( this.checkIn !== null && this.checkOut == null ) {
         this.checkOut = event.date;
@@ -307,6 +316,7 @@ export default {
         this.checkOut = null;
         this.checkIn = event.date;
       }
+
       this.nextDisabledDate = event.nextDisabledDate
     },
 
