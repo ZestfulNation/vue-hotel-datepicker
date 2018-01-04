@@ -140,6 +140,10 @@ export default {
       default: Infinity,
       type: [ Date, String, Number ]
     },
+    firstDayOfWeek: {
+      default: 0,
+      type: Number
+    },
     minNights: {
       default: 1,
       type: Number
@@ -357,7 +361,7 @@ export default {
     formatDate(date) { return fecha.format(date, this.format) },
 
     createMonth(date){
-      const firstSunday = this.getFirstSunday(date);
+      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
 
       let month = {
         days: []
@@ -365,8 +369,8 @@ export default {
 
       for (let i = 0; i < 42; i++) {
         month.days.push({
-          date: this.addDays(firstSunday, i),
-          belongsToThisMonth: this.addDays(firstSunday, i).getMonth() === date.getMonth(),
+          date: this.addDays(firstDay, i),
+          belongsToThisMonth: this.addDays(firstDay, i).getMonth() === date.getMonth(),
           isInRange: false,
         });
       }
