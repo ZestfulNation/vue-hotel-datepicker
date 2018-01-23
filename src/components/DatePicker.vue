@@ -1,7 +1,7 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
+    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       input.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
@@ -9,6 +9,7 @@
         :placeholder="i18n['check-in']"
         type="text"
         readonly
+        :style="isHidden"
       )
       input.datepicker__dummy-input.datepicker__input(
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
@@ -16,6 +17,7 @@
         :placeholder="i18n['check-out']"
         type="text"
         readonly
+        :style="isHidden"
       )
     button.datepicker__clear-button(@click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
@@ -200,6 +202,12 @@ export default {
       sortedDisabledDates: null,
       screenSize: this.handleWindowResize(),
     };
+  },
+
+  computed: {
+    isHidden() {
+      if (this.singleDaySelection == true) { return { 'display':'none' } }
+    }
   },
 
   watch: {
@@ -849,6 +857,10 @@ $font-small: 14px;
       position: absolute;
     }
   }
+}
+
+.hidden{
+  display: none
 }
 
 // Modifiers
