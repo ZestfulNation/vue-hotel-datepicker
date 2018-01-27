@@ -2,6 +2,12 @@
   <div id="app" style="text-align: left; padding: 10vw">
     <div>
       <div class="box">
+        <h3>Allow selection of single day</h3>
+        <DatePicker
+          :singleDaySelection="true"
+          />
+      </div>
+      <div class="box">
         <h3>Allow check-in and check-out on the same day</h3>
         <DatePicker
           :minNights="0"
