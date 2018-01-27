@@ -4,20 +4,19 @@
     .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       input.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
-        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
+        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
         :value="`${checkIn ? formatDate(checkIn) : ''}`"
         :placeholder="i18n['check-in']"
         type="text"
         readonly
-        :style="isHidden"
       )
       input.datepicker__dummy-input.datepicker__input(
+        v-if='!singleDaySelection'
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
         :value="`${checkOut ? formatDate(checkOut) : ''}`"
         :placeholder="i18n['check-out']"
         type="text"
         readonly
-        :style="isHidden"
       )
     button.datepicker__clear-button(@click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
@@ -202,12 +201,6 @@ export default {
       sortedDisabledDates: null,
       screenSize: this.handleWindowResize(),
     };
-  },
-
-  computed: {
-    isHidden() {
-      if (this.singleDaySelection == true) { return { 'display':'none' } }
-    }
   },
 
   watch: {
@@ -583,6 +576,11 @@ $font-small: 14px;
     &--is-active::-moz-placeholder { color: $primary-color; }
     &--is-active:-ms-input-placeholder { color: $primary-color; }
     &--is-active:-moz-placeholder { color: $primary-color; }
+    &--single-date:first-child {
+      width: 100%;
+      background: none;
+      text-align: left;
+    }
   }
 
   &__month-day {
