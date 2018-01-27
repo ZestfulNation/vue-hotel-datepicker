@@ -857,10 +857,6 @@ $font-small: 14px;
   }
 }
 
-.hidden{
-  display: none
-}
-
 // Modifiers
 
 .-overflow-hidden { overflow: hidden; }
