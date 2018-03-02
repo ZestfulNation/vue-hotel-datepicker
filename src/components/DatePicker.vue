@@ -2,21 +2,17 @@
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
     .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
-      input.datepicker__dummy-input.datepicker__input(
+      button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
-        :value="`${checkIn ? formatDate(checkIn) : ''}`"
-        :placeholder="i18n['check-in']"
-        type="text"
-        readonly
+        v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+        type="button"
       )
-      input.datepicker__dummy-input.datepicker__input(
+      button.datepicker__dummy-input.datepicker__input(
         v-if='!singleDaySelection'
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-        :value="`${checkOut ? formatDate(checkOut) : ''}`"
-        :placeholder="i18n['check-out']"
-        type="text"
-        readonly
+        v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+        type="button"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
@@ -25,19 +21,15 @@
           @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkIn ? formatDate(checkIn) : ''}`"
-            :placeholder="i18n['check-in']"
-            type="text"
-            readonly
+            v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+            type="button"
           )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkOut ? formatDate(checkOut) : ''}`"
-            :placeholder="i18n['check-out']"
-            type="text"
-            readonly
+            v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+            type="button"
           )
       .datepicker__inner
         .datepicker__header
@@ -94,6 +86,9 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
+            button.datepicker__month-button.datepicker__month-button--next.-hide-on-desktop(
+              @click='renderNextMonth' type="button"
+            )
 </template>
 
 <script>
@@ -133,7 +128,7 @@ export default {
     },
     endingDateValue: {
       default: null,
-      type: Date 
+      type: Date
     },
     format: {
       default: 'YYYY-MM-DD',
@@ -502,6 +497,9 @@ $font-small: 14px;
       box-shadow: none;
       height: 100%;
       left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-overflow-scrolling: touch !important;
       position: fixed;
       top: 0;
       width: 100%;
@@ -684,7 +682,34 @@ $font-small: 14px;
 
     &--prev { transform: rotateY(180deg); }
 
-    &--next { float: right; }
+    &--next {
+      float: right;
+
+      @include device($up-to-tablet) {
+        background: none;
+        border: 1px solid $light-gray;
+        float: none;
+        width: 100%;
+        position: relative;
+        background-position: center;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        appearance: none;
+
+        &:after {
+          background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+          transform: rotate(90deg);
+          content: "";
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          top: -50%;
+          left: -50%;
+        }
+      }
+    }
 
     &--locked {
       opacity: .2;
