@@ -56,7 +56,7 @@
               @mouseover='hoveringDate = day.date')
               Day(
                 :options="$props"
-                @dayClicked='handleDayClick($event)'
+                @day-clicked='handleDayClick($event)'
                 :date='day.date'
                 :sortedDisabledDates='sortedDisabledDates'
                 :nextDisabledDate='nextDisabledDate'
@@ -82,7 +82,7 @@
                 )
                 Day(
                   :options="$props"
-                  @dayClicked='handleDayClick($event)'
+                  @day-clicked='handleDayClick($event)'
                   :date='day.date'
                   :sortedDisabledDates='sortedDisabledDates'
                   :nextDisabledDate='nextDisabledDate'
@@ -133,7 +133,7 @@ export default {
     },
     endingDateValue: {
       default: null,
-      type: Date 
+      type: Date
     },
     format: {
       default: 'YYYY-MM-DD',
@@ -225,7 +225,7 @@ export default {
       }
     },
     checkIn(newDate) {
-      this.$emit("checkInChanged", newDate )
+      this.$emit("check-in-changed", newDate )
     },
     checkOut(newDate) {
 
@@ -238,7 +238,7 @@ export default {
         this.isOpen = false;
       }
 
-      this.$emit("checkOutChanged", newDate )
+      this.$emit("check-out-changed", newDate )
     },
 
   },
@@ -284,7 +284,7 @@ export default {
     },
 
     emitHeighChangeEvent() {
-      this.$emit('heightChanged');
+      this.$emit('height-changed');
     },
 
     reRender() {
