@@ -188,6 +188,10 @@ export default {
     singleDaySelection: {
       default: false,
       type: Boolean
+    },
+    showYear: {
+      default: false,
+      type: Boolean
     }
   },
 
@@ -371,7 +375,7 @@ export default {
 
     getDay(date) { return fecha.format(date, 'D') },
 
-    getMonth(date) { return this.i18n["month-names"][fecha.format(date, 'M') - 1] },
+    getMonth(date) { return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : ''); },
 
     formatDate(date) { return fecha.format(date, this.format) },
 
