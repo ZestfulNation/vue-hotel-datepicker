@@ -133,7 +133,7 @@ export default {
     },
     endingDateValue: {
       default: null,
-      type: Date 
+      type: Date
     },
     format: {
       default: 'YYYY-MM-DD',
@@ -749,7 +749,7 @@ $font-small: 14px;
       }
     }
 
-    @include device($tablet-up) {
+    @include device($desktop) {
       &:last-of-type {
         padding-right: 0;
         padding-left: 10px;
