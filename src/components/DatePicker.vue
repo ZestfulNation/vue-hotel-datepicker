@@ -62,16 +62,27 @@
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
-            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .datepicker__week-name(
+              v-for='dayName in this.i18n["day-names"]'
+              v-text='dayName'
+            )
           .datepicker__months#swiperWrapper
-            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
-              h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
+            div.datepicker__month(
+              v-for='(a, n) in months'
+              v-bind:key='n'
+            )
+              h1.datepicker__month-name(
+                v-text='getMonth(months[n].days[15].date)'
+              )
               .datepicker__week-row.-hide-up-to-tablet
-                .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
+                .datepicker__week-name(
+                  v-for='dayName in i18n["day-names"]'
+                  v-text='dayName'
+                )
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
                 v-bind:key='index'
-                )
+              )
                 Day(
                   :options="$props"
                   @dayClicked='handleDayClick($event)'
@@ -86,9 +97,10 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
-            button.datepicker__month-button.datepicker__month-button--next.-hide-on-desktop(
-              @click='renderNextMonth' type="button"
-            )
+            div
+              button.next--mobile(
+                @click='renderNextMonth' type="button"
+              )
 </template>
 
 <script>
@@ -484,6 +496,33 @@ $font-small: 14px;
   position: absolute;
   z-index: 10;
 
+  button.next--mobile {
+    background: none;
+    border: 1px solid $light-gray;
+    float: none;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    background-position: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    appearance: none;
+    overflow: hidden;
+
+    &:after {
+      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+      transform: rotate(90deg);
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
+  }
+
   &--closed {
     box-shadow: 0 15px 30px 10px rgba($black, 0);
     max-height: 0;
@@ -684,31 +723,6 @@ $font-small: 14px;
 
     &--next {
       float: right;
-
-      @include device($up-to-tablet) {
-        background: none;
-        border: 1px solid $light-gray;
-        float: none;
-        width: 100%;
-        position: relative;
-        background-position: center;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 0;
-        padding-right: 0;
-        appearance: none;
-
-        &:after {
-          background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
-          transform: rotate(90deg);
-          content: "";
-          position: absolute;
-          width: 200%;
-          height: 200%;
-          top: -50%;
-          left: -50%;
-        }
-      }
     }
 
     &--locked {
@@ -736,6 +750,9 @@ $font-small: 14px;
       overflow: scroll;
       right: 0;
       bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     &::before {
@@ -907,5 +924,4 @@ $font-small: 14px;
     display: none;
   }
 }
-
 </style>
