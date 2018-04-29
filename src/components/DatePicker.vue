@@ -97,16 +97,9 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
-<<<<<<< HEAD
-            button.datepicker__month-button.datepicker__month-button--next.-hide-on-desktop(
+            button.next--mobile(
               @click='renderNextMonth' type="button"
             )
-=======
-            div
-              button.next--mobile(
-                @click='renderNextMonth' type="button"
-              )
->>>>>>> 64e79334f0de9cf2e5f7fa3ba06e73d417474740
 </template>
 
 <script>
