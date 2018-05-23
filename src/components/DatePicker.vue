@@ -370,7 +370,7 @@ export default {
         for (let i = 0; i < formats.length; i++) {
           const format = formats[i];
           const date = typeof format === 'function' ?
-            format(date) :
+            format(str) :
             fecha.parse(str, formats[i]);
        
           if (date) {
