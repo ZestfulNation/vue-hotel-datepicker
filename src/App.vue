@@ -2,6 +2,13 @@
   <div id="app" style="text-align: left; padding: 10vw">
     <div>
       <div class="box">
+        <h3>Allow direct input</h3>
+        <DatePicker
+          :keyboardFormats="['MM/DD/YYYY']"
+          :showYear="true"
+          />
+      </div>
+      <div class="box">
         <h3>Allow selection of single day</h3>
         <DatePicker
           :singleDaySelection="true"

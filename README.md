@@ -145,6 +145,14 @@ If provided, it will override the default tooltip "X nights" with the text provi
 
 Shows the year next to the month
 
+## keyboardFormats
+
+- Type `Array` of `String` or `Function`
+- Default `[]`
+
+Enables direct keyboard input. Parsing will be executed by `fecha.parse()` with provided format or by provided function. The first valid format will be used.
+Consider the fecha issue `https://github.com/taylorhakes/fecha/issues/22` when use it.
+
 ### i18n
 
 - Type: `Object`

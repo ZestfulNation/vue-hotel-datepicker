@@ -1,43 +1,59 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
+    .datepicker__dummy-wrapper( @click='showDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       input.datepicker__dummy-input.datepicker__input(
+        ref="checkInInput"
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
-        :value="`${checkIn ? formatDate(checkIn) : ''}`"
+        v-model="checkInStr"
         :placeholder="i18n['check-in']"
         type="text"
-        readonly
+        :disabled="keyboardFormats.length === 0"
+        @keyup.self="setCheckInDateByInput"
+        @keyup.enter="verifyCheckInDate"
+        @blur="executeForDesktop(verifyCheckInDate)"
       )
       input.datepicker__dummy-input.datepicker__input(
+        ref="checkOutInput"
         v-if='!singleDaySelection'
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-        :value="`${checkOut ? formatDate(checkOut) : ''}`"
+        v-model="checkOutStr"
         :placeholder="i18n['check-out']"
         type="text"
-        readonly
+        :disabled="keyboardFormats.length === 0 || !checkIn"
+        @keyup.self="setCheckOutDateByInput"
+        @keyup.enter="verifyCheckOutDate"
+        @blur="executeForDesktop(verifyCheckOutDate)"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
-          @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
-          v-if='isOpen'
+          @click='showDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
+          v-if="isOpen && screenSize != 'desktop'"
         )
           input.datepicker__dummy-input.datepicker__input(
+            ref="checkInInputMobile"
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkIn ? formatDate(checkIn) : ''}`"
+            v-model="checkInStr"
             :placeholder="i18n['check-in']"
             type="text"
-            readonly
+            :disabled="keyboardFormats.length === 0"
+            @keyup.self="setCheckInDateByInput"
+            @keyup.enter="verifyCheckInDate"
+            @blur="verifyCheckInDate"
           )
           input.datepicker__dummy-input.datepicker__input(
+            ref="checkOutInputMobile"
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkOut ? formatDate(checkOut) : ''}`"
+            v-model="checkOutStr"
             :placeholder="i18n['check-out']"
             type="text"
-            readonly
+            :disabled="keyboardFormats.length === 0 || !checkIn"
+            @keyup.self="setCheckOutDateByInput"
+            @keyup.enter="verifyCheckOutDate"
+            @blur="verifyCheckOutDate"
           )
       .datepicker__inner
         .datepicker__header
@@ -71,8 +87,8 @@
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
             .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
-          .datepicker__months#swiperWrapper
-            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
+          .datepicker__months#swiperWrapper(ref="swiperWrapper")
+            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n' :ref="'month_' +  formatDate(months[n].days[15].date, 'YYYYMM')")
               h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
               .datepicker__week-row.-hide-up-to-tablet
                 .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
@@ -141,7 +157,7 @@ export default {
     },
     startDate: {
       default: function() {
-        return new Date()
+        return new Date();
       },
       type: [ Date, String ]
     },
@@ -192,6 +208,12 @@ export default {
     showYear: {
       default: false,
       type: Boolean
+    },
+    keyboardFormats: {
+      default() {
+        return [];
+      },
+      type: Array
     }
   },
 
@@ -211,7 +233,9 @@ export default {
       xUp: null,
       yUp: null,
       sortedDisabledDates: null,
-      screenSize: this.handleWindowResize(),
+      checkInStr: null,
+      checkOutStr: null,
+      screenSize: this.handleWindowResize()
     };
   },
 
@@ -238,8 +262,7 @@ export default {
         this.nextDisabledDate = null;
         this.show = true;
         this.parseDisabledDates();
-        this.reRender()
-        this.isOpen = false;
+        this.reRender();
       }
 
       this.$emit("checkOutChanged", newDate )
@@ -298,73 +321,267 @@ export default {
       })
     },
 
-    clearSelection(){
-      this.hoveringDate = null,
+    clearSelection() {
+      this.hoveringDate = null;
       this.checkIn = null;
+      this.checkInStr = null;
       this.checkOut = null;
+      this.checkOutStr = null;
       this.nextDisabledDate = null;
       this.show = true;
       this.parseDisabledDates();
-      this.reRender()
+      this.reRender();
     },
 
     hideDatepicker() { this.isOpen = false; },
 
-    showDatepicker() { this.isOpen = true; },
+    showDatepicker() {
+      if (!this.isOpen) {
+        this.isOpen = true;
+        this.$nextTick(() => {
+          this.getCheckInInput().focus();
+          if (this.checkIn) {
+            if (this.screenSize != 'desktop') {
+              this.scrollToDate(this.checkOut ? this.checkOut : this.checkIn);
+            }
+          }
+        });
+      }
+    },
 
-    toggleDatepicker() { this.isOpen = !this.isOpen; },
+    //doesn't used
+    //toggleDatepicker() { this.isOpen = !this.isOpen; },
+
+    getCheckInInput() {
+      return this.screenSize == "desktop"
+        ? this.$refs.checkInInput
+        : this.$refs.checkInInputMobile;
+    },
+
+    getCheckOutInput() {
+      return this.screenSize == "desktop"
+        ? this.$refs.checkOutInput
+        : this.$refs.checkOutInputMobile;
+    },
+
+    parseInputDate(str) {
+      if (str && str.length > 0) {
+        const formats = this.keyboardFormats.concat([this.format]);
+        for (let i = 0; i < formats.length; i++) {
+          const format = formats[i];
+          const date = typeof format === 'function' ?
+            format(date) :
+            fecha.parse(str, formats[i]);
+       
+          if (date) {
+            return date;
+          }
+        }
+      }
+      return false;
+    },
+
+    scrollToDate(date) {
+      const monthEl = this.$refs[`month_${this.formatDate(date, 'YYYYMM')}`];
+      if (monthEl && monthEl[0]) {
+        const scrollTop = monthEl[0].offsetTop;
+        this.$refs.swiperWrapper.scrollTop = scrollTop;
+      }
+    },
+
+    moveCalendarToTheDate(date) {
+      let firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+      let firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
+      const currentMonthYear = fecha.format(date, "YYYYMM");
+
+      const isInFuture = firstDayOfLastMonth < date;
+      const changeMonthFn =
+        isInFuture
+          ? this.renderNextMonth
+          : this.renderPreviousMonth;
+
+      const isDayInCurrentView = () => {
+        return (
+          fecha.format(firstDayOfLastMonth, "YYYYMM") == currentMonthYear ||
+          fecha.format(firstDayOfLastButOneMonth, "YYYYMM") == currentMonthYear
+        );
+      };
+
+      if (isInFuture || this.screenSize == 'desktop') {
+        while (!isDayInCurrentView()) {
+          changeMonthFn();
+          firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+          firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
+        } 
+      } 
+      if (this.screenSize != 'desktop') {
+        this.$nextTick(() => {
+          this.scrollToDate(date);
+        });
+      }
+    },
+
+    executeForDesktop(fn) {
+      if (this.screenSize == 'desktop') {
+        fn();
+      }
+    },
+
+    verifyCheckInDate() {
+      if (this.checkIn) {
+        this.checkInStr = this.formatDate(this.checkIn);
+        this.$nextTick(() => {
+          this.getCheckOutInput().focus();
+        });
+      } else if (this.checkInStr && this.checkInStr.length > 0) {
+        this.clearSelection();
+      }
+    },
+
+    verifyCheckOutDate() {
+      if (this.checkOut) {
+        this.checkOutStr = this.formatDate(this.checkOut);
+      } else if (this.checkOut && this.checkOut.length > 0) {
+        this.checkOutStr = null;
+        this.checkOut = null;
+      }
+    },
+
+    setCheckInDateByInput() {
+      const checkIn = this.parseInputDate(this.checkInStr);
+      if (
+        checkIn &&
+        !this.checkIfDayIsDisabled(
+          checkIn,
+          this.checkIn,
+          this.checkOut,
+          this.sortedDisabledDates,
+          this.$props
+        )
+      ) {
+        this.checkIn = checkIn;
+        const allowedCheckoutDays = this.getAllowedCheckoutDays(
+          this.checkIn,
+          this.$props
+        );
+
+        this.nextDisabledDate = this.getNextDisabledDate(
+          this.checkIn,
+          this.$props,
+          allowedCheckoutDays,
+          this.sortedDisabledDates
+        );
+
+        this.moveCalendarToTheDate(this.checkIn);
+
+        this.checkOut = null;
+        this.checkOutStr = null;
+      }
+    },
+
+    setCheckOutDateByInput() {
+      const checkOut = this.parseInputDate(this.checkOutStr);
+      if (
+        checkOut &&
+        (checkOut > this.checkIn || !this.checkIn) &&
+        !this.checkIfDayIsDisabled(
+          checkOut,
+          this.checkIn,
+          this.checkOut,
+          this.sortedDisabledDates,
+          this.$props
+        )
+      ) {
+        this.checkOut = checkOut;
+      
+        const allowedCheckoutDays = this.getAllowedCheckoutDays(
+          this.checkOut,
+          this.$props
+        );
+
+        this.nextDisabledDate = this.getNextDisabledDate(
+          this.checkOut,
+          this.$props,
+          allowedCheckoutDays,
+          this.sortedDisabledDates
+        );
+
+        this.moveCalendarToTheDate(this.checkOut);
+      } 
+    },
 
     handleDayClick(event) {
-
       if (this.checkIn == null && this.singleDaySelection == false) {
         this.checkIn = event.date;
-      } else if (this.singleDaySelection == true){
-        this.checkIn = event.date
-        this.checkOut = event.date
-      }
-      else if ( this.checkIn !== null && this.checkOut == null ) {
-        this.checkOut = event.date;
-      }
-      else {
-        this.checkOut = null;
+        this.checkInStr = this.formatDate(this.checkIn);
+        this.$nextTick(() => {
+          this.getCheckOutInput().focus();
+        });
+      } else if (this.singleDaySelection == true) {
         this.checkIn = event.date;
+        this.checkInStr = this.formatDate(this.checkIn);
+        this.checkOut = event.date;
+        this.checkOutStr = this.formatDate(this.checkOut);
+      } else if (this.checkIn !== null && this.checkOut == null) {
+        this.checkOut = event.date;
+        this.checkOutStr = this.formatDate(this.checkOut);
+        this.isOpen = false;
+      } else {
+        this.checkOut = null;
+        this.checkOutStr = null;
+        this.checkIn = event.date;
+        this.checkInStr = this.formatDate(this.checkIn);
       }
 
-      this.nextDisabledDate = event.nextDisabledDate
+      this.nextDisabledDate = event.nextDisabledDate;
+    },
+
+    getFirstDayInMonth(index) {
+      return _.filter(this.months[index].days, {
+        belongsToThisMonth: true
+      })[0].date;
+    },
+
+    getFirstDayOfLastMonth() {
+      if (this.screenSize !== "desktop") {
+        return this.getFirstDayInMonth(this.months.length - 1);
+      }
+      return this.getFirstDayInMonth(this.activeMonthIndex + 1);
+    },
+
+    getFirstDayOfLastButOneMonth() {
+      if (this.screenSize !== "desktop") {
+        return this.getFirstDayInMonth(this.months.length - 2);
+      }
+      return this.getFirstDayInMonth(this.activeMonthIndex);
     },
 
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
-        this.activeMonthIndex--
+        this.activeMonthIndex--;
       }
-      else return
     },
 
     renderNextMonth() {
-      let firstDayOfLastMonth;
+      const firstDayOfLastMonth = this.getFirstDayOfLastMonth();
 
-      if (this.screenSize !== 'desktop') {
-        firstDayOfLastMonth = _.filter(this.months[this.months.length-1].days, {
-          'belongsToThisMonth': true
-        });
-      } else {
-        firstDayOfLastMonth = _.filter(this.months[this.activeMonthIndex+1].days, {
-          'belongsToThisMonth': true
-        });
-      }
-
-      if (this.endDate !== Infinity){
-        if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
-            fecha.format(new Date(this.endDate), 'YYYYMM')) {
-          return
+      if (this.endDate !== Infinity) {
+        if (
+          fecha.format(firstDayOfLastMonth, "YYYYMM") ==
+          fecha.format(new Date(this.endDate), "YYYYMM")
+        ) {
+          return;
         }
       }
 
-      this.createMonth(
-        this.getNextMonth(
-          firstDayOfLastMonth[0].date
+      if (
+        !(
+          this.screenSize === "desktop" &&
+          this.months[this.activeMonthIndex + 2]
         )
-      );
+      ) {
+        this.createMonth(this.getNextMonth(firstDayOfLastMonth));
+      }
 
       this.activeMonthIndex++;
     },
@@ -377,7 +594,9 @@ export default {
 
     getMonth(date) { return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : ''); },
 
-    formatDate(date) { return fecha.format(date, this.format) },
+    formatDate(date, format = false) { 
+      return fecha.format(date, format ? format : this.format);
+    },
 
     createMonth(date){
       const firstSunday = this.getFirstSunday(date);
@@ -413,6 +632,12 @@ export default {
   beforeMount() {
     this.createMonth(new Date(this.startDate));
     this.createMonth(this.getNextMonth(new Date(this.startDate)));
+    if (this.checkIn) {
+      this.checkInStr = this.formatDate(this.checkIn);
+    }
+    if (this.checkOut) {
+      this.checkOutStr = this.formatDate(this.checkOut);
+    }
     this.parseDisabledDates();
   },
 

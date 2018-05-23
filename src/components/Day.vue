@@ -176,22 +176,16 @@ export default {
     },
     checkIn: function(date) {
       this.createAllowedCheckoutDays(date);
+      this.checkIfDisabled();
+      this.disableNextDays();
+    },
+    checkOut: function(date) {
+      this.checkIfHighlighted();
     }
   },
 
   methods: {
     ...Helpers,
-
-    compareDay(day1, day2) {
-      const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
-      const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
-
-      if (date1 > date2) { return 1; }
-
-      else if (date1 == date2) { return 0; }
-
-      else if (date1 < date2) { return -1; }
-    },
 
     dayClicked(date) {
       if (this.isDisabled) {
@@ -202,48 +196,18 @@ export default {
           this.createAllowedCheckoutDays(date);
         }
 
-        let nextDisabledDate =
-          (this.options.maxNights ? this.addDays(this.date, this.options.maxNights) : null) ||
-          this.allowedCheckoutDays[this.allowedCheckoutDays.length-1] ||
-          this.getNextDate(this.sortedDisabledDates, this.date) ||
-          this.nextDateByDayOfWeekArray(this.options.disabledDaysOfWeek, this.date) ||
-          Infinity;
-
-        if (this.options.enableCheckout) { nextDisabledDate = Infinity; }
+        const nextDisabledDate = this.getNextDisabledDate(
+          this.date,
+          this.options,
+          this.allowedCheckoutDays,
+          this.sortedDisabledDates);
 
         this.$emit('dayClicked', { date, nextDisabledDate });
       }
     },
 
-    compareEndDay() {
-      if (this.options.endDate !== Infinity) {
-        return ( this.compareDay(this.date, this.options.endDate) == 1 )
-      }
-    },
-
     checkIfDisabled() {
-      this.isDisabled =
-        // If this day is equal any of the disabled dates
-        _.some(
-          this.sortedDisabledDates, (i) =>
-          this.compareDay(i, this.date) == 0
-        )
-        // Or is before the start date
-        || this.compareDay(this.date, this.options.startDate) == -1
-        // Or is after the end date
-        || this.compareEndDay()
-        // Or is in one of the disabled days of the week
-        || _.some(
-          this.options.disabledDaysOfWeek, (i) =>
-          i == fecha.format(this.date, 'dddd')
-        );
-        // Handle checkout enabled
-        if ( this.options.enableCheckout ) {
-          if ( this.compareDay(this.date, this.checkIn) == 1 &&
-               this.compareDay(this.date, this.checkOut) == -1 ) {
-                this.isDisabled = false;
-          }
-        }
+      this.isDisabled = this.checkIfDayIsDisabled(this.date, this.checkIn, this.checkOut, this.sortedDisabledDates, this.options);
     },
 
     checkIfHighlighted(){
@@ -251,16 +215,13 @@ export default {
         this.isDateLessOrEquals(this.checkIn, this.date) &&
         this.isDateLessOrEquals(this.date, this.checkOut) ?
         this.isHighlighted = true : this.isHighlighted = false
+      } else {
+        this.isHighlighted = false;
       }
     },
 
     createAllowedCheckoutDays(date){
-      this.allowedCheckoutDays = [];
-      _.forEach(
-        this.options.allowedRanges, (i) =>
-        this.allowedCheckoutDays.push(this.addDays(date, i))
-      )
-      this.allowedCheckoutDays.sort((a, b) =>  a - b );
+      this.allowedCheckoutDays = this.getAllowedCheckoutDays(date, this.options);
     },
 
     disableNextDays(){
@@ -275,10 +236,7 @@ export default {
         this.isDisabled = false;
       }
       if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout ){
-        this.isDisabled = false
-      }
-      else {
-        return
+        this.isDisabled = false;
       }
     },
   },

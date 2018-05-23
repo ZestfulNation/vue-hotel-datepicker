@@ -1,3 +1,5 @@
+import fecha from 'fecha';
+
 export default {
   getNextDate(datesArray, referenceDate){
     var now = new Date(referenceDate);
@@ -135,5 +137,74 @@ export default {
     }
     this.xDown = null;
     this.yDown = null;
+  },
+
+  compareDay(day1, day2) {
+    const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
+    const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
+
+    if (date1 > date2) { return 1; }
+
+    else if (date1 == date2) { return 0; }
+
+    else if (date1 < date2) { return -1; }
+  },
+
+  compareEndDayByDate(date, options) {
+    if (options.endDate !== Infinity) {
+      return ( this.compareDay(date, options.endDate) == 1 )
+    }
+  },
+
+  checkIfDayIsDisabled(date, checkIn, checkOut, sortedDisabledDates, options) {
+    let isDisabled =
+      // If this day is equal any of the disabled dates
+      _.some(
+        sortedDisabledDates, (i) =>
+        this.compareDay(i, date) == 0
+      )
+      // Or is before the start date
+      || this.compareDay(date, options.startDate) == -1
+      // Or is after the end date
+      || this.compareEndDayByDate(date, options)
+      // Or is in one of the disabled days of the week
+      || _.some(
+        options.disabledDaysOfWeek, (i) =>
+        i == fecha.format(date, 'dddd')
+      );
+
+    // Handle checkout enabled
+    if ( options.enableCheckout ) {
+      if ( this.compareDay(date, checkIn) == 1 &&
+            this.compareDay(date, checkOut) == -1 ) {
+            isDisabled = false;
+      }
+    }
+
+    return isDisabled;
+  },
+
+  getNextDisabledDate(date, options, allowedCheckoutDays, sortedDisabledDates) {
+
+    let nextDisabledDate =
+      (options.maxNights ? this.addDays(date, options.maxNights) : null) ||
+      allowedCheckoutDays[allowedCheckoutDays.length-1] ||
+      this.getNextDate(sortedDisabledDates, date) ||
+      this.nextDateByDayOfWeekArray(options.disabledDaysOfWeek, date) ||
+      Infinity;
+
+    if (options.enableCheckout) { nextDisabledDate = Infinity; }
+
+    return nextDisabledDate;
+  },
+
+  getAllowedCheckoutDays(date, options){
+    const allowedCheckoutDays = [];
+    _.forEach(
+      options.allowedRanges, (i) =>
+      allowedCheckoutDays.push(this.addDays(date, i))
+    )
+    allowedCheckoutDays.sort((a, b) =>  a - b );
+    return allowedCheckoutDays;
   },
 };
