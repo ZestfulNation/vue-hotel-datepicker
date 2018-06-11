@@ -5,13 +5,14 @@
         <h3>Allow selection of single day</h3>
         <DatePicker
           :singleDaySelection="true"
-          />
+        />
       </div>
+
       <div class="box">
         <h3>Allow check-in and check-out on the same day</h3>
         <DatePicker
           :minNights="0"
-          />
+        />
       </div>
 
       <div class="box">
@@ -20,7 +21,7 @@
           :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
           :enableCheckout="true"
           :minNights="10"
-          />
+        />
       </div>
 
       <div class="box">
@@ -30,7 +31,7 @@
           :enableCheckout="true"
           :allowedRanges="[7,14,21,28]"
           :maxNights="30"
-          />
+        />
       </div>
 
       <div class="box">
@@ -53,7 +54,7 @@
           :maxNights="30"
           :showBottomBar="false"
           :selectForward="false"
-          />
+        />
       </div>
 
       <div class="box">
@@ -61,7 +62,7 @@
         <DatePicker
           :minNights="3"
           :showBottomBar="true"
-          />
+        />
       </div>
 
 
@@ -73,7 +74,7 @@
               '2017-09-26',
           ]"
           :showCloseButton="true"
-          />
+        />
       </div>
 
       <div class="box">
@@ -91,21 +92,29 @@
           :enableCheckout="true"
           :allowedRanges="[7,10,14]"
           :minNights="7"
-          />
+        />
       </div>
 
       <div class="box">
         <h3>Custom tooltip text</h3>
         <DatePicker
           tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!"
-          />
+        />
       </div>
 
-       <div class="box">
+      <div class="box">
         <h3>Show year</h3>
         <DatePicker
           :showYear="true"
-          />
+        />
+      </div>
+
+      <div class="box">
+        <h3>Custom date format with i18n (e.g.: pt-PT)</h3>
+        <DatePicker
+          format="MMMM D"
+          :i18n="ptPT"
+        />
       </div>
 
     </div>
@@ -113,23 +122,36 @@
 </template>
 
 <script>
-import DatePicker from 'components/DatePicker.vue';
+  import DatePicker from 'components/DatePicker.vue';
 
-export default {
-  components: {
-    DatePicker
-  },
-};
+  export default {
+    components: {
+      DatePicker
+    },
+
+    data() {
+      return {
+        ptPT: {
+          night: 'Noite',
+          nights: 'Noites',
+          'day-names': ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+          'check-in': 'Chegada',
+          'check-out': 'Partida',
+          'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        }
+      };
+    }
+  };
 
 </script>
 
 <style>
-body,
-html {
-  font-family: 'Source Sans Pro', sans-serif;
-}
+  body,
+  html {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
 
-.box {
-  width: 100%;
-}
+  .box {
+    width: 100%;
+  }
 </style>

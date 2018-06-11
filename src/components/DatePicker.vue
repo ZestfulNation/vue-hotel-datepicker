@@ -421,6 +421,18 @@ export default {
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent();
     });
+
+    fecha.i18n = {
+      dayNames: this.i18n['day-names'],
+      dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
+      monthNames: this.i18n['month-names'],
+      monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
+      amPm: ['am', 'pm'],
+      // D is the day of the month, function returns something like...  3rd or 11th
+      DoFn: function (D) {
+        return D + [ 'th', 'st', 'nd', 'rd' ][ D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10 ];
+      }
+    };
   },
 
   destroyed() {
