@@ -104,15 +104,15 @@ export default {
         if (this.options.allowedRanges.length !== 0) {
           if ( !this.isDisabled && this.checkIn !== null && this.checkOut == null ) {
             // If the day is one of the allowed check out days and is not highlighted
-            if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
+            if ( this.allowedCheckoutDays.some((i) => this.compareDay(i, this.date) == 0 && !this.isHighlighted) ) {
               return 'datepicker__month-day--allowed-checkout'
             }
             // If the day is one of the allowed check out days and is highlighted
-            if ( _.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 && this.isHighlighted) ) {
+            if ( this.allowedCheckoutDays.some((i) => this.compareDay(i, this.date) == 0 && this.isHighlighted) ) {
               return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout'
             }
             // If the day is not one of the allowed Checkout Days and is highlighted
-            if ( !(_.some(  this.allowedCheckoutDays, (i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
+            if ( !(this.allowedCheckoutDays.some((i) => this.compareDay(i, this.date) == 0 )) && this.isHighlighted) {
               return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
             }
             else {
@@ -224,17 +224,15 @@ export default {
     checkIfDisabled() {
       this.isDisabled =
         // If this day is equal any of the disabled dates
-        _.some(
-          this.sortedDisabledDates, (i) =>
+        (this.sortedDisabledDates ? this.sortedDisabledDates.some((i) =>
           this.compareDay(i, this.date) == 0
-        )
+        ) : null)
         // Or is before the start date
         || this.compareDay(this.date, this.options.startDate) == -1
         // Or is after the end date
         || this.compareEndDay()
         // Or is in one of the disabled days of the week
-        || _.some(
-          this.options.disabledDaysOfWeek, (i) =>
+        || this.options.disabledDaysOfWeek.some((i) =>
           i == fecha.format(this.date, 'dddd')
         );
         // Handle checkout enabled
@@ -256,8 +254,7 @@ export default {
 
     createAllowedCheckoutDays(date){
       this.allowedCheckoutDays = [];
-      _.forEach(
-        this.options.allowedRanges, (i) =>
+      this.options.allowedRanges.forEach((i) =>
         this.allowedCheckoutDays.push(this.addDays(date, i))
       )
       this.allowedCheckoutDays.sort((a, b) =>  a - b );
