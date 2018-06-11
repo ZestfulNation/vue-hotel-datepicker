@@ -2,21 +2,17 @@
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
     .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
-      input.datepicker__dummy-input.datepicker__input(
+      button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
-        :value="`${checkIn ? formatDate(checkIn) : ''}`"
-        :placeholder="i18n['check-in']"
-        type="text"
-        readonly
+        v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+        type="button"
       )
-      input.datepicker__dummy-input.datepicker__input(
+      button.datepicker__dummy-input.datepicker__input(
         v-if='!singleDaySelection'
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-        :value="`${checkOut ? formatDate(checkOut) : ''}`"
-        :placeholder="i18n['check-out']"
-        type="text"
-        readonly
+        v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+        type="button"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
@@ -25,19 +21,15 @@
           @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkIn ? formatDate(checkIn) : ''}`"
-            :placeholder="i18n['check-in']"
-            type="text"
-            readonly
+            v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+            type="button"
           )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkOut ? formatDate(checkOut) : ''}`"
-            :placeholder="i18n['check-out']"
-            type="text"
-            readonly
+            v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+            type="button"
           )
       .datepicker__inner
         .datepicker__header
@@ -70,16 +62,27 @@
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
-            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .datepicker__week-name(
+              v-for='dayName in this.i18n["day-names"]'
+              v-text='dayName'
+            )
           .datepicker__months#swiperWrapper
-            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
-              h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
+            div.datepicker__month(
+              v-for='(a, n) in months'
+              v-bind:key='n'
+            )
+              h1.datepicker__month-name(
+                v-text='getMonth(months[n].days[15].date)'
+              )
               .datepicker__week-row.-hide-up-to-tablet
-                .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
+                .datepicker__week-name(
+                  v-for='dayName in i18n["day-names"]'
+                  v-text='dayName'
+                )
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
                 v-bind:key='index'
-                )
+              )
                 Day(
                   :options="$props"
                   @dayClicked='handleDayClick($event)'
@@ -94,6 +97,9 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
+            button.next--mobile(
+              @click='renderNextMonth' type="button"
+            )
 </template>
 
 <script>
@@ -502,6 +508,33 @@ $font-small: 14px;
   position: absolute;
   z-index: 10;
 
+  button.next--mobile {
+    background: none;
+    border: 1px solid $light-gray;
+    float: none;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    background-position: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    appearance: none;
+    overflow: hidden;
+
+    &:after {
+      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+      transform: rotate(90deg);
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
+  }
+
   &--closed {
     box-shadow: 0 15px 30px 10px rgba($black, 0);
     max-height: 0;
@@ -515,6 +548,9 @@ $font-small: 14px;
       box-shadow: none;
       height: 100%;
       left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-overflow-scrolling: touch !important;
       position: fixed;
       top: 0;
       width: 100%;
@@ -697,7 +733,9 @@ $font-small: 14px;
 
     &--prev { transform: rotateY(180deg); }
 
-    &--next { float: right; }
+    &--next {
+      float: right;
+    }
 
     &--locked {
       opacity: .2;
@@ -724,6 +762,9 @@ $font-small: 14px;
       overflow: scroll;
       right: 0;
       bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     &::before {
@@ -895,5 +936,4 @@ $font-small: 14px;
     display: none;
   }
 }
-
 </style>
