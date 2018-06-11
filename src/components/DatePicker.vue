@@ -516,12 +516,14 @@ $font-small: 14px;
     width: 100%;
     position: relative;
     background-position: center;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
     appearance: none;
     overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    outline: none;
+    box-shadow: 0 5px 30px 10px rgba($black, .08);
+    background: white;
 
     &:after {
       background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
