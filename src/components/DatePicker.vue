@@ -256,8 +256,6 @@ export default {
     ...Helpers,
 
     handleWindowResize() {
-      // let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
-
       if (window.innerWidth < 480) {
         this.screenSize = 'smartphone';
       }
