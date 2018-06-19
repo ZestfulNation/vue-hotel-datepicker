@@ -256,15 +256,15 @@ export default {
     ...Helpers,
 
     handleWindowResize() {
-      let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
+      // let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
 
-      if (screenSizeInEm < 31) {
+      if (window.innerWidth < 480) {
         this.screenSize = 'smartphone';
       }
-      else if (screenSizeInEm > 30 && screenSizeInEm < 49) {
+      else if (window.innerWidth >= 480 && window.innerWidth < 768) {
         this.screenSize = 'tablet';
       }
-      else if (screenSizeInEm > 48) {
+      else if (window.innerWidth >= 768) {
         this.screenSize = 'desktop';
       }
 
@@ -454,11 +454,10 @@ export default {
 /* =============================================================
  * RESPONSIVE LAYOUT HELPERS
  * ============================================================*/
-$tablet: '(min-width: 30em) and (max-width: 49em)';
-$phone: '(max-width: 30em)';
-$desktop: '(min-width: 49em)';
-$tablet-up: '(min-width: 30em)';
-$up-to-tablet: '(max-width: 49em)';
+$tablet: '(min-width: 480px) and (max-width: 767px)';
+$phone: '(max-width: 479px)';
+$desktop: '(min-width: 768px)';
+$up-to-tablet: '(max-width: 767px)';
 $extra-small-screen: '(max-width: 23em)';
 
 @mixin device($device-widths) {
@@ -673,7 +672,7 @@ $font-small: 14px;
     }
 
     &--disabled {
-      color: $lightest-gray;
+        opacity: 0.25;
       cursor: not-allowed;
       pointer-events: none;
       position: relative;
@@ -720,8 +719,7 @@ $font-small: 14px;
     }
 
     &--hidden {
-      visibility: hidden;
-      color: $white;
+        opacity: 0.25;
       pointer-events: none;
     }
   }
@@ -766,7 +764,7 @@ $font-small: 14px;
       bottom: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
     &::before {
@@ -792,12 +790,10 @@ $font-small: 14px;
     @include device($up-to-tablet) {
       width: 100%;
       padding-right: 0;
-      padding-top: 45px;
+      padding-top: 60px;
 
       &:last-of-type {
-        padding-top: 0;
-        padding-left: 0;
-        margin-top: 35px;
+        margin-bottom: 65px;
       }
     }
 
