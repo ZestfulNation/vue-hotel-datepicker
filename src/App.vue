@@ -112,6 +112,8 @@
       <div class="box">
         <h3>Custom date format with i18n (e.g.: pt-PT)</h3>
         <DatePicker
+          :minNights="0"
+          :singleDateSelection="true"
           format="MMMM D"
           :i18n="ptPT"
         />
@@ -138,7 +140,7 @@
           'check-in': 'Chegada',
           'check-out': 'Partida',
           'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-        }
+        },
       };
     }
   };
