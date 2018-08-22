@@ -192,5 +192,8 @@ Emitted every time a new check in date is selected with the new date as payload
 ### checkOutChanged
 Emitted every time a new check out date is selected with the new date as payload
 
+### toggle
+Emitted when datepicker is showed/hided
+
 ## Credits
 This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.

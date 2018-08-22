@@ -86,11 +86,18 @@ export default {
   swipeAfterScroll(direction){
     if (this.screenSize !== 'desktop' && this.isOpen) {
       const swiperWrapper = document.getElementById('swiperWrapper');
-
       // If wrapper has vertical scroll
       if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-        if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) ) {
+        
+        const offset = 200;
+        const endIsNear = swiperWrapper.scrollTop > swiperWrapper.scrollHeight - swiperWrapper.offsetHeight - offset && 
+          swiperWrapper.scrollTop <= swiperWrapper.scrollHeight - swiperWrapper.offsetHeight;
+        
+        if (endIsNear && direction == 'up') {
           this.renderNextMonth();
+          if (this.endDate) {
+            this.renderAllMonthesForDate(this.endDate);
+          }
         }
         else if ( swiperWrapper.scrollTop === 0){
           this.renderPreviousMonth();
@@ -99,6 +106,9 @@ export default {
       }
       else if (direction == 'up'){
         this.renderNextMonth();
+        if (this.endDate) {
+          this.renderAllMonthesForDate(this.endDate);
+        }
       }
       else if (direction == 'down') {
         this.renderPreviousMonth();
@@ -113,7 +123,7 @@ export default {
 
   handleTouchMove(evt) {
     if ( !this.xDown || !this.yDown ) { return; }
-
+   
     this.xUp = evt.touches[0].clientX;
     this.yUp = evt.touches[0].clientY;
 
@@ -135,8 +145,7 @@ export default {
         this.swipeAfterScroll('down');
       }
     }
-    this.xDown = null;
-    this.yDown = null;
+    this.handleTouchStart(evt);
   },
 
   compareDay(day1, day2) {
@@ -206,5 +215,82 @@ export default {
     )
     allowedCheckoutDays.sort((a, b) =>  a - b );
     return allowedCheckoutDays;
+  },
+
+  getFirstDayInMonth(index) {
+    return _.filter(this.months[index].days, {
+      belongsToThisMonth: true
+    })[0].date;
+  },
+
+  getFirstDayOfLastMonth() {
+    if (this.screenSize !== "desktop") {
+      return this.getFirstDayInMonth(this.months.length - 1);
+    }
+    return this.getFirstDayInMonth(this.activeMonthIndex + 1);
+  },
+
+  getFirstDayOfLastButOneMonth() {
+    if (this.screenSize !== "desktop") {
+      return this.getFirstDayInMonth(this.months.length - 2);
+    }
+    return this.getFirstDayInMonth(this.activeMonthIndex);
+  },
+
+  renderPreviousMonth() {
+    if (this.activeMonthIndex >= 1) {
+      this.activeMonthIndex--;
+      return true;
+    }
+    return false;
+  },
+
+  renderNextMonth() {
+    if (!this.isNextMonthAvailable) {
+      return false;
+    }
+
+    if (
+      !(
+        this.screenSize === "desktop" &&
+        this.months[this.activeMonthIndex + 2]
+      )
+    ) {
+      const firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+      this.createMonth(this.getNextMonth(firstDayOfLastMonth));
+    }
+
+    this.activeMonthIndex++;
+    return true
+  },
+
+  renderAllMonthesForDate(date) {
+    let firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+    let firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
+    const currentMonthYear = fecha.format(date, "YYYYMM");
+
+    const isInFuture = firstDayOfLastMonth < date;
+    const changeMonthFn =
+      isInFuture
+        ? this.renderNextMonth
+        : this.renderPreviousMonth;
+
+    const isDayInCurrentView = () => {
+      return (
+        (this.screenSize == 'desktop' && fecha.format(firstDayOfLastMonth, "YYYYMM") == currentMonthYear) ||
+        fecha.format(firstDayOfLastButOneMonth, "YYYYMM") == currentMonthYear
+      );
+    };
+
+
+    if (isInFuture || this.screenSize == 'desktop') {
+      while (!isDayInCurrentView()) {
+        if (!changeMonthFn()) {
+          break;
+        }
+        firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+        firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
+      } 
+    } 
   },
 };

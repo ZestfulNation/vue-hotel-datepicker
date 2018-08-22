@@ -21,9 +21,9 @@
         v-model="checkOutStr"
         :placeholder="i18n['check-out']"
         type="text"
-        :disabled="keyboardFormats.length === 0 || !checkIn"
+        :disabled="keyboardFormats.length === 0"
         @keyup.self="setCheckOutDateByInput"
-        @keyup.enter="verifyCheckOutDate"
+        @keyup.enter="verifyCheckOutDate(true)"
         @blur="executeForDesktop(verifyCheckOutDate)"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection') ＋
@@ -50,18 +50,21 @@
             v-model="checkOutStr"
             :placeholder="i18n['check-out']"
             type="text"
-            :disabled="keyboardFormats.length === 0 || !checkIn"
+            :disabled="keyboardFormats.length === 0"
             @keyup.self="setCheckOutDateByInput"
             @keyup.enter="verifyCheckOutDate"
             @blur="verifyCheckOutDate"
           )
       .datepicker__inner
+        div
         .datepicker__header
           span.datepicker__month-button.datepicker__month-button--prev.-hide-up-to-tablet(
-            @click='renderPreviousMonth'
+            @click='showPreviousMonth'
+            :class="{disabled: activeMonthIndex === 0}"
           )
           span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
-            @click='renderNextMonth'
+            @click='showNextMonth'
+            :class="{disabled: !isNextMonthAvailable}"
           )
         .datepicker__months(v-if='screenSize == "desktop"')
           div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
@@ -69,7 +72,9 @@
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex+n].days'
-              @mouseover='hoveringDate = day.date')
+              :class="{hidden: !day.belongsToThisMonth}"
+              @mouseover='hoveringDate = day.date'
+              @mouseleave='hoveringDate = null')
               Day(
                 :options="$props"
                 @dayClicked='handleDayClick($event)'
@@ -93,7 +98,9 @@
               .datepicker__week-row.-hide-up-to-tablet
                 .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
               .square(v-for='(day, index) in months[n].days'
+                :class="{hidden: !day.belongsToThisMonth}"
                 @mouseover='hoveringDate = day.date'
+                @mouseleave='hoveringDate = null'
                 v-bind:key='index'
                 )
                 Day(
@@ -214,7 +221,7 @@ export default {
         return [];
       },
       type: Array
-    }
+    },
   },
 
   data() {
@@ -239,6 +246,22 @@ export default {
     };
   },
 
+  computed: {
+    isNextMonthAvailable() {
+      const firstDayOfLastMonth = this.getFirstDayOfLastMonth();
+
+      if (this.endDate !== Infinity) {
+        if (
+          fecha.format(firstDayOfLastMonth, "YYYYMM") ==
+          fecha.format(new Date(this.endDate), "YYYYMM")
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
+  },
+
   watch: {
     isOpen (value) {
       if (this.screenSize !== 'desktop') {
@@ -257,17 +280,25 @@ export default {
     },
     checkOut(newDate) {
 
-      if ( this.checkOut !== null && this.checkOut !== null ) {
+      if ( this.checkOut !== null) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
-        this.show = true;
         this.parseDisabledDates();
-        this.reRender();
       }
 
       this.$emit("checkOutChanged", newDate )
     },
-
+    isOpen(v) {
+      this.$emit("toggle", v);
+    },
+    startingDateValue(v) {
+      this.checkIn = v;
+      this.verifyCheckInDate();
+    },
+    endingDateValue(v) {
+      this.checkOut = v;
+      this.verifyCheckOutDate();
+    },
   },
 
   methods: {
@@ -314,10 +345,16 @@ export default {
       this.$emit('heightChanged');
     },
 
-    reRender() {
+    reRender(open) {
       this.show = false
       this.$nextTick(() => {
         this.show = true;
+        if (open) {
+          this.isOpen = true;
+          this.$nextTick(() => {
+            this.getCheckInInput().focus();
+          });
+        }
       })
     },
 
@@ -330,20 +367,27 @@ export default {
       this.nextDisabledDate = null;
       this.show = true;
       this.parseDisabledDates();
-      this.reRender();
+      this.showDatepicker();
+      this.getCheckInInput().focus();
+      //this.reRender(true);
     },
 
-    hideDatepicker() { this.isOpen = false; },
+    hideDatepicker() { 
+      this.isOpen = false; 
+    },
 
     showDatepicker() {
       if (!this.isOpen) {
         this.isOpen = true;
         this.$nextTick(() => {
-          this.getCheckInInput().focus();
+          if (!this.checkOut && this.checkIn) {
+            this.getCheckOutInput().focus();
+          } else {
+            this.getCheckInInput().focus();
+          }
           if (this.checkIn) {
-            if (this.screenSize != 'desktop') {
-              this.scrollToDate(this.checkOut ? this.checkOut : this.checkIn);
-            }
+            
+            this.moveCalendarToTheDate(this.checkOut ? this.checkOut : this.checkIn);
           }
         });
       }
@@ -364,21 +408,76 @@ export default {
         : this.$refs.checkOutInputMobile;
     },
 
-    parseInputDate(str) {
+    parseInputDate(str, isCheckin) {
       if (str && str.length > 0) {
-        const formats = this.keyboardFormats.concat([this.format]);
-        for (let i = 0; i < formats.length; i++) {
-          const format = formats[i];
+        for (let i = 0; i < this.keyboardFormats.length; i++) {
+          const format = this.keyboardFormats[i];
           const date = typeof format === 'function' ?
-            format(str) :
-            fecha.parse(str, formats[i]);
-       
+            format(str, isCheckin) :
+            fecha.parse(str, format);
           if (date) {
-            return date;
+            date.setHours(0,0,0,0);
+            if (this.startDate) {
+              this.startDate.setHours(0,0,0,0);
+            }
+            if (this.endDate && this.endDate !== Infinity) {
+              this.endDate.setHours(0,0,0,0);
+            }
+            
+            if (date >= this.startDate && date <= this.endDate) {
+              if (!isCheckin && this.maxNights) {
+                const timeDiff = Math.abs(date.getTime() - this.checkIn.getTime());
+                const diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+                if (diffDays <= this.maxNights) {
+                  return date;
+                }
+              } else {
+                return date;
+              }
+            }
+            if (isCheckin && date < this.startDate) {
+              return this.startDate;
+            }
+            // if (!isCheckin) {
+            //   if (this.maxNights) {
+            //     const maxDate = new Date(this.checkIn.getTime());
+            //     maxDate.setDate(maxDate.getDate() + this.maxNights);
+            //     if (date > maxDate) {
+            //       return maxDate;
+            //     }
+            //   } else if (date > this.endDate) {
+            //     return this.endDate;
+            //   }
+            // }
           }
+        }
+        if (isCheckin && this.checkIn) {
+          return this.startDate ? this.startDate : null;
+        }
+        if (!isCheckin && this.checkOut) {
+          this.checkOut = null;
+          this.onlyCheckInSetHandler();
         }
       }
       return false;
+    },
+
+    onlyCheckInSetHandler() {
+      if (this.checkIn) {
+        const allowedCheckoutDays = this.getAllowedCheckoutDays(
+            this.checkIn,
+            this.$props
+          );
+
+          this.nextDisabledDate = this.getNextDisabledDate(
+            this.checkIn,
+            this.$props,
+            allowedCheckoutDays,
+            this.sortedDisabledDates
+          );
+
+          this.moveCalendarToTheDate(this.checkIn);
+      }
     },
 
     scrollToDate(date) {
@@ -390,30 +489,7 @@ export default {
     },
 
     moveCalendarToTheDate(date) {
-      let firstDayOfLastMonth = this.getFirstDayOfLastMonth();
-      let firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
-      const currentMonthYear = fecha.format(date, "YYYYMM");
-
-      const isInFuture = firstDayOfLastMonth < date;
-      const changeMonthFn =
-        isInFuture
-          ? this.renderNextMonth
-          : this.renderPreviousMonth;
-
-      const isDayInCurrentView = () => {
-        return (
-          fecha.format(firstDayOfLastMonth, "YYYYMM") == currentMonthYear ||
-          fecha.format(firstDayOfLastButOneMonth, "YYYYMM") == currentMonthYear
-        );
-      };
-
-      if (isInFuture || this.screenSize == 'desktop') {
-        while (!isDayInCurrentView()) {
-          changeMonthFn();
-          firstDayOfLastMonth = this.getFirstDayOfLastMonth();
-          firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
-        } 
-      } 
+      this.renderAllMonthesForDate(date);
       if (this.screenSize != 'desktop') {
         this.$nextTick(() => {
           this.scrollToDate(date);
@@ -431,24 +507,30 @@ export default {
       if (this.checkIn) {
         this.checkInStr = this.formatDate(this.checkIn);
         this.$nextTick(() => {
-          this.getCheckOutInput().focus();
+          const checkoutInput = this.getCheckOutInput();
+          if (checkoutInput) {
+            checkoutInput.focus();
+          }
         });
       } else if (this.checkInStr && this.checkInStr.length > 0) {
         this.clearSelection();
       }
     },
 
-    verifyCheckOutDate() {
+    verifyCheckOutDate(close) {
       if (this.checkOut) {
         this.checkOutStr = this.formatDate(this.checkOut);
-      } else if (this.checkOut && this.checkOut.length > 0) {
+        if (this.isOpen && close) {
+          this.hideDatepicker();
+        }
+      } else if (this.checkOutStr && this.checkOutStr.length > 0) {
         this.checkOutStr = null;
         this.checkOut = null;
       }
     },
 
     setCheckInDateByInput() {
-      const checkIn = this.parseInputDate(this.checkInStr);
+      const checkIn = this.parseInputDate(this.checkInStr, true);
       if (
         checkIn &&
         !this.checkIfDayIsDisabled(
@@ -460,19 +542,8 @@ export default {
         )
       ) {
         this.checkIn = checkIn;
-        const allowedCheckoutDays = this.getAllowedCheckoutDays(
-          this.checkIn,
-          this.$props
-        );
 
-        this.nextDisabledDate = this.getNextDisabledDate(
-          this.checkIn,
-          this.$props,
-          allowedCheckoutDays,
-          this.sortedDisabledDates
-        );
-
-        this.moveCalendarToTheDate(this.checkIn);
+        this.onlyCheckInSetHandler();
 
         this.checkOut = null;
         this.checkOutStr = null;
@@ -536,54 +607,12 @@ export default {
       this.nextDisabledDate = event.nextDisabledDate;
     },
 
-    getFirstDayInMonth(index) {
-      return _.filter(this.months[index].days, {
-        belongsToThisMonth: true
-      })[0].date;
+    showPreviousMonth() {
+      this.renderPreviousMonth();
     },
 
-    getFirstDayOfLastMonth() {
-      if (this.screenSize !== "desktop") {
-        return this.getFirstDayInMonth(this.months.length - 1);
-      }
-      return this.getFirstDayInMonth(this.activeMonthIndex + 1);
-    },
-
-    getFirstDayOfLastButOneMonth() {
-      if (this.screenSize !== "desktop") {
-        return this.getFirstDayInMonth(this.months.length - 2);
-      }
-      return this.getFirstDayInMonth(this.activeMonthIndex);
-    },
-
-    renderPreviousMonth() {
-      if (this.activeMonthIndex >= 1) {
-        this.activeMonthIndex--;
-      }
-    },
-
-    renderNextMonth() {
-      const firstDayOfLastMonth = this.getFirstDayOfLastMonth();
-
-      if (this.endDate !== Infinity) {
-        if (
-          fecha.format(firstDayOfLastMonth, "YYYYMM") ==
-          fecha.format(new Date(this.endDate), "YYYYMM")
-        ) {
-          return;
-        }
-      }
-
-      if (
-        !(
-          this.screenSize === "desktop" &&
-          this.months[this.activeMonthIndex + 2]
-        )
-      ) {
-        this.createMonth(this.getNextMonth(firstDayOfLastMonth));
-      }
-
-      this.activeMonthIndex++;
+    showNextMonth() {
+      this.renderNextMonth();
     },
 
     setCheckIn(date) { this.checkIn = date; },
@@ -632,6 +661,7 @@ export default {
   beforeMount() {
     this.createMonth(new Date(this.startDate));
     this.createMonth(this.getNextMonth(new Date(this.startDate)));
+    
     if (this.checkIn) {
       this.checkInStr = this.formatDate(this.checkIn);
     }
@@ -678,6 +708,9 @@ $extra-small-screen: '(max-width: 23em)';
 .square {
   width: calc(100% / 7);
   float: left;
+  &.hidden {
+    visibility: hidden;
+  }
 }
 
 *,
@@ -971,6 +1004,7 @@ $font-small: 14px;
         padding-top: 0;
         padding-left: 0;
         margin-top: 35px;
+        margin-bottom: 200px;
       }
     }
 
@@ -1000,6 +1034,7 @@ $font-small: 14px;
       margin-bottom: 0;
       position: absolute;
       width: 100%;
+      left: 0;
     }
   }
 

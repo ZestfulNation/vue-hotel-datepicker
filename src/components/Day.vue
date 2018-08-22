@@ -181,7 +181,11 @@ export default {
     },
     checkOut: function(date) {
       this.checkIfHighlighted();
-    }
+    },
+    sortedDisabledDates: function() {
+      this.checkIfDisabled();
+      this.checkIfHighlighted();
+    },
   },
 
   methods: {

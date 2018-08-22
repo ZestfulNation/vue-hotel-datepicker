@@ -4,7 +4,9 @@
       <div class="box">
         <h3>Allow direct input</h3>
         <DatePicker
-          :keyboardFormats="['MM/DD/YYYY']"
+          :maxNights="60"
+          :keyboardFormats="['MMM DD YYYY']"
+          :endDate="endDate"
           :showYear="true"
           />
       </div>
@@ -120,20 +122,29 @@
 </template>
 
 <script>
-import DatePicker from 'components/DatePicker.vue';
+import DatePicker from "components/DatePicker.vue";
 
 export default {
   components: {
     DatePicker
   },
+  computed: {
+    endDate() {
+      const today = new Date();
+      return new Date(
+        today.getFullYear() + 3,
+        today.getMonth(),
+        today.getDate() - 1
+      );
+    }
+  }
 };
-
 </script>
 
 <style>
 body,
 html {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .box {
