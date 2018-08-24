@@ -357,6 +357,11 @@
       },
 
       renderNextMonth() {
+        if (this.activeMonthIndex < this.months.length - 2) {
+          this.activeMonthIndex++;
+          return
+        }
+
         let firstDayOfLastMonth;
 
         if (this.screenSize !== 'desktop') {
