@@ -5,7 +5,7 @@
     .datepicker__month-day(
       @click='dayClicked(date)'
       v-text='`${dayNumber}`'
-      :class='dayClass'
+      :class='dayClasses'
     )
 </template>
 
@@ -143,6 +143,16 @@ export default {
 
       else if ( !this.belongsToThisMonth ) { return "datepicker__month-day--hidden" }
       else {  return "datepicker__month-day--valid" }
+    },
+
+    todayClass: function(){
+      if (this.compareDay(this.date, new Date())==0)
+        return "datepicker__month-day--today"
+      else return " "
+    },
+
+    dayClasses: function(){
+      return this.dayClass + " " + this.todayClass;
     },
   },
 

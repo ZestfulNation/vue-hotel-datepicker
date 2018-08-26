@@ -19,7 +19,7 @@ export default {
   nextDateByDayOfWeek(weekDay, referenceDate) {
     referenceDate = new Date(referenceDate);
     weekDay = weekDay.toLowerCase();
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     let referenceDateDay = referenceDate.getDay();
 
     for (var i = 7; i--;) {
@@ -61,6 +61,16 @@ export default {
       firstDay.setDate(
         firstDay.getDate()
         - firstDay.getDay()
+      )
+    );
+  },
+  getFirstMonday(date) {
+    var firstDay = this.getFirstDayOfMonth(date);
+    return new Date(
+      firstDay.setDate(
+        firstDay.getDate()
+        - firstDay.getDay()
+        + 1
       )
     );
   },

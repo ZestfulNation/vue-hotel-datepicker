@@ -1,6 +1,6 @@
 {
   "name": "sutochno-datepicker",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "A responsive date range picker for Vue.js that displays the number of nights selected. Fork of https://github.com/krystalcampioni/vue-hotel-datepicker component",
   "author": "Shitikov Sergey <rw4lll@yandex.ru>",
   "license": "MIT",
