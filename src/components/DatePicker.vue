@@ -134,6 +134,10 @@
                 @click='renderNextMonth' type="button"
                 v-text="`${i18n['show-more']}`"
               )
+              button.next--mobile(
+                v-text="`${i18n['clear-dates']}`"
+                @click='clearSelection'
+              )
 
 </template>
 
@@ -865,7 +869,8 @@
             }
 
             &--today {
-                border: 1px double #e10600
+                border: 1px double #e10600;
+                height: 31px;
             }
 
             &--first-day-selected,
