@@ -380,6 +380,7 @@
       },
 
       showDatepicker() {
+        this.activeMonthIndex = 0;
         this.isOpen = true;
       },
 
@@ -396,10 +397,10 @@
           this.checkOut = event.date
         }
         else if (this.checkIn !== null && this.checkOut == null) {
-          // if(fecha.format(new Date(this.checkIn), 'YYYYMMDD') < fecha.format(new Date(event.date), 'YYYYMMDD')){
-          //   this.checkIn = event.date;
-          // }
-          this.checkOut = event.date;
+          if(fecha.format(new Date(this.checkIn), 'YYYYMMDD') > fecha.format(new Date(event.date), 'YYYYMMDD')){
+            this.checkIn = event.date;
+          }
+          else this.checkOut = event.date;
          
         }
         else {
@@ -407,7 +408,7 @@
           this.checkIn = event.date;
         }
 
-        // this.nextDisabledDate = event.nextDisabledDate
+        //this.nextDisabledDate = event.nextDisabledDate
       },
 
       renderPreviousMonth() {
