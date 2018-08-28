@@ -152,13 +152,12 @@
     'check-out': 'Check-out',
     'choose-dates': 'Choose dates',
     'choose-dates-extended': 'Check-in & check-out dates',
-    'clear-dates': 'clear-dates',
+    'clear-dates': 'Clear dates',
     'datepicker-tooltip': 'Enter dates of your trip to see prices',
     'dates': 'Dates',
     'enter-dates-later': 'Enter dates later',
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     'show-more': 'More',
-    'total-nights': 'Total nights: ',
   };
 
   export default {
