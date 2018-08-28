@@ -132,7 +132,7 @@
               @click='clearSelection'
               )
             button.next--mobile(
-                @click='renderNextMonth' type="button"
+                @click='renderMultipleMonth(3)' type="button"
                 v-text="`${i18n['show-more']}`"
               )
 </template>
@@ -406,13 +406,16 @@
       renderNextMonth() {
         let firstDayOfLastMonth;
 
-        if (this.screenSize !== 'desktop') {
-          firstDayOfLastMonth = this.months[this.months.length - 1].days
+        // if (this.screenSize !== 'desktop') {
+        //   firstDayOfLastMonth = this.months[this.months.length - 1].days
+        //     .filter((day) => day.belongsToThisMonth === true);
+        // } else {
+        //   firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days
+        //     .filter((day) => day.belongsToThisMonth === true);
+        // }
+
+        firstDayOfLastMonth = this.months[this.months.length - 1].days
             .filter((day) => day.belongsToThisMonth === true);
-        } else {
-          firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days
-            .filter((day) => day.belongsToThisMonth === true);
-        }
 
         if (this.endDate !== Infinity) {
           if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
@@ -426,8 +429,14 @@
             firstDayOfLastMonth[0].date
           )
         );
-        this.parseDisabledDates();
+
         this.activeMonthIndex++;
+      },
+
+      renderMultipleMonth(count = 3){
+        for (let i = 1; i <= count; i++){
+          this.renderNextMonth();
+        }
       },
 
       setCheckIn(date) {
@@ -496,6 +505,9 @@
 
       this.createMonth(new Date(this.startDate));
       this.createMonth(this.getNextMonth(new Date(this.startDate)));
+      if (this.screenSize !== 'desktop'){
+        this.renderMultipleMonth(4);
+      }
       this.parseDisabledDates();
     },
 
@@ -916,7 +928,7 @@
             &--hidden {
                 opacity: 0.25;
                 pointer-events: none;
-                display: none;
+                visibility: hidden;
             }
         }
 
