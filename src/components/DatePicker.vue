@@ -529,7 +529,7 @@
   };
 </script>
 
- <style lang="scss">
+  <style lang="scss">
     /* =============================================================
      * RESPONSIVE LAYOUT HELPERS
      * ============================================================*/
@@ -611,7 +611,22 @@
           border: none;
           z-index: 9999!important;
 
-          button.next--mobile {
+          .clear-dates--mobile {
+            color: #2d6cb4;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 34px;
+            padding-left: 12px;
+            text-align: left;
+          }
+          
+        }
+        .footer__next--mobile{
+          position: relative;
+          margin-top: 36px;
+          margin-bottom: 18px;
+          z-index: 9999 !important;
+          .next--mobile {
               float: right;
               color: #444;
               background-color: transparent;
@@ -619,7 +634,6 @@
               line-height: 16px;
               border-radius: 3px;
               padding: 8px 20px;
-              margin-bottom: 0;
               font-weight: 400;
               vertical-align: middle;
               -ms-touch-action: manipulation;
@@ -631,23 +645,12 @@
               -moz-user-select: none;
               -ms-user-select: none;
               user-select: none;
-              display: inline-block;
               text-align: center;
               white-space: nowrap;
-              z-index: 6 !important;
+              width: fit-content;
+              margin-right: 11px;
           }
-          
-        }
-        .clear-dates--mobile {
-          margin-bottom: 28px;
-          z-index: 9999 !important;
-          color: #2d6cb4;
-          cursor: pointer;
-          font-size: 14px;
-          line-height: 16px;
-          margin-top: 36px;
-          padding-left: 12px;
-        }
+        }          
         &--closed {
             box-shadow: 0 15px 30px 10px rgba($black, 0);
             max-height: 0;
@@ -656,7 +659,8 @@
         &--open {
             box-shadow: 0 15px 30px 10px rgba($black, .08);
             max-height: 900px;
-
+            background-color: #fff;
+            margin-top: 26px;
             @include device($up-to-tablet) {
                 box-shadow: none;
                 height: 100%;
@@ -667,6 +671,7 @@
                 position: fixed;
                 top: 0;
                 width: 100%;
+                margin-top: 0;
             }
         }
 
@@ -676,13 +681,13 @@
             color: $black;
 
             @include  device($desktop) {
-                width: $width-desktop;
+                width: fit-content;
                 height: $height-desktop;
                 margin-right: 20px;
             }
 
             @include  device($up-to-tablet) {
-                width: $width-mobile;
+                width: fit-content;
                 height: $height-mobile;
             }
         }
@@ -697,8 +702,8 @@
             outline: none;
             padding: 4px 0px 2px;
             width: 100%;
-            word-spacing: 5px;
             border: 0;
+            text-transform: lowercase;
 
             .mobile{
               background: $white;
@@ -751,6 +756,19 @@
             &--is-active {
               background: $dark-gray;
               color: $white;
+              border: none;
+              .datepicker__dummy-input:first-child {
+                margin-left: 20px;
+                @include  device($up-to-tablet) {
+                  margin-left: 12px;
+                }
+              }
+              .datepicker__dummy-input:last-child {
+                margin-right: 20px;
+                @include  device($up-to-tablet) {
+                  margin-right: 12px;
+                }
+              }
             }
 
             &__mobile {
@@ -773,7 +791,10 @@
               border-radius: 3px;
               margin-top: -1px;
               text-align: center;
-
+              padding: 0 20px;
+              @include  device($up-to-tablet) {
+                padding: 0 12px;
+              }
               &__mobile {
                 font-family: inherit;
                 font-weight: 500;
@@ -793,7 +814,12 @@
             float: left;
             text-align: left;
             text-indent: 0px;
-            width: calc(50% + 4px);
+            width: fit-content;
+            height: 42px;
+
+            @include  device($up-to-tablet) {
+              height: 32px;
+            }
 
             @include device($phone) {
                 text-indent: 0;
@@ -802,9 +828,7 @@
 
             &:first-child {
                 background: transparent url('mdash.svg') no-repeat right center / 8px;
-                width: calc(50% - 4px);
-                text-indent: 8px;
-                padding-right: 4px;
+                padding-right: 14px;
                 border-top-left-radius: 3px;
                 border-bottom-left-radius: 3px;
             }

@@ -3,8 +3,9 @@ const config = require('./webpack.base.conf')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-config.output.filename = 'vue-hotel-datepicker.min.js'
+config.output.filename = 'sutochno-datepicker.min.js'
 config.output.libraryTarget = 'umd'
 config.output.library = 'HotelDatePicker'
 
