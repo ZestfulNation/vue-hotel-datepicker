@@ -372,6 +372,9 @@
       hideDatepicker() {
         this.firstOpen = false;
         this.isOpen = false;
+        if (this.checkIn && !this.checkOut){
+          this.checkIn = null;
+        }
       },
 
       showDatepicker() {
