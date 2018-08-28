@@ -177,7 +177,7 @@ export default {
           this.isDateLessOrEquals(this.date, this.checkOut) ?
           this.isHighlighted = true : this.isHighlighted = false
       } else if ( this.checkIn !== null  && this.checkOut == null ) {
-        this.disableNextDays()
+        // this.disableNextDays()
       } else {
         return
       }
