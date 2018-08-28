@@ -372,13 +372,13 @@
       hideDatepicker() {
         this.firstOpen = false;
         this.isOpen = false;
-        if (this.checkIn && !this.checkOut){
+        if (!this.checkOut){
+          this.activeMonthIndex = 0;
           this.clearSelection();
         }
       },
 
       showDatepicker() {
-        this.activeMonthIndex = 0;
         this.isOpen = true;
       },
 
@@ -459,17 +459,16 @@
       },
 
       createMonth(date) {
-        const firstSunday = this.getFirstMonday(date);
+        const firstMonday = this.getFirstMonday(date);
 
         let month = {
           days: []
         };
-        let total = this.monthCrossing ? 42 : 42;
 
-        for (let i = 0; i < total; i++) {
+        for (let i = 0; i < 42; i++) {
           month.days.push({
-            date: this.addDays(firstSunday, i),
-            belongsToThisMonth: this.addDays(firstSunday, i).getMonth() === date.getMonth(),
+            date: this.addDays(firstMonday, i),
+            belongsToThisMonth: this.addDays(firstMonday, i).getMonth() === date.getMonth(),
             isInRange: false,
           });
         }
