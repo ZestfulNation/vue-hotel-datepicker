@@ -1,6 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    .datepicker__dummy-wrapper.-hide-up-to-tablet(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
+    .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
@@ -14,12 +14,12 @@
         type="button"
       )
     .datepicker__dummy-wrapper(
-      v-if='(!checkIn && !checkOut) || (screenSize !== "desktop" && !isOpen )' 
+      v-if='(!checkIn && !checkOut)' 
       @click='isOpen = !isOpen'
-      :class="`${isOpen || ((screenSize !== desktop) && (checkIn && checkOut))? 'datepicker__dummy-wrapper--is-active' : ''}` "
+      :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` "
       )
       .datepicker__choose-dates(
-        v-text="`${screenSize == 'desktop' ? i18n['choose-dates'] : i18n['dates']}`"
+        v-text="`${screenSize === 'desktop' ? i18n['choose-dates'] : i18n['dates']}`"
       )
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
@@ -44,7 +44,7 @@
           )
           .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
       .datepicker__inner
-        .datepicker__header.-table(v-if='screenSize == "desktop" && firstOpen')
+        .datepicker__header.-table(v-if='screenSize === "desktop" && firstOpen')
           .datepicker__datepicker-tooltip
             span.icon-wp.icon-wp-lamp
             span.datepicker__datepicker-tooltip__text(
@@ -61,17 +61,19 @@
           span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
             @click='renderNextMonth'
           )
-        .datepicker__months(v-if='screenSize == "desktop"')
+        .datepicker__months(v-if='screenSize === "desktop"')
           div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
             h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(
-                v-for='(dayName, index) in i18n["day-names"]'
+                v-for="(dayName, index) in i18n['day-names']"
                 v-text='dayName'
                 :class="`${(index == 5 || index == 6) ? 'weekend' : ''}`"
                 )
-            .square(v-for='day in months[activeMonthIndex+n].days'
-              @mouseover='hoveringDate = day.date')
+            .square(
+              v-for='day in months[activeMonthIndex+n].days'
+              @mouseover='hoveringDate = day.date'
+              )
               Day(
                 :options="$props"
                 @dayClicked='handleDayClick($event)'
@@ -86,18 +88,12 @@
                 :checkIn='checkIn'
                 :checkOut='checkOut'
               )
-        .datepicker__footer(v-if='screenSize == "desktop" && checkIn != null && checkOut != null')
+        .datepicker__footer(v-if='screenSize === "desktop" && checkIn != null && checkOut != null')
           span.datepicker__clear-button(
             v-text="`${i18n['clear-dates']}`"
             @click='clearSelection'
           )
         div(v-if='screenSize !== "desktop" && isOpen')
-          .datepicker__week-row
-            .datepicker__week-name(
-              v-for='(dayName, index) in this.i18n["day-names"]'
-              v-text='dayName'
-              :class="`${(index == 5 || index == 6) ? 'weekend' : ''}`"
-            )
           .datepicker__months#swiperWrapper
             div.datepicker__month(
               v-for='(a, n) in months'
@@ -106,10 +102,11 @@
               h1.datepicker__month-name(
                 v-text='getMonth(months[n].days[15].date)'
               )
-              .datepicker__week-row.-hide-up-to-tablet
+              .datepicker__week-row
                 .datepicker__week-name(
-                  v-for='dayName in i18n["day-names"]'
+                  v-for="(dayName, index) in i18n['day-names']"
                   v-text='dayName'
+                  :class="`${(index == 5 || index == 6) ? 'weekend' : ''}`"
                 )
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
@@ -134,11 +131,10 @@
                 @click='renderNextMonth' type="button"
                 v-text="`${i18n['show-more']}`"
               )
-              button.next--mobile(
-                v-text="`${i18n['clear-dates']}`"
-                @click='clearSelection'
-              )
-
+            .span.clear-dates--mobile(
+              v-text="`${i18n['clear-dates']}`"
+              @click='clearSelection'
+            )
 </template>
 
 <script>
@@ -305,8 +301,7 @@
           this.nextDisabledDate = null;
           this.show = true;
           this.parseDisabledDates();
-          this.reRender()
-          this.firstOpen = false;
+          this.reRender();
           this.isOpen = false;
         }
 
@@ -395,19 +390,14 @@
         } else if (this.singleDaySelection == true) {
           this.checkIn = event.date
           this.checkOut = event.date
-        }
-        else if (this.checkIn !== null && this.checkOut == null) {
-          if(fecha.format(new Date(this.checkIn), 'YYYYMMDD') > fecha.format(new Date(event.date), 'YYYYMMDD')){
-            this.checkIn = event.date;
-          }
-          else this.checkOut = event.date;
-         
-        }
-        else {
+        } else if (this.checkIn !== null && this.checkOut == null) {
+            if(fecha.format(new Date(this.checkIn), 'YYYYMMDD') > fecha.format(new Date(event.date), 'YYYYMMDD')){
+              this.checkIn = event.date;
+            } else this.checkOut = event.date;
+        } else {
           this.checkOut = null;
           this.checkIn = event.date;
         }
-
         //this.nextDisabledDate = event.nextDisabledDate
       },
 
@@ -534,7 +524,7 @@
   };
 </script>
 
-<style lang="scss">
+ <style lang="scss">
     /* =============================================================
      * RESPONSIVE LAYOUT HELPERS
      * ============================================================*/
@@ -551,7 +541,7 @@
     }
 
     .square {
-        width: calc(100% / 7);
+        width: auto;
         float: left;
     }
 
@@ -601,16 +591,25 @@
           top: $height-mobile;
         }
 
-        .footer__mobile{
+        .square {
           position: relative;
-          padding-top: 20px;
+        }
+        .footer__mobile{
+          position: fixed;
+          width: 100%;
+          bottom: 0;
+          left: 0;
+          position: -webkit-sticky !important;
+          padding: 20px;
           text-align: center;
           background-color: $white;
+          border: none;
+          z-index: 9999!important;
 
           button.next--mobile {
-              color: $black;
+              float: right;
+              color: #444;
               background-color: transparent;
-              border-color: #d1d1d1;
               font-size: 14px;
               line-height: 16px;
               border-radius: 3px;
@@ -618,9 +617,29 @@
               margin-bottom: 0;
               font-weight: 400;
               vertical-align: middle;
+              -ms-touch-action: manipulation;
+              touch-action: manipulation;
+              cursor: pointer;
+              background-image: none;
+              border: 1px solid #d1d1d1;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              display: inline-block;
+              text-align: center;
+              white-space: nowrap;
+              z-index: 6!important;
           }
+          
         }
-
+        a.next--mobile {
+          color: #2d6cb4;
+          cursor: pointer;
+          font-size: 14px;
+          line-height: 16px;
+          margin-top: 6px;
+        }
         &--closed {
             box-shadow: 0 15px 30px 10px rgba($black, 0);
             max-height: 0;
@@ -822,14 +841,14 @@
             font-size: 14px;
             line-height: 18px;
             text-align: center;
-            
             visibility: visible;
             will-change: auto;
             text-align: center;
-            margin: 0;
-            border: 0;
-            padding-top: 15px;
-
+            padding-top: 10px;
+            margin-left: -1px;
+            margin-bottom: -1px;
+            height: 39px;
+            width: 39px;
             &--invalid-range {
                 background-color: rgba($primary-color, .3);
                 color: $lightest-gray;
@@ -870,8 +889,8 @@
             }
 
             &--today {
-                border: 1px double #e10600;
-                height: 31px;
+              border: 1px double #e10600;
+              z-index: 1;
             }
 
             &--first-day-selected,
@@ -904,13 +923,14 @@
         }
 
         &__month-button {
-            background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+            background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 17px;
             cursor: pointer;
             display: inline-block;
-            height: 60px;
-            width: 60px;
-            fill: #82888a;
-            
+            margin-bottom: 19px;
+            height: 13px;
+            width: 20px;
+            fill: #e4e7e7;
+            stroke-width: 1;
             &--prev {
                 
             }
@@ -929,7 +949,7 @@
         &__inner {
             padding: 20px;
             float: left;
-
+            width: 596px;
             @include device($up-to-tablet) {
                 padding: 0;
             }
@@ -937,10 +957,13 @@
 
         &__months {
             @include device($desktop) {
-                width: 650px;
+                width: 620px;
             }
 
             @include device($up-to-tablet) {
+                width: 287px;
+                margin-left: auto;
+                margin-right: auto;
                 margin-top: 92px;
                 height: calc(100% - 92px);
                 position: absolute;
@@ -958,16 +981,21 @@
         &__month {
             font-size: 12px;
             float: left;
-            width: 50%;
+            width: 280px;
             padding-right: 10px;
 
             @include device($up-to-tablet) {
                 width: 100%;
-                padding-right: 0;
+                padding-right: 10px;
+                padding-left: 10px;
+                padding-bottom: 1px;
                 padding-top: 60px;
 
                 &:last-of-type {
-                    margin-bottom: 65px;
+                  margin-bottom: 65px;
+                }
+                &:last-child {
+                  margin-bottom: 60px;
                 }
             }
 
@@ -992,7 +1020,7 @@
             text-transform: Capitalize;
             color: #484848;
             font-size: 18px;
-            font-family: PT Sans;
+            font-family: sans-serif;
             text-align: center;
             caption-side: top;
 
@@ -1018,20 +1046,20 @@
                 height: 25px;
                 left: 0;
                 top: 65px;
-                position: absolute;
                 width: 100%;
             }
         }
 
         &__week-name {
-            width: calc(100% / 7);
+            width: 38px;
             float: left;
             font-size: 14px;
             font-weight: 400;
-            font-family: PT Sans;
+            font-family: sans-serif;
             color: $black;
             text-align: center;
             line-height: 18px;
+            text-transform: lowercase;
         }
 
         &__close-button {
@@ -1104,6 +1132,7 @@
 
                 &.icon-wp-lamp {
                   background-position: -1512px 0;
+                  margin-right: 10px;
                 }
             }
         }
@@ -1122,6 +1151,10 @@
             color: $medium-gray;
             font-size: 14px;
             line-height: 16px;
+        }
+
+        &__footer{
+          margin-top: 250px;
         }
       }
     .weekend{
@@ -1142,6 +1175,7 @@
         content: " ";
         display: table;
         width: 100%;
+        margin-bottom: 20px;
     }
 
     .-hide-up-to-tablet {

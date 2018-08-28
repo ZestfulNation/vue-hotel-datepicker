@@ -1,5 +1,5 @@
 <template>
-  <!--<div id="app" style="text-align: left; padding: 10vw">-->
+  <div id="app">
     <!--<div>-->
       <!--<div class="box">-->
         <!--<h3>Allow selection of single day</h3>-->
@@ -120,11 +120,11 @@
       <!--</div>-->
 
     <!--</div>-->
-  <!--</div>-->
-  <DatePicker
+      <DatePicker
   :i18n="ru"
   format="D MMM"
   />
+  </div>
 </template>
 
 <script>
