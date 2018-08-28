@@ -42,7 +42,7 @@
           .datepicker__choose-dates__mobile(
             v-text="`${i18n['choose-dates-extended']}`"
           )
-          .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
+        .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
       .datepicker__inner
         .datepicker__header.-table(v-if='screenSize === "desktop" && firstOpen')
           .datepicker__datepicker-tooltip
@@ -373,7 +373,7 @@
         this.firstOpen = false;
         this.isOpen = false;
         if (this.checkIn && !this.checkOut){
-          this.checkIn = null;
+          this.clearSelection();
         }
       },
 
