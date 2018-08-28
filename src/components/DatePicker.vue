@@ -126,15 +126,15 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
-            .footer__mobile()    
-              button.next--mobile(
+            .footer__mobile    
+              .span.clear-dates--mobile(
+              v-text="`${i18n['clear-dates']}`"
+              @click='clearSelection'
+              )
+            button.next--mobile(
                 @click='renderNextMonth' type="button"
                 v-text="`${i18n['show-more']}`"
               )
-            .span.clear-dates--mobile(
-              v-text="`${i18n['clear-dates']}`"
-              @click='clearSelection'
-            )
 </template>
 
 <script>
@@ -245,14 +245,6 @@
       showYear: {
         default: true,
         type: Boolean
-      },
-      showTotalNights: {
-        default: true,
-        type: Boolean
-      },
-      monthCrossing: {
-          default: true,
-          type: Boolean
       }
     },
 
@@ -434,7 +426,7 @@
             firstDayOfLastMonth[0].date
           )
         );
-
+        this.parseDisabledDates();
         this.activeMonthIndex++;
       },
 
@@ -631,16 +623,19 @@
               display: inline-block;
               text-align: center;
               white-space: nowrap;
-              z-index: 6!important;
+              z-index: 6 !important;
           }
           
         }
-        a.next--mobile {
+        .clear-dates--mobile {
+          margin-bottom: 28px;
+          z-index: 9999 !important;
           color: #2d6cb4;
           cursor: pointer;
           font-size: 14px;
           line-height: 16px;
-          margin-top: 6px;
+          margin-top: 36px;
+          padding-left: 12px;
         }
         &--closed {
             box-shadow: 0 15px 30px 10px rgba($black, 0);
@@ -921,7 +916,7 @@
             &--hidden {
                 opacity: 0.25;
                 pointer-events: none;
-                visibility: hidden;
+                display: none;
             }
         }
 
@@ -967,8 +962,8 @@
                 width: 287px;
                 margin-left: auto;
                 margin-right: auto;
-                margin-top: 92px;
-                height: calc(100% - 92px);
+                margin-top: 40px;
+                height: calc(100% - 42px);
                 position: absolute;
                 left: 0;
                 top: 0;
@@ -992,7 +987,8 @@
                 padding-right: 10px;
                 padding-left: 10px;
                 padding-bottom: 1px;
-                padding-top: 60px;
+                padding-top: 30px;
+                margin-top: 10px;
 
                 &:last-of-type {
                   margin-bottom: 65px;
@@ -1031,7 +1027,7 @@
                 margin-top: -25px;
                 margin-bottom: 0;
                 position: absolute;
-                width: 100%;
+                width: 277px;
             }
         }
 
@@ -1045,7 +1041,6 @@
             height: 20px;
 
             @include device($up-to-tablet) {
-                box-shadow: 0 13px 18px -8px rgba($black, .07);
                 height: 25px;
                 left: 0;
                 top: 65px;
