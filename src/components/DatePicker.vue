@@ -1,42 +1,35 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`")
-      input.datepicker__dummy-input.datepicker__input(
+    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
+      button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
-        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-        :value="`${checkIn ? formatDate(checkIn) : ''}`"
-        :placeholder="i18n['check-in']"
-        type="text"
-        readonly
+        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
+        v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+        type="button"
       )
-      input.datepicker__dummy-input.datepicker__input(
+      button.datepicker__dummy-input.datepicker__input(
+        v-if='!singleDaySelection'
         :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-        :value="`${checkOut ? formatDate(checkOut) : ''}`"
-        :placeholder="i18n['check-out']"
-        type="text"
-        readonly
+        v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+        type="button"
       )
-    button.datepicker__clear-button(@click='clearSelection') ＋
+    button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
           @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkIn ? formatDate(checkIn) : ''}`"
-            :placeholder="i18n['check-in']"
-            type="text"
-            readonly
+            v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
+            type="button"
           )
-          input.datepicker__dummy-input.datepicker__input(
+          button.datepicker__dummy-input.datepicker__input(
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-            :value="`${checkOut ? formatDate(checkOut) : ''}`"
-            :placeholder="i18n['check-out']"
-            type="text"
-            readonly
+            v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
+            type="button"
           )
       .datepicker__inner
         .datepicker__header
@@ -69,16 +62,27 @@
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
-            .datepicker__week-name(v-for='dayName in this.i18n["day-names"]' v-text='dayName')
+            .datepicker__week-name(
+              v-for='dayName in this.i18n["day-names"]'
+              v-text='dayName'
+            )
           .datepicker__months#swiperWrapper
-            div.datepicker__month(v-for='(a, n) in months' v-bind:key='n')
-              h1.datepicker__month-name(v-text='getMonth(months[n].days[15].date)')
+            div.datepicker__month(
+              v-for='(a, n) in months'
+              v-bind:key='n'
+            )
+              h1.datepicker__month-name(
+                v-text='getMonth(months[n].days[15].date)'
+              )
               .datepicker__week-row.-hide-up-to-tablet
-                .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
+                .datepicker__week-name(
+                  v-for='dayName in i18n["day-names"]'
+                  v-text='dayName'
+                )
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
                 v-bind:key='index'
-                )
+              )
                 Day(
                   :options="$props"
                   @dayClicked='handleDayClick($event)'
@@ -93,29 +97,28 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                 )
-
-
-
+            button.next--mobile(
+              @click='renderNextMonth' type="button"
+            )
 
 </template>
 
 <script>
-  import { directive as onClickOutside } from 'vue-on-click-outside'
+  import {directive as onClickOutside} from 'vue-on-click-outside';
 
-  import fecha from 'fecha'
-  import _ from 'lodash'
+  import fecha from 'fecha';
 
-  import Day from './Day.vue'
-  import Helpers from './helpers.js'
+  import Day from './Day.vue';
+  import Helpers from './helpers.js';
 
   const defaulti18n = {
     night: 'Night',
     nights: 'Nights',
     'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'check-in': 'Check-in',
-    'check-out': 'Check-Out',
+    'check-out': 'Check-out',
     'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  }
+  };
 
   export default {
     name: 'HotelDatePicker',
@@ -129,6 +132,14 @@
     props: {
       value: {
         type: String
+      },
+      startingDateValue: {
+        default: null,
+        type: Date
+      },
+      endingDateValue: {
+        default: null,
+        type: Date
       },
       format: {
         default: 'YYYY-MM-DD',
@@ -157,15 +168,21 @@
         type: Number
       },
       disabledDates: {
-        default: function () { return [] },
+        default: function () {
+          return []
+        },
         type: Array
       },
       disabledDaysOfWeek: {
-        default: function () { return [] },
+        default: function () {
+          return []
+        },
         type: Array
       },
       allowedRanges: {
-        default: function () { return [] },
+        default: function () {
+          return []
+        },
         type: Array
       },
       hoveringTooltip: {
@@ -184,19 +201,21 @@
         default: false,
         type: Boolean
       },
-      checkInValue: {
-        default: null,
-        type: [Date]
+      singleDaySelection: {
+        default: false,
+        type: Boolean
       },
-      checkOutValue: {
-        default: null,
-        type: [Date]
+      showYear: {
+        default: false,
+        type: Boolean
       }
     },
 
-    data () {
+    data() {
       return {
         hoveringDate: null,
+        checkIn: this.startingDateValue,
+        checkOut: this.endingDateValue,
         currentDate: new Date(),
         months: [],
         activeMonthIndex: 0,
@@ -209,157 +228,152 @@
         yUp: null,
         sortedDisabledDates: null,
         screenSize: this.handleWindowResize(),
-      }
-    },
-    computed: {
-      checkIn: {
-        get: function () {
-          return this.checkInValue
-        },
-        set: function (newDate) {
-          if (newDate !== this.checkInValue) {
-            this.checkInValue = newDate
-            this.$emit('checkInChanged', newDate)
-          }
-        }
-      },
-      checkOut: {
-        get: function () {
-          return this.checkOutValue
-        },
-        set: function (newDate) {
-          if (newDate !== this.checkOutValue) {
-            this.checkOutValue = newDate
-
-            if (this.checkInValue == null || this.checkOutValue == null) {
-              this.hoveringDate = null
-              this.nextDisabledDate = null
-              this.show = true
-              this.parseDisabledDates()
-              this.reRender()
-              this.isOpen = false
-            }
-
-            this.$emit('checkOutChanged', newDate)
-          }
-        }
-      }
+      };
     },
 
     watch: {
-      isOpen (value) {
+      isOpen(value) {
         if (this.screenSize !== 'desktop') {
-          const bodyClassList = document.querySelector('body').classList
+          const bodyClassList = document.querySelector('body').classList;
 
           if (value) {
-            bodyClassList.add('-overflow-hidden')
+            bodyClassList.add('-overflow-hidden');
           }
           else {
-            bodyClassList.remove('-overflow-hidden')
+            bodyClassList.remove('-overflow-hidden');
           }
         }
-      }
+      },
+      checkIn(newDate) {
+        this.$emit("checkInChanged", newDate)
+      },
+      checkOut(newDate) {
+
+        if (this.checkOut !== null && this.checkOut !== null) {
+          this.hoveringDate = null;
+          this.nextDisabledDate = null;
+          this.show = true;
+          this.parseDisabledDates();
+          this.reRender()
+          this.isOpen = false;
+        }
+
+        this.$emit("checkOutChanged", newDate)
+      },
+
     },
 
     methods: {
       ...Helpers,
 
-      handleWindowResize () {
-        let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size'])
-
-        if (screenSizeInEm < 31) {
-          this.screenSize = 'smartphone'
+      handleWindowResize() {
+        if (window.innerWidth < 480) {
+          this.screenSize = 'smartphone';
         }
-        else if (screenSizeInEm > 30 && screenSizeInEm < 49) {
-          this.screenSize = 'tablet'
+        else if (window.innerWidth >= 480 && window.innerWidth < 768) {
+          this.screenSize = 'tablet';
         }
-        else if (screenSizeInEm > 48) {
-          this.screenSize = 'desktop'
+        else if (window.innerWidth >= 768) {
+          this.screenSize = 'desktop';
         }
 
-        return this.screenSize
+        return this.screenSize;
       },
 
-      onElementHeightChange (el, callback) {
-        let lastHeight = el.clientHeight
+      onElementHeightChange(el, callback) {
+        let lastHeight = el.clientHeight;
         let newHeight = lastHeight;
 
-        (function run () {
-          newHeight = el.clientHeight
+        (function run() {
+          newHeight = el.clientHeight;
 
           if (lastHeight !== newHeight) {
-            callback()
+            callback();
           }
 
-          lastHeight = newHeight
+          lastHeight = newHeight;
 
           if (el.onElementHeightChangeTimer) {
-            clearTimeout(el.onElementHeightChangeTimer)
+            clearTimeout(el.onElementHeightChangeTimer);
           }
 
-          el.onElementHeightChangeTimer = setTimeout(run, 1000)
-        })()
+          el.onElementHeightChangeTimer = setTimeout(run, 1000);
+        })();
       },
 
-      emitHeighChangeEvent () {
-        this.$emit('heightChanged')
+      emitHeighChangeEvent() {
+        this.$emit('heightChanged');
       },
 
-      reRender () {
+      reRender() {
         this.show = false
         this.$nextTick(() => {
-          this.show = true
+          this.show = true;
         })
       },
 
-      clearSelection () {
+      clearSelection() {
         this.hoveringDate = null,
-          this.checkIn = null
-        this.checkOut = null
-        this.nextDisabledDate = null
-        this.show = true
-        this.parseDisabledDates()
+        this.checkIn = null;
+        this.checkOut = null;
+        this.nextDisabledDate = null;
+        this.show = true;
+        this.parseDisabledDates();
         this.reRender()
       },
 
-      hideDatepicker () { this.isOpen = false },
+      hideDatepicker() {
+        this.isOpen = false;
+      },
 
-      showDatepicker () { this.isOpen = true },
+      showDatepicker() {
+        this.isOpen = true;
+      },
 
-      toggleDatepicker () { this.isOpen = !this.isOpen },
+      toggleDatepicker() {
+        this.isOpen = !this.isOpen;
+      },
 
-      handleDayClick (event) {
-        if (this.checkIn == null) {
+      handleDayClick(event) {
+
+        if (this.checkIn == null && this.singleDaySelection == false) {
+          this.checkIn = event.date;
+        } else if (this.singleDaySelection == true) {
           this.checkIn = event.date
-        }
-        else if (this.checkIn !== null && this.checkOut == null) {
           this.checkOut = event.date
         }
-        else {
-          this.checkOut = null
-          this.checkIn = event.date
+        else if (this.checkIn !== null && this.checkOut == null) {
+          this.checkOut = event.date;
         }
+        else {
+          this.checkOut = null;
+          this.checkIn = event.date;
+        }
+
         this.nextDisabledDate = event.nextDisabledDate
       },
 
-      renderPreviousMonth () {
+      renderPreviousMonth() {
         if (this.activeMonthIndex >= 1) {
           this.activeMonthIndex--
         }
         else return
       },
 
-      renderNextMonth () {
-        let firstDayOfLastMonth
+      renderNextMonth() {
+        if (this.activeMonthIndex < this.months.length - 2) {
+          this.activeMonthIndex++;
+          return
+        }
+
+        let firstDayOfLastMonth;
 
         if (this.screenSize !== 'desktop') {
-          firstDayOfLastMonth = _.filter(this.months[this.months.length - 1].days, {
-            'belongsToThisMonth': true
-          })
+          firstDayOfLastMonth = this.months[this.months.length - 1].days
+            .filter((day) => day.belongsToThisMonth === true);
         } else {
-          firstDayOfLastMonth = _.filter(this.months[this.activeMonthIndex + 1].days, {
-            'belongsToThisMonth': true
-          })
+          firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days
+            .filter((day) => day.belongsToThisMonth === true);
         }
 
         if (this.endDate !== Infinity) {
@@ -373,86 +387,105 @@
           this.getNextMonth(
             firstDayOfLastMonth[0].date
           )
-        )
+        );
 
-        this.activeMonthIndex++
+        this.activeMonthIndex++;
       },
 
-      setCheckIn (date) { this.checkIn = date },
+      setCheckIn(date) {
+        this.checkIn = date;
+      },
 
-      setCheckOut (date) { this.checkOut = date },
+      setCheckOut(date) {
+        this.checkOut = date;
+      },
 
-      getDay (date) { return fecha.format(date, 'D') },
+      getDay(date) {
+        return fecha.format(date, 'D')
+      },
 
-      getMonth (date) { return this.i18n['month-names'][fecha.format(date, 'M') - 1] },
+      getMonth(date) {
+        return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
+      },
 
-      formatDate (date) { return fecha.format(date, this.format) },
+      formatDate(date) {
+        return fecha.format(date, this.format)
+      },
 
-      createMonth (date) {
-        const firstDay = this.getFirstDay(date, this.firstDayOfWeek)
-
+    createMonth(date){
+      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
         let month = {
           days: []
-        }
+        };
 
-        for (let i = 0; i < 42; i++) {
-          month.days.push({
-            date: this.addDays(firstDay, i),
-            belongsToThisMonth: this.addDays(firstDay, i).getMonth() === date.getMonth(),
-            isInRange: false,
-          })
-        }
-
-        this.months.push(month)
+      for (let i = 0; i < 42; i++) {
+        month.days.push({
+          date: this.addDays(firstDay, i),
+          belongsToThisMonth: this.addDays(firstDay, i).getMonth() === date.getMonth(),
+          isInRange: false,
+        });
+      }
+        this.months.push(month);
       },
 
-      parseDisabledDates () {
-        const sortedDates = []
+      parseDisabledDates() {
+        const sortedDates = [];
 
         for (let i = 0; i < this.disabledDates.length; i++) {
-          sortedDates[i] = new Date(this.disabledDates[i])
+          sortedDates[i] = new Date(this.disabledDates[i]);
         }
 
-        sortedDates.sort((a, b) => a - b)
+        sortedDates.sort((a, b) => a - b);
 
-        this.sortedDisabledDates = sortedDates
+        this.sortedDisabledDates = sortedDates;
       }
     },
 
-    beforeMount () {
-      this.createMonth(new Date(this.startDate))
-      this.createMonth(this.getNextMonth(new Date(this.startDate)))
-      this.parseDisabledDates()
+    beforeMount() {
+      fecha.i18n = {
+        dayNames: this.i18n['day-names'],
+        dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
+        monthNames: this.i18n['month-names'],
+        monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
+        amPm: ['am', 'pm'],
+        // D is the day of the month, function returns something like...  3rd or 11th
+        DoFn: function (D) {
+          return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
+        }
+      };
+
+      this.createMonth(new Date(this.startDate));
+      this.createMonth(this.getNextMonth(new Date(this.startDate)));
+      this.parseDisabledDates();
     },
 
-    mounted () {
-      document.addEventListener('touchstart', this.handleTouchStart, false)
-      document.addEventListener('touchmove', this.handleTouchMove, false)
-      window.addEventListener('resize', this.handleWindowResize)
+    mounted() {
+      document.addEventListener('touchstart', this.handleTouchStart, false);
+      document.addEventListener('touchmove', this.handleTouchMove, false);
+      window.addEventListener('resize', this.handleWindowResize);
 
       this.onElementHeightChange(document.body, () => {
-        this.emitHeighChangeEvent()
-      })
+        this.emitHeighChangeEvent();
+      });
     },
 
-    destroyed () {
-      window.removeEventListener('touchstart', this.handleTouchMove)
-      window.removeEventListener('touchmove', this.handleTouchMove)
-      window.removeEventListener('resize', this.handleWindowResize)
+    destroyed() {
+      window.removeEventListener('touchstart', this.handleTouchStart);
+      window.removeEventListener('touchmove', this.handleTouchMove);
+      window.removeEventListener('resize', this.handleWindowResize);
     }
 
-  }
+  };
 </script>
 
 <style lang="scss">
     /* =============================================================
      * RESPONSIVE LAYOUT HELPERS
      * ============================================================*/
-    $tablet: '(min-width: 30em) and (max-width: 49em)';
-    $phone: '(max-width: 30em)';
-    $desktop: '(min-width: 49em)';
-    $tablet-up: '(min-width: 30em)';
-    $up-to-tablet: '(max-width: 49em)';
+    $tablet: '(min-width: 480px) and (max-width: 767px)';
+    $phone: '(max-width: 479px)';
+    $desktop: '(min-width: 768px)';
+    $up-to-tablet: '(max-width: 767px)';
     $extra-small-screen: '(max-width: 23em)';
 
     @mixin device($device-widths) {
@@ -464,6 +497,9 @@
     .square {
         width: calc(100% / 7);
         float: left;
+        @include device($desktop) {
+          cursor: pointer;
+        }
     }
 
     *,
@@ -504,6 +540,35 @@
         position: absolute;
         z-index: 10;
 
+        button.next--mobile {
+            background: none;
+            border: 1px solid $light-gray;
+            float: none;
+            height: 50px;
+            width: 100%;
+            position: relative;
+            background-position: center;
+            appearance: none;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            outline: none;
+            box-shadow: 0 5px 30px 10px rgba($black, .08);
+            background: white;
+
+            &:after {
+                background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+                transform: rotate(90deg);
+                content: "";
+                position: absolute;
+                width: 200%;
+                height: 200%;
+                top: -50%;
+                left: -50%;
+            }
+        }
+
         &--closed {
             box-shadow: 0 15px 30px 10px rgba($black, 0);
             max-height: 0;
@@ -517,6 +582,9 @@
                 box-shadow: none;
                 height: 100%;
                 left: 0;
+                right: 0;
+                bottom: 0;
+                -webkit-overflow-scrolling: touch !important;
                 position: fixed;
                 top: 0;
                 width: 100%;
@@ -609,6 +677,11 @@
             &--is-active:-moz-placeholder {
                 color: $primary-color;
             }
+            &--single-date:first-child {
+                width: 100%;
+                background: none;
+                text-align: left;
+            }
         }
 
         &__month-day {
@@ -642,7 +715,7 @@
             }
 
             &--disabled {
-                color: $lightest-gray;
+                opacity: 0.25;
                 cursor: not-allowed;
                 pointer-events: none;
                 position: relative;
@@ -689,8 +762,7 @@
             }
 
             &--hidden {
-                visibility: hidden;
-                color: $white;
+                opacity: 0.25;
                 pointer-events: none;
             }
         }
@@ -739,6 +811,9 @@
                 overflow: scroll;
                 right: 0;
                 bottom: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
             }
 
             &::before {
@@ -766,16 +841,14 @@
             @include device($up-to-tablet) {
                 width: 100%;
                 padding-right: 0;
-                padding-top: 45px;
+                padding-top: 60px;
 
                 &:last-of-type {
-                    padding-top: 0;
-                    padding-left: 0;
-                    margin-top: 35px;
+                    margin-bottom: 65px;
                 }
             }
 
-            @include device($tablet-up) {
+            @include device($desktop) {
                 &:last-of-type {
                     padding-right: 0;
                     padding-left: 10px;
@@ -916,5 +989,4 @@
             display: none;
         }
     }
-
 </style>

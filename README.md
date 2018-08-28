@@ -55,12 +55,26 @@ The date format string.
 
 The start view date. All the dates before this date will be disabled.
 
+### startingDateValue
+
+- Type: `Date`
+- Default: `null`
+
+The initial value of the start date.
+
 ### endDate
 
 - Type: `Date` or `String` or `Boolean`
 - Default: `false`
 
 The end view date. All the dates after this date will be disabled.
+
+### endingDateValue
+
+- Type: `Date`
+- Default: `null`
+
+The initial value of the end date.
 
 ### firstDayOfWeek
 
@@ -128,6 +142,17 @@ Shows a tooltip with the number of nights when hovering a date.
 
 If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
 
+## singleDateSelection
+
+- Type `boolean`
+- Default `false`
+
+## showYear
+
+- Type `boolean`
+- Default `false`
+
+Shows the year next to the month
 
 ### i18n
 
