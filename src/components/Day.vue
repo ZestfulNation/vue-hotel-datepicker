@@ -33,7 +33,7 @@ export default {
     hoveringDate: {
       type: Date
     },
-    mounseOverFunction: {
+    mouseOverFunction: {
       type: Function
     },
     belongsToThisMonth: {
@@ -128,12 +128,14 @@ export default {
           if (this.options.minNights == 0) {
             return "datepicker__month-day--first-day-selected"
           } else {
-            return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
+            //return "datepicker__month-day--disabled datepicker__month-day--first-day-selected"
+            return "datepicker__month-day--first-day-selected"
           }
         }
         if ( this.checkOut !== null ) {
           if ( fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD') ) {
-            return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
+            //return "datepicker__month-day--disabled datepicker__month-day--last-day-selected"
+            return "datepicker__month-day--last-day-selected"
           }
         }
         // Only highlight dates that are not disabled
