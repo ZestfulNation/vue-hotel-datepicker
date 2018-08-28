@@ -73,6 +73,7 @@
             .square(
               v-for='day in months[activeMonthIndex+n].days'
               @mouseover='hoveringDate = day.date'
+              :class='checkToday(day.date)'
               )
               Day(
                 :options="$props"
@@ -111,6 +112,7 @@
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
                 v-bind:key='index'
+                :class='checkToday(day.date)'
               )
                 Day(
                   :options="$props"
@@ -458,6 +460,14 @@
         return fecha.format(date, this.format)
       },
 
+      checkToday(date) {
+        const date1 = fecha.format(new Date(date), 'YYYYMMDD');
+        const date2 = fecha.format(new Date(), 'YYYYMMDD');
+        if(date1 == date2){
+          return "square--today"
+        }
+      },
+
       createMonth(date) {
         const firstMonday = this.getFirstMonday(date);
 
@@ -524,8 +534,7 @@
       window.removeEventListener('touchstart', this.handleTouchStart);
       window.removeEventListener('touchmove', this.handleTouchMove);
       window.removeEventListener('resize', this.handleWindowResize);
-    }
-
+    },
   };
 </script>
 
@@ -598,7 +607,12 @@
 
         .square {
           position: relative;
+
+          &--today{
+            z-index: 1;
+          }
         }
+
         .footer__mobile{
           position: fixed;
           width: 100%;
