@@ -1,5 +1,10 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
+    input(
+      type="hidden"
+      name="occupied"
+      :value="getOccupied()"
+    )
     .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
@@ -296,6 +301,7 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
+          document.in
         }
 
         this.$emit("checkOutChanged", newDate)
@@ -377,6 +383,14 @@
 
       toggleDatepicker() {
         this.isOpen = !this.isOpen;
+      },
+
+      getOccupied() {
+        if( this.checkIn && this.checkOut){
+          return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
+        }
+        else return ''
+        //2018-08-30;2018-08-31
       },
 
       handleDayClick(event) {
