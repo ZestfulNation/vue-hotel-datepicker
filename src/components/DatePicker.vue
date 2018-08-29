@@ -138,7 +138,8 @@
               v-text="`${i18n['clear-dates']}`"
               @click='clearSelection'
               )
-            button.next--mobile(
+            .wrapper__next--mobile()
+              div.next--mobile(
                 @click='renderMultipleMonth(3)' type="button"
                 v-text="`${i18n['show-more']}`"
               )
@@ -552,7 +553,7 @@
   };
 </script>
 
-  <style lang="scss">
+<style lang="scss">
     /* =============================================================
      * RESPONSIVE LAYOUT HELPERS
      * ============================================================*/
@@ -644,12 +645,12 @@
             cursor: pointer;
             font-size: 14px;
             line-height: 34px;
-            padding-left: 12px;
+            padding-left: 40px;
             text-align: left;
           }
           
         }
-        .footer__next--mobile{
+        .wrapper__next--mobile{
           position: relative;
           margin-top: 36px;
           margin-bottom: 18px;
@@ -777,8 +778,20 @@
             }
 
             &--no-border.datepicker__dummy-wrapper {
-                margin-top: 15px;
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
                 border: 0;
+                background: transparent;
+                border-bottom: 1px solid #d1d1d1;
+                .datepicker__dummy-input{
+                  font-family: inherit;
+                  font-weight: 500;
+                  margin: 0;
+                  line-height: 1.4;
+                  font-size: 19px;
+                  color: #000;
+                }
             }
 
             &--is-active {
