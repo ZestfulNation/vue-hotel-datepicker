@@ -1,6 +1,6 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    input(
+    input.js-occupied-value(
       type="hidden"
       name="occupied"
       :value="getOccupied()"
@@ -252,6 +252,10 @@
       showYear: {
         default: true,
         type: Boolean
+      },
+      openCalendarOnInit: {
+        default: false,
+        type: Boolean
       }
     },
 
@@ -391,7 +395,6 @@
           return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
         }
         else return ''
-        //2018-08-30;2018-08-31
       },
 
       handleDayClick(event) {
@@ -533,6 +536,10 @@
         this.renderMultipleMonth(4);
       }
       this.parseDisabledDates();
+      if(this.openCalendarOnInit){
+        this.showDatepicker();
+        this.openCalendarOnInit = false;
+      }
     },
 
     mounted() {
@@ -638,14 +645,17 @@
           text-align: center;
           background-color: $white;
           border: none;
-          z-index: 9999!important;
+          z-index: 9999!important; 
+          text-align: center;
 
           .clear-dates--mobile {
+            display: inline-block;
             color: #2d6cb4;
             cursor: pointer;
+            width: 287px;
             font-size: 14px;
             line-height: 34px;
-            padding-left: 40px;
+            padding-left: 12px;
             text-align: left;
           }
           
