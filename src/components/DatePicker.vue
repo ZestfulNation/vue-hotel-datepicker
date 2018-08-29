@@ -4,6 +4,7 @@
       type="hidden"
       name="occupied"
       :value="getOccupied()"
+      ref="occupied"
     )
     .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
@@ -391,6 +392,9 @@
       },
 
       getOccupied() {
+        if(this.$refs.occupied){
+          this.$refs.occupied.dispatchEvent(new Event("change"));
+        }
         if( this.checkIn && this.checkOut){
           return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
         }
