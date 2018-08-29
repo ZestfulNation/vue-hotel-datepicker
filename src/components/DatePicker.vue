@@ -307,7 +307,10 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
-          document.in
+
+          if(this.$refs.occupied){
+            this.$refs.occupied.dispatchEvent(new Event("change"));
+          }
         }
 
         this.$emit("checkOutChanged", newDate)
@@ -392,9 +395,6 @@
       },
 
       getOccupied() {
-        if(this.$refs.occupied){
-          this.$refs.occupied.dispatchEvent(new Event("change"));
-        }
         if( this.checkIn && this.checkOut){
           return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
         }
