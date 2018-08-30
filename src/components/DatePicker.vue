@@ -306,7 +306,7 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
-          this.$parent.$emit('inputChanged', this.inputValue);
+          this.$parent.$emit('inputChanged', [this.inputValue, this.$refs.occupied]);
         }
 
         this.$emit("checkOutChanged", newDate);
@@ -380,7 +380,7 @@
         this.show = true;
         this.parseDisabledDates();
         this.reRender()
-        this.$parent.$emit('inputChanged', this.inputValue);
+        this.$parent.$emit('inputChanged', [this.inputValue, this.$refs.occupied]);
       },
 
       hideDatepicker() {
