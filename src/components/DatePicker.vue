@@ -307,10 +307,6 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
-
-          if(this.$refs.occupied){
-            this.$refs.occupied.dispatchEvent(new Event("change"));
-          }
         }
 
         this.$emit("checkOutChanged", newDate)
