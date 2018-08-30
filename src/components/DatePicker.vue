@@ -1,9 +1,9 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    input.js-occupied-value(
+    input.js-occupied-value.filter-control(
       type="hidden"
       name="occupied"
-      :value="getOccupied()"
+      :value="inputValue"
       ref="occupied"
     )
     .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
@@ -299,7 +299,6 @@
         this.$emit("checkInChanged", newDate)
       },
       checkOut(newDate) {
-
         if (this.checkOut !== null && this.checkOut !== null) {
           this.hoveringDate = null;
           this.nextDisabledDate = null;
@@ -307,11 +306,21 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
+          this.$parent.$emit('inputChanged', this.inputValue);
         }
 
-        this.$emit("checkOutChanged", newDate)
+        this.$emit("checkOutChanged", newDate);
       },
 
+    },
+
+    computed: {
+      inputValue: function() {
+        if( this.checkIn && this.checkOut){
+          return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
+        }
+        else return ''
+      },
     },
 
     methods: {
@@ -371,6 +380,7 @@
         this.show = true;
         this.parseDisabledDates();
         this.reRender()
+        this.$parent.$emit('inputChanged', this.inputValue);
       },
 
       hideDatepicker() {
@@ -388,13 +398,6 @@
 
       toggleDatepicker() {
         this.isOpen = !this.isOpen;
-      },
-
-      getOccupied() {
-        if( this.checkIn && this.checkOut){
-          return fecha.format(this.checkIn, 'YYYY-MM-DD') + ';' + fecha.format(this.checkOut, 'YYYY-MM-DD')
-        }
-        else return ''
       },
 
       handleDayClick(event) {
