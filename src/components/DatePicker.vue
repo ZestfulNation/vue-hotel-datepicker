@@ -764,6 +764,7 @@
             &--hidden {
                 opacity: 0.25;
                 pointer-events: none;
+                color: $white;
             }
         }
 
