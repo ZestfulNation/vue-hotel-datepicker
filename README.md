@@ -76,6 +76,15 @@ The end view date. All the dates after this date will be disabled.
 
 The initial value of the end date.
 
+### firstDayOfWeek
+
+- Type: `Number`
+- Default: `0`
+
+The first day of the week. Where Sun = 0, Mon = 1, ... Sat = 6.
+
+You need to set the right order in `i18n.day-names` too.
+
 ### minNights
 
 - Type: `Number`

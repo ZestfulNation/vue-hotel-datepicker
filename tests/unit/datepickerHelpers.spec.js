@@ -45,11 +45,19 @@ describe('Datepicker Helpers', () => {
     });
   });
 
-  describe('getFirstSunday', () => {
+  describe('getFirstDaySunday', () => {
     it('should return the first sunday of a given month', () => {
       expect(
-        DatepickerHelpers.getFirstSunday(new Date('10-10-2017'))
+        DatepickerHelpers.getFirstDay(new Date('10-10-2017'), 0)
       ).to.eql(new Date('10-01-2017'));
+    });
+  });
+
+  describe('getFirstDayMonday', () => {
+    it('should return the first monday of a given month', () => {
+      expect(
+        DatepickerHelpers.getFirstDay(new Date('10-10-2017'), 1)
+      ).to.eql(new Date('09-25-2017'));
     });
   });
 

@@ -119,6 +119,51 @@
         />
       </div>
 
+        <div class="box">
+        <h3>Change the first day of the week to Monday</h3>
+        <DatePicker
+            :i18n="{ night: 'Night',
+                      nights: 'Nights',
+                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                      'check-in': 'Check-in',
+                      'check-out': 'Check-Out',
+                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    }"
+            :firstDayOfWeek="1"
+        />
+    </div>
+
+    <div class="box">
+        <h3>Set checkIn value</h3>
+        <DatePicker
+            :i18n="{ night: 'Night',
+                      nights: 'Nights',
+                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                      'check-in': 'Check-in',
+                      'check-out': 'Check-Out',
+                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    }"
+            :firstDayOfWeek="1"
+            :checkInValue="new Date()"
+        />
+    </div>
+
+    <div class="box">
+        <h3>Set checkOut value</h3>
+        <DatePicker
+            :i18n="{ night: 'Night',
+                      nights: 'Nights',
+                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                      'check-in': 'Check-in',
+                      'check-out': 'Check-Out',
+                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    }"
+            :firstDayOfWeek="1"
+            :checkInValue="new Date()"
+            :checkOutValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
+        />
+    </div>
+
     </div>
   </div>
 </template>

@@ -55,12 +55,16 @@ export default {
     result.setDate(result.getDate() + quantity);
     return result;
   },
-  getFirstSunday(date) {
-    var firstDay = this.getFirstDayOfMonth(date);
+  getFirstDay(date, firstDayOfWeek) {
+    var firstDay =  this.getFirstDayOfMonth(date);
+    var offset = 0;
+    if (firstDayOfWeek > 0) {
+      offset = firstDay.getDay() === 0 ? -7 + firstDayOfWeek : firstDayOfWeek;
+    }
     return new Date(
       firstDay.setDate(
         firstDay.getDate()
-        - firstDay.getDay()
+        - (firstDay.getDay() - offset)
       )
     );
   },

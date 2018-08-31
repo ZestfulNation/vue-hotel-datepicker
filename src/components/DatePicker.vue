@@ -155,6 +155,10 @@
         default: Infinity,
         type: [Date, String, Number]
       },
+      firstDayOfWeek: {
+        default: 0,
+        type: Number
+      },
       minNights: {
         default: 1,
         type: Number
@@ -310,7 +314,7 @@
 
       clearSelection() {
         this.hoveringDate = null,
-          this.checkIn = null;
+        this.checkIn = null;
         this.checkOut = null;
         this.nextDisabledDate = null;
         this.show = true;
@@ -408,21 +412,19 @@
         return fecha.format(date, this.format)
       },
 
-      createMonth(date) {
-        const firstSunday = this.getFirstSunday(date);
-
+    createMonth(date){
+      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
         let month = {
           days: []
         };
 
-        for (let i = 0; i < 42; i++) {
-          month.days.push({
-            date: this.addDays(firstSunday, i),
-            belongsToThisMonth: this.addDays(firstSunday, i).getMonth() === date.getMonth(),
-            isInRange: false,
-          });
-        }
-
+      for (let i = 0; i < 42; i++) {
+        month.days.push({
+          date: this.addDays(firstDay, i),
+          belongsToThisMonth: this.addDays(firstDay, i).getMonth() === date.getMonth(),
+          isInRange: false,
+        });
+      }
         this.months.push(month);
       },
 
