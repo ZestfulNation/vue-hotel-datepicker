@@ -253,10 +253,6 @@
       showYear: {
         default: true,
         type: Boolean
-      },
-      openCalendarOnInit: {
-        default: false,
-        type: Boolean
       }
     },
 
@@ -310,8 +306,7 @@
         }
 
         this.$emit("checkOutChanged", newDate);
-      },
-
+      }
     },
 
     computed: {
@@ -539,10 +534,6 @@
         this.renderMultipleMonth(4);
       }
       this.parseDisabledDates();
-      if(this.openCalendarOnInit){
-        this.showDatepicker();
-        this.openCalendarOnInit = false;
-      }
     },
 
     mounted() {
@@ -1006,6 +997,8 @@
                 opacity: 0.25;
                 pointer-events: none;
                 visibility: hidden;
+                height: 0;
+                padding: 0;
             }
         }
 
