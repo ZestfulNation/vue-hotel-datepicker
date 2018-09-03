@@ -1,11 +1,5 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
-    input.js-occupied-value.filter-control(
-      type="hidden"
-      name="occupied"
-      :value="inputValue"
-      ref="occupied"
-    )
     .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
@@ -302,7 +296,7 @@
           this.parseDisabledDates();
           this.reRender();
           this.isOpen = false;
-          this.$parent.$emit('inputChanged', [this.inputValue, this.$refs.occupied]);
+          this.$parent.$emit('inputChanged', this.inputValue);
         }
 
         this.$emit("checkOutChanged", newDate);
@@ -374,8 +368,8 @@
         this.nextDisabledDate = null;
         this.show = true;
         this.parseDisabledDates();
-        this.reRender()
-        this.$parent.$emit('inputChanged', [this.inputValue, this.$refs.occupied]);
+        this.reRender();
+        this.$parent.$emit('inputChanged', this.inputValue);
       },
 
       hideDatepicker() {
