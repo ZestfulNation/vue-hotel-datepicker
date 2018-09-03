@@ -825,7 +825,7 @@
         }
 
         &__choose-dates {
-              font-size: 15px;
+              font-size: 14px;
               cursor: pointer;
               border-radius: 3px;
               margin-top: -1px;
@@ -1094,7 +1094,7 @@
             text-align: center;
             text-transform: Capitalize;
             color: #484848;
-            font-size: 18px;
+            font-size: 17px;
             font-family: sans-serif;
             text-align: center;
             caption-side: top;
