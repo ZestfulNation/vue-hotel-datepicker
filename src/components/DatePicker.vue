@@ -506,6 +506,14 @@
         sortedDates.sort((a, b) => a - b);
 
         this.sortedDisabledDates = sortedDates;
+      },
+
+      compareMonths(d1, d2) {
+        var months;
+        months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        months -= d1.getMonth() + 1;
+        months += d2.getMonth();
+        return months <= 0 ? 0 : months;
       }
     },
 
@@ -523,9 +531,21 @@
       };
 
       this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
-      if (this.screenSize !== 'desktop'){
-        this.renderMultipleMonth(4);
+      if (!this.startingDateValue && !this.endingDateValue) {
+        //if checkin & checkout dates are not set
+        this.createMonth(this.getNextMonth(new Date(this.startDate)));
+        if (this.screenSize !== 'desktop'){
+          this.renderMultipleMonth(4);
+        }
+      }
+      else {
+        //if checkin checkout dates are set, draw months till checkin month and focus it
+        var monthDiff = this.compareMonths(new Date(), this.startingDateValue);
+        if (this.screenSize !== 'desktop' && monthDiff < 6) {
+          monthDiff = 4;
+        }
+        this.renderMultipleMonth(monthDiff+2);
+        this.activeMonthIndex = monthDiff+1;
       }
       this.parseDisabledDates();
     },
