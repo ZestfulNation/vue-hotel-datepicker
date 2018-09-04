@@ -70,6 +70,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "base64-inline-loader": "^1.1.1",
     "cssnano": "^3.10.0",
     "fecha": "^2.3.1",
     "pug": "^2.0.0-rc.3",

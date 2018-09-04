@@ -46,11 +46,11 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: 'images/[name].[hash:7].[ext]',
-          },
+          loader: 'base64-inline-loader?limit=1000&name=[name].[ext]',
+          // options: {
+          //   limit: 10000,
+          //   name: 'images/[name].[hash:7].[ext]',
+          // },
         },
       },
 

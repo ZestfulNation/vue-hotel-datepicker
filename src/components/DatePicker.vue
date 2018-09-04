@@ -655,7 +655,9 @@
           border: none;
           z-index: 9999!important; 
           text-align: center;
-
+          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.09);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+          background-color: #fff;
           .clear-dates--mobile {
             display: inline-block;
             color: #2d6cb4;
@@ -786,6 +788,7 @@
             font-weight: 200;
             border: 1px solid #d1d1d1;
             border-radius: 3px;
+            font-size: 15px;
 
             @include  device($desktop) {
                 line-height: $height-desktop;
@@ -793,6 +796,7 @@
 
             @include  device($up-to-tablet) {
                 line-height: $height-mobile;
+                font-size: 14px;
             }
 
             &--no-border.datepicker__dummy-wrapper {
@@ -845,13 +849,14 @@
         }
 
         &__choose-dates {
-              font-size: 14px;
+              font-size: 15px;
               cursor: pointer;
               border-radius: 3px;
               margin-top: -1px;
               text-align: center;
               padding: 0 20px;
               @include  device($up-to-tablet) {
+                font-size: 14px;
                 padding: 0 12px;
               }
               &__mobile {
@@ -924,7 +929,7 @@
 
         &__month-day {
             border: 1px solid #e4e7e7;
-            color: #484848;
+            color: #000;
             background: #fff;
             font-family: sans-serif;
             box-sizing: border-box;
@@ -1113,8 +1118,8 @@
             pointer-events: none;
             text-align: center;
             text-transform: Capitalize;
-            color: #484848;
-            font-size: 17px;
+            color: #000;
+            font-size: 18px;
             font-family: sans-serif;
             text-align: center;
             caption-side: top;
