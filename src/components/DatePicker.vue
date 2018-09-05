@@ -130,6 +130,7 @@
                 )
             .footer__mobile    
               .span.clear-dates--mobile(
+              v-if='checkIn != null && checkOut != null'
               v-text="`${i18n['clear-dates']}`"
               @click='clearSelection'
               )
@@ -1221,16 +1222,13 @@
             width: 28px;
             height: 28px;
             background-repeat: no-repeat;
-            text-indent: -9999px;
-            background-size: 1568px;
-            background-image: url(spr_2x.png);
+            background-image: url(lamp.svg);
             display: inline-block;
             vertical-align: middle;
             bottom: 0;
             pointer-events: all;
 
                 &.icon-wp-lamp {
-                  background-position: -1512px 0;
                   margin-right: 10px;
                 }
             }
