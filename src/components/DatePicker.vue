@@ -380,6 +380,7 @@
           this.activeMonthIndex = 0;
           this.clearSelection();
         }
+        this.$parent.$emit('datePickerClosed', this.inputValue)
       },
 
       showDatepicker() {
