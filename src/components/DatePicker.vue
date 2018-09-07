@@ -623,7 +623,7 @@
 
     .datepicker {
         transition: all .2s ease-in-out;
-        font-family: sans-serif;
+        font-family: PT Sans;
         overflow: hidden;
         left: 0;
         position: absolute;
@@ -840,7 +840,7 @@
               text-align: center;
               background-color: $white;
               min-height: 43px;
-              font-family: sans-serif;
+              font-family: PT Sans;
               line-height: 1.4;
               color: $black;
               font-size: 15px;
@@ -933,7 +933,7 @@
             border: 1px solid #e4e7e7;
             color: #000;
             background: #fff;
-            font-family: sans-serif;
+            font-family: PT Sans;
             box-sizing: border-box;
             cursor: pointer;
             font-size: 14px;
@@ -1122,7 +1122,7 @@
             text-transform: Capitalize;
             color: #000;
             font-size: 18px;
-            font-family: sans-serif;
+            font-family: PT Sans;
             text-align: center;
             caption-side: top;
 
@@ -1156,7 +1156,7 @@
             float: left;
             font-size: 14px;
             font-weight: 400;
-            font-family: sans-serif;
+            font-family: PT Sans;
             color: $black;
             text-align: center;
             line-height: 18px;
