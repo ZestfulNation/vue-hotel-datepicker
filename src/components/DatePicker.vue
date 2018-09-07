@@ -46,7 +46,7 @@
       .datepicker__inner
         .datepicker__header.-table(v-if='screenSize === "desktop" && firstOpen')
           .datepicker__datepicker-tooltip
-            span.icon-wp.icon-wp-lamp
+            span.icon-lamp
             span.datepicker__datepicker-tooltip__text(
               v-text="`${i18n['datepicker-tooltip']}`"
             )
@@ -1219,7 +1219,7 @@
             vertical-align: middle!important;
           }
 
-          .icon-wp{
+          .icon-lamp{
             width: 28px;
             height: 28px;
             background-repeat: no-repeat;
@@ -1228,10 +1228,7 @@
             vertical-align: middle;
             bottom: 0;
             pointer-events: all;
-
-                &.icon-wp-lamp {
-                  margin-right: 10px;
-                }
+            margin-right: 10px;
             }
         }
 
