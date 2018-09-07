@@ -89,8 +89,9 @@
                 :checkIn='checkIn'
                 :checkOut='checkOut'
               )
-        .datepicker__footer(v-if='screenSize === "desktop" && checkIn != null && checkOut != null')
+        .datepicker__footer
           span.datepicker__clear-button(
+            v-if='screenSize === "desktop" && checkIn != null && checkOut != null'
             v-text="`${i18n['clear-dates']}`"
             @click='clearSelection'
           )
@@ -813,7 +814,7 @@
                   font-weight: 500;
                   margin: 0;
                   line-height: 1.4;
-                  font-size: 19px;
+                  font-size: 17px;
                   color: #000;
                 }
             }
@@ -866,7 +867,7 @@
                 font-weight: 500;
                 margin: 0;
                 line-height: 1.4;
-                font-size: 19px;
+                font-size: 17px;
                 color: #000;
               }
             }
@@ -1249,7 +1250,7 @@
         }
 
         &__footer{
-          margin-top: 250px;
+          margin-top: 230px;
         }
       }
     .weekend{
