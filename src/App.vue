@@ -158,14 +158,3 @@
   };
 
 </script>
-
-<style>
-  body,
-  html {
-    font-family: sans-serif;
-  }
-
-  .box {
-    width: 100%;
-  }
-</style>

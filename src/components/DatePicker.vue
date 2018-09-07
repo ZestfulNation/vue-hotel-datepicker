@@ -649,10 +649,11 @@
         .footer__mobile{
           position: fixed;
           width: 100%;
+          min-height: 56px;
           bottom: 0;
           left: 0;
           position: -webkit-sticky !important;
-          padding: 20px;
+          padding: 15px 10px;
           text-align: center;
           background-color: $white;
           border: none;
@@ -685,7 +686,7 @@
               font-size: 14px;
               line-height: 16px;
               border-radius: 3px;
-              padding: 8px 20px;
+              padding: 8px 15px;
               font-weight: 400;
               vertical-align: middle;
               -ms-touch-action: manipulation;
@@ -825,12 +826,14 @@
               border: none;
               .datepicker__dummy-input:first-child {
                 margin-left: 20px;
+                margin-right: 0px;
                 @include  device($up-to-tablet) {
                   margin-left: 12px;
                 }
               }
               .datepicker__dummy-input:last-child {
                 margin-right: 20px;
+                margin-left: 0px;
                 @include  device($up-to-tablet) {
                   margin-right: 12px;
                 }
@@ -1250,7 +1253,7 @@
         }
 
         &__footer{
-          margin-top: 230px;
+          margin-top: 250px;
         }
       }
     .weekend{
