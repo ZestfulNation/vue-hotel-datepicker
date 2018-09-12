@@ -130,16 +130,16 @@
                   :checkOut='checkOut'
                 )
             .footer__mobile    
-              .span.clear-dates--mobile(
+              .clear-dates--mobile(
               v-if='checkIn != null && checkOut != null'
               v-text="`${i18n['clear-dates']}`"
               @click='clearSelection'
               )
-            .wrapper__next--mobile()
               div.next--mobile(
                 @click='renderMultipleMonth(3)' type="button"
                 v-text="`${i18n['show-more']}`"
               )
+            
 </template>
 
 <script>
@@ -654,31 +654,23 @@
           left: 0;
           position: -webkit-sticky !important;
           padding: 15px 10px;
-          text-align: center;
           background-color: $white;
           border: none;
           z-index: 9999!important; 
-          text-align: center;
-          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.09);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+          text-align: left;
+          -webkit-box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.05);
           background-color: #fff;
           .clear-dates--mobile {
             display: inline-block;
+            width: auto;
             color: #2d6cb4;
             cursor: pointer;
-            width: 287px;
             font-size: 14px;
             line-height: 34px;
-            padding-left: 12px;
+            padding-left: 17px;
             text-align: left;
           }
-          
-        }
-        .wrapper__next--mobile{
-          position: relative;
-          margin-top: 36px;
-          margin-bottom: 18px;
-          z-index: 9999 !important;
           .next--mobile {
               float: right;
               color: #444;
@@ -701,9 +693,9 @@
               text-align: center;
               white-space: nowrap;
               width: fit-content;
-              margin-right: 11px;
+              margin-right: 17px;
           }
-        }          
+        }
         &--closed {
             box-shadow: 0 15px 30px 10px rgba($black, 0);
             max-height: 0;
@@ -725,6 +717,17 @@
                 top: 0;
                 width: 100%;
                 margin-top: 0;
+                .datepicker__dummy-input:first-child{
+                  position: relative;
+                  &:after {
+                    display: block;
+                    content: "—";
+                    position: absolute;
+                    right: -5px;
+                    top: 8px;
+                    font-size: 12px;
+                  }
+                }
             }
         }
 
@@ -808,8 +811,12 @@
                 justify-content: center;
                 margin-top: 10px;
                 border: 0;
-                background: transparent;
+                background: #fff;
                 border-bottom: 1px solid #d1d1d1;
+                @include  device($up-to-tablet) {
+                    position: relative;
+                    z-index: 1;
+                }
                 .datepicker__dummy-input{
                   font-family: inherit;
                   font-weight: 500;
@@ -850,6 +857,8 @@
               font-size: 15px;
               padding: 10px 20px 0px 20px;
               border-bottom: 1px solid #d1d1d1;
+              position: relative;
+              z-index: 1;
             }
             
         }
@@ -1096,12 +1105,13 @@
                 padding-bottom: 1px;
                 padding-top: 30px;
                 margin-top: 10px;
+                
 
                 &:last-of-type {
-                  margin-bottom: 65px;
+                  margin-bottom: 75px;
                 }
                 &:last-child {
-                  margin-bottom: 60px;
+                  margin-bottom: 75px;
                 }
             }
 
