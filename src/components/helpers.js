@@ -93,27 +93,34 @@ export default {
 
   swipeAfterScroll(direction) {
     if (this.screenSize !== 'desktop' && this.isOpen) {
-      const swiperWrapper = document.getElementById('swiperWrapper');
-
-      // If wrapper has vertical scroll
-      if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-        if (swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)) {
-          this.renderNextMonth();
-        }
-        else if (swiperWrapper.scrollTop === 0) {
-          this.renderPreviousMonth();
-        }
-        else {
-          return;
-        }
-      }
-      else if (direction == 'up') {
-        this.renderNextMonth();
+      //const swiperWrapper = document.getElementById('swiperWrapper');
+      //If wrapper has vertical scroll
+      // if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
+      //   if (swiperWrapper.scrollTop > (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)*0.4) {
+      //     this.showMoreButton = true;
+      //   }
+      //   else {
+      //     this.showMoreButton = false;
+      //   }
+      // }
+      // else{
+      if (direction == 'up') {
+        // this.renderNextMonth();
+        this.showMoreButton = true;
       }
       else if (direction == 'down') {
-        this.renderPreviousMonth();
-      }
+        // this.renderPreviousMonth();
+        this.showMoreButton = false;
+        // }
+      } 
     }
+  },
+
+  scrollMonthDown(){
+    const swiperWrapper = document.getElementById('swiperWrapper');
+    console.log(swiperWrapper.scrollTop);
+    swiperWrapper.scrollTop = swiperWrapper.scrollHeight;
+    console.log(swiperWrapper.scrollTop);
   },
 
   handleTouchStart(evt) {

@@ -136,7 +136,8 @@
               @click='clearSelection'
               )
               div.next--mobile(
-                @click='renderMultipleMonth(3)' type="button"
+                v-if='this.showMoreButton'
+                @click='renderMultipleMonth(3);scrollMonthDown();' type="button"
                 v-text="`${i18n['show-more']}`"
               )
             
@@ -270,6 +271,7 @@
         yUp: null,
         sortedDisabledDates: null,
         screenSize: this.handleWindowResize(),
+        showMoreButton: false,
         totalNights: '',
       };
     },
@@ -548,7 +550,7 @@
           monthDiff = 4;
         }
         this.renderMultipleMonth(monthDiff+2);
-        this.activeMonthIndex = monthDiff+1;
+        this.activeMonthIndex = monthDiff;
       }
       this.parseDisabledDates();
     },
