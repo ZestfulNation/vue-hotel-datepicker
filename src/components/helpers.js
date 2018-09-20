@@ -104,23 +104,18 @@ export default {
       //   }
       // }
       // else{
-      if (direction == 'up') {
-        // this.renderNextMonth();
-        this.showMoreButton = true;
-      }
-      else if (direction == 'down') {
-        // this.renderPreviousMonth();
-        this.showMoreButton = false;
-        // }
-      } 
+      // if (direction == 'up') {
+      //   this.renderNextMonth();
+      // }
+      // else if (direction == 'down') {
+      //   this.renderPreviousMonth();
+      // } 
     }
   },
 
   scrollMonthDown(){
     const swiperWrapper = document.getElementById('swiperWrapper');
-    console.log(swiperWrapper.scrollTop);
     swiperWrapper.scrollTop = swiperWrapper.scrollHeight;
-    console.log(swiperWrapper.scrollTop);
   },
 
   handleTouchStart(evt) {

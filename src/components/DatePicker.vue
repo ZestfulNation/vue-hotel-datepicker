@@ -137,7 +137,7 @@
               )
               div.next--mobile(
                 v-if='this.showMoreButton'
-                @click='renderMultipleMonth(3);scrollMonthDown();' type="button"
+                @click='renderMultipleMonth(3)' type="button"
                 v-text="`${i18n['show-more']}`"
               )
             
@@ -271,7 +271,7 @@
         yUp: null,
         sortedDisabledDates: null,
         screenSize: this.handleWindowResize(),
-        showMoreButton: false,
+        showMoreButton: true,
         totalNights: '',
       };
     },
