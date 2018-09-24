@@ -383,7 +383,11 @@
           this.activeMonthIndex = 0;
           this.clearSelection();
         }
-        this.$parent.$emit('datePickerClosed', this.inputValue)
+        this.$parent.$emit('datePickerClosed', this.inputValue);
+        let swiperWrapper = document.getElementById("swiperWrapper");
+        if(swiperWrapper){
+          swiperWrapper.removeEventListener('scroll', this.handleScroll);
+        }
       },
 
       showDatepicker() {
@@ -555,9 +559,16 @@
       this.parseDisabledDates();
     },
 
+    updated() {
+      this.$nextTick(function() {
+        let swiperWrapper = document.getElementById("swiperWrapper");
+        if(swiperWrapper){
+          swiperWrapper.addEventListener('scroll', this.handleScroll, false);
+        }
+      });
+    },
+
     mounted() {
-      document.addEventListener('touchstart', this.handleTouchStart, false);
-      document.addEventListener('touchmove', this.handleTouchMove, false);
       window.addEventListener('resize', this.handleWindowResize);
 
       this.onElementHeightChange(document.body, () => {
@@ -566,8 +577,6 @@
     },
 
     destroyed() {
-      window.removeEventListener('touchstart', this.handleTouchStart);
-      window.removeEventListener('touchmove', this.handleTouchMove);
       window.removeEventListener('resize', this.handleWindowResize);
     },
   };

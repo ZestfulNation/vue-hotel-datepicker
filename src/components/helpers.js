@@ -91,66 +91,19 @@ export default {
     return nextMonth;
   },
 
-  swipeAfterScroll(direction) {
-    if (this.screenSize !== 'desktop' && this.isOpen) {
-      //const swiperWrapper = document.getElementById('swiperWrapper');
-      //If wrapper has vertical scroll
-      // if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-      //   if (swiperWrapper.scrollTop > (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)*0.4) {
-      //     this.showMoreButton = true;
-      //   }
-      //   else {
-      //     this.showMoreButton = false;
-      //   }
-      // }
-      // else{
-      // if (direction == 'up') {
-      //   this.renderNextMonth();
-      // }
-      // else if (direction == 'down') {
-      //   this.renderPreviousMonth();
-      // } 
-    }
-  },
-
   scrollMonthDown(){
     const swiperWrapper = document.getElementById('swiperWrapper');
     swiperWrapper.scrollTop = swiperWrapper.scrollHeight;
   },
 
-  handleTouchStart(evt) {
-    this.xDown = evt.touches[0].clientX;
-    this.yDown = evt.touches[0].clientY;
-  },
-
-  handleTouchMove(evt) {
-    if (!this.xDown || !this.yDown) {
-      return;
-    }
-
-    this.xUp = evt.touches[0].clientX;
-    this.yUp = evt.touches[0].clientY;
-
-    let xDiff = this.xDown - this.xUp;
-    let yDiff = this.yDown - this.yUp;
-
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      if (xDiff > 0) {
-        // swipe right
-      } else {
-        // swipe left
+  handleScroll() {
+    if (this.screenSize !== 'desktop' && this.isOpen) {
+      const swiperWrapper = document.getElementById('swiperWrapper');
+      if(swiperWrapper.scrollTop > swiperWrapper.scrollHeight*0.55){
+        this.showMoreButton = true;
       }
-    } else {
-      if (yDiff > 0) {
-        // swipe up
-        this.swipeAfterScroll('up');
-      } else {
-        // swipe down
-        this.swipeAfterScroll('down');
-      }
+      else this.showMoreButton = false;
     }
-    this.xDown = null;
-    this.yDown = null;
   },
 
   shortenString(arr, sLen) {
