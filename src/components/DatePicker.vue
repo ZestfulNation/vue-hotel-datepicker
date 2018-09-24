@@ -265,14 +265,11 @@
         show: true,
         isOpen: false,
         firstOpen: true,
-        xDown: null,
-        yDown: null,
-        xUp: null,
-        yUp: null,
         sortedDisabledDates: null,
         screenSize: this.handleWindowResize(),
         showMoreButton: true,
         totalNights: '',
+        scrolledToSelectedDates: false,
       };
     },
 
@@ -379,6 +376,7 @@
       hideDatepicker() {
         this.firstOpen = false;
         this.isOpen = false;
+        this.scrolledToSelectedDates = false;
         if (!this.checkOut){
           this.activeMonthIndex = 0;
           this.clearSelection();
@@ -561,9 +559,24 @@
 
     updated() {
       this.$nextTick(function() {
-        let swiperWrapper = document.getElementById("swiperWrapper");
-        if(swiperWrapper){
-          swiperWrapper.addEventListener('scroll', this.handleScroll, false);
+        if(this.screenSize !== 'desktop' && this.isOpen){
+          let swiperWrapper = document.getElementById("swiperWrapper");
+          let startDate = document.getElementsByClassName('datepicker__month-day--last-day-selected')[0];
+          
+          //scroll to selected dates if set
+          if(this.checkOut !== null && this.checkOut !== null && !this.scrolledToSelectedDates){
+            let startDate = document.querySelector('.square div .datepicker__month-day--last-day-selected');
+            startDate = startDate.parentElement.parentElement; //go to square div to measure offsetTop
+            if(startDate){
+              console.log(startDate);
+              swiperWrapper.scrollTop = startDate.offsetTop;
+              this.scrolledToSelectedDates = true;
+            }
+          }
+
+          if(swiperWrapper){
+            swiperWrapper.addEventListener('scroll', this.handleScroll, false);
+          }
         }
       });
     },
