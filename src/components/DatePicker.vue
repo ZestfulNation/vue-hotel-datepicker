@@ -9,10 +9,11 @@
         v-model="checkInStr"
         :placeholder="i18n['check-in']"
         type="text"
-        :disabled="keyboardFormats.length === 0"
+        :disabled="keyboardFormats.length === 0 || !isDesktop"
         @keyup.self="setCheckInDateByInput"
         @keyup.enter="verifyCheckInDate"
-        @blur="executeForDesktop(verifyCheckInDate)"
+        @blur="setCheckinBlur(isDesktop)"
+        @focus="setCheckinFocus"
       )
       input.datepicker__dummy-input.datepicker__input(
         ref="checkOutInput"
@@ -21,10 +22,11 @@
         v-model="checkOutStr"
         :placeholder="i18n['check-out']"
         type="text"
-        :disabled="keyboardFormats.length === 0"
+        :disabled="keyboardFormats.length === 0 || !isDesktop"
         @keyup.self="setCheckOutDateByInput"
         @keyup.enter="verifyCheckOutDate(true)"
-        @blur="executeForDesktop(verifyCheckOutDate)"
+        @blur="setCheckoutBlur(isDesktop)"
+        @focus="setCheckoutFocus"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection') ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
@@ -42,7 +44,8 @@
             :disabled="keyboardFormats.length === 0"
             @keyup.self="setCheckInDateByInput"
             @keyup.enter="verifyCheckInDate"
-            @blur="verifyCheckInDate"
+            @blur="setCheckinBlur(false)"
+            @focus="setCheckinFocus"
           )
           input.datepicker__dummy-input.datepicker__input(
             ref="checkOutInputMobile"
@@ -53,7 +56,8 @@
             :disabled="keyboardFormats.length === 0"
             @keyup.self="setCheckOutDateByInput"
             @keyup.enter="verifyCheckOutDate"
-            @blur="verifyCheckOutDate"
+            @blur="setCheckoutBlur(false)"
+            @focus="setCheckoutFocus"
           )
       .datepicker__inner
         div
@@ -222,6 +226,10 @@ export default {
       },
       type: Array
     },
+    open: {
+      default: false,
+      type: Boolean,
+    }
   },
 
   data() {
@@ -242,7 +250,9 @@ export default {
       sortedDisabledDates: null,
       checkInStr: null,
       checkOutStr: null,
-      screenSize: this.handleWindowResize()
+      screenSize: this.handleWindowResize(),
+      checkinFocus: false,
+      checkoutFocus: false,
     };
   },
 
@@ -260,9 +270,15 @@ export default {
       }
       return true;
     },
+    isDesktop() {
+      return this.screenSize == 'desktop';
+    },
   },
 
   watch: {
+    open(v) {
+      this.isOpen = v;
+    },
     isOpen (value) {
       if (this.screenSize !== 'desktop') {
         const bodyClassList = document.querySelector('body').classList;
@@ -274,12 +290,12 @@ export default {
           bodyClassList.remove('-overflow-hidden');
         }
       }
+      this.$emit("toggle", value);
     },
     checkIn(newDate) {
       this.$emit("checkInChanged", newDate )
     },
     checkOut(newDate) {
-
       if ( this.checkOut !== null) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
@@ -288,22 +304,45 @@ export default {
 
       this.$emit("checkOutChanged", newDate )
     },
-    isOpen(v) {
-      this.$emit("toggle", v);
-    },
     startingDateValue(v) {
-      this.checkIn = v;
-      this.verifyCheckInDate();
+      if (!this.checkinFocus) {
+        this.checkIn = v;
+        this.verifyCheckInDate();
+      }
     },
     endingDateValue(v) {
-      this.checkOut = v;
-      this.verifyCheckOutDate();
+      if (!this.checkoutFocus) {
+        this.checkOut = v;
+        this.verifyCheckOutDate();
+      }
     },
   },
 
   methods: {
     ...Helpers,
 
+    setCheckinBlur(isDesktop) {
+      this.checkinFocus = false;
+      if (isDesktop) {
+        this.executeForDesktop(this.verifyCheckInDate);
+      } else {
+        this.verifyCheckInDate();
+      }
+    },
+    setCheckoutBlur(isDesktop) {
+      this.checkoutFocus = false;
+      if (isDesktop) {
+        this.executeForDesktop(this.verifyCheckOutDate);
+      } else {
+        this.verifyCheckOutDate();
+      }
+    },
+    setCheckinFocus() {
+      this.checkinFocus = true;
+    },
+    setCheckoutFocus() {
+      this.checkoutFocus = true;
+    },
     handleWindowResize() {
       let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
 
@@ -368,7 +407,9 @@ export default {
       this.show = true;
       this.parseDisabledDates();
       this.showDatepicker();
-      this.getCheckInInput().focus();
+      if (this.getCheckInInput()) {
+        this.getCheckInInput().focus();
+      }
       //this.reRender(true);
     },
 

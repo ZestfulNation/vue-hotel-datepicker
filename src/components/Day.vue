@@ -246,8 +246,11 @@ export default {
   },
 
   beforeMount(){
-    this.checkIfDisabled()
-    this.checkIfHighlighted()
+    this.checkIfDisabled();
+    this.checkIfHighlighted();
+    if (this.checkIn && !this.checkOut) {
+      this.disableNextDays();
+    }
   },
 }
 </script>
