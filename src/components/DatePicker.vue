@@ -1,7 +1,7 @@
 <template lang='pug'>
-  .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
+  .datepicker__wrapper(v-if='show' v-on-click-outside="clickOutside")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper( @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
+    .datepicker__dummy-wrapper( @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
         :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
@@ -18,7 +18,7 @@
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
-          @click='isOpen = !isOpen' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
+          @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
           button.datepicker__dummy-input.datepicker__input(
@@ -208,7 +208,11 @@
       showYear: {
         default: false,
         type: Boolean
-      }
+      },
+      closeDatepickerOnClickOutside: {
+        default: true,
+        type: Boolean,
+      },
     },
 
     data() {
@@ -332,6 +336,12 @@
 
       toggleDatepicker() {
         this.isOpen = !this.isOpen;
+      },
+
+      clickOutside() {
+        if (this.closeDatepickerOnClickOutside) {
+          this.hideDatepicker()
+        }
       },
 
       handleDayClick(event) {

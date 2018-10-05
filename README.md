@@ -154,6 +154,10 @@ If provided, it will override the default tooltip "X nights" with the text provi
 
 Shows the year next to the month
 
+## closeDatepickerOnClickOutside
+- Type: `boolean`
+- Default: `true`
+
 ### i18n
 
 - Type: `Object`
@@ -171,7 +175,9 @@ i18n: {
 }
 ```
 
+
 ## API
+⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
 
 ### hideDatepicker()
 
