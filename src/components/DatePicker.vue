@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .datepicker__wrapper(v-if='show' v-on-click-outside="clickOutside")
+  .datepicker__wrapper(v-if='show' v-on-click-outside='clickOutside')
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
     .datepicker__dummy-wrapper( @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
@@ -14,7 +14,7 @@
         v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
         type="button"
       )
-    button.datepicker__clear-button(type='button' @click='clearSelection') ＋
+    button.datepicker__clear-button(type='button' @click='clearSelection' v-if="showClearSelectionButton") ＋
     .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
@@ -127,7 +127,7 @@
       'on-click-outside': onClickOutside
     },
 
-    components: {Day,},
+    components: { Day },
 
     props: {
       value: {
@@ -213,6 +213,10 @@
         default: true,
         type: Boolean,
       },
+      displayClearButton: {
+        default: true,
+        type: Boolean,
+      }
     },
 
     data() {
@@ -233,6 +237,12 @@
         sortedDisabledDates: null,
         screenSize: this.handleWindowResize(),
       };
+    },
+
+    computed: {
+      showClearSelectionButton() {
+        return Boolean((this.checkIn || this.checkOut) && this.displayClearButton);
+      },
     },
 
     watch: {
@@ -938,7 +948,7 @@
             appearence: none;
             background: transparent;
             border: 0;
-            color: $primary-color;
+            color: $medium-gray;
             cursor: pointer;
             font-size: 25px;
             font-weight: bold;
