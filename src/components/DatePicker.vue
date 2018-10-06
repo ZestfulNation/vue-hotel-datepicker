@@ -224,7 +224,6 @@
         hoveringDate: null,
         checkIn: this.startingDateValue,
         checkOut: this.endingDateValue,
-        currentDate: new Date(),
         months: [],
         activeMonthIndex: 0,
         nextDisabledDate: null,
@@ -712,7 +711,7 @@
             margin: 0;
             border: 0;
             height: 40px;
-            padding-top: 15px;
+            padding-top: 14px;
 
             &--invalid-range {
                 background-color: rgba($primary-color, .3);
@@ -753,11 +752,6 @@
                     position: relative;
                     box-shadow: 0 0 10px 3px rgba($gray, .4);
                 }
-            }
-
-            &--today {
-                background-color: $light-gray;
-                color: $medium-gray;
             }
 
             &--first-day-selected,

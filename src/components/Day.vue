@@ -6,6 +6,7 @@
       @click='dayClicked(date)'
       v-text='`${dayNumber}`'
       :class='dayClass'
+      :style='isToday ? "border: 1px solid #00c690" : ""'
     )
 </template>
 
@@ -66,6 +67,7 @@ export default {
       isHighlighted: false,
       isDisabled: false,
       allowedCheckoutDays: [],
+      currentDate: new Date(),
     };
   },
 
@@ -86,9 +88,12 @@ export default {
               this.checkOut == null;
     },
 
-    dayClass: function(){
-      if (this.belongsToThisMonth) {
+    isToday() {
+      return this.compareDay(this.currentDate, this.date) == 0;
+    },
 
+    dayClass(){
+      if (this.belongsToThisMonth) {
         // If the calendar has a minimum number of nights
         if ( !this.isDisabled &&
              this.compareDay(this.date, this.checkIn) == 1 &&
