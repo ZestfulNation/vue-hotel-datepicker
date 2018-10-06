@@ -511,11 +511,12 @@
           cursor: pointer;
         }
     }
-
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
+    .datepicker__wrapper {
+      *,
+      *::before,
+      *::after {
+          box-sizing: border-box;
+      }
     }
 
     /* =============================================================
