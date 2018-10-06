@@ -158,6 +158,12 @@ Shows the year next to the month
 - Type: `boolean`
 - Default: `true`
 
+## displayClearButton
+- Type: `boolean`
+- Default: `true`
+
+If set to true, displays a clear button on the right side of the input if there are dates set
+
 ### i18n
 
 - Type: `Object`
