@@ -264,6 +264,23 @@ export default {
     return true
   },
 
+  renderAdditionalMonthes() {
+    if (!this.stopRender) {
+      const nextDate = new Date(
+        this.endRenderedDate.getFullYear(),
+        this.endRenderedDate.getMonth() + 6,
+        this.endRenderedDate.getDate()
+      );
+      if (nextDate < this.endDate) {
+        this.renderAllMonthesForDate(nextDate);
+        this.endRenderedDate = nextDate;
+      } else {
+        this.renderAllMonthesForDate(this.endDate);
+        this.stopRender = true;
+      }
+    }
+  },
+
   renderAllMonthesForDate(date) {
     let firstDayOfLastMonth = this.getFirstDayOfLastMonth();
     let firstDayOfLastButOneMonth = this.getFirstDayOfLastButOneMonth();
