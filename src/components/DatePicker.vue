@@ -717,13 +717,16 @@ export default {
     // document.addEventListener('touchmove', this.handleTouchMove, false);
     document.addEventListener('touchstart', this.renderAdditionalMonthes, false);
     window.addEventListener('resize', this.handleWindowResize);
-    const today = new Date();
-    this.endRenderedDate = new Date(
-        today.getFullYear(),
-        today.getMonth() + 6,
-        today.getDate()
-    );
-    this.renderAllMonthesForDate(this.endRenderedDate);
+
+    if (this.screenSize !== 'desktop') {
+      const today = new Date();
+      this.endRenderedDate = new Date(
+          today.getFullYear(),
+          today.getMonth() + 6,
+          today.getDate()
+      );
+      this.renderAllMonthesForDate(this.endRenderedDate);
+    }
 
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent();
