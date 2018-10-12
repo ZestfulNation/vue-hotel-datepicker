@@ -253,6 +253,7 @@ export default {
       screenSize: this.handleWindowResize(),
       checkinFocus: false,
       checkoutFocus: false,
+      monthRenderInterval: 6,
     };
   },
 
@@ -285,9 +286,11 @@ export default {
 
         if (value) {
           bodyClassList.add('-overflow-hidden');
+          this.$nextTick(this.registerTouchListeners);
         }
         else {
           bodyClassList.remove('-overflow-hidden');
+          this.removeTouchListeners();
         }
       }
       this.$emit("toggle", value);
@@ -696,6 +699,24 @@ export default {
       sortedDates.sort((a, b) =>  a - b );
 
       this.sortedDisabledDates = sortedDates;
+    },
+    registerTouchListeners() {
+      if (this.screenSize != 'desktop') {
+        if (this.endDate) {
+          this.endRenderedDate = new Date();
+          this.renderAdditionalMonthes();
+          this.$refs.swiperWrapper.addEventListener('scroll', this.handleScroll);
+        } else {
+          document.addEventListener('touchstart', this.handleTouchStart, false);
+          document.addEventListener('touchmove', this.handleTouchMove, false);  
+        }
+      }
+    },
+
+    removeTouchListeners() {
+      document.removeEventListener('touchstart', this.handleTouchStart);
+      this.$refs.swiperWrapper.removeEventListener('scroll', this.handleScroll);
+      document.removeEventListener('touchmove', this.handleTouchMove);
     }
   },
 
@@ -713,17 +734,7 @@ export default {
   },
 
   mounted() {
-    // document.addEventListener('touchstart', this.handleTouchStart, false);
-    // document.addEventListener('touchmove', this.handleTouchMove, false);
-    document.addEventListener('touchstart', this.renderAdditionalMonthes, false);
     window.addEventListener('resize', this.handleWindowResize);
-    const today = new Date();
-    this.endRenderedDate = new Date(
-        today.getFullYear(),
-        today.getMonth() + 6,
-        today.getDate()
-    );
-    this.renderAllMonthesForDate(this.endRenderedDate);
 
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent();
@@ -731,8 +742,6 @@ export default {
   },
 
   destroyed() {
-    window.removeEventListener('touchstart', this.handleTouchStart);
-    window.removeEventListener('touchmove', this.handleTouchMove);
     window.removeEventListener('resize', this. handleWindowResize);
   }
 
