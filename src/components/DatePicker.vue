@@ -44,7 +44,7 @@
           )
         .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
       .datepicker__inner
-        .datepicker__header.-table(v-if='screenSize === "desktop" && firstOpen')
+        .datepicker__header.-table(v-if='screenSize === "desktop" && firstOpen && desktopHeader')
           .datepicker__datepicker-tooltip
             span.icon-lamp
             span.datepicker__datepicker-tooltip__text(
@@ -208,6 +208,10 @@
       maxNights: {
         default: null,
         type: Number
+      },
+      desktopHeader: {
+        default: false,
+        type: Boolean
       },
       disabledDates: {
         default: function () {
@@ -963,6 +967,7 @@
                 width: 100%;
                 background: none;
                 text-align: left;
+                margin-right: 0px !important;
             }
         }
 
