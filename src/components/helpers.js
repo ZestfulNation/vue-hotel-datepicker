@@ -264,20 +264,26 @@ export default {
     return true
   },
 
+  handleScroll() {
+    const a = this.$refs.swiperWrapper.scrollTop;
+    const b = this.$refs.swiperWrapper.scrollHeight - this.$refs.swiperWrapper.clientHeight;
+    if (a/b > 0.75) {
+      this.renderAdditionalMonthes();
+    }
+  },
+
   renderAdditionalMonthes() {
-    if (!this.stopRender) {
-      const nextDate = new Date(
-        this.endRenderedDate.getFullYear(),
-        this.endRenderedDate.getMonth() + 6,
-        this.endRenderedDate.getDate()
-      );
-      if (nextDate < this.endDate) {
-        this.renderAllMonthesForDate(nextDate);
-        this.endRenderedDate = nextDate;
-      } else {
-        this.renderAllMonthesForDate(this.endDate);
-        this.stopRender = true;
-      }
+    const nextDate = new Date(
+      this.endRenderedDate.getFullYear(),
+      this.endRenderedDate.getMonth() + this.monthRenderInterval,
+      this.endRenderedDate.getDate()
+    );
+    if (nextDate < this.endDate) {
+      this.renderAllMonthesForDate(nextDate);
+      this.endRenderedDate = nextDate;
+    } else {
+      this.renderAllMonthesForDate(this.endDate);
+      this.removeTouchListeners();
     }
   },
 
