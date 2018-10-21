@@ -1,4 +1,10 @@
+import fecha from 'fecha';
+
 export default {
+  // formatDate(date, format) {
+  //   return fecha.format(date, format);
+  // },
+
   getNextDate(datesArray, referenceDate) {
     var now = new Date(referenceDate);
     var closest = Infinity;

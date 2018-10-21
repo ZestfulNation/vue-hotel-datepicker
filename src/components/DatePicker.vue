@@ -1,32 +1,41 @@
 <template lang='pug'>
   .datepicker__wrapper(v-if='show' v-on-click-outside='clickOutside')
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper( @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
-      button.datepicker__dummy-input.datepicker__input(
-        data-qa='datepickerInput'
-        :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''} ${singleDaySelection ? 'datepicker__dummy-input--single-date' : ''}`"
-        v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
-        type="button"
+    .datepicker__dummy-wrapper(  :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
+      date-input(
+        :i18n="i18n"
+        :input-date="formatDate(checkIn)"
+        input-date-type="check-in"
+        :is-open="isOpen"
+        :show-datepicker="showDatepicker"
+        :hide-datepicker="hideDatepicker"
+        :toggle-datepicker="toggleDatepicker"
+        :single-day-selection="singleDaySelection"
       )
-      button.datepicker__dummy-input.datepicker__input(
-        v-if='!singleDaySelection'
-        :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-        v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
-        type="button"
+      date-input(
+        v-if="!singleDaySelection"
+        :i18n="i18n"
+        :input-date="formatDate(checkOut)"
+        input-date-type="check-out"
+        :is-open="isOpen"
+        :showDatepicker="showDatepicker"
+        :hide-datepicker="hideDatepicker"
+        :toggle-datepicker="toggleDatepicker"
+        :single-day-selection="singleDaySelection"
       )
     button.datepicker__clear-button(type='button' @click='clearSelection' v-if="showClearSelectionButton") ＋
-    .datepicker( :class='`${ !isOpen ? "datepicker--closed" : "datepicker--open" }`')
+    .datepicker( :class='`${ isOpen ? "datepicker--open" : "datepicker--closed" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
           @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
-          button.datepicker__dummy-input.datepicker__input(
+          button.datepicker__input(
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
             v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
             type="button"
           )
-          button.datepicker__dummy-input.datepicker__input(
+          button.datepicker__input(
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
             v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
             type="button"
@@ -105,10 +114,10 @@
 
 <script>
   import {directive as onClickOutside} from 'vue-on-click-outside';
-
   import fecha from 'fecha';
 
   import Day from './Day.vue';
+  import DateInput from './DateInput.vue';
   import Helpers from './helpers.js';
 
   const defaulti18n = {
@@ -127,7 +136,10 @@
       'on-click-outside': onClickOutside
     },
 
-    components: { Day },
+    components: {
+      Day,
+      DateInput,
+    },
 
     props: {
       value: {
@@ -279,6 +291,13 @@
     methods: {
       ...Helpers,
 
+      formatDate(date) {
+        if (date) {
+          return fecha.format(date, this.format);
+        }
+        return '';
+      },
+
       handleWindowResize() {
         if (window.innerWidth < 480) {
           this.screenSize = 'smartphone';
@@ -425,10 +444,6 @@
 
       getMonth(date) {
         return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
-      },
-
-      formatDate(date) {
-        return fecha.format(date, this.format)
       },
 
     createMonth(date){
@@ -631,7 +646,8 @@
             border: 0;
 
             &:focus {
-                outline: none;
+              outline: 1px dashed red;
+              outline-offset: -10px;
             }
 
             &::-webkit-input-placeholder,
@@ -660,7 +676,7 @@
             }
         }
 
-        &__dummy-input {
+        &__input {
             color: $primary-text-color;
             padding-top: 0;
             font-size: $font-small;
