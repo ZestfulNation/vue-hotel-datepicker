@@ -1,12 +1,15 @@
 <template lang='pug'>
   div
-    span
     .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-html='tooltipMessageDisplay')
     .datepicker__month-day(
-      @click='dayClicked(date)'
-      v-text='`${dayNumber}`'
+      :id="`day-${generateRandomId()}`"
+      type="button"
+      @click.prevent.stop='dayClicked(date)'
+      @keyup.enter.prevent.stop='dayClicked(date)'
+      v-text='dayNumber'
       :class='dayClass'
       :style='isToday ? "border: 1px solid #00c690" : ""'
+      :tabindex="tabIndex"
     )
 </template>
 
@@ -19,6 +22,10 @@ export default {
   name: 'Day',
 
   props: {
+    isOpen: {
+      type: Boolean,
+      required: true,
+    },
     sortedDisabledDates: {
       type: Array
     },
@@ -72,16 +79,22 @@ export default {
   },
 
   computed: {
-    nightsCount: function() {
+    tabIndex() {
+      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled) {
+        return -1;
+      }
+      return 0
+    },
+    nightsCount() {
       return this.countDays(this.checkIn, this.hoveringDate);
     },
-    tooltipMessageDisplay: function() {
+    tooltipMessageDisplay() {
       return this.tooltipMessage
       ? this.tooltipMessage
       : `${this.nightsCount} ${this.nightsCount !== 1 ?
               this.options.i18n['nights'] : this.options.i18n['night']}`
     },
-    showTooltip: function() {
+    showTooltip() {
       return  !this.isDisabled &&
               this.date == this.hoveringDate &&
               this.checkIn !== null &&
@@ -152,7 +165,7 @@ export default {
   },
 
   watch: {
-    hoveringDate: function(date) {
+    hoveringDate(date) {
       if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
         this.isDateLessOrEquals(this.checkIn, this.date) &&
         this.isDateLessOrEquals(this.date, this.hoveringDate) ?
@@ -162,7 +175,7 @@ export default {
 
       }
     },
-    activeMonthIndex: function(index) {
+    activeMonthIndex(index) {
       this.checkIfDisabled()
       this.checkIfHighlighted()
       if ( this.checkIn !== null  && this.checkOut !== null ) {
@@ -176,10 +189,10 @@ export default {
       }
 
     },
-    nextDisabledDate: function() {
+    nextDisabledDate() {
       this.disableNextDays();
     },
-    checkIn: function(date) {
+    checkIn(date) {
       this.createAllowedCheckoutDays(date);
     }
   },

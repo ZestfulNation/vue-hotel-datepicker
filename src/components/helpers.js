@@ -5,6 +5,10 @@ export default {
   //   return fecha.format(date, format);
   // },
 
+  generateRandomId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  },
+
   getNextDate(datesArray, referenceDate) {
     var now = new Date(referenceDate);
     var closest = Infinity;

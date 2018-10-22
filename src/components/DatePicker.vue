@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .datepicker__wrapper(v-if='show' v-on-click-outside='clickOutside')
+  .datepicker__wrapper(v-if='show' v-on-click-outside='clickOutside' @blur="clickOutside")
     .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
     .datepicker__dummy-wrapper(  :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       date-input(
@@ -56,6 +56,7 @@
             .square(v-for='day in months[activeMonthIndex+n].days'
               @mouseover='hoveringDate = day.date')
               Day(
+                :is-open="isOpen"
                 :options="$props"
                 @dayClicked='handleDayClick($event)'
                 :date='day.date'
@@ -93,6 +94,7 @@
                 v-bind:key='index'
               )
                 Day(
+                  :is-open="isOpen"
                   :options="$props"
                   @dayClicked='handleDayClick($event)'
                   :date='day.date'
@@ -119,6 +121,7 @@
   import Day from './Day.vue';
   import DateInput from './DateInput.vue';
   import Helpers from './helpers.js';
+  import focusTracker from './focusTrackerMixin.js'
 
   const defaulti18n = {
     night: 'Night',
@@ -131,6 +134,8 @@
 
   export default {
     name: 'HotelDatePicker',
+
+    // mixins: [ focusTracker ],
 
     directives: {
       'on-click-outside': onClickOutside
@@ -363,6 +368,7 @@
       },
 
       toggleDatepicker() {
+        console.log('toggleDatepicker')
         this.isOpen = !this.isOpen;
       },
 
@@ -507,8 +513,7 @@
       window.removeEventListener('touchstart', this.handleTouchStart);
       window.removeEventListener('touchmove', this.handleTouchMove);
       window.removeEventListener('resize', this.handleWindowResize);
-    }
-
+    },
   };
 </script>
 
@@ -522,11 +527,19 @@
     $up-to-tablet: '(max-width: 767px)';
     $extra-small-screen: '(max-width: 23em)';
 
+    @mixin focusStyle() {
+      &:focus {
+        outline: 1px dashed red;
+        outline-offset: -10px;
+      }
+    }
+
     @mixin device($device-widths) {
         @media screen and #{$device-widths} {
             @content
         }
     }
+
 
     .square {
         width: calc(100% / 7);
@@ -645,10 +658,7 @@
             word-spacing: 5px;
             border: 0;
 
-            &:focus {
-              outline: 1px dashed red;
-              outline-offset: -10px;
-            }
+            @include focusStyle();
 
             &::-webkit-input-placeholder,
             &::-moz-placeholder,
@@ -722,12 +732,13 @@
 
         &__month-day {
             visibility: visible;
-            will-change: auto;
             text-align: center;
             margin: 0;
             border: 0;
             height: 40px;
             padding-top: 14px;
+
+            @include focusStyle();
 
             &--invalid-range {
                 background-color: rgba($primary-color, .3);
@@ -967,13 +978,14 @@
             margin-left: 0;
             margin-right: -2px;
             margin-top: 4px;
-            outline: 0;
             padding: 0;
             position: absolute;
             right: 0;
             top: 0;
             transform: rotate(45deg);
             width: 40px;
+
+            @include focusStyle();
         }
 
         &__tooltip {

@@ -1,9 +1,11 @@
 <template lang="pug">
   button.datepicker__input(
+    @click="toggleDatepicker"
+    @keyup.enter.stop.prevent="toggleDatepicker"
     data-qa='datepickerInput'
     :class="inputClass"
     v-text="inputDate ? inputDate : i18n[inputDateType]"
-    tabindex="-1"
+    :tabindex="tabIndex"
   )
 </template>
 
@@ -47,6 +49,9 @@ export default {
         'datepicker__input--is-active': this.isOpen && this.inputDate == null,
         'datepicker__input--single-date': this.singleDaySelection,
       };
+    },
+    tabIndex() {
+      return this.inputDateType === 'check-in' ? 0 : -1;
     }
   },
 };
