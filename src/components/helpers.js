@@ -1,9 +1,9 @@
 export default {
-  getNextDate(datesArray, referenceDate){
+  getNextDate(datesArray, referenceDate) {
     var now = new Date(referenceDate);
     var closest = Infinity;
 
-    datesArray.forEach(function(d) {
+    datesArray.forEach(function (d) {
       var date = new Date(d);
       if (date >= now && date < closest) {
         closest = d;
@@ -36,7 +36,7 @@ export default {
   nextDateByDayOfWeekArray(daysArray, referenceDate) {
     let tempArray = [];
     for (var i = 0; i < daysArray.length; i++) {
-      tempArray.push( new Date (this.nextDateByDayOfWeek(daysArray[i], referenceDate) ) );
+      tempArray.push(new Date(this.nextDateByDayOfWeek(daysArray[i], referenceDate)));
     }
     return this.getNextDate(tempArray, referenceDate);
   },
@@ -48,19 +48,23 @@ export default {
     const firstDate = new Date(start);
     const secondDate = new Date(end);
 
-    return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+    return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
   },
   addDays(date, quantity) {
     let result = new Date(date);
     result.setDate(result.getDate() + quantity);
     return result;
   },
-  getFirstSunday(date) {
+  getFirstDay(date, firstDayOfWeek) {
     var firstDay =  this.getFirstDayOfMonth(date);
+    var offset = 0;
+    if (firstDayOfWeek > 0) {
+      offset = firstDay.getDay() === 0 ? -7 + firstDayOfWeek : firstDayOfWeek;
+    }
     return new Date(
       firstDay.setDate(
         firstDay.getDate()
-        -firstDay.getDay()
+        - (firstDay.getDay() - offset)
       )
     );
   },
@@ -70,7 +74,7 @@ export default {
       date.getMonth(), 1
     );
   },
-  getNextMonth(date){
+  getNextMonth(date) {
     let nextMonth;
 
     if (date.getMonth() == 11) {
@@ -81,21 +85,23 @@ export default {
     return nextMonth;
   },
 
-  swipeAfterScroll(direction){
+  swipeAfterScroll(direction) {
     if (this.screenSize !== 'desktop' && this.isOpen) {
       const swiperWrapper = document.getElementById('swiperWrapper');
 
       // If wrapper has vertical scroll
       if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-        if( swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) ) {
+        if (swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)) {
           this.renderNextMonth();
         }
-        else if ( swiperWrapper.scrollTop === 0){
+        else if (swiperWrapper.scrollTop === 0) {
           this.renderPreviousMonth();
         }
-        else { return; }
+        else {
+          return;
+        }
       }
-      else if (direction == 'up'){
+      else if (direction == 'up') {
         this.renderNextMonth();
       }
       else if (direction == 'down') {
@@ -110,7 +116,9 @@ export default {
   },
 
   handleTouchMove(evt) {
-    if ( !this.xDown || !this.yDown ) { return; }
+    if (!this.xDown || !this.yDown) {
+      return;
+    }
 
     this.xUp = evt.touches[0].clientX;
     this.yUp = evt.touches[0].clientY;
@@ -118,14 +126,14 @@ export default {
     let xDiff = this.xDown - this.xUp;
     let yDiff = this.yDown - this.yUp;
 
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
-      if ( xDiff > 0 ) {
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      if (xDiff > 0) {
         // swipe right
       } else {
         // swipe left
       }
     } else {
-      if ( yDiff > 0 ) {
+      if (yDiff > 0) {
         // swipe up
         this.swipeAfterScroll('up');
       } else {
@@ -135,5 +143,13 @@ export default {
     }
     this.xDown = null;
     this.yDown = null;
+  },
+
+  shortenString(arr, sLen) {
+    let newArr = [];
+    for (let i = 0, len = arr.length; i < len; i++) {
+      newArr.push(arr[i].substr(0, sLen));
+    }
+    return newArr;
   },
 };

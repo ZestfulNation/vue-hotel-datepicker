@@ -76,6 +76,15 @@ The end view date. All the dates after this date will be disabled.
 
 The initial value of the end date.
 
+### firstDayOfWeek
+
+- Type: `Number`
+- Default: `0`
+
+The first day of the week. Where Sun = 0, Mon = 1, ... Sat = 6.
+
+You need to set the right order in `i18n.day-names` too.
+
 ### minNights
 
 - Type: `Number`
@@ -138,6 +147,22 @@ If provided, it will override the default tooltip "X nights" with the text provi
 - Type `boolean`
 - Default `false`
 
+## showYear
+
+- Type `boolean`
+- Default `false`
+
+Shows the year next to the month
+
+## closeDatepickerOnClickOutside
+- Type: `boolean`
+- Default: `true`
+
+## displayClearButton
+- Type: `boolean`
+- Default: `true`
+
+If set to true, displays a clear button on the right side of the input if there are dates set
 
 ### i18n
 
@@ -156,7 +181,9 @@ i18n: {
 }
 ```
 
+
 ## API
+⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
 
 ### hideDatepicker()
 

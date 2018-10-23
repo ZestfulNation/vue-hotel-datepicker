@@ -29,7 +29,10 @@ module.exports = {
               browsers: ['last 10 versions', 'ie 11']
             }),
             require('cssnano')({
-              discardComments: { removeAll: true },
+              discardComments: {
+                removeAll: true
+              },
+              safe: true,
             }),
           ],
 
