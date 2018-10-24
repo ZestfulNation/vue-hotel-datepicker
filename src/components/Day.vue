@@ -79,14 +79,8 @@ export default {
   },
 
   computed: {
-    isClickable() {
-      if (!!this.$refs.day) {
-        return getComputedStyle(this.$refs.day).pointerEvents !== 'none';
-      }
-      return true;
-    },
     tabIndex() {
-      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled || !this.isClickable) {
+      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled || !this.isClickable()) {
         return -1;
       }
       return 0
@@ -206,6 +200,14 @@ export default {
   methods: {
     ...Helpers,
 
+    isClickable() {
+      if (this.$refs && this.$refs.day) {
+        return getComputedStyle(this.$refs.day).pointerEvents !== 'none';
+      } else {
+        return true;
+      }
+    },
+
     compareDay(day1, day2) {
       const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
       const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
@@ -218,7 +220,7 @@ export default {
     },
 
     dayClicked(date) {
-      if (this.isDisabled || !this.isClickable) {
+      if (this.isDisabled || !this.isClickable()) {
         return
       }
       else {
