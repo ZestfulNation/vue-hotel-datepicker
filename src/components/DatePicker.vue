@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import throttle from 'lodash.throttle';
 import { directive as onClickOutside } from "vue-on-click-outside";
 
 import fecha from "fecha";
@@ -384,11 +385,11 @@ export default {
       } else return;
     },
 
-    renderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
-        this.activeMonthIndex++;
-        return;
-      }
+      renderNextMonth: throttle(function throttleRenderNextMonth() {
+        if (this.activeMonthIndex < this.months.length - 2) {
+          this.activeMonthIndex++;
+          return
+        }
 
       let firstDayOfLastMonth;
 
@@ -413,8 +414,8 @@ export default {
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
 
-      this.activeMonthIndex++;
-    },
+        this.activeMonthIndex++;
+      }, 200),
 
     setCheckIn(date) {
       this.checkIn = date;
