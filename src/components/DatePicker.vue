@@ -997,6 +997,9 @@
               stroke-width: 8px;
               stroke: $medium-gray;
               width: 20px;
+              width: 14px;
+              top: -3px;
+              position: relative;
             }
 
             @include focusStyle();
