@@ -2,7 +2,6 @@
   div
     .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-html='tooltipMessageDisplay')
     .datepicker__month-day(
-      :id="`day-${generateRandomId()}`"
       type="button"
       @click.prevent.stop='dayClicked(date)'
       @keyup.enter.prevent.stop='dayClicked(date)'
@@ -10,6 +9,7 @@
       :class='dayClass'
       :style='isToday ? "border: 1px solid #00c690" : ""'
       :tabindex="tabIndex"
+      ref="day"
     )
 </template>
 
@@ -79,8 +79,14 @@ export default {
   },
 
   computed: {
+    isClickable() {
+      if (!!this.$refs.day) {
+        return getComputedStyle(this.$refs.day).pointerEvents !== 'none';
+      }
+      return true;
+    },
     tabIndex() {
-      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled) {
+      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled || !this.isClickable) {
         return -1;
       }
       return 0
@@ -212,7 +218,7 @@ export default {
     },
 
     dayClicked(date) {
-      if (this.isDisabled) {
+      if (this.isDisabled || !this.isClickable) {
         return
       }
       else {

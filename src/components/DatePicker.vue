@@ -23,7 +23,10 @@
         :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       )
-    button.datepicker__clear-button(type='button' @click='clearSelection' v-if="showClearSelectionButton") ＋
+    button.datepicker__clear-button(type='button' @click='clearSelection' v-if="showClearSelectionButton")
+      svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 68 68")
+        path(d='M6.5 6.5l55 55M61.5 6.5l-55 55')
+
     .datepicker( :class='`${ isOpen ? "datepicker--open" : "datepicker--closed" }`')
       .-hide-on-desktop
         .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
@@ -45,12 +48,12 @@
           span.datepicker__month-button.datepicker__month-button--prev.-hide-up-to-tablet(
             @click='renderPreviousMonth'
             @keyup.enter.stop.prevent='renderPreviousMonth'
-            tabindex='0'
+            :tabindex='isOpen ? 0 : -1'
           )
           span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
             @click='renderNextMonth'
             @keyup.enter.stop.prevent='renderNextMonth'
-            tabindex='0'
+            :tabindex='isOpen ? 0 : -1'
           )
         .datepicker__months(v-if='screenSize == "desktop"')
           div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
@@ -127,7 +130,6 @@
   import Day from './Day.vue';
   import DateInput from './DateInput.vue';
   import Helpers from './helpers.js';
-  import focusTracker from './focusTrackerMixin.js'
 
   const defaulti18n = {
     night: 'Night',
@@ -140,8 +142,6 @@
 
   export default {
     name: 'HotelDatePicker',
-
-    // mixins: [ focusTracker ],
 
     directives: {
       'on-click-outside': onClickOutside
@@ -374,7 +374,6 @@
       },
 
       toggleDatepicker() {
-        console.log('toggleDatepicker')
         this.isOpen = !this.isOpen;
       },
 
@@ -525,6 +524,22 @@
 
 <style lang="scss">
     /* =============================================================
+     * VARIABLES
+     * ============================================================*/
+    $white: #fff;
+    $black: #000;
+    $gray: #424b53;
+    $primary-text-color: #35343d;
+    $lightest-gray: #f3f5f8;
+    $primary-color: #00ca9d;
+    $primary-color: $primary-color;
+    $medium-gray: #999999;
+    $light-gray: #d7d9e2;
+    $dark-gray: #2d3047;
+
+    $font-small: 14px;
+
+    /* =============================================================
      * RESPONSIVE LAYOUT HELPERS
      * ============================================================*/
     $tablet: '(min-width: 480px) and (max-width: 767px)';
@@ -535,7 +550,7 @@
 
     @mixin focusStyle() {
       &:focus {
-        outline: 1px dashed red;
+        outline: 1px dashed darken($primary-color, 10%);
         outline-offset: -10px;
       }
     }
@@ -561,22 +576,6 @@
           box-sizing: border-box;
       }
     }
-
-    /* =============================================================
-     * VARIABLES
-     * ============================================================*/
-    $white: #fff;
-    $black: #000;
-    $gray: #424b53;
-    $primary-text-color: #35343d;
-    $lightest-gray: #f3f5f8;
-    $primary-color: #00ca9d;
-    $primary-color: $primary-color;
-    $medium-gray: #999999;
-    $light-gray: #d7d9e2;
-    $dark-gray: #2d3047;
-
-    $font-small: 14px;
 
     /* =============================================================
      * BASE STYLES
@@ -836,6 +835,7 @@
             &--locked {
                 opacity: .2;
                 cursor: not-allowed;
+                pointer-events: none;
             }
         }
 
@@ -977,7 +977,6 @@
             appearence: none;
             background: transparent;
             border: 0;
-            color: $medium-gray;
             cursor: pointer;
             font-size: 25px;
             font-weight: bold;
@@ -990,8 +989,15 @@
             position: absolute;
             right: 0;
             top: 0;
-            transform: rotate(45deg);
             width: 40px;
+
+            svg {
+              fill: none;
+              stroke-linecap: round;
+              stroke-width: 8px;
+              stroke: $medium-gray;
+              width: 20px;
+            }
 
             @include focusStyle();
         }
