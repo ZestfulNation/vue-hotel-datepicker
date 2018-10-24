@@ -134,7 +134,7 @@ export default {
               return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
             }
             else {
-              return 'datepicker__month-day datepicker__month-day--out-of-range'
+              return 'datepicker__month-day--out-of-range'
             }
           }
         }

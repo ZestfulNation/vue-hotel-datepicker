@@ -44,9 +44,13 @@
         .datepicker__header
           span.datepicker__month-button.datepicker__month-button--prev.-hide-up-to-tablet(
             @click='renderPreviousMonth'
+            @keyup.enter.stop.prevent='renderPreviousMonth'
+            tabindex='0'
           )
           span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
             @click='renderNextMonth'
+            @keyup.enter.stop.prevent='renderNextMonth'
+            tabindex='0'
           )
         .datepicker__months(v-if='screenSize == "desktop"')
           div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
@@ -54,7 +58,8 @@
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex+n].days'
-              @mouseover='hoveringDate = day.date')
+              @mouseover='hoveringDate = day.date'
+              )
               Day(
                 :is-open="isOpen"
                 :options="$props"
@@ -91,6 +96,7 @@
                 )
               .square(v-for='(day, index) in months[n].days'
                 @mouseover='hoveringDate = day.date'
+                @focus='hoveringDate = day.date'
                 v-bind:key='index'
               )
                 Day(
@@ -811,11 +817,13 @@
         }
 
         &__month-button {
-            background: transparent url('ic-arrow-right-green.regular.svg') no-repeat right center / 8px;
+            background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
             cursor: pointer;
             display: inline-block;
             height: 60px;
             width: 60px;
+
+            @include focusStyle();
 
             &--prev {
                 transform: rotateY(180deg);
