@@ -104,6 +104,7 @@
 </template>
 
 <script>
+  import throttle from 'lodash.throttle';
   import {directive as onClickOutside} from 'vue-on-click-outside';
 
   import fecha from 'fecha';
@@ -379,7 +380,7 @@
         else return
       },
 
-      renderNextMonth() {
+      renderNextMonth: throttle(function throttleRenderNextMonth() {
         if (this.activeMonthIndex < this.months.length - 2) {
           this.activeMonthIndex++;
           return
@@ -409,7 +410,7 @@
         );
 
         this.activeMonthIndex++;
-      },
+      }, 200),
 
       setCheckIn(date) {
         this.checkIn = date;
