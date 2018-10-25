@@ -1,12 +1,15 @@
 <template lang='pug'>
   div
-    span
     .datepicker__tooltip(v-if='showTooltip && this.options.hoveringTooltip' v-html='tooltipMessageDisplay')
     .datepicker__month-day(
-      @click='dayClicked(date)'
-      v-text='`${dayNumber}`'
+      type="button"
+      @click.prevent.stop='dayClicked(date)'
+      @keyup.enter.prevent.stop='dayClicked(date)'
+      v-text='dayNumber'
       :class='dayClass'
       :style='isToday ? "border: 1px solid #00c690" : ""'
+      :tabindex="tabIndex"
+      ref="day"
     )
 </template>
 
@@ -19,6 +22,10 @@ export default {
   name: 'Day',
 
   props: {
+    isOpen: {
+      type: Boolean,
+      required: true,
+    },
     sortedDisabledDates: {
       type: Array
     },
@@ -72,16 +79,22 @@ export default {
   },
 
   computed: {
-    nightsCount: function() {
+    tabIndex() {
+      if (!this.isOpen || !this.belongsToThisMonth || this.isDisabled || !this.isClickable()) {
+        return -1;
+      }
+      return 0
+    },
+    nightsCount() {
       return this.countDays(this.checkIn, this.hoveringDate);
     },
-    tooltipMessageDisplay: function() {
+    tooltipMessageDisplay() {
       return this.tooltipMessage
       ? this.tooltipMessage
       : `${this.nightsCount} ${this.nightsCount !== 1 ?
               this.options.i18n['nights'] : this.options.i18n['night']}`
     },
-    showTooltip: function() {
+    showTooltip() {
       return  !this.isDisabled &&
               this.date == this.hoveringDate &&
               this.checkIn !== null &&
@@ -121,7 +134,7 @@ export default {
               return 'datepicker__month-day--out-of-range datepicker__month-day--selected'
             }
             else {
-              return 'datepicker__month-day datepicker__month-day--out-of-range'
+              return 'datepicker__month-day--out-of-range'
             }
           }
         }
@@ -152,7 +165,7 @@ export default {
   },
 
   watch: {
-    hoveringDate: function(date) {
+    hoveringDate(date) {
       if ( this.checkIn !== null  && this.checkOut == null && this.isDisabled == false) {
         this.isDateLessOrEquals(this.checkIn, this.date) &&
         this.isDateLessOrEquals(this.date, this.hoveringDate) ?
@@ -162,7 +175,7 @@ export default {
 
       }
     },
-    activeMonthIndex: function(index) {
+    activeMonthIndex(index) {
       this.checkIfDisabled()
       this.checkIfHighlighted()
       if ( this.checkIn !== null  && this.checkOut !== null ) {
@@ -176,16 +189,24 @@ export default {
       }
 
     },
-    nextDisabledDate: function() {
+    nextDisabledDate() {
       this.disableNextDays();
     },
-    checkIn: function(date) {
+    checkIn(date) {
       this.createAllowedCheckoutDays(date);
     }
   },
 
   methods: {
     ...Helpers,
+
+    isClickable() {
+      if (this.$refs && this.$refs.day) {
+        return getComputedStyle(this.$refs.day).pointerEvents !== 'none';
+      } else {
+        return true;
+      }
+    },
 
     compareDay(day1, day2) {
       const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
@@ -199,7 +220,7 @@ export default {
     },
 
     dayClicked(date) {
-      if (this.isDisabled) {
+      if (this.isDisabled || !this.isClickable()) {
         return
       }
       else {
