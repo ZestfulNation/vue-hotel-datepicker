@@ -237,7 +237,7 @@ export default {
 
         if (this.options.enableCheckout) { nextDisabledDate = Infinity; }
 
-        this.$emit('dayClicked', { date, nextDisabledDate });
+        this.$emit('day-clicked', { date, nextDisabledDate });
       }
     },
 

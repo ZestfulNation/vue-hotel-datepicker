@@ -66,7 +66,7 @@
               Day(
                 :is-open="isOpen"
                 :options="$props"
-                @dayClicked='handleDayClick($event)'
+                @day-clicked='handleDayClick($event)'
                 :date='day.date'
                 :sortedDisabledDates='sortedDisabledDates'
                 :nextDisabledDate='nextDisabledDate'
@@ -105,7 +105,7 @@
                 Day(
                   :is-open="isOpen"
                   :options="$props"
-                  @dayClicked='handleDayClick($event)'
+                  @day-clicked='handleDayClick($event)'
                   :date='day.date'
                   :sortedDisabledDates='sortedDisabledDates'
                   :nextDisabledDate='nextDisabledDate'
@@ -124,6 +124,7 @@
 </template>
 
 <script>
+  import throttle from 'lodash.throttle';
   import {directive as onClickOutside} from 'vue-on-click-outside';
   import fecha from 'fecha';
 
@@ -281,7 +282,7 @@
         }
       },
       checkIn(newDate) {
-        this.$emit("checkInChanged", newDate)
+        this.$emit("check-in-changed", newDate)
       },
       checkOut(newDate) {
 
@@ -294,7 +295,7 @@
           this.isOpen = false;
         }
 
-        this.$emit("checkOutChanged", newDate)
+        this.$emit("check-out-changed", newDate)
       },
 
     },
@@ -345,7 +346,7 @@
       },
 
       emitHeighChangeEvent() {
-        this.$emit('heightChanged');
+        this.$emit('height-changed');
       },
 
       reRender() {
@@ -409,7 +410,7 @@
         else return
       },
 
-      renderNextMonth() {
+      renderNextMonth: throttle(function throttleRenderNextMonth() {
         if (this.activeMonthIndex < this.months.length - 2) {
           this.activeMonthIndex++;
           return
@@ -439,7 +440,7 @@
         );
 
         this.activeMonthIndex++;
-      },
+      }, 200),
 
       setCheckIn(date) {
         this.checkIn = date;
