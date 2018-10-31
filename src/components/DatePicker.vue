@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .datepicker__wrapper(v-if='show' v-on-click-outside="hideDatepicker")
+  .datepicker__wrapper(v-if='show' v-on-click-outside="handleOutsideClick")
     .datepicker__dummy-wrapper(v-if='(checkIn || checkOut)' @click='isOpen = !isOpen' :class="`${isOpen || checkIn || checkOut ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
       button.datepicker__dummy-input.datepicker__input(
         data-qa='datepickerInput'
@@ -376,7 +376,11 @@
         this.reRender();
         this.$parent.$emit('inputChanged', this.inputValue);
       },
-
+      handleOutsideClick() {
+        if (this.isOpen) {
+          this.hideDatepicker();
+        }
+      },
       hideDatepicker() {
         this.firstOpen = false;
         this.isOpen = false;
@@ -572,7 +576,6 @@
             let startDate = document.querySelector('.square div .datepicker__month-day--last-day-selected');
             startDate = startDate.parentElement.parentElement; //go to square div to measure offsetTop
             if(startDate){
-              console.log(startDate);
               swiperWrapper.scrollTop = startDate.offsetTop;
               this.scrolledToSelectedDates = true;
             }
