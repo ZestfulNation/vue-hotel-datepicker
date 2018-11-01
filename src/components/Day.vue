@@ -6,7 +6,7 @@
       @click='dayClicked(date)'
       v-text='`${dayNumber}`'
       :class='dayClass'
-      :style='isToday ? "border: 1px solid #00c690" : ""'
+      :style='isToday ? setcurrentDateStyle : ""'
     )
 </template>
 
@@ -59,6 +59,9 @@ export default {
     tooltipMessage: {
       default: null,
       type: String
+    },
+    currentDateStyle:{
+      default:null,
     }
   },
 
@@ -72,6 +75,12 @@ export default {
   },
 
   computed: {
+    setcurrentDateStyle(){
+      if(this.currentDateStyle != null){
+        return 'border: 1px solid #'+ this.currentDateStyle;
+      }
+      return 'border: 1px solid #00c690'
+    },
     nightsCount: function() {
       return this.countDays(this.checkIn, this.hoveringDate);
     },

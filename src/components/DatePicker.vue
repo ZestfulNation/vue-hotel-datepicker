@@ -59,6 +59,7 @@
                 :belongsToThisMonth='day.belongsToThisMonth'
                 :checkIn='checkIn'
                 :checkOut='checkOut'
+                :currentDateStyle='borderDateColor'
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
@@ -96,6 +97,7 @@
                   :belongsToThisMonth='day.belongsToThisMonth'
                   :checkIn='checkIn'
                   :checkOut='checkOut'
+                  :currentDateStyle='borderDateColor'
                 )
             button.next--mobile(
               @click='renderNextMonth' type="button"
@@ -130,6 +132,10 @@
     components: { Day },
 
     props: {
+      borderDateColor:{
+        default:null,
+        type:String,
+      },
       value: {
         type: String
       },
