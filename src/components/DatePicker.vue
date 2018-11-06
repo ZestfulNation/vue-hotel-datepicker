@@ -133,8 +133,7 @@
 
     props: {
       currentDateStyle:{
-        default:'border: 1px solid #00c690',
-        type:String,
+        default:() => ({border: "1px solid #00c690"}),
       },
       value: {
         type: String
