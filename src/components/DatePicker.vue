@@ -77,7 +77,6 @@
                 :belongsToThisMonth='day.belongsToThisMonth'
                 :checkIn='checkIn'
                 :checkOut='checkOut'
-                :currentDateStyle='currentDateStyle'
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
@@ -117,7 +116,6 @@
                   :belongsToThisMonth='day.belongsToThisMonth'
                   :checkIn='checkIn'
                   :checkOut='checkOut'
-                  :currentDateStyle='currentDateStyle'
                 )
             button.next--mobile(
               @click='renderNextMonth' type="button"
@@ -156,9 +154,6 @@
     },
 
     props: {
-      currentDateStyle:{
-        default:() => ({border: "1px solid #00c690"}),
-      },
       value: {
         type: String
       },
@@ -308,13 +303,12 @@
     methods: {
       ...Helpers,
 
-      formatDate(date) {
+      formatDate(date, format) {
         if (date) {
-          return fecha.format(date, this.format);
+          return fecha.format(date, format || this.format);
         }
         return '';
       },
-
       handleWindowResize() {
         if (window.innerWidth < 480) {
           this.screenSize = 'smartphone';
@@ -462,6 +456,14 @@
       getMonth(date) {
         return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
       },
+      getMonthDiff(d1, d2) {
+        let d1Y = d1.getFullYear();
+        let d2Y = d2.getFullYear();
+        let d1M = d1.getMonth();
+        let d2M = d2.getMonth();
+
+        return (d2M+12*d2Y)-(d1M+12*d1Y);
+      },
 
     createMonth(date){
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
@@ -507,6 +509,29 @@
 
       this.createMonth(new Date(this.startDate));
       this.createMonth(this.getNextMonth(new Date(this.startDate)));
+
+      if(this.checkIn){
+        let checkinDate = this.formatDate(new Date(this.checkIn) , 'YYYYM');
+        let startDate = this.formatDate(new Date(this.startDate), 'YYYYM');
+        let endDate = this.formatDate(this.getNextMonth(new Date(this.startDate)),'YYYYM');
+        if (parseInt(endDate) < parseInt(checkinDate)) {
+          let count = this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn)
+          let nextMonth = this.getNextMonth(new Date(this.startDate));
+
+          for(let i = 0; i < count; i++){
+            let tempNextMonth = this.getNextMonth(new Date(nextMonth))
+            this.createMonth(this.getNextMonth(new Date(nextMonth)))
+            nextMonth = tempNextMonth
+          }
+
+          if(this.checkOut && this.getMonthDiff(new Date(this.checkIn), new Date(this.checkOut)) > 0){
+            this.createMonth(this.getNextMonth(new Date(nextMonth)))
+            this.activeMonthIndex = this.months.length % 2 === 0 ? 2 : 1
+          }
+          this.activeMonthIndex += 2
+        }
+      }
+
       this.parseDisabledDates();
     },
 
