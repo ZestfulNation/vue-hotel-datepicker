@@ -308,9 +308,9 @@
     methods: {
       ...Helpers,
 
-      formatDate(date) {
+      formatDate(date, format) {
         if (date) {
-          return fecha.format(date, this.format);
+          return fecha.format(date, format || this.format);
         }
         return '';
       },
@@ -462,6 +462,13 @@
       getMonth(date) {
         return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
       },
+      getMonthDiff(d1, d2) {
+        let d1Y = d1.getFullYear();
+        let d2Y = d2.getFullYear();
+        let d1M = d1.getMonth();
+        let d2M = d2.getMonth();
+         return (d2M+12*d2Y)-(d1M+12*d1Y);
+      },
 
     createMonth(date){
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
@@ -504,9 +511,27 @@
           return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
         }
       };
+      let checkinDate = this.formatDate(new Date(this.checkIn) , 'YYYYMM');
+      let startDate = this.formatDate(new Date(this.startDate), 'YYYYMM');
+      let endDate = this.formatDate(this.getNextMonth(new Date(this.startDate)),'YYYYMM');
+      if(this.checkIn && (parseInt(endDate) < parseInt(checkinDate) || parseInt(startDate) < parseInt(checkinDate)) ){
+          let count = this.getMonthDiff(new Date(this.startDate), this.checkIn)
+          let nextMonth = new Date(this.startDate)
+           for(let i = 0; i < count; i++){
+            let tempNextMonth = this.getNextMonth(new Date(nextMonth))
+            this.createMonth(this.getNextMonth(new Date(nextMonth)))
+            nextMonth = tempNextMonth
+          }
+           if(this.checkOut && this.getMonthDiff(new Date(this.checkIn), new Date(this.checkOut)) > 0){
+            this.createMonth(this.getNextMonth(new Date(nextMonth)))
+            this.activeMonthIndex = this.months.length % 2 === 0 ? 0 : 1
+          }
+          this.activeMonthIndex += Math.floor(this.months.length / 2)
+      }else{
+        this.createMonth(new Date(this.startDate));
+        this.createMonth(this.getNextMonth(new Date(this.startDate)));
+      }
 
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
       this.parseDisabledDates();
     },
 
