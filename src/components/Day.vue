@@ -66,6 +66,9 @@ export default {
     tooltipMessage: {
       default: null,
       type: String
+    },
+    currentDateStyle:{
+      required: true,
     }
   },
 
