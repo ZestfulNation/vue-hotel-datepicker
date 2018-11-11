@@ -23,7 +23,7 @@
         :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       )
-    button.datepicker__clear-button(type='button' @click='clearSelection' v-if="showClearSelectionButton")
+    .datepicker__clear-button(tabindex="0" @click='clearSelection' v-if="showClearSelectionButton")
       svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 68 68")
         path(d='M6.5 6.5l55 55M61.5 6.5l-55 55')
 
@@ -33,12 +33,14 @@
           @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if='isOpen'
         )
-          button.datepicker__input(
+          .datepicker__input(
+            tabindex="0"
             :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
             v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
             type="button"
           )
-          button.datepicker__input(
+          .datepicker__input(
+            tabindex="0"
             :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
             v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
             type="button"
@@ -119,7 +121,7 @@
                   :checkOut='checkOut'
                   :currentDateStyle='currentDateStyle'
                 )
-            button.next--mobile(
+            .next--mobile(
               @click='renderNextMonth' type="button"
             )
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.datepicker__input(
+  .datepicker__input(
     @click="toggleDatepicker"
     @keyup.enter.stop.prevent="toggleDatepicker"
     data-qa='datepickerInput'
