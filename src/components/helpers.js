@@ -121,7 +121,7 @@ export default {
     const d2Y = d2.getFullYear();
     const d1M = d1.getMonth();
     const d2M = d2.getMonth();
-     return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+    return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
   },
   handleTouchMove(evt) {
     if (!this.xDown || !this.yDown) {
