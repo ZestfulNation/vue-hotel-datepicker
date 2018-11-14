@@ -115,13 +115,13 @@ export default {
     this.yDown = evt.touches[0].clientY;
   },
   getMonthDiff(d1, d2) {
-    d1 = new Date(d1)
-    d2 = new Date(d2)
+    d1 = new Date(d1);
+    d2 = new Date(d2);
     const d1Y = d1.getFullYear();
     const d2Y = d2.getFullYear();
     const d1M = d1.getMonth();
     const d2M = d2.getMonth();
-     return (d2M+12*d2Y)-(d1M+12*d1Y);
+     return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
   },
   handleTouchMove(evt) {
     if (!this.xDown || !this.yDown) {
