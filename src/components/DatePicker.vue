@@ -59,7 +59,7 @@
           )
         .datepicker__months(v-if='screenSize == "desktop"')
           div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
-            h1.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
+            p.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
             .datepicker__week-row.-hide-up-to-tablet
               .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
             .square(v-for='day in months[activeMonthIndex+n].days'
@@ -92,7 +92,7 @@
               v-for='(a, n) in months'
               v-bind:key='n'
             )
-              h1.datepicker__month-name(
+              p.datepicker__month-name(
                 v-text='getMonth(months[n].days[15].date)'
               )
               .datepicker__week-row.-hide-up-to-tablet
@@ -464,7 +464,7 @@
       getMonth(date) {
         return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
       },
-     
+
 
     createMonth(date){
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
@@ -507,8 +507,8 @@
           return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
         }
       };
-        if(this.checkIn && 
-        (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 || 
+        if(this.checkIn &&
+        (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 ||
         this.getMonthDiff(this.startDate, this.checkIn) > 0)){
           const count = this.getMonthDiff(this.startDate, this.checkIn)
           let nextMonth = new Date(this.startDate)
