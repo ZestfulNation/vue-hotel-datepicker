@@ -312,7 +312,7 @@
 
       formatDate(date) {
         if (date) {
-          return fecha.format(date, this.format);
+          return fecha.format(date, this.format);
         }
         return '';
       },
@@ -464,6 +464,7 @@
       getMonth(date) {
         return this.i18n["month-names"][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '');
       },
+     
 
     createMonth(date){
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
@@ -506,9 +507,25 @@
           return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
         }
       };
-
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
+        if(this.checkIn && 
+        (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 || 
+        this.getMonthDiff(this.startDate, this.checkIn) > 0)){
+          const count = this.getMonthDiff(this.startDate, this.checkIn)
+          let nextMonth = new Date(this.startDate)
+          for(let i = 0; i < count; i++){
+            let tempNextMonth = this.getNextMonth(nextMonth)
+            this.createMonth(this.getNextMonth(nextMonth))
+            nextMonth = tempNextMonth
+          }
+          if(this.checkOut && this.getMonthDiff(this.checkIn,this.checkOut) > 0){
+            this.createMonth(this.getNextMonth(nextMonth))
+            this.activeMonthIndex = 1
+          }
+          this.activeMonthIndex += count - 2
+      }else{
+        this.createMonth(new Date(this.startDate));
+        this.createMonth(this.getNextMonth(new Date(this.startDate)));
+      }
       this.parseDisabledDates();
     },
 
