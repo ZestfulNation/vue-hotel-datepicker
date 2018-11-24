@@ -1,10 +1,11 @@
-import { shallow } from 'vue-test-utils';
+/* eslint-env jest, node */
+import { mount } from 'vue-test-utils';
 import { expect } from 'chai';
 
 import Datepicker from '@/components/DatePicker';
 
 describe('Datepicker Calendar', () => {
-  let wrapper = shallow(Datepicker);
+  let wrapper = mount(Datepicker);
 
 
   it('should correctly re-render the calendar', () => {
@@ -22,7 +23,7 @@ describe('Datepicker Component', () => {
   let wrapper;
 
   beforeEach( () => {
-    wrapper = shallow(Datepicker, {
+    wrapper = mount(Datepicker, {
       attachToDocument: true,
       propsData: {
         minNights: 3,
