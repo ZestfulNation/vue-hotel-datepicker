@@ -12,7 +12,7 @@
     "dev": "webpack-dev-server --inline --hot --open --config build/webpack.dev.conf.js",
     "build": "rimraf dist && webpack --progress --hide-modules --config build/webpack.prod.conf.js",
     "lint": "eslint */*.vue */*.js --quiet",
-    "test": "ENV=test mocha-webpack --webpack-config build/webpack.prod.conf.js tests/unit --recursive --require tests/setup.js --reporter nyan"
+    "test": "ENV=test mocha-webpack --webpack-config build/webpack.prod.conf.js tests/unit --recursive --require tests/setup.js --reporter nyan --exit"
   },
   "repository": {
     "type": "git",
