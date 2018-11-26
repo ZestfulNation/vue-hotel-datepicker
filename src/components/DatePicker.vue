@@ -377,8 +377,11 @@
         this.$parent.$emit('inputChanged', this.inputValue);
       },
       handleOutsideClick() {
-        if (this.isOpen) {
+        if (this.isOpen || event.target.classList.contains('btn-show-datepicker') == false) {
           this.hideDatepicker();
+        }
+        else {
+          this.isOpen = true;
         }
       },
       hideDatepicker() {
