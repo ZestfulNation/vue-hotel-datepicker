@@ -982,7 +982,7 @@
         }
 
         &__close-button {
-            appearence: none;
+            appearance: none;
             background: transparent;
             border: 0;
             color: $primary-color;
@@ -999,7 +999,7 @@
         }
 
         &__clear-button {
-            appearence: none;
+            appearance: none;
             background: transparent;
             border: 0;
             cursor: pointer;
