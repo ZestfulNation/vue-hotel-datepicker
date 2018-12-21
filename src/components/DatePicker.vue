@@ -282,6 +282,11 @@
 
           if (value) {
             bodyClassList.add('-overflow-hidden');
+            setTimeout(() => {
+              let swiperWrapper = document.getElementById('swiperWrapper')
+              let monthHeihgt = document.querySelector('.datepicker__month').offsetHeight
+              swiperWrapper.scrollTop = this.activeMonthIndex * monthHeihgt
+            },100)
           }
           else {
             bodyClassList.remove('-overflow-hidden');
@@ -512,6 +517,7 @@
         this.getMonthDiff(this.startDate, this.checkIn) > 0)){
           const count = this.getMonthDiff(this.startDate, this.checkIn)
           let nextMonth = new Date(this.startDate)
+           this.createMonth(nextMonth)
           for(let i = 0; i < count; i++){
             let tempNextMonth = this.getNextMonth(nextMonth)
             this.createMonth(this.getNextMonth(nextMonth))
@@ -521,7 +527,7 @@
             this.createMonth(this.getNextMonth(nextMonth))
             this.activeMonthIndex = 1
           }
-          this.activeMonthIndex += count - 2
+          this.activeMonthIndex += count - 1
       }else{
         this.createMonth(new Date(this.startDate));
         this.createMonth(this.getNextMonth(new Date(this.startDate)));

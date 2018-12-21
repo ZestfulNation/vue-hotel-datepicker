@@ -6,9 +6,10 @@
         <h3>Allow check-in and check-out on the same day</h3>
         <DatePicker
           :minNights="0"
+          :startingDateValue="new Date('2019-09-01')"
+          :endingDateValue="new Date('2019-09-25')"
         />
       </div>
-
       <div class="box">
         <h3>Allow selection of single day</h3>
         <DatePicker
