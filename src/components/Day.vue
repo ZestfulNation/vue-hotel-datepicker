@@ -6,7 +6,7 @@
       @keyup.enter.prevent.stop='dayClicked(date)'
       v-text='dayNumber'
       :class='dayClass'
-      :style='isToday ? "border: 1px solid #00c690" : ""'
+      :style='isToday ? currentDateStyle : ""'
       :tabindex="tabIndex"
       ref="day"
     )
