@@ -505,7 +505,7 @@
           days: []
         };
 
-        for (let i = 0; i < 42; i++) {
+        for (let i = -7; i < 42; i++) {
           month.days.push({
             date: this.addDays(firstMonday, i),
             belongsToThisMonth: this.addDays(firstMonday, i).getMonth() === date.getMonth(),
