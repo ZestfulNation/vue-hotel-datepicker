@@ -247,7 +247,13 @@
       displayClearButton: {
         default: true,
         type: Boolean,
-      }
+      },
+        textDates: {
+            default: function () {
+                return []
+            },
+            type: Array
+        }
     },
 
     data() {
@@ -457,8 +463,19 @@
         this.checkOut = date;
       },
 
+        getTextDate(date) {
+            if (!this.textDates) return null;
+            for (let i=0;i<this.textDates.length;i++){
+                let item = this.textDates[i];
+                if (item.date && item.date==fecha.format(date,'YYYY-MM-DD')){
+                    return item.text;
+                }
+            }
+        },
+
       getDay(date) {
-        return fecha.format(date, 'D')
+          let textDate = this.getTextDate(date);
+          return fecha.format(date, 'D') + (textDate?textDate : "");
       },
 
       getMonth(date) {

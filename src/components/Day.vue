@@ -4,7 +4,7 @@
     .datepicker__month-day(
       @click.prevent.stop='dayClicked(date)'
       @keyup.enter.prevent.stop='dayClicked(date)'
-      v-text='dayNumber'
+      v-html='dayNumber'
       :class='dayClass'
       :style='isToday ? currentDateStyle : ""'
       :tabindex="tabIndex"
