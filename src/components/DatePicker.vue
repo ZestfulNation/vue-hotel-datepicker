@@ -527,9 +527,10 @@
         if(this.checkIn &&
         (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 ||
         this.getMonthDiff(this.startDate, this.checkIn) > 0)){
-          const count = this.getMonthDiff(this.startDate, this.checkIn)
+          const count = this.getMonthDiff(this.startDate, this.checkIn);
+          this.createMonth(new Date(this.startDate));
           let nextMonth = new Date(this.startDate)
-          for(let i = 0; i < count; i++){
+          for(let i = 0; i <= count; i++){
             let tempNextMonth = this.getNextMonth(nextMonth)
             this.createMonth(this.getNextMonth(nextMonth))
             nextMonth = tempNextMonth
@@ -538,7 +539,7 @@
             this.createMonth(this.getNextMonth(nextMonth))
             this.activeMonthIndex = 1
           }
-          this.activeMonthIndex += count - 2
+          this.activeMonthIndex += count
       }else{
         this.createMonth(new Date(this.startDate));
         this.createMonth(this.getNextMonth(new Date(this.startDate)));
