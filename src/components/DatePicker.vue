@@ -453,6 +453,7 @@
         );
 
         this.activeMonthIndex++;
+        this.$emit("next-month-changed", this.activeMonthIndex)
       }, 200),
 
       setCheckIn(date) {

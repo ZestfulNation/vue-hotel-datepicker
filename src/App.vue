@@ -6,6 +6,7 @@
         <h3>Allow check-in and check-out on the same day</h3>
         <DatePicker
           :minNights="0"
+          @next-month-changed="nextMonthChanged"
           :textDates="[{'date':'2019-01-31','text':'<br>100€'}]"
         />
       </div>
@@ -189,6 +190,11 @@
           'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
         },
       };
+    },
+    methods:{
+        nextMonthChanged:function(monthIndex){
+            alert(monthIndex);
+        }
     }
   };
 
