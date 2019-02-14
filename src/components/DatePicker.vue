@@ -271,6 +271,7 @@
         xUp: null,
         yUp: null,
         sortedDisabledDates: null,
+          hashTextDates: null,
         screenSize: this.handleWindowResize(),
       };
     },
@@ -465,13 +466,7 @@
       },
 
         getTextDate(date) {
-            if (!this.textDates) return null;
-            for (let i=0;i<this.textDates.length;i++){
-                let item = this.textDates[i];
-                if (item.date && item.date==fecha.format(date,'YYYY-MM-DD')){
-                    return item.text;
-                }
-            }
+            return this.hashTextDates[fecha.format(date,'YYYY-MM-DD')];
         },
 
       getDay(date) {
@@ -510,6 +505,23 @@
         sortedDates.sort((a, b) => a - b);
 
         this.sortedDisabledDates = sortedDates;
+      },
+      parseTextDates(){
+          let sortedTextDates = [];
+          sortedTextDates = sortedTextDates.concat(this.textDates);
+          sortedTextDates.sort(function(a, b){
+              let da=new Date(a.date);
+              let db=new Date(b.date);
+              return (da-db);
+          });
+          let hashTextDates = [];
+          for (let i=0;i<sortedTextDates.length;i++){
+              let item = sortedTextDates[i];
+              if (!hashTextDates[item.date]) {
+                  hashTextDates[item.date] = item.text;
+              }
+          }
+          this.hashTextDates = hashTextDates;
       }
     },
 
@@ -546,6 +558,7 @@
         this.createMonth(this.getNextMonth(new Date(this.startDate)));
       }
       this.parseDisabledDates();
+      this.parseTextDates();
     },
 
     mounted() {

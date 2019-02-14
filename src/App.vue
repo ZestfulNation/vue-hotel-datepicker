@@ -7,7 +7,7 @@
         <DatePicker
           :minNights="0"
           @next-month-changed="nextMonthChanged"
-          :textDates="[{'date':'2019-01-31','text':'<br>100€'}]"
+          :textDates="[{'date':'2019-03-17','text':'<br>100€'},{'date':'2019-03-15','text':'<br>100€'},{'date':'2019-03-16','text':'<br>100€'},{'date':'2019-03-18','text':'<br>100€'},{'date':'2019-03-19','text':'<br>100€'},{'date':'2019-03-21','text':'<br>100€'},{'date':'2019-03-20','text':'<br>100€'}]"
         />
       </div>
 
