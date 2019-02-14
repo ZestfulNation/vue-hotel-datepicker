@@ -196,7 +196,10 @@ export default {
     },
     checkIn(date) {
       this.createAllowedCheckoutDays(date);
-    }
+    },
+      sortedDisabledDates(value) {
+          this.checkIfDisabled()
+      },
   },
 
   methods: {

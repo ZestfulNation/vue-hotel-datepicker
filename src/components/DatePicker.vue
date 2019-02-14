@@ -295,6 +295,14 @@
           }
         }
       },
+        textDates(newVal) {
+          this.textDates = newVal;
+            this.parseTextDates();
+        },
+        disabledDates(newVal){
+            this.disabledDates = newVal;
+            this.parseDisabledDates();
+        },
       checkIn(newDate) {
         this.$emit("check-in-changed", newDate)
       },
