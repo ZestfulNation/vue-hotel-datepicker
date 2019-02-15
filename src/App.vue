@@ -8,14 +8,12 @@
           :minNights="0"
         />
       </div>
-
       <div class="box">
         <h3>Allow selection of single day</h3>
         <DatePicker
           :singleDaySelection="true"
         />
       </div>
-
       <div class="box">
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
