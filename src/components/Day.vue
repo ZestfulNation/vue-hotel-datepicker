@@ -252,6 +252,12 @@ export default {
       }
     },
 
+        isJustAfterCheckin() {
+          if (!this.checkIn) return false;
+          let dateBefore = this.addDays(this.date, -1);
+          return (this.compareDay(this.checkIn, dateBefore) == 0);
+        },
+
     checkIfDisabled() {
       this.isDisabled =
         // If this day is equal any of the disabled dates
@@ -272,6 +278,11 @@ export default {
                this.compareDay(this.date, this.checkOut) == -1 ) {
                 this.isDisabled = false;
           }
+        }else{
+            if ( this.compareDay(this.date, this.checkIn) == 1 &&
+                this.compareDay(this.date, this.checkOut) == -1 ) {
+                this.isDisabled = false;
+            }
         }
     },
 
@@ -305,7 +316,9 @@ export default {
       if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout ){
         this.isDisabled = false
       }
-      else {
+      else if (!this.options.enableCheckout && this.isJustAfterCheckin()){
+      	this.isDisabled = false;
+      }else {
         return
       }
     },
