@@ -10,6 +10,7 @@
           @next-month-changed="nextMonthChanged"
           :textDates="textDates"
           :disabledDates="disabledDates"
+          :footerText="footerText"
         />
       </div>
 
@@ -183,6 +184,7 @@
 
     data() {
       return {
+      	footerText:"* Precio desde en base a 2 adultos en habitación doble",
         textDates:[],
           disabledDates:[],
         ptPT: {

@@ -124,6 +124,9 @@
             .next--mobile(
               @click='renderNextMonth' type="button"
             )
+        div.datepicker__footer
+          span.datepicker__footerText(v-text='footerText')
+          <!--span.datepicker__footerText='* Precio desde en base a 2 adultos en habitación doble'-->
 
 </template>
 
@@ -142,7 +145,7 @@
     'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
     'check-in': 'Check-in',
     'check-out': 'Check-out',
-    'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   };
 
   export default {
@@ -253,7 +256,11 @@
                 return []
             },
             type: Array
-        }
+        },
+      footerText:{
+      	default: '',
+        type: String
+      }
     },
 
     data() {
