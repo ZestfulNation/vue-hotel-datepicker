@@ -257,6 +257,8 @@ export default {
         ) : null)
         // Or is before the start date
         || this.compareDay(this.date, this.options.startDate) == -1
+        // Or is before the chekIn if checkout is empty
+        || (this.compareDay(this.date, this.checkIn) == -1 && !Boolean(this.checkOut))
         // Or is after the end date
         || this.compareEndDay()
         // Or is in one of the disabled days of the week
