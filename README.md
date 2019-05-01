@@ -200,10 +200,10 @@ Toggle datepicker
 
 ## Events
 
-### checkInChanged
+### checkInChanged (v-on:check-in-changed)
 Emitted every time a new check in date is selected with the new date as payload
 
-### checkOutChanged
+### checkOutChanged (v-on:check-out-changed)
 Emitted every time a new check out date is selected with the new date as payload
 
 ## Credits
