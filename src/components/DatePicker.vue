@@ -348,14 +348,16 @@ export default {
     },
     handleWindowResize() {
       let screenSizeInEm = window.innerWidth / parseFloat(getComputedStyle(document.querySelector('body'))['font-size']);
+      const l = console.log
+      l(screenSizeInEm);
 
       if (screenSizeInEm < 31) {
         this.screenSize = 'smartphone';
       }
-      else if (screenSizeInEm > 30 && screenSizeInEm < 55) {
+      else if (screenSizeInEm > 30 && screenSizeInEm < 57) {
         this.screenSize = 'tablet';
       }
-      else if (screenSizeInEm > 55) {
+      else if (screenSizeInEm > 57) {
         this.screenSize = 'desktop';
       }
 
@@ -752,11 +754,11 @@ export default {
 /* =============================================================
  * RESPONSIVE LAYOUT HELPERS
  * ============================================================*/
-$tablet: '(min-width: 30em) and (max-width: 55em)';
+$tablet: '(min-width: 30em) and (max-width: 57em)';
 $phone: '(max-width: 30em)';
-$desktop: '(min-width: 55em)';
+$desktop: '(min-width: 57em)';
 $tablet-up: '(min-width: 30em)';
-$up-to-tablet: '(max-width: 55em)';
+$up-to-tablet: '(max-width: 57em)';
 $extra-small-screen: '(max-width: 23em)';
 
 @mixin device($device-widths) {
