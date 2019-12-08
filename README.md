@@ -24,21 +24,77 @@ Install the package:
 ```
 npm install vue-hotel-datepicker --save
 ```
-
+#### Get started
+```html
+<HotelDatePicker
+    :startingDateValue="form.checkIn"
+    :endingDateValue="form.checkOut"
+    @checkInChanged="checkInChangedEvent"
+    @checkOutChanged="checkOutChangedEvent"
+/>
+```
 ```javascript
 import HotelDatePicker from 'vue-hotel-datepicker'
-
 export default {
   components: {
-    HotelDatePicker,
+    HotelDatePicker
   },
-}
+  data() {
+    return {
+      form: {
+        checkIn: null,
+        checkOut: null
+      }
+    };
+  },
+  methods: {
+    checkInChangedEvent(date) {
+      this.form.checkIn = date;
+    },
+    checkOutChangedEvent(date) {
+      this.form.checkOut = date;
+    },
+  }
+};
 ```
-
+#### Use in browser
+```
+npm run build
+```
 ```html
-<HotelDatePicker />
+<script src="dist/vue-hotel-datepicker.min.js"></script>
+<script>
+  Vue.component('HotelDatePicker', HotelDatePicker.default);
+</script>
 ```
-
+```javascript
+Vue.component('MyComponent', {
+  template: `
+<HotelDatePicker 
+  @checkInChanged="updateCheckIn"
+  @checkOutChanged="updateCheckOut"
+  :startingDateValue="form.checkin"
+  :endingDateValue="form.checkout"
+></HotelDatePicker>
+  `,
+  data: function () {
+    return {
+      form: {
+        "checkin": null,
+        "checkout": null,
+      },
+    }
+  },
+  methods: {
+    updateCheckIn: function(date) {
+      this.form.checkin = date;
+    },
+    updateCheckOut: function(date) {
+      this.form.checkout = date;
+    },
+  }
+});
+```
 
 ## Props/Options
 

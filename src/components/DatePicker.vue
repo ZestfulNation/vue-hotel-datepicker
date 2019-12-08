@@ -276,6 +276,16 @@
     },
 
     watch: {
+      startingDateValue(value, oldValue) {
+        if (!this.compareDay(oldValue, value)) {
+          this.checkIn = value;
+        }
+      },
+      endingDateValue(value, oldValue) {
+        if (!this.compareDay(oldValue, value)) {
+          this.checkOut = value;
+        }
+      },
       isOpen(value) {
         if (this.screenSize !== 'desktop') {
           const bodyClassList = document.querySelector('body').classList;
@@ -293,28 +303,37 @@
           }
         }
       },
-      checkIn(newDate) {
-        this.$emit("check-in-changed", newDate)
-      },
-      checkOut(newDate) {
-
-        if (this.checkOut !== null && this.checkOut !== null) {
-          this.hoveringDate = null;
-          this.nextDisabledDate = null;
-          this.show = true;
-          this.parseDisabledDates();
-          this.reRender()
-          this.isOpen = false;
+      checkIn(newDate, oldValue) {
+        if (!this.compareDay(oldValue, newDate)) {
+          this.$emit("checkInChanged", newDate)
         }
-
-        this.$emit("check-out-changed", newDate)
+      },
+      checkOut(newDate, oldValue) {
+        if (!this.compareDay(oldValue, newDate)) {
+          if (this.checkOut !== null) {
+            this.hoveringDate = null;
+            this.nextDisabledDate = null;
+            this.show = true;
+            this.parseDisabledDates();
+            this.reRender();
+            this.isOpen = false;
+            this.$emit("checkOutChanged", newDate);
+          }
+          if (this.checkIn == null && this.checkOut == null) {
+            this.$emit("checkOutChanged", newDate);
+          }
+        }
       },
 
     },
 
     methods: {
       ...Helpers,
-
+      compareDay(day1, day2) {
+        const date1 = fecha.format(new Date(day1), 'YYYYMMDD');
+        const date2 = fecha.format(new Date(day2), 'YYYYMMDD');
+        return date1 === date2;
+      },
       formatDate(date) {
         if (date) {
           return fecha.format(date, this.format);
@@ -358,7 +377,7 @@
       },
 
       emitHeighChangeEvent() {
-        this.$emit('height-changed');
+        this.$emit('heightChanged');
       },
 
       reRender() {
@@ -369,7 +388,7 @@
       },
 
       clearSelection() {
-        this.hoveringDate = null,
+        this.hoveringDate = null;
         this.checkIn = null;
         this.checkOut = null;
         this.nextDisabledDate = null;
@@ -728,7 +747,7 @@
             font-size: $font-small;
             float: left;
             height: 48px;
-            line-height: 3.1;
+            line-height: 3.29;
             text-align: left;
             text-indent: 5px;
             width: calc(50% + 4px);
@@ -1014,13 +1033,16 @@
             height: 40px;
             margin-bottom: 0;
             margin-left: 0;
-            margin-right: -2px;
-            margin-top: 4px;
+            margin-right: 0px;
+            margin-top: 6px;
             padding: 0;
             position: absolute;
             right: 0;
             top: 0;
             width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
             svg {
               fill: none;

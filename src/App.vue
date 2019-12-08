@@ -116,35 +116,6 @@
           format="MMMM D"
           :i18n="ptPT"
         />
-      </div>
-
-        <div class="box">
-        <h3>Change the first day of the week to Monday</h3>
-        <DatePicker
-            :i18n="{ night: 'Night',
-                      nights: 'Nights',
-                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                      'check-in': 'Check-in',
-                      'check-out': 'Check-Out',
-                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    }"
-            :firstDayOfWeek="1"
-        />
-    </div>
-
-    <div class="box">
-        <h3>Set checkIn value</h3>
-        <DatePicker
-            :i18n="{ night: 'Night',
-                      nights: 'Nights',
-                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                      'check-in': 'Check-in',
-                      'check-out': 'Check-Out',
-                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    }"
-            :firstDayOfWeek="1"
-            :checkInValue="new Date()"
-        />
     </div>
 
     <div class="box">
@@ -163,6 +134,21 @@
         />
     </div>
 
+      <div class="box">
+        <h3>Binding startingDateValue, endingDateValue</h3>
+        <DatePicker
+            :startingDateValue="form.checkIn"
+            :endingDateValue="form.checkOut"
+            @checkInChanged="checkInChangedEvent"
+            @checkOutChanged="checkOutChangedEvent"
+        />
+        <DatePicker
+            :minNights="0"
+            :startingDateValue="form.checkIn"
+            :endingDateValue="form.checkOut"
+        />
+      </div>
+
     </div>
   </div>
 </template>
@@ -177,6 +163,10 @@
 
     data() {
       return {
+        form: {
+          checkIn: null,
+          checkOut: null
+        },
         ptPT: {
           night: 'Noite',
           nights: 'Noites',
@@ -186,6 +176,18 @@
           'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
         },
       };
+    },
+    methods: {
+      checkInChangedEvent(date) {
+        this.form.checkIn = date;
+        // eslint-disable-next-line no-console
+        console.log('checkInChanged', this.form.checkIn);
+      },
+      checkOutChangedEvent(date) {
+        this.form.checkOut = date;
+        // eslint-disable-next-line no-console
+        console.log('checkOutChanged', this.form.checkOut);
+      },
     }
   };
 
