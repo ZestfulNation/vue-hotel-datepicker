@@ -80,6 +80,7 @@
                 :checkIn='checkIn'
                 :checkOut='checkOut'
                 :currentDateStyle='currentDateStyle'
+                :price='getPrice(day)'
               )
         div(v-if='screenSize !== "desktop" && isOpen')
           .datepicker__week-row
@@ -120,6 +121,7 @@
                   :checkIn='checkIn'
                   :checkOut='checkOut'
                   :currentDateStyle='currentDateStyle'
+                  :price='getPrice(day)'
                 )
             .next--mobile(
               @click='renderNextMonth' type="button"
@@ -247,7 +249,14 @@
       displayClearButton: {
         default: true,
         type: Boolean,
-      }
+      },
+      defaultPrice: {
+        type: Number,
+      },
+      priceRanges: {
+        type: Array,
+        default: function () { return [] }
+      },
     },
 
     data() {
@@ -497,7 +506,19 @@
         sortedDates.sort((a, b) => a - b);
 
         this.sortedDisabledDates = sortedDates;
+      },
+
+    getPrice(day) {
+      let price = this.defaultPrice;
+      if (this.priceRanges) {
+        this.priceRanges.forEach(priceRange => {
+          if (day.date >= priceRange.startDate && day.date < priceRange.endDate) {
+            price = priceRange.pricePerNight;
+          }
+        });
       }
+      return price;
+    },
     },
 
     beforeMount() {
@@ -772,7 +793,6 @@
             margin: 0;
             border: 0;
             height: 40px;
-            padding-top: 14px;
 
             @include focusStyle();
 
@@ -1080,5 +1100,22 @@
         @include device($desktop) {
             display: none;
         }
+    }
+
+    .datepicker-day-number {
+        display: block;
+        padding: 3px 0 2px 0;
+        font-weight: bold;
+    }
+    .datepicker-day-number.price-disabled {
+        padding-top: 14px;
+    }
+    .datepicker-price {
+        display: block;
+        padding: 3px 0 2px 0;
+        font-size: 12px
+    }
+    .datepicker-price.price-disabled {
+        display: none;
     }
 </style>

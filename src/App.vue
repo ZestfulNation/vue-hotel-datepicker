@@ -163,6 +163,13 @@
         />
     </div>
 
+    <div class="box">
+        <h3>With prices</h3>
+        <DatePicker :defaultPrice="123"
+                    :priceRanges="priceRanges"
+        />
+    </div>
+
     </div>
   </div>
 </template>
@@ -177,6 +184,18 @@
 
     data() {
       return {
+        priceRanges: [
+          {
+            startDate: new Date(2020, 0, 5),
+            endDate: new Date(2020, 1, 23),
+            pricePerNight: 499
+          },
+          {
+            startDate: new Date(2019, 11, 20),
+            endDate: new Date(2020, 0, 6),
+            pricePerNight: 199
+          },
+        ],
         ptPT: {
           night: 'Noite',
           nights: 'Noites',

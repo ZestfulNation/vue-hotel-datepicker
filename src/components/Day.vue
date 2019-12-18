@@ -4,7 +4,7 @@
     .datepicker__month-day(
       @click.prevent.stop='dayClicked(date)'
       @keyup.enter.prevent.stop='dayClicked(date)'
-      v-text='dayNumber'
+      v-html='\'<span class="datepicker-day-number \' + disableDateClass() + \'">\' + dayNumber + \'</span><span class="datepicker-price \' + disableDateClass() + \'">\' + price + \'$</span>\''
       :class='dayClass'
       :style='isToday ? currentDateStyle : ""'
       :tabindex="tabIndex"
@@ -68,7 +68,10 @@ export default {
     },
     currentDateStyle:{
       required: true,
-    }
+    },
+    price: {
+      type: Number,
+    },
   },
 
   data() {
@@ -305,6 +308,10 @@ export default {
       else {
         return
       }
+    },
+
+    disableDateClass() {
+      return (this.isDisabled || !this.price) ? 'price-disabled' : '';
     },
   },
 
