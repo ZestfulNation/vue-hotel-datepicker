@@ -1,0 +1,26 @@
+/* =============================================================
+ * VARIABLES
+ * ============================================================*/
+
+$white: #fff;
+$black: #000;
+$gray: #424b53;
+$primary-text-color: #35343d;
+$lightest-gray: #f3f5f8;
+$primary-color: #00ca9d;
+$primary-color: $primary-color;
+$medium-gray: #999999;
+$light-gray: #d7d9e2;
+$dark-gray: #2d3047;
+$font-16: 16px;
+$font-14: 14px;
+$font-12: 12px;
+/* =============================================================
+  * RESPONSIVE LAYOUT HELPERS
+  * ============================================================*/
+
+$tablet: "(min-width: 480px) and (max-width: 767px)";
+$phone: "(max-width: 479px)";
+$desktop: "(min-width: 768px)";
+$up-to-tablet: "(max-width: 767px)";
+$extra-small-screen: "(max-width: 23em)";

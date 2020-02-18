@@ -1,84 +1,45 @@
 {
-	"name": "vue-hotel-datepicker",
-	"version": "2.7.6",
-	"description": "A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more",
-	"author": "krystalcampioni <hello@krystalcampioni.com>",
-	"license": "MIT",
-	"main": "dist/vue-hotel-datepicker.min.js",
-	"files": [
-		"dist"
-	],
-	"scripts": {
-		"dev": "webpack-dev-server --inline --hot --open --config build/webpack.dev.conf.js",
-		"build": "rimraf dist && webpack --progress --hide-modules --config build/webpack.prod.conf.js",
-		"lint": "eslint */*.vue */*.js --quiet",
-		"test": "ENV=test mocha-webpack --webpack-config build/webpack.prod.conf.js tests/unit --recursive --require tests/setup.js --reporter nyan --exit",
-		"publish": "npm build && npm publish"
-	},
-	"publishConfig": {
-		"registry": "https://registry.npmjs.org/"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/krystalcampioni/vue-hotel-datepicker"
-	},
-	"keywords": [
-		"vue",
-		"vuejs",
-		"date",
-		"dates",
-		"input",
-		"date input",
-		"datepicker",
-		"date picker",
-		"range",
-		"date range picker"
-	],
-	"bugs": {
-		"url": "https://github.com/krystalcampioni/vue-hotel-datepicker/issues"
-	},
-	"homepage": "https://github.com/krystalcampioni/vue-hotel-datepicker",
-	"devDependencies": {
-		"@vue/test-utils": "^1.0.0-beta.30",
-		"autoprefixer": "^7.2.6",
-		"babel-core": "^6.26.3",
-		"babel-eslint": "^8.2.6",
-		"babel-loader": "^7.1.5",
-		"babel-plugin-transform-runtime": "^6.23.0",
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-stage-2": "^6.24.1",
-		"babel-runtime": "^6.26.0",
-		"chai": "^4.2.0",
-		"css-loader": "0.28.11",
-		"eslint": "^4.19.1",
-		"eslint-plugin-html": "^3.2.2",
-		"extract-text-webpack-plugin": "^3.0.2",
-		"file-loader": "^1.1.11",
-		"html-webpack-plugin": "^2.30.1",
-		"jsdom": "^11.12.0",
-		"jsdom-global": "^3.0.2",
-		"mocha": "^4.1.0",
-		"mocha-webpack": "^0.7.0",
-		"node-sass": "^4.13.0",
-		"optimize-css-assets-webpack-plugin": "^3.2.1",
-		"postcss-cssnext": "^3.1.0",
-		"rimraf": "^2.7.1",
-		"sass-loader": "^6.0.7",
-		"style-loader": "^0.19.1",
-		"uglifyjs-webpack-plugin": "^0.4.6",
-		"url-loader": "^0.6.2",
-		"vue": "^2.6.11",
-		"vue-loader": "^13.7.3",
-		"vue-template-compiler": "^2.6.11",
-		"webpack": "^3.12.0",
-		"webpack-dev-server": "^2.11.5"
-	},
-	"dependencies": {
-		"cssnano": "^3.10.0",
-		"fecha": "^2.3.3",
-		"fstream": "1.0.12",
-		"lodash.throttle": "^4.1.1",
-		"pug": "^2.0.4",
-		"vue-on-click-outside": "^1.0.3"
-	}
+  "name": "vue-hotel-datepicker",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "fecha": "^3.0.3",
+    "lodash.throttle": "^4.1.1",
+    "vue": "^2.6.11",
+    "vue-on-click-outside": "^1.0.3"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-eslint": "^4.1.2",
+    "@vue/cli-plugin-unit-jest": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "lint-staged": "^9.5.0",
+    "node-sass": "^4.13.1",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
 }
