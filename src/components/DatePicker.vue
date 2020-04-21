@@ -821,6 +821,9 @@
             &--last-day-selected {
                 background: $primary-color;
                 color: $white;
+
+                cursor: pointer;
+                pointer-events: auto;
             }
 
             &--allowed-checkout {
