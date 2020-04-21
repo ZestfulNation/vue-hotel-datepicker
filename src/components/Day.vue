@@ -67,6 +67,7 @@ export default {
       type: String
     },
     currentDateStyle: {
+      type: [Object, null, String],
       required: true
     }
   },
@@ -99,10 +100,10 @@ export default {
       return this.tooltipMessage
         ? this.tooltipMessage
         : `${this.nightsCount} ${
-            this.nightsCount !== 1
-              ? this.options.i18n['nights']
-              : this.options.i18n['night']
-          }`;
+          this.nightsCount !== 1
+            ? this.options.i18n['nights']
+            : this.options.i18n['night']
+        }`;
     },
     showTooltip() {
       return (
@@ -198,9 +199,8 @@ export default {
         }
       } else if (!this.belongsToThisMonth) {
         return 'datepicker__month-day--hidden';
-      } else {
-        return 'datepicker__month-day--valid';
       }
+      return 'datepicker__month-day--valid';
     }
   },
 
@@ -243,6 +243,10 @@ export default {
     checkIn(date) {
       this.createAllowedCheckoutDays(date);
     }
+  },
+  beforeMount() {
+    this.checkIfDisabled();
+    this.checkIfHighlighted();
   },
 
   methods: {
@@ -308,8 +312,8 @@ export default {
         // If this day is equal any of the disabled dates
         (this.sortedDisabledDates
           ? this.sortedDisabledDates.some(
-              i => this.compareDay(i, this.date) == 0
-            )
+            i => this.compareDay(i, this.date) == 0
+          )
           : null) ||
         // Or is before the start date
         this.compareDay(this.date, this.options.startDate) == -1 ||
@@ -377,9 +381,5 @@ export default {
     }
   },
 
-  beforeMount() {
-    this.checkIfDisabled();
-    this.checkIfHighlighted();
-  }
 };
 </script>

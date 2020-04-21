@@ -5,8 +5,8 @@
   }
 }
 
-@mixin device($device-widths) {
-  @media screen and #{$device-widths} {
+@mixin device($widths) {
+  @media screen and #{$widths} {
     @content;
   }
 }

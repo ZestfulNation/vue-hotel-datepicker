@@ -130,41 +130,21 @@
 </template>
 
 <script>
-import throttle from "lodash.throttle";
-import { directive as onClickOutside } from "vue-on-click-outside";
-import fecha from "fecha";
+import throttle from 'lodash.throttle';
+import { directive as onClickOutside } from 'vue-on-click-outside';
+import fecha from 'fecha';
+import defaulti18n from '../i18n.js';
 
-import Day from "./Day.vue";
-import DateInput from "./DateInput.vue";
-import Helpers from "../helpers.js";
-
-const defaulti18n = {
-  night: "Night",
-  nights: "Nights",
-  "day-names": ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
-  "check-in": "Check-in",
-  "check-out": "Check-out",
-  "month-names": [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ]
-};
+import Day from './Day.vue';
+import DateInput from './DateInput.vue';
+import Helpers from '../helpers.js';
+import '../assets/scss/main.scss';
 
 export default {
-  name: "HotelDatePicker",
+  name: 'HotelDatePicker',
 
   directives: {
-    "on-click-outside": onClickOutside
+    'on-click-outside': onClickOutside
   },
 
   components: {
@@ -174,7 +154,8 @@ export default {
 
   props: {
     currentDateStyle: {
-      default: () => ({ border: "1px solid #00c690" })
+      type: [Object, null, String],
+      default: () => ({ border: '1px solid #00c690' })
     },
     value: {
       type: String
@@ -188,7 +169,7 @@ export default {
       type: Date
     },
     format: {
-      default: "YYYY-MM-DD",
+      default: 'YYYY-MM-DD',
       type: String
     },
     startDate: {
@@ -264,7 +245,7 @@ export default {
       type: Boolean
     },
     priceDefault: {
-      default: "",
+      default: '',
       type: [Number, String, null]
     },
     priceByDate: {
@@ -305,27 +286,27 @@ export default {
   watch: {
     isOpen(value) {
       if (!value) {
-        this.$emit("closed", this);
+        this.$emit('closed', this);
       }
 
-      if (this.screenSize !== "desktop") {
-        const bodyClassList = document.querySelector("body").classList;
+      if (this.screenSize !== 'desktop') {
+        const bodyClassList = document.querySelector('body').classList;
 
         if (value) {
-          bodyClassList.add("-overflow-hidden");
+          bodyClassList.add('-overflow-hidden');
           setTimeout(() => {
-            let swiperWrapper = document.getElementById("swiperWrapper");
-            let monthHeihgt = document.querySelector(".datepicker__month")
+            let swiperWrapper = document.getElementById('swiperWrapper');
+            let monthHeihgt = document.querySelector('.datepicker__month')
               .offsetHeight;
             swiperWrapper.scrollTop = this.activeMonthIndex * monthHeihgt;
           }, 100);
         } else {
-          bodyClassList.remove("-overflow-hidden");
+          bodyClassList.remove('-overflow-hidden');
         }
       }
     },
     checkIn(newDate) {
-      this.$emit("check-in-changed", newDate);
+      this.$emit('check-in-changed', newDate);
     },
     checkOut(newDate) {
       if (this.checkOut !== null && this.checkOut !== null) {
@@ -337,10 +318,70 @@ export default {
         this.isOpen = false;
       }
 
-      this.$emit("check-out-changed", newDate);
+      this.$emit('check-out-changed', newDate);
     }
   },
 
+  beforeMount() {
+    fecha.i18n = {
+      dayNames: this.i18n['day-names'],
+      dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
+      monthNames: this.i18n['month-names'],
+      monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
+      amPm: ['am', 'pm'],
+      // D is the day of the month, function returns something like...  3rd or 11th
+      DoFn: function(D) {
+        return (
+          D +
+          ['th', 'st', 'nd', 'rd'][
+            D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10
+          ]
+        );
+      }
+    };
+    if (
+      this.checkIn &&
+      (this.getMonthDiff(
+        this.getNextMonth(new Date(this.startDate)),
+        this.checkIn
+      ) > 0 ||
+        this.getMonthDiff(this.startDate, this.checkIn) > 0)
+    ) {
+      this.createMonth(new Date(this.startDate));
+      const count = this.getMonthDiff(this.startDate, this.checkIn);
+      let nextMonth = new Date(this.startDate);
+      for (let i = 0; i <= count; i++) {
+        let tempNextMonth = this.getNextMonth(nextMonth);
+        this.createMonth(tempNextMonth);
+        nextMonth = tempNextMonth;
+      }
+      if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
+        this.createMonth(this.getNextMonth(nextMonth));
+        this.activeMonthIndex = 1;
+      }
+      this.activeMonthIndex += count;
+    } else {
+      this.createMonth(new Date(this.startDate));
+      this.createMonth(this.getNextMonth(new Date(this.startDate)));
+    }
+    this.parseDisabledDates();
+  },
+
+  mounted() {
+    document.addEventListener('touchstart', this.handleTouchStart, false);
+    document.addEventListener('touchmove', this.handleTouchMove, false);
+    window.addEventListener('resize', this.handleWindowResize);
+
+    this.onElementHeightChange(document.body, () => {
+      this.emitHeighChangeEvent();
+    });
+  },
+
+  destroyed() {
+    window.removeEventListener('touchstart', this.handleTouchStart);
+    window.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('resize', this.handleWindowResize);
+  },
   methods: {
     ...Helpers,
 
@@ -348,16 +389,16 @@ export default {
       if (date) {
         return fecha.format(date, this.format);
       }
-      return "";
+      return '';
     },
 
     handleWindowResize() {
       if (window.innerWidth < 480) {
-        this.screenSize = "smartphone";
+        this.screenSize = 'smartphone';
       } else if (window.innerWidth >= 480 && window.innerWidth < 768) {
-        this.screenSize = "tablet";
+        this.screenSize = 'tablet';
       } else if (window.innerWidth >= 768) {
-        this.screenSize = "desktop";
+        this.screenSize = 'desktop';
       }
 
       return this.screenSize;
@@ -385,7 +426,7 @@ export default {
     },
 
     emitHeighChangeEvent() {
-      this.$emit("height-changed");
+      this.$emit('height-changed');
     },
 
     reRender() {
@@ -452,7 +493,7 @@ export default {
 
       let firstDayOfLastMonth;
 
-      if (this.screenSize !== "desktop") {
+      if (this.screenSize !== 'desktop') {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter(
           day => day.belongsToThisMonth === true
         );
@@ -464,8 +505,8 @@ export default {
 
       if (this.endDate !== Infinity) {
         if (
-          fecha.format(firstDayOfLastMonth[0].date, "YYYYMM") ==
-          fecha.format(new Date(this.endDate), "YYYYMM")
+          fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
+          fecha.format(new Date(this.endDate), 'YYYYMM')
         ) {
           return;
         }
@@ -485,13 +526,13 @@ export default {
     },
 
     getDay(date) {
-      return fecha.format(date, "D");
+      return fecha.format(date, 'D');
     },
 
     getMonth(date) {
       return (
-        this.i18n["month-names"][fecha.format(date, "M") - 1] +
-        (this.showYear ? fecha.format(date, " YYYY") : "")
+        this.i18n['month-names'][fecha.format(date, 'M') - 1] +
+        (this.showYear ? fecha.format(date, ' YYYY') : '')
       );
     },
 
@@ -542,74 +583,10 @@ export default {
       });
 
       return String(
-        typeof range === "object" ? range.price : this.priceDefault || ""
+        typeof range === 'object' ? range.price : this.priceDefault || ''
       );
     }
   },
 
-  beforeMount() {
-    fecha.i18n = {
-      dayNames: this.i18n["day-names"],
-      dayNamesShort: this.shortenString(this.i18n["day-names"], 3),
-      monthNames: this.i18n["month-names"],
-      monthNamesShort: this.shortenString(this.i18n["month-names"], 3),
-      amPm: ["am", "pm"],
-      // D is the day of the month, function returns something like...  3rd or 11th
-      DoFn: function(D) {
-        return (
-          D +
-          ["th", "st", "nd", "rd"][
-            D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10
-          ]
-        );
-      }
-    };
-    if (
-      this.checkIn &&
-      (this.getMonthDiff(
-        this.getNextMonth(new Date(this.startDate)),
-        this.checkIn
-      ) > 0 ||
-        this.getMonthDiff(this.startDate, this.checkIn) > 0)
-    ) {
-      this.createMonth(new Date(this.startDate));
-      const count = this.getMonthDiff(this.startDate, this.checkIn);
-      let nextMonth = new Date(this.startDate);
-      for (let i = 0; i <= count; i++) {
-        let tempNextMonth = this.getNextMonth(nextMonth);
-        this.createMonth(tempNextMonth);
-        nextMonth = tempNextMonth;
-      }
-      if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
-        this.createMonth(this.getNextMonth(nextMonth));
-        this.activeMonthIndex = 1;
-      }
-      this.activeMonthIndex += count;
-    } else {
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
-    }
-    this.parseDisabledDates();
-  },
-
-  mounted() {
-    document.addEventListener("touchstart", this.handleTouchStart, false);
-    document.addEventListener("touchmove", this.handleTouchMove, false);
-    window.addEventListener("resize", this.handleWindowResize);
-
-    this.onElementHeightChange(document.body, () => {
-      this.emitHeighChangeEvent();
-    });
-  },
-
-  destroyed() {
-    window.removeEventListener("touchstart", this.handleTouchStart);
-    window.removeEventListener("touchmove", this.handleTouchMove);
-    window.removeEventListener("resize", this.handleWindowResize);
-  }
 };
 </script>
-
-<style lang="scss">
-@import url(~/src/assets/css/main.css);
-</style>
