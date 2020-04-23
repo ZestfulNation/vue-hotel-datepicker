@@ -293,10 +293,11 @@
           }
         }
       },
-      checkIn(newDate) {
+      checkIn(newDate, oldDate) {
         this.$emit("check-in-changed", newDate)
+        
       },
-      checkOut(newDate) {
+      checkOut(newDate, oldDate) {
 
         if (this.checkOut !== null && this.checkOut !== null) {
           this.hoveringDate = null;

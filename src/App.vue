@@ -163,6 +163,27 @@
         />
     </div>
 
+
+
+    <div class="box">
+        <h3>Event CheckIn</h3>
+        <DatePicker
+            :i18n="{ night: 'Night',
+                      nights: 'Nights',
+                      'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                      'check-in': 'Check-in',
+                      'check-out': 'Check-Out',
+                      'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    }"
+              v-on:check-in-changed="checkInChanged($event)"
+              v-on:check-out-changed="checkOutChanged($event)"
+        />
+
+        new Check In Date : {{newCheckInDate}} <br/>
+        new Check Out Date : {{newCheckOutDate}}
+
+    </div>
+
     </div>
   </div>
 </template>
@@ -185,7 +206,18 @@
           'check-out': 'Partida',
           'month-names': ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
         },
+        newCheckInDate: null,
+        newCheckOutDate: null,
+
       };
+    },
+    methods: {
+      checkInChanged(newDate){
+        this.newCheckInDate = newDate
+      },
+      checkOutChanged(newDate){
+        this.newCheckOutDate = newDate
+      }
     }
   };
 
