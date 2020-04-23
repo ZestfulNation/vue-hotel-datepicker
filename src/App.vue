@@ -175,7 +175,7 @@
                       'check-out': 'Check-Out',
                       'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     }"
-              v-on:check-in-changed="checkInchanged($event)"
+              v-on:check-in-changed="checkInChanged($event)"
               v-on:check-out-changed="checkOutChanged($event)"
         />
 
@@ -212,7 +212,7 @@
       };
     },
     methods: {
-      checkInchanged(newDate){
+      checkInChanged(newDate){
         this.newCheckInDate = newDate
       },
       checkOutChanged(newDate){
