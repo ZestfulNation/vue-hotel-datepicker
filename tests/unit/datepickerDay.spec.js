@@ -1,57 +1,69 @@
-import { shallow } from 'vue-test-utils';
-import { expect } from 'chai';
+import { shallowMount } from "@vue/test-utils";
+import { expect } from "chai";
 
-import Day from '@/components/Day';
+import Day from "@/components/Day.vue";
 
-describe('Datepicker Day', () => {
+describe("Datepicker Day", () => {
   let wrapper;
 
-  before( () => {
-    wrapper = shallow(Day, {
+  beforeEach(() => {
+    wrapper = shallowMount(Day, {
       propsData: {
-        allowedCheckoutDays: [],
         activeMonthIndex: 0,
+        allowedCheckoutDays: [],
         belongsToThisMonth: true,
         checkIn: null,
         checkOut: null,
-        date: '2017-09-30T22:00:00.000Z',
-        dayNumber:'1',
-        hoveringDate:null,
-        hoveringTooltip:true,
-        mounseOverFunction:undefined,
-        nextDisabledDate:null,
+        currentDateStyle: { border: "1px solid #00c690" },
+        date: new Date(),
+        dayNumber: "1",
+        hoveringDate: null,
+        hoveringTooltip: true,
+        isOpen: true,
+        mounseOverFunction: undefined,
+        nextDisabledDate: null,
         options: {
           allowedRanges: [],
           disabledDates: [],
           disabledDaysOfWeek: [],
-          endDate:'2017-12-30T23:00:00.000Z',
-          format:'YYYY-MM-DD',
-          hoveringTooltip:true,
-          maxNights:null,
-          minNights:3,
-          startDate:'2017-10-05T15:16:50.281Z',
-          value:undefined
+          endDate: "2017-12-30T23:00:00.000Z",
+          format: "YYYY-MM-DD",
+          hoveringTooltip: true,
+          maxNights: null,
+          minNights: 3,
+          startDate: "2017-10-05T15:16:50.281Z",
+          value: undefined
         }
       }
     });
   });
 
-  describe('compareDay', () => {
-    it('should return return -1 if the first day is before the second day', () => {
+  describe("isDateLessOrEquals", () => {
+    it("should return a boolean when comparing two dates", () => {
       expect(
-        wrapper.vm.compareDay('10-10-2017','10-12-2017')
-      ).to.equal(-1);
-    });
-    it('should return return 1 if the first day is after the second day', () => {
+        wrapper.vm.isDateLessOrEquals(
+          new Date("12-10-2017"),
+          new Date("10-10-2017")
+        )
+      ).to.equal(false);
       expect(
-        wrapper.vm.compareDay('10-12-2017','10-10-2017')
-      ).to.equal(1);
-    });
-    it('should return return 0 if the days are the same', () => {
-      expect(
-        wrapper.vm.compareDay('10-12-2017','10-12-2017')
-      ).to.equal(0);
+        wrapper.vm.isDateLessOrEquals(
+          new Date("12-10-2017"),
+          new Date("12-15-2017")
+        )
+      ).to.equal(true);
     });
   });
 
+  describe("compareDay", () => {
+    it("should return return -1 if the first day is before the second day", () => {
+      expect(wrapper.vm.compareDay("10-10-2017", "10-12-2017")).to.equal(-1);
+    });
+    it("should return return 1 if the first day is after the second day", () => {
+      expect(wrapper.vm.compareDay("10-12-2017", "10-10-2017")).to.equal(1);
+    });
+    it("should return return 0 if the days are the same", () => {
+      expect(wrapper.vm.compareDay("10-12-2017", "10-12-2017")).to.equal(0);
+    });
+  });
 });
