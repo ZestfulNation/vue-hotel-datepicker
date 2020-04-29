@@ -4,9 +4,36 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# vue-hotel-datepicker-2 forked https://github.com/krystalcampioni/vue-hotel-datepicker
-I have forked this repo because nobody works on it, I refacto the html code and remove some useless dependancies | i use vue-cli
----
+# vue-hotel-datepicker-new
+
+------------
+
+## What I did:
+https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=true
+
+------------
+
+* forked https://github.com/krystalcampioni/vue-hotel-datepicker
+* Use vue-cli
+* Remove the pug html, use html
+* Remove some useless dependencies
+* Rewrite code
+  * Add eslint airbnb + prettier
+  * Remove useless condition like empty if or else
+  * Add return for all computed
+  * Add a bind key on `v-for`
+  * Rewrite jest test
+
+------------
+
+## What I will improve
+
+------------
+
+project: https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=true
+
+------------
+
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localisation support and more.
 
 
