@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# vue-hotel-datepicker-new
+# vue-hotel-datepicker@2
 
 ------------
 
@@ -23,7 +23,11 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   * Add return for all computed
   * Add a bind key on `v-for`
   * Rewrite jest test
+* Add emit when clearSelection
+* Remove querySelector, use refs
+* Fix bug: impossible to open the calendar when clearselection is trigger
 * Allows to have half a day, if you have check in at noon and checkout before noon
+
 ------------
 
 ## What I will improve
