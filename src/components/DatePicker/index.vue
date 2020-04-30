@@ -332,6 +332,11 @@ export default {
       type: Boolean
     }
   },
+  asyncData() {
+    return {
+      isClient: false
+    };
+  },
   data() {
     return {
       hoveringDate: null,
@@ -359,7 +364,7 @@ export default {
   },
   watch: {
     isOpen(value) {
-      if (this.screenSize !== "desktop") {
+      if (this.screenSize !== "desktop" && this.isClient) {
         const bodyClassList = document.querySelector("body").classList;
 
         if (value) {
@@ -443,6 +448,7 @@ export default {
     this.parseDisabledDates();
   },
   mounted() {
+    this.isClient = true;
     document.addEventListener("touchstart", this.handleTouchStart, false);
     document.addEventListener("touchmove", this.handleTouchMove, false);
     window.addEventListener("resize", this.handleWindowResize);

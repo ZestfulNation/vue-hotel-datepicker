@@ -1,13 +1,32 @@
 {
-  "name": "vue-hotel-datepicker-2",
+  "name": "vue-hotel-datepicker2",
   "version": "0.1.0",
-  "private": true,
+  "author": "Joffrey Berrier - Origin created by krystalcampioni",
+  "description": "Vue date range picker component fork of vue-hotel-datepicker create by krystalcampioni",
+  "main": "dist/vueHotelDatepicker2.common.js",
+  "repository": {
+    "url": "git+https://github.com/joffreyBerrier/vue-hotel-datepicker",
+    "type": "git"
+  },
+  "keywords": [
+    "vue",
+    "vue-datepicker",
+    "vue-hotel-datepicker",
+    "vue-date-range"
+  ],
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "build-package": "vue-cli-service build --target lib --name vueHotelDatepicker2 ./src/index.js",
     "lint": "vue-cli-service lint"
   },
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json"
+  ],
   "dependencies": {
     "@vue/eslint-config-airbnb": "^5.0.2",
     "chai": "^4.2.0",
