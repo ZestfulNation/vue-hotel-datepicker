@@ -2,19 +2,20 @@
   <div>
     <div
       class="datepicker__tooltip"
-      v-if="showTooltip &amp;&amp; this.options.hoveringTooltip"
       v-html="tooltipMessageDisplay"
+      v-if="showTooltip && this.options.hoveringTooltip"
     ></div>
     <div
       class="datepicker__month-day"
       @click.prevent.stop="dayClicked(date)"
       @keyup.enter.prevent.stop="dayClicked(date)"
-      v-text="dayNumber"
       :class="dayClass"
       :style="isToday ? currentDateStyle : ''"
       :tabindex="tabIndex"
       ref="day"
-    ></div>
+    >
+      {{ dayNumber }}
+    </div>
   </div>
 </template>
 
@@ -29,8 +30,13 @@ export default {
       type: Boolean,
       required: true
     },
+    checkIncheckOutHalfDay: {
+      type: Object,
+      default: () => {}
+    },
     sortedDisabledDates: {
-      type: Array
+      type: Array,
+      default: () => []
     },
     options: {
       type: Object
@@ -206,6 +212,24 @@ export default {
         }
       } else if (!this.belongsToThisMonth) {
         return "datepicker__month-day--hidden";
+      }
+
+      if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
+        const keyDate = fecha.format(this.date, "YYYY-MM-DD");
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkIn
+        ) {
+          return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
+        }
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkOut
+        ) {
+          return "datepicker__month-day--halfCheckOut datepicker__month-day--valid";
+        }
       }
 
       return "datepicker__month-day--valid";

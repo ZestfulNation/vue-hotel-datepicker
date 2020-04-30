@@ -96,8 +96,13 @@ export default {
     return nextMonth;
   },
   swipeAfterScroll(direction) {
-    if (this.screenSize !== "desktop" && this.isOpen && this.isClient) {
-      const swiperWrapper = document.getElementById("swiperWrapper");
+    if (
+      this.screenSize !== "desktop" &&
+      this.$refs &&
+      this.$refs.swiperWrapper &&
+      this.isOpen
+    ) {
+      const { swiperWrapper } = this.$refs;
 
       // If wrapper has vertical scroll
       if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {

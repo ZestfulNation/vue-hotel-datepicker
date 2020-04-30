@@ -97,7 +97,12 @@
           ></span>
         </div>
         <div class="datepicker__months" v-if="screenSize == 'desktop'">
-          <div class="datepicker__month" v-for="n in [0, 1]" :key="n">
+          <div
+            ref="datepickerMonth"
+            class="datepicker__month"
+            v-for="n in [0, 1]"
+            :key="n"
+          >
             <p class="datepicker__month-name">
               {{ getMonth(months[activeMonthIndex + n].days[15].date) }}
             </p>
@@ -117,20 +122,21 @@
               @mouseover="hoveringDate = day.date"
             >
               <Day
-                :is-open="isOpen"
-                :options="$props"
-                @day-clicked="handleDayClick($event)"
-                :date="day.date"
-                :sortedDisabledDates="sortedDisabledDates"
-                :nextDisabledDate="nextDisabledDate"
                 :activeMonthIndex="activeMonthIndex"
-                :hoveringDate="hoveringDate"
-                :tooltipMessage="tooltipMessage"
-                :dayNumber="getDay(day.date)"
                 :belongsToThisMonth="day.belongsToThisMonth"
                 :checkIn="checkIn"
+                :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
                 :currentDateStyle="currentDateStyle"
+                :date="day.date"
+                :dayNumber="getDay(day.date)"
+                :hoveringDate="hoveringDate"
+                :is-open="isOpen"
+                :nextDisabledDate="nextDisabledDate"
+                :options="$props"
+                :sortedDisabledDates="sortedDisabledDates"
+                :tooltipMessage="tooltipMessage"
+                @day-clicked="handleDayClick($event)"
               ></Day>
             </div>
           </div>
@@ -147,8 +153,17 @@
               {{ dayName }}
             </div>
           </div>
-          <div class="datepicker__months" id="swiperWrapper">
-            <div class="datepicker__month" v-for="(a, n) in months" :key="n">
+          <div
+            class="datepicker__months"
+            id="swiperWrapper"
+            ref="swiperWrapper"
+          >
+            <div
+              ref="datepickerMonth"
+              class="datepicker__month"
+              v-for="(a, n) in months"
+              :key="n"
+            >
               <p class="datepicker__month-name">
                 {{ getMonth(months[n].days[15].date) }}
               </p>
@@ -171,20 +186,21 @@
                 v-bind:key="index"
               >
                 <Day
-                  :is-open="isOpen"
-                  :options="$props"
-                  @day-clicked="handleDayClick($event)"
-                  :date="day.date"
-                  :sortedDisabledDates="sortedDisabledDates"
-                  :nextDisabledDate="nextDisabledDate"
                   :activeMonthIndex="activeMonthIndex"
-                  :hoveringDate="hoveringDate"
-                  :tooltipMessage="tooltipMessage"
-                  :dayNumber="getDay(day.date)"
                   :belongsToThisMonth="day.belongsToThisMonth"
                   :checkIn="checkIn"
+                  :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
                   :currentDateStyle="currentDateStyle"
+                  :date="day.date"
+                  :dayNumber="getDay(day.date)"
+                  :hoveringDate="hoveringDate"
+                  :is-open="isOpen"
+                  :nextDisabledDate="nextDisabledDate"
+                  :options="$props"
+                  :sortedDisabledDates="sortedDisabledDates"
+                  :tooltipMessage="tooltipMessage"
+                  @day-clicked="handleDayClick($event)"
                 ></Day>
               </div>
             </div>
@@ -281,6 +297,10 @@ export default {
       default: null,
       type: Number
     },
+    halfDay: {
+      type: Boolean,
+      default: false
+    },
     disabledDates: {
       default() {
         return [];
@@ -332,16 +352,12 @@ export default {
       type: Boolean
     }
   },
-  asyncData() {
-    return {
-      isClient: false
-    };
-  },
   data() {
     return {
       hoveringDate: null,
       checkIn: this.startingDateValue,
       checkOut: this.endingDateValue,
+      checkIncheckOutHalfDay: {},
       months: [],
       activeMonthIndex: 0,
       nextDisabledDate: null,
@@ -352,7 +368,7 @@ export default {
       xUp: null,
       yUp: null,
       sortedDisabledDates: null,
-      screenSize: this.handleWindowResize()
+      screenSize: null
     };
   },
   computed: {
@@ -364,20 +380,21 @@ export default {
   },
   watch: {
     isOpen(value) {
-      if (this.screenSize !== "desktop" && this.isClient) {
-        const bodyClassList = document.querySelector("body").classList;
+      if (this.screenSize !== "desktop") {
+        const body = document.querySelector("body");
 
         if (value) {
-          bodyClassList.add("-overflow-hidden");
-          setTimeout(() => {
-            const swiperWrapper = document.getElementById("swiperWrapper");
-            const monthHeihgt = document.querySelector(".datepicker__month")
-              .offsetHeight;
+          body.style.overflow = "hidden";
+          this.$nextTick(() => {
+            if (this.$refs) {
+              const { swiperWrapper } = this.$refs;
+              const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight;
 
-            swiperWrapper.scrollTop = this.activeMonthIndex * monthHeihgt;
-          }, 100);
+              swiperWrapper.scrollTop = this.activeMonthIndex * monthHeihgt;
+            }
+          });
         } else {
-          bodyClassList.remove("-overflow-hidden");
+          body.style.overflow = "";
         }
       }
     },
@@ -448,7 +465,7 @@ export default {
     this.parseDisabledDates();
   },
   mounted() {
-    this.isClient = true;
+    this.handleWindowResize();
     document.addEventListener("touchstart", this.handleTouchStart, false);
     document.addEventListener("touchmove", this.handleTouchMove, false);
     window.addEventListener("resize", this.handleWindowResize);
@@ -470,6 +487,12 @@ export default {
       }
 
       return "";
+    },
+    getDayDiff(d1, d2) {
+      const t2 = new Date(d2).getTime();
+      const t1 = new Date(d1).getTime();
+
+      return parseInt((t2 - t1) / (24 * 3600 * 1000), 10);
     },
     handleWindowResize() {
       if (window.innerWidth < 480) {
@@ -520,6 +543,7 @@ export default {
       this.show = true;
       this.parseDisabledDates();
       this.reRender();
+      this.$emit("clear-selection");
     },
     hideDatepicker() {
       this.isOpen = false;
@@ -530,8 +554,12 @@ export default {
     toggleDatepicker() {
       this.isOpen = !this.isOpen;
     },
-    clickOutside() {
-      if (this.closeDatepickerOnClickOutside) {
+    clickOutside(e) {
+      // hide datePicker when event is outside
+      if (
+        this.closeDatepickerOnClickOutside &&
+        e.target.dataset.qa !== "datepickerInput"
+      ) {
         this.hideDatepicker();
       }
     },
@@ -620,14 +648,55 @@ export default {
       this.months.push(month);
     },
     parseDisabledDates() {
-      const sortedDates = [];
+      let sortedDates = [];
+      const checkIncheckOutHalfDay = {};
 
       for (let i = 0; i < this.disabledDates.length; i++) {
-        sortedDates[i] = new Date(this.disabledDates[i]);
+        const newDate = this.disabledDates[i];
+
+        if (this.halfDay) {
+          const newDateIncrementOne = this.disabledDates[i + 1];
+
+          if (i === 0) {
+            checkIncheckOutHalfDay[newDate] = {
+              checkIn: true
+            };
+          }
+
+          if (
+            this.disabledDates[i + 1] &&
+            this.getDayDiff(newDate, newDateIncrementOne) > 1
+          ) {
+            checkIncheckOutHalfDay[newDate] = {
+              checkOut: true
+            };
+            checkIncheckOutHalfDay[newDateIncrementOne] = {
+              checkIn: true
+            };
+          }
+
+          if (i === this.disabledDates.length - 1) {
+            checkIncheckOutHalfDay[
+              this.disabledDates[this.disabledDates.length - 1]
+            ] = {
+              checkOut: true
+            };
+          }
+        }
+
+        sortedDates[i] = this.disabledDates[i];
+      }
+
+      if (this.halfDay) {
+        const halfDays = Object.keys(checkIncheckOutHalfDay);
+
+        sortedDates = sortedDates.filter(date => !halfDays.includes(date));
+        sortedDates.map(date => new Date(date));
       }
 
       sortedDates.sort((a, b) => a - b);
 
+      this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
       this.sortedDisabledDates = sortedDates;
     }
   }

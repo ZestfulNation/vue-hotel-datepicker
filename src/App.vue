@@ -3,8 +3,20 @@
     <h1>Vue Hotel datepicker new</h1>
     <div>
       <div class="box">
-        <h3>New one</h3>
-        <DatePicker :minNights="0" />
+        <h3>Half day, If you have check in at noon and checkout before noon</h3>
+        <DatePicker
+          :minNights="0"
+          :halfDay="true"
+          :disabledDates="[
+            '2020-05-01',
+            '2020-05-02',
+            '2020-05-03',
+            '2020-05-04',
+            '2020-05-06',
+            '2020-05-07',
+            '2020-05-08'
+          ]"
+        />
       </div>
       <div class="box">
         <h3>Allow check-in and check-out on the same day</h3>

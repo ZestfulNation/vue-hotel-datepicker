@@ -10,6 +10,7 @@ $primary-color: #000000;
 $primary-color: $primary-color;
 $medium-gray: #424b53;
 $light-gray: #d7d9e2;
+$disabledBg: #f5f7f8;
 $dark-gray: #2d3047;
 $box-shadow: 0 0 10px 3px rgba(red, .4);
 
@@ -48,17 +49,19 @@ $extra-small-screen: '(max-width: 23em)';
   position: relative;
   width: calc(100% / 7);
   float: left;
+
   @include device($desktop) {
     cursor: pointer;
   }
 }
 
 .datepicker__wrapper {
-*,
-*::before,
-*::after {
+
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
-}
+  }
 }
 
 /* =============================================================
@@ -78,446 +81,476 @@ $extra-small-screen: '(max-width: 23em)';
   z-index: 999;
 
   button.next--mobile {
-      background: none;
-      border: 1px solid $light-gray;
-      float: none;
-      height: 50px;
-      width: 100%;
-      position: relative;
-      background-position: center;
-      appearance: none;
-      overflow: hidden;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      outline: none;
-      box-shadow: 0 5px 30px 10px rgba($black, .08);
-      background: white;
+    background: none;
+    border: 1px solid $light-gray;
+    float: none;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    background-position: center;
+    appearance: none;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    outline: none;
+    box-shadow: 0 5px 30px 10px rgba($black, .08);
+    background: white;
 
-      &:after {
-          background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
-          transform: rotate(90deg);
-          content: "";
-          position: absolute;
-          width: 200%;
-          height: 200%;
-          top: -50%;
-          left: -50%;
-      }
+    &:after {
+      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+      transform: rotate(90deg);
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
   }
 
   &--closed {
-      box-shadow: 0 15px 30px 10px rgba($black, 0);
-      max-height: 0;
+    box-shadow: 0 15px 30px 10px rgba($black, 0);
+    max-height: 0;
   }
 
   &--open {
-      box-shadow: 0 15px 30px 10px rgba($black, .08);
-      max-height: 900px;
+    box-shadow: 0 15px 30px 10px rgba($black, .08);
+    max-height: 900px;
 
-      @include device($up-to-tablet) {
-          box-shadow: none;
-          height: 100%;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          -webkit-overflow-scrolling: touch !important;
-          position: fixed;
-          top: 0;
-          width: 100%;
-      }
+    @include device($up-to-tablet) {
+      box-shadow: none;
+      height: 100%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-overflow-scrolling: touch !important;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
   }
 
   &__wrapper {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      height: 48px;
-      background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 48px;
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
   }
 
   &__input {
-      background: transparent;
-      height: 48px;
+    background: transparent;
+    height: 48px;
+    color: $primary-text-color;
+    font-size: 12px;
+    outline: none;
+    padding: 4px 30px 2px;
+    width: 100%;
+    word-spacing: 5px;
+    border: 0;
+
+    @include focusStyle();
+
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder,
+    &:-moz-placeholder {
       color: $primary-text-color;
-      font-size: 12px;
-      outline: none;
-      padding: 4px 30px 2px;
-      width: 100%;
-      word-spacing: 5px;
-      border: 0;
-
-      @include focusStyle();
-
-      &::-webkit-input-placeholder,
-      &::-moz-placeholder,
-      &:-ms-input-placeholder,
-      &:-moz-placeholder {
-          color: $primary-text-color;
-      }
+    }
   }
 
   &__dummy-wrapper {
-      border: solid 1px $light-gray;
-      cursor: pointer;
-      display: block;
-      float: left;
-      width: 100%;
-      height: 100%;
+    border: solid 1px $light-gray;
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100%;
 
-      &--no-border.datepicker__dummy-wrapper {
-          margin-top: 15px;
-          border: 0;
-      }
+    &--no-border.datepicker__dummy-wrapper {
+      margin-top: 15px;
+      border: 0;
+    }
 
-      &--is-active {
-          border: 1px solid $primary-color;
-      }
+    &--is-active {
+      border: 1px solid $primary-color;
+    }
   }
 
   &__input {
-      color: $primary-text-color;
-      padding-top: 0;
-      font-size: $font-small;
-      float: left;
-      height: 48px;
-      line-height: 48px;
+    color: $primary-text-color;
+    padding-top: 0;
+    font-size: $font-small;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    text-align: left;
+    text-indent: 5px;
+    width: calc(50% + 4px);
+
+    @include device($phone) {
+      text-indent: 0;
+      text-align: center;
+    }
+
+    &:first-child {
+      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+      width: calc(50% - 4px);
+      text-indent: 20px;
+    }
+
+    &--is-active {
+      color: $primary-color;
+    }
+
+    &--is-active::placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active::-moz-placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active:-ms-input-placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active:-moz-placeholder {
+      color: $primary-color;
+    }
+
+    &--single-date:first-child {
+      width: 100%;
+      background: none;
       text-align: left;
-      text-indent: 5px;
-      width: calc(50% + 4px);
-
-      @include device($phone) {
-        text-indent: 0;
-        text-align: center;
-      }
-
-      &:first-child {
-          background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
-          width: calc(50% - 4px);
-          text-indent: 20px;
-      }
-
-      &--is-active {
-          color: $primary-color;
-      }
-      &--is-active::placeholder {
-          color: $primary-color;
-      }
-      &--is-active::-moz-placeholder {
-          color: $primary-color;
-      }
-      &--is-active:-ms-input-placeholder {
-          color: $primary-color;
-      }
-      &--is-active:-moz-placeholder {
-          color: $primary-color;
-      }
-      &--single-date:first-child {
-          width: 100%;
-          background: none;
-          text-align: left;
-      }
+    }
   }
 
   &__month-day {
-      visibility: visible;
-      text-align: center;
-      margin: 0;
-      border: 0;
-      height: 40px;
-      padding-top: 14px;
+    visibility: visible;
+    text-align: center;
+    margin: 0;
+    border: 0;
+    height: 40px;
+    padding-top: 14px;
 
-      @include focusStyle();
+    @include focusStyle();
 
-      &--invalid-range {
-        background-color: rgba($primary-color, .3);
-        color: $lightest-gray;
-        cursor: not-allowed;
-        position: relative;
-      }
+    &--invalid-range {
+      background-color: rgba($primary-color, .3);
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
 
-      &--invalid {
-        color: $lightest-gray;
-        cursor: not-allowed;
-      }
+    &--invalid {
+      color: $lightest-gray;
+      cursor: not-allowed;
+    }
 
-      &--valid:hover,
-      &--allowed-checkout:hover {
-        background-color: $bgValidHoverDate;
-        color: $colorValidHoverDate;
-        z-index: 1;
-        position: relative;
-      }
+    &--valid:hover,
+    &--allowed-checkout:hover {
+      background-color: $bgValidHoverDate;
+      color: $colorValidHoverDate;
+      z-index: 1;
+      position: relative;
+    }
 
-      &--disabled {
-        opacity: 0.25;
-        cursor: not-allowed;
-        pointer-events: none;
-        position: relative;
-      }
-
-      &--selected {
-        background-color: rgba($primary-color, .5);
-        color: $white;
-
-        &:hover {
-          background-color: $bgRollActiveDage;
-          color: $colorRollActiveDage;
-          z-index: 1;
-          position: relative;
-        }
-      }
-
-      &--first-day-selected,
-      &--last-day-selected {
-          background: $primary-color;
-          color: $white;
-
-          cursor: pointer;
-          pointer-events: auto;
-      }
-
-      &--allowed-checkout {
-          color: $medium-gray;
-      }
-
-      &--out-of-range {
-          color: $lightest-gray;
-          cursor: not-allowed;
-          position: relative;
-          pointer-events: none;
-      }
-
-      &--valid {
-          cursor: pointer;
-          color: $medium-gray;
-      }
-
-      &--hidden {
-          opacity: 0.25;
-          pointer-events: none;
-          color: $white;
-      }
-  }
-
-  &__month-button {
-      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
-      cursor: pointer;
-      display: inline-block;
-      height: 60px;
-      width: 60px;
-
-      @include focusStyle();
-
-      &--prev {
-          transform: rotateY(180deg);
-      }
-
-      &--next {
-          float: right;
-      }
-
-      &--locked {
-          opacity: .2;
-          cursor: not-allowed;
-          pointer-events: none;
-      }
-  }
-
-  &__inner {
-      padding: 20px;
-      float: left;
-
-      @include device($up-to-tablet) {
-          padding: 0;
-      }
-  }
-
-  &__months {
-      @include device($desktop) {
-          width: 650px;
-      }
-
-      @include device($up-to-tablet) {
-          margin-top: 92px;
-          height: calc(100% - 92px);
-          position: absolute;
-          left: 0;
-          top: 0;
-          overflow: scroll;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-      }
-
-      &::before {
-          background: $light-gray;
-          bottom: 0;
-          content: '';
-          display: block;
-          left: 50%;
-          position: absolute;
-          top: 0;
-          width: 1px;
-
-          @include device($up-to-tablet) {
-              display: none;
-          }
-      }
-  }
-
-  &__month {
-      font-size: 12px;
-      float: left;
-      width: 50%;
-      padding-right: 10px;
-
-      @include device($up-to-tablet) {
-          width: 100%;
-          padding-right: 0;
-          padding-top: 60px;
-
-          &:last-of-type {
-              margin-bottom: 65px;
-          }
-      }
-
-      @include device($desktop) {
-          &:last-of-type {
-              padding-right: 0;
-              padding-left: 10px;
-          }
-      }
-  }
-
-  &__month-caption {
-      height: 2.5em;
-      vertical-align: middle;
-  }
-
-  &__month-name {
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: -40px;
-      padding-bottom: 17px;
+    &--disabled {
+      opacity: 1;
+      background: $disabledBg;
+      cursor: not-allowed;
       pointer-events: none;
-      text-align: center;
+      position: relative;
+    }
 
-      @include device($up-to-tablet) {
-          margin-top: -25px;
-          margin-bottom: 0;
-          position: absolute;
-          width: 100%;
-      }
-  }
-
-  &__week-days {
-      height: 2em;
-      vertical-align: middle;
-  }
-
-  &__week-row {
-      border-bottom: 5px solid $white;
-      height: 38px;
-
-      @include device($up-to-tablet) {
-          box-shadow: 0 13px 18px -8px rgba($black, .07);
-          height: 25px;
-          left: 0;
-          top: 65px;
-          position: absolute;
-          width: 100%;
-      }
-  }
-
-  &__week-name {
-      width: calc(100% / 7);
-      float: left;
-      font-size: 12px;
-      font-weight: 400;
-      color: $medium-gray;
-      text-align: center;
-  }
-
-  &__close-button {
-      appearance: none;
-      background: transparent;
-      border: 0;
-      color: $primary-color;
-      cursor: pointer;
-      font-size: 21px;
-      font-weight: bold;
-      margin-top: 0;
-      outline: 0;
-      z-index: 10000;
-      position: fixed;
-      left: 7px;
-      top: 5px;
-      transform: rotate(45deg);
-  }
-
-  &__clear-button {
-      appearance: none;
-      background: transparent;
-      border: 0;
-      cursor: pointer;
-      font-size: 25px;
-      font-weight: bold;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 40px;
-
-      svg {
-        fill: none;
-        stroke-linecap: round;
-        stroke-width: 8px;
-        stroke: $medium-gray;
-        width: 20px;
-        width: 14px;
+    &--halfCheckIn,
+    &--halfCheckOut {
+      position: relative;
+      overflow: hidden;
+      &:before {
+        content: '';
         position: absolute;
         top: 50%;
         left: 50%;
+        -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+        content: '';
+        z-index: -1;
+        height: 0;
+        width: 0;
+        border-bottom: 100px solid $disabledBg;
+        border-left: 100px solid transparent;
       }
+    }
 
-      @include focusStyle();
+    &--halfCheckOut {
+      &:before {
+        border-top: 100px solid $disabledBg;
+        border-bottom: 0;
+        border-left: 0;
+        border-right: 100px solid transparent;
+      }
+    }
+
+    &--selected {
+      background-color: rgba($primary-color, .5);
+      color: $white;
+
+      &:hover {
+        background-color: $bgRollActiveDage;
+        color: $colorRollActiveDage;
+        z-index: 1;
+        position: relative;
+      }
+    }
+
+    &--first-day-selected,
+    &--last-day-selected {
+      background: $primary-color;
+      color: $white;
+
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    &--allowed-checkout {
+      color: $medium-gray;
+    }
+
+    &--out-of-range {
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+      pointer-events: none;
+    }
+
+    &--valid {
+      cursor: pointer;
+      color: $medium-gray;
+    }
+
+    &--hidden {
+      opacity: 0.25;
+      pointer-events: none;
+      color: $white;
+    }
+  }
+
+  &__month-button {
+    background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
+    cursor: pointer;
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+
+    @include focusStyle();
+
+    &--prev {
+      transform: rotateY(180deg);
+    }
+
+    &--next {
+      float: right;
+    }
+
+    &--locked {
+      opacity: .2;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__inner {
+    padding: 20px;
+    float: left;
+
+    @include device($up-to-tablet) {
+      padding: 0;
+    }
+  }
+
+  &__months {
+    @include device($desktop) {
+      width: 650px;
+    }
+
+    @include device($up-to-tablet) {
+      margin-top: 92px;
+      height: calc(100% - 92px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: scroll;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    &::before {
+      background: $light-gray;
+      bottom: 0;
+      content: '';
+      display: block;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      width: 1px;
+
+      @include device($up-to-tablet) {
+        display: none;
+      }
+    }
+  }
+
+  &__month {
+    font-size: 12px;
+    float: left;
+    width: 50%;
+    padding-right: 10px;
+
+    @include device($up-to-tablet) {
+      width: 100%;
+      padding-right: 0;
+      padding-top: 60px;
+
+      &:last-of-type {
+        margin-bottom: 65px;
+      }
+    }
+
+    @include device($desktop) {
+      &:last-of-type {
+        padding-right: 0;
+        padding-left: 10px;
+      }
+    }
+  }
+
+  &__month-caption {
+    height: 2.5em;
+    vertical-align: middle;
+  }
+
+  &__month-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: -40px;
+    padding-bottom: 17px;
+    pointer-events: none;
+    text-align: center;
+
+    @include device($up-to-tablet) {
+      margin-top: -25px;
+      margin-bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__week-days {
+    height: 2em;
+    vertical-align: middle;
+  }
+
+  &__week-row {
+    border-bottom: 5px solid $white;
+    height: 38px;
+
+    @include device($up-to-tablet) {
+      box-shadow: 0 13px 18px -8px rgba($black, .07);
+      height: 25px;
+      left: 0;
+      top: 65px;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__week-name {
+    width: calc(100% / 7);
+    float: left;
+    font-size: 12px;
+    font-weight: 400;
+    color: $medium-gray;
+    text-align: center;
+  }
+
+  &__close-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: $primary-color;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: bold;
+    margin-top: 0;
+    outline: 0;
+    z-index: 10000;
+    position: fixed;
+    left: 7px;
+    top: 5px;
+    transform: rotate(45deg);
+  }
+
+  &__clear-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+
+    svg {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 8px;
+      stroke: $medium-gray;
+      width: 20px;
+      width: 14px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @include focusStyle();
   }
 
   &__tooltip {
-      background-color: $dark-gray;
-      border-radius: 2px;
-      color: $white;
-      font-size: 11px;
-      padding: 5px 10px;
-      position: absolute;
-      z-index: 50;
+    background-color: $dark-gray;
+    border-radius: 2px;
+    color: $white;
+    font-size: 11px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 50;
+    left: 50%;
+    bottom: 100%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+
+    &:after {
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid $dark-gray;
+      bottom: -4px;
+      content: '';
       left: 50%;
-      bottom: 100%;
-      white-space: nowrap;
-      transform: translateX(-50%);
-
-      &:after {
-          border-left: 4px solid transparent;
-          border-right: 4px solid transparent;
-          border-top: 4px solid $dark-gray;
-          bottom: -4px;
-          content: '';
-          left: 50%;
-          margin-left: -4px;
-          position: absolute;
-      }
+      margin-left: -4px;
+      position: absolute;
+    }
   }
-}
-
-// Modifiers
-.-overflow-hidden {
-  overflow: hidden;
 }
 
 .-is-hidden {
