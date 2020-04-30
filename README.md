@@ -23,6 +23,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   * Add return for all computed
   * Add a bind key on `v-for`
   * Rewrite jest test
+  * Remove v-html / v-text use `{{ }}`
 * Add emit when clearSelection
 * Remove querySelector, use refs
 * Fix bug: impossible to open the calendar when clearselection is trigger
