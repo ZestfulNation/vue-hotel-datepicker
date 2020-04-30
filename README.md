@@ -23,7 +23,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   * Add return for all computed
   * Add a bind key on `v-for`
   * Rewrite jest test
-
+* Allows to have half a day, if you have check in at noon and checkout before noon
 ------------
 
 ## What I will improve
@@ -71,6 +71,13 @@ export default {
 
 
 ## Props/Options
+
+### halfDay
+
+- Type: `Boolean`
+- Default: `false`
+
+Allows to have half a day, if you have check in at noon and checkout before noon
 
 ### format
 
@@ -235,6 +242,9 @@ Emitted every time a new check in date is selected with the new date as payload
 
 ### checkOutChanged
 Emitted every time a new check out date is selected with the new date as payload
+
+### clearSelection
+Emitted every time you clicked on clearDate button
 
 ## Credits
 This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.
