@@ -95,6 +95,37 @@ export default {
 
     return nextMonth;
   },
+  handleTouchStart(evt) {
+    if (this.isOpen) {
+      this.xDown = evt.touches[0].clientX;
+      this.yDown = evt.touches[0].clientY;
+    }
+  },
+  handleTouchMove(evt) {
+    if (!this.xDown || !this.yDown) {
+      return;
+    }
+
+    this.xUp = evt.touches[0].clientX;
+    this.yUp = evt.touches[0].clientY;
+  },
+  handleTouchEnd() {
+    if (!this.xDown || !this.yDown) {
+      return;
+    }
+
+    const xDiff = this.xDown - this.xUp;
+    const yDiff = this.yDown - this.yUp;
+
+    if (Math.abs(xDiff) < Math.abs(yDiff) && yDiff > 0) {
+      this.renderNextMonth();
+    } else {
+      this.renderPreviousMonth();
+    }
+
+    this.xDown = null;
+    this.yDown = null;
+  },
   swipeAfterScroll(direction) {
     if (
       this.screenSize !== "desktop" &&
@@ -121,10 +152,6 @@ export default {
       }
     }
   },
-  handleTouchStart(evt) {
-    this.xDown = evt.touches[0].clientX;
-    this.yDown = evt.touches[0].clientY;
-  },
   getMonthDiff(d1, d2) {
     const newD1 = new Date(d1);
     const newD2 = new Date(d2);
@@ -134,34 +161,6 @@ export default {
     const d2M = newD2.getMonth();
 
     return d2M + 12 * d2Y - (d1M + 12 * d1Y);
-  },
-  handleTouchMove(evt) {
-    if (!this.xDown || !this.yDown) {
-      return;
-    }
-
-    this.xUp = evt.touches[0].clientX;
-    this.yUp = evt.touches[0].clientY;
-
-    const xDiff = this.xDown - this.xUp;
-    const yDiff = this.yDown - this.yUp;
-
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      if (xDiff > 0) {
-        // swipe right
-      } else {
-        // swipe left
-      }
-    } else if (yDiff > 0) {
-      // swipe up
-      this.swipeAfterScroll("up");
-    } else {
-      // swipe down
-      this.swipeAfterScroll("down");
-    }
-
-    this.xDown = null;
-    this.yDown = null;
   },
   shortenString(arr, sLen) {
     const newArr = [];

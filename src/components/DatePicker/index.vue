@@ -466,18 +466,27 @@ export default {
   },
   mounted() {
     this.handleWindowResize();
-    document.addEventListener("touchstart", this.handleTouchStart, false);
-    document.addEventListener("touchmove", this.handleTouchMove, false);
-    window.addEventListener("resize", this.handleWindowResize);
+
+    if (this.screenSize !== "desktop") {
+      document.addEventListener("touchstart", this.handleTouchStart, false);
+      document.addEventListener("touchmove", this.handleTouchMove, false);
+      document.addEventListener("touchend", this.handleTouchEnd, false);
+    } else {
+      window.addEventListener("resize", this.handleWindowResize);
+    }
 
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent();
     });
   },
   destroyed() {
-    window.removeEventListener("touchstart", this.handleTouchStart);
-    window.removeEventListener("touchmove", this.handleTouchMove);
-    window.removeEventListener("resize", this.handleWindowResize);
+    if (this.screenSize !== "desktop") {
+      document.removeEventListener("touchstart", this.handleTouchStart);
+      document.removeEventListener("touchmove", this.handleTouchMove);
+      document.removeEventListener("touchend", this.handleTouchEnd);
+    } else {
+      window.removeEventListener("resize", this.handleWindowResize);
+    }
   },
   methods: {
     ...Helpers,
