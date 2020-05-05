@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="width: 60vw; margin: 0 auto">
+  <div id="app">
     <h1>Vue Hotel datepicker new</h1>
     <div>
       <div class="box">
@@ -30,11 +30,11 @@
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
           :disabledDaysOfWeek="[
-            'Monday',
             'Tuesday',
             'Wednesday',
             'Thursday',
             'Friday',
+            'Saturday',
             'Sunday'
           ]"
           :enableCheckout="true"
@@ -113,6 +113,22 @@
               new Date().getDate() + 5
             )
           "
+        />
+      </div>
+
+      <div class="box">
+        <h3>Checkin only on saturdays</h3>
+        <DatePicker
+          :disabledDaysOfWeek="[
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Sunday'
+          ]"
+          :enableCheckout="true"
+          :minNights="7"
         />
       </div>
 

@@ -204,10 +204,23 @@ export default {
 
         // Only highlight dates that are not disabled
         if (this.isHighlighted && !this.isDisabled) {
+          if (
+            this.options.disabledDaysOfWeek.some(
+              i => i === fecha.format(this.date, "dddd")
+            )
+          ) {
+            return " datepicker__month-day--selected datepicker__month-day--disabled";
+          }
+
           return " datepicker__month-day--selected";
         }
 
-        if (this.isDisabled) {
+        if (
+          this.isDisabled ||
+          this.options.disabledDaysOfWeek.some(
+            i => i === fecha.format(this.date, "dddd")
+          )
+        ) {
           return "datepicker__month-day--disabled";
         }
       } else if (!this.belongsToThisMonth) {
