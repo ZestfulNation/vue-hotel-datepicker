@@ -31,7 +31,7 @@ import Helpers from "./helpers";
 export default {
   name: "Day",
   props: {
-    chekinChekoutDates: {
+    periodDates: {
       type: Array,
       default: () => []
     },
@@ -106,7 +106,7 @@ export default {
     dayPrice() {
       let currentDate = null;
 
-      this.chekinChekoutDates.forEach(d => {
+      this.periodDates.forEach(d => {
         if (
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
         ) {
@@ -127,7 +127,7 @@ export default {
     checkinCheckoutClass() {
       let currentDate = null;
 
-      this.chekinChekoutDates.forEach(d => {
+      this.periodDates.forEach(d => {
         if (
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
         ) {

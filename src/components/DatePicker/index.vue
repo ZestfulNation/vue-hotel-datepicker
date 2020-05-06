@@ -127,7 +127,7 @@
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
-                :chekinChekoutDates="chekinChekoutDates"
+                :periodDates="periodDates"
                 :currentDateStyle="currentDateStyle"
                 :date="day.date"
                 :hoveringDate="hoveringDate"
@@ -192,7 +192,7 @@
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
-                  :chekinChekoutDates="chekinChekoutDates"
+                  :periodDates="periodDates"
                   :currentDateStyle="currentDateStyle"
                   :date="day.date"
                   :hoveringDate="hoveringDate"
@@ -263,7 +263,7 @@ export default {
       type: Boolean,
       default: false
     },
-    chekinChekoutDates: {
+    periodDates: {
       default() {
         return [];
       },
@@ -710,13 +710,12 @@ export default {
         const halfDays = Object.keys(checkIncheckOutHalfDay);
 
         sortedDates = sortedDates.filter(date => !halfDays.includes(date));
-        sortedDates.map(date => new Date(date));
       }
 
-      sortedDates.sort((a, b) => a - b);
+      sortedDates = sortedDates.map(date => new Date(date));
 
+      this.sortedDisabledDates = sortedDates.sort((a, b) => a - b);
       this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
-      this.sortedDisabledDates = sortedDates;
     }
   }
 };

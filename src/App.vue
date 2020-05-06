@@ -5,13 +5,13 @@
       <div class="box">
         <h3>
           Blocked different day when clicked on with
-          <strong>chekinChekoutDates</strong>&nbsp;
+          <strong>periodDates</strong>&nbsp;
           <span style="font-weight: 400">Emit dayClicked</span>
         </h3>
         <DatePicker
           :showPrice="true"
           :minNights="minNights"
-          :chekinChekoutDates="chekinChekoutDates"
+          :periodDates="periodDates"
           @day-clicked="dayClicked"
         />
       </div>
@@ -341,7 +341,7 @@ export default {
           "Dezembro"
         ]
       },
-      chekinChekoutDates: [
+      periodDates: [
         {
           endAt: "2020-05-09",
           minimumDuration: 1,
@@ -390,7 +390,7 @@ export default {
     dayClicked(_, formatDate) {
       let currentDate = null;
 
-      this.chekinChekoutDates.forEach(d => {
+      this.periodDates.forEach(d => {
         if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, formatDate)) {
           currentDate = d;
         }
