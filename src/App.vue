@@ -1,7 +1,20 @@
 <template>
-  <div id="app">
+  <div id="app" style="width: 60rem; margin: 0 auto;">
     <h1>Vue Hotel datepicker new</h1>
     <div>
+      <div class="box">
+        <h3>
+          Blocked different day when clicked on with
+          <strong>periodDates</strong>&nbsp;
+          <span style="font-weight: 400">Emit dayClicked</span>
+        </h3>
+        <DatePicker
+          :showPrice="true"
+          :minNights="minNights"
+          :periodDates="periodDates"
+          @day-clicked="dayClicked"
+        />
+      </div>
       <div class="box">
         <h3>Half day, If you have check in at noon and checkout before noon</h3>
         <DatePicker
@@ -38,7 +51,6 @@
             'Sunday'
           ]"
           :enableCheckout="true"
-          :minNights="10"
         />
       </div>
 
@@ -306,7 +318,6 @@ export default {
   components: {
     DatePicker
   },
-
   data() {
     return {
       ptPT: {
@@ -330,11 +341,80 @@ export default {
           "Dezembro"
         ]
       },
+      periodDates: [
+        {
+          endAt: "2020-05-09",
+          minimumDuration: 1,
+          periodType: "nightly",
+          price: 500.0,
+          startAt: "2020-04-29"
+        },
+        {
+          endAt: "2020-05-19",
+          minimumDuration: 4,
+          periodType: "nightly",
+          price: 500.0,
+          startAt: "2020-05-10"
+        },
+        {
+          endAt: "2020-05-30",
+          minimumDuration: 1,
+          periodType: "weekly_by_saturday",
+          price: 1000.0,
+          startAt: "2020-05-23"
+        },
+        {
+          endAt: "2020-06-21",
+          minimumDuration: 1,
+          periodType: "weekly_by_sunday",
+          price: 4000.0,
+          startAt: "2020-06-07"
+        }
+      ],
       newCheckInDate: null,
-      newCheckOutDate: null
+      newCheckOutDate: null,
+      minNights: 0
     };
   },
   methods: {
+    validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
+      const getvalidDate = d => {
+        return new Date(d);
+      };
+
+      return (
+        getvalidDate(givenDate) <= getvalidDate(toDate) &&
+        getvalidDate(givenDate) >= getvalidDate(fromDate)
+      );
+    },
+    dayClicked(_, formatDate) {
+      let currentDate = null;
+
+      this.periodDates.forEach(d => {
+        if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, formatDate)) {
+          currentDate = d;
+        }
+      });
+
+      if (currentDate) {
+        if (
+          currentDate.periodType === "nightly" &&
+          currentDate.endAt !== formatDate
+        ) {
+          this.minNights = currentDate.minimumDuration;
+        }
+
+        if (currentDate.periodType === "weekly_by_saturday") {
+          this.minNights = 7;
+        }
+
+        if (currentDate.periodType === "weekly_by_sunday") {
+          this.minNights = 7;
+        }
+      } else {
+        this.minNights = 0;
+      }
+    },
     checkInChanged(newDate) {
       this.newCheckInDate = newDate;
     },

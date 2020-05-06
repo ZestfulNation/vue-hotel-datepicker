@@ -25,13 +25,7 @@ describe("Datepicker Component", () => {
       attachToDocument: true,
       propsData: {
         minNights: 3,
-        disabledDates: [
-          "2018-01-02",
-          "2018-01-05",
-          "2018-01-15",
-          "2018-01-22",
-          "2018-01-06"
-        ]
+        disabledDates: ["2020-05-28", "2020-05-10", "2020-05-01", "2020-05-22"]
       }
     });
   });
@@ -59,11 +53,10 @@ describe("Datepicker Component", () => {
   it("should correctly parse and sort the disabled dates", () => {
     wrapper.vm.parseDisabledDates();
     expect(wrapper.vm.sortedDisabledDates).to.eql([
-      new Date("2018-01-02"),
-      new Date("2018-01-05"),
-      new Date("2018-01-06"),
-      new Date("2018-01-15"),
-      new Date("2018-01-22")
+      new Date("2020-05-01"),
+      new Date("2020-05-10"),
+      new Date("2020-05-22"),
+      new Date("2020-05-28")
     ]);
   });
 });

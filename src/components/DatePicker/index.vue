@@ -127,16 +127,17 @@
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
+                :periodDates="periodDates"
                 :currentDateStyle="currentDateStyle"
                 :date="day.date"
-                :dayNumber="getDay(day.date)"
                 :hoveringDate="hoveringDate"
                 :is-open="isOpen"
                 :nextDisabledDate="nextDisabledDate"
                 :options="$props"
+                :showPrice="showPrice"
                 :sortedDisabledDates="sortedDisabledDates"
                 :tooltipMessage="tooltipMessage"
-                @day-clicked="handleDayClick($event)"
+                @day-clicked="handleDayClick"
               ></Day>
             </div>
           </div>
@@ -191,16 +192,17 @@
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
+                  :periodDates="periodDates"
                   :currentDateStyle="currentDateStyle"
                   :date="day.date"
-                  :dayNumber="getDay(day.date)"
                   :hoveringDate="hoveringDate"
                   :is-open="isOpen"
                   :nextDisabledDate="nextDisabledDate"
                   :options="$props"
+                  :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :tooltipMessage="tooltipMessage"
-                  @day-clicked="handleDayClick($event)"
+                  @day-clicked="handleDayClick"
                 ></Day>
               </div>
             </div>
@@ -257,6 +259,16 @@ export default {
     DateInput
   },
   props: {
+    showPrice: {
+      type: Boolean,
+      default: false
+    },
+    periodDates: {
+      default() {
+        return [];
+      },
+      type: Array
+    },
     currentDateStyle: {
       default: () => ({ border: "1px solid #00c690" })
     },
@@ -572,20 +584,21 @@ export default {
         this.hideDatepicker();
       }
     },
-    handleDayClick(event) {
+    handleDayClick(date, formatDate, nextDisabledDate) {
       if (this.checkIn == null && this.singleDaySelection === false) {
-        this.checkIn = event.date;
+        this.checkIn = date;
       } else if (this.singleDaySelection === true) {
-        this.checkIn = event.date;
-        this.checkOut = event.date;
+        this.checkIn = date;
+        this.checkOut = date;
       } else if (this.checkIn !== null && this.checkOut == null) {
-        this.checkOut = event.date;
+        this.checkOut = date;
       } else {
         this.checkOut = null;
-        this.checkIn = event.date;
+        this.checkIn = date;
       }
 
-      this.nextDisabledDate = event.nextDisabledDate;
+      this.nextDisabledDate = nextDisabledDate;
+      this.$emit("day-clicked", date, formatDate, nextDisabledDate);
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
@@ -629,9 +642,6 @@ export default {
     },
     setCheckOut(date) {
       this.checkOut = date;
-    },
-    getDay(date) {
-      return fecha.format(date, "D");
     },
     getMonth(date) {
       return (
@@ -700,13 +710,12 @@ export default {
         const halfDays = Object.keys(checkIncheckOutHalfDay);
 
         sortedDates = sortedDates.filter(date => !halfDays.includes(date));
-        sortedDates.map(date => new Date(date));
       }
 
-      sortedDates.sort((a, b) => a - b);
+      sortedDates = sortedDates.map(date => new Date(date));
 
+      this.sortedDisabledDates = sortedDates.sort((a, b) => a - b);
       this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
-      this.sortedDisabledDates = sortedDates;
     }
   }
 };

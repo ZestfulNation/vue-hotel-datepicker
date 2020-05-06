@@ -32,6 +32,8 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Allows to have half a day, if you have check in at noon and checkout before noon
 * Refacto the paginate infinite scroll on mobile
 * Disable date when checkin only on one day
+* Add periodDates array for specific period with different minimumStay / Price or periodType
+* Show price of your Object periodDates
 
 ------------
 
@@ -228,6 +230,53 @@ i18n: {
 }
 ```
 
+### periodDates
+
+- Type: `Array`
+
+If you want to have specific startAt and endAt period with different duration or price or type of period-
+
+Key                                  | Type       | Description
+-------------------------------------|------------|-------------------------
+  endAt                              | String     | YYYY-MM-DD
+  startAt                            | String     | YYYY-MM-DD
+  minimumDuration                    | Number     | Minimum stay
+  periodType                         | String     | *nightly*, *weekly_by_saturday*, *weekly_by_sunday*
+
+
+Example:
+```js
+periodDates: [
+  {
+    endAt: "2020-05-19",
+    minimumDuration: 4,
+    periodType: "nightly",
+    price: 500.0,
+    startAt: "2020-05-10"
+  },
+  {
+    endAt: "2020-05-30",
+    minimumDuration: 1,
+    periodType: "weekly_by_saturday",
+    price: 1000.0,
+    startAt: "2020-05-23"
+  },
+  {
+    endAt: "2020-05-30",
+    minimumDuration: 1,
+    periodType: "weekly_by_sunday",
+    price: 1000.0,
+    startAt: "2020-05-23"
+  }
+]
+```
+
+### showPrice
+
+- Type: `Boolean`
+- Default: `false`
+
+If set to true, displays a price contains on your periodDates
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
@@ -245,6 +294,9 @@ Show datepicker
 Toggle datepicker
 
 ## Events
+
+### dayClicked
+Emitted every time when day is clicked
 
 ### checkInChanged
 Emitted every time a new check in date is selected with the new date as payload
