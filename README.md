@@ -298,6 +298,13 @@ Toggle datepicker
 ### dayClicked
 Emitted every time when day is clicked
 
+Params:
+name                                 | Description
+-------------------------------------|-------------------------
+  date                               | new Date() 
+  formatDate                         | YYYY-MM-DD
+  nextDisabledDate                   | Date, Number, String
+
 ### checkInChanged
 Emitted every time a new check in date is selected with the new date as payload
 
