@@ -152,6 +152,16 @@ export default {
       }
     }
   },
+  validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
+    const getvalidDate = d => {
+      return new Date(d);
+    };
+
+    return (
+      getvalidDate(givenDate) <= getvalidDate(toDate) &&
+      getvalidDate(givenDate) >= getvalidDate(fromDate)
+    );
+  },
   getMonthDiff(d1, d2) {
     const newD1 = new Date(d1);
     const newD2 = new Date(d2);

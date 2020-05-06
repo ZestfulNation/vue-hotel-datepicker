@@ -9,12 +9,17 @@
       class="datepicker__month-day"
       @click.prevent.stop="dayClicked(date)"
       @keyup.enter.prevent.stop="dayClicked(date)"
-      :class="dayClass"
+      :class="[dayClass, checkinCheckoutClass]"
       :style="isToday ? currentDateStyle : ''"
       :tabindex="tabIndex"
       ref="day"
     >
-      {{ dayNumber }}
+      <div class="datepicker__month-day-wrapper">
+        <span>{{ dayNumber }}</span>
+        <strong v-if="showPrice && dayPrice" style="font-size: 10px">{{
+          dayPrice
+        }}</strong>
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +31,14 @@ import Helpers from "./helpers";
 export default {
   name: "Day",
   props: {
+    chekinChekoutDates: {
+      type: Array,
+      default: () => []
+    },
+    showPrice: {
+      type: Boolean,
+      default: false
+    },
     isOpen: {
       type: Boolean,
       required: true
@@ -62,9 +75,6 @@ export default {
     date: {
       type: Date
     },
-    dayNumber: {
-      type: String
-    },
     nextDisabledDate: {
       type: [Date, Number, String]
     },
@@ -90,6 +100,78 @@ export default {
     };
   },
   computed: {
+    dayNumber() {
+      return fecha.format(this.date, "D");
+    },
+    dayPrice() {
+      let currentDate = null;
+
+      this.chekinChekoutDates.forEach(d => {
+        if (
+          this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
+        ) {
+          currentDate = d;
+        }
+      });
+
+      if (currentDate) {
+        if (currentDate.periodType === "nightly") {
+          return currentDate.price;
+        }
+
+        return Math.round(currentDate.price / 7);
+      }
+
+      return "";
+    },
+    checkinCheckoutClass() {
+      let currentDate = null;
+
+      this.chekinChekoutDates.forEach(d => {
+        if (
+          this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
+        ) {
+          currentDate = d;
+        }
+      });
+
+      if (currentDate) {
+        if (
+          currentDate.periodType === "nightly" &&
+          this.belongsToThisMonth &&
+          !this.isDisabled
+        ) {
+          return "nightly";
+        }
+
+        // date.getDay() === 6 => saturday
+        if (
+          currentDate.periodType === "weekly_by_saturday" &&
+          currentDate.startAt !== this.formatDate &&
+          currentDate.endAt !== this.formatDate &&
+          this.date.getDay() !== 6
+        ) {
+          return "datepicker__month-day--disabled weekly_by_saturday";
+        }
+
+        // date.getDay() === 0 => sunday
+        if (
+          currentDate.periodType === "weekly_by_sunday" &&
+          currentDate.startAt !== this.formatDate &&
+          currentDate.endAt !== this.formatDate &&
+          this.date.getDay() !== 0
+        ) {
+          return "datepicker__month-day--disabled weekly_by_sunday";
+        }
+
+        return "nothing";
+      }
+
+      return "nothing";
+    },
+    formatDate() {
+      return fecha.format(this.date, "YYYY-MM-DD");
+    },
     tabIndex() {
       if (
         !this.isOpen ||
@@ -345,7 +427,9 @@ export default {
           nextDisabledDate = Infinity;
         }
 
-        this.$emit("day-clicked", { date, nextDisabledDate });
+        const formatDate = fecha.format(date, "YYYY-MM-DD");
+
+        this.$emit("day-clicked", date, formatDate, nextDisabledDate);
       }
     },
     compareEndDay() {
