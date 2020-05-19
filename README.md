@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.3.5
+# Release 0.3.8
 
 # vue-hotel-datepicker@2
 
@@ -34,6 +34,10 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Disable date when checkin only on one day
 * Add periodDates array for specific period with different minimumStay / Price or periodType
 * Show price of your Object periodDates
+* Review style
+* Add a `--hovering` class
+* When dates selected => click on new date makes in checkin and clears checkout
+* Disable checkOut on the same date as checkIn
 
 ------------
 
@@ -212,6 +216,12 @@ Shows the year next to the month
 - Default: `true`
 
 If set to true, displays a clear button on the right side of the input if there are dates set
+
+## disableCheckoutOnCheckin
+- Type: `boolean`
+- Default: `false`
+
+If set to true, disable checkout on the same date has checkin
 
 ### i18n
 

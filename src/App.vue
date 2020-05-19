@@ -1,7 +1,29 @@
 <template>
   <div id="app" style="width: 60rem; margin: 0 auto;">
-    <h1>Vue Hotel datepicker new</h1>
+    <h1>Vue Hotel datepicker@2</h1>
     <div>
+      <div class="box">
+        <h3>
+          Disable checkout on the same date as checkin with
+          <strong>disableCheckoutOnCheckin</strong> props
+        </h3>
+        <DatePicker
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
+          :minNights="minNights"
+          :periodDates="periodDates"
+          @day-clicked="dayClicked"
+        />
+      </div>
+      <div class="box">
+        <h3>Show prices with <strong>periodDates</strong></h3>
+        <DatePicker
+          :showPrice="true"
+          :minNights="minNights"
+          :periodDates="periodDates"
+          @day-clicked="dayClicked"
+        />
+      </div>
       <div class="box">
         <h3>
           Blocked different day when clicked on with
@@ -9,7 +31,16 @@
           <span style="font-weight: 400">Emit dayClicked</span>
         </h3>
         <DatePicker
-          :showPrice="true"
+          :disabledDates="[
+            '2020-06-01',
+            '2020-06-02',
+            '2020-06-03',
+            '2020-06-04',
+            '2020-06-05',
+            '2020-06-06'
+          ]"
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
           :minNights="minNights"
           :periodDates="periodDates"
           @day-clicked="dayClicked"
@@ -350,11 +381,11 @@ export default {
           startAt: "2020-04-29"
         },
         {
-          endAt: "2020-05-19",
-          minimumDuration: 4,
+          endAt: "2020-05-22",
+          minimumDuration: 3,
           periodType: "nightly",
           price: 500.0,
-          startAt: "2020-05-10"
+          startAt: "2020-05-19"
         },
         {
           endAt: "2020-05-30",

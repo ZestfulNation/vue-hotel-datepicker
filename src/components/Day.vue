@@ -4,7 +4,7 @@
       class="datepicker__tooltip"
       v-html="tooltipMessageDisplay"
       v-if="showTooltip && this.options.hoveringTooltip"
-    ></div>
+    />
     <div
       class="datepicker__month-day"
       @click.prevent.stop="dayClicked(date)"
@@ -16,9 +16,9 @@
     >
       <div class="datepicker__month-day-wrapper">
         <span>{{ dayNumber }}</span>
-        <strong v-if="showPrice && dayPrice" style="font-size: 10px">{{
-          dayPrice
-        }}</strong>
+        <strong v-if="showPrice && dayPrice" style="font-size: 10px">
+          {{ dayPrice }}
+        </strong>
       </div>
     </div>
   </div>
@@ -31,6 +31,10 @@ import Helpers from "./helpers";
 export default {
   name: "Day",
   props: {
+    disableCheckoutOnCheckin: {
+      type: Boolean,
+      default: false
+    },
     periodDates: {
       type: Array,
       default: () => []
@@ -151,7 +155,7 @@ export default {
           currentDate.endAt !== this.formatDate &&
           this.date.getDay() !== 6
         ) {
-          return "datepicker__month-day--disabled weekly_by_saturday";
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
         }
 
         // date.getDay() === 0 => sunday
@@ -161,7 +165,7 @@ export default {
           currentDate.endAt !== this.formatDate &&
           this.date.getDay() !== 0
         ) {
-          return "datepicker__month-day--disabled weekly_by_sunday";
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_sunday";
         }
 
         return "nothing";
@@ -220,6 +224,15 @@ export default {
           ) === -1
         ) {
           return "datepicker__month-day--selected datepicker__month-day--out-of-range";
+        }
+
+        if (
+          !this.isDisabled &&
+          this.date === this.hoveringDate &&
+          this.checkIn !== null &&
+          this.checkOut == null
+        ) {
+          return "datepicker__month-day--selected datepicker__month-day--hovering";
         }
 
         // If the calendar has allowed ranges
@@ -406,30 +419,38 @@ export default {
       return null;
     },
     dayClicked(date) {
-      if (!this.isDisabled || this.isClickable()) {
-        if (this.options.allowedRanges.length !== 0) {
-          this.createAllowedCheckoutDays(date);
+      if (
+        this.disableCheckoutOnCheckin &&
+        this.compareDay(this.checkIn, date) !== 0
+      ) {
+        if (!this.isDisabled || this.isClickable()) {
+          if (this.options.allowedRanges.length !== 0) {
+            this.createAllowedCheckoutDays(date);
+          }
+
+          let nextDisabledDate =
+            (this.options.maxNights
+              ? this.addDays(this.date, this.options.maxNights)
+              : null) ||
+            this.allowedCheckoutDays[this.allowedCheckoutDays.length - 1] ||
+            this.getNextDate(this.sortedDisabledDates, this.date) ||
+            this.nextDateByDayOfWeekArray(
+              this.options.disabledDaysOfWeek,
+              this.date
+            ) ||
+            Infinity;
+
+          if (this.options.enableCheckout) {
+            nextDisabledDate = Infinity;
+          }
+
+          const formatDate = fecha.format(date, "YYYY-MM-DD");
+
+          this.$emit("day-clicked", date, formatDate, nextDisabledDate);
+        } else {
+          this.$emit("clear-selection");
+          this.dayClicked(date);
         }
-
-        let nextDisabledDate =
-          (this.options.maxNights
-            ? this.addDays(this.date, this.options.maxNights)
-            : null) ||
-          this.allowedCheckoutDays[this.allowedCheckoutDays.length - 1] ||
-          this.getNextDate(this.sortedDisabledDates, this.date) ||
-          this.nextDateByDayOfWeekArray(
-            this.options.disabledDaysOfWeek,
-            this.date
-          ) ||
-          Infinity;
-
-        if (this.options.enableCheckout) {
-          nextDisabledDate = Infinity;
-        }
-
-        const formatDate = fecha.format(date, "YYYY-MM-DD");
-
-        this.$emit("day-clicked", date, formatDate, nextDisabledDate);
       }
     },
     compareEndDay() {
