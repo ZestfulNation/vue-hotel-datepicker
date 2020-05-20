@@ -127,16 +127,18 @@
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
-                :periodDates="periodDates"
                 :currentDateStyle="currentDateStyle"
                 :date="day.date"
+                :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                 :hoveringDate="hoveringDate"
                 :is-open="isOpen"
                 :nextDisabledDate="nextDisabledDate"
                 :options="$props"
+                :periodDates="periodDates"
                 :showPrice="showPrice"
                 :sortedDisabledDates="sortedDisabledDates"
                 :tooltipMessage="tooltipMessage"
+                @clear-selection="clearSelection"
                 @day-clicked="handleDayClick"
               ></Day>
             </div>
@@ -192,16 +194,18 @@
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
-                  :periodDates="periodDates"
                   :currentDateStyle="currentDateStyle"
                   :date="day.date"
+                  :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                   :hoveringDate="hoveringDate"
                   :is-open="isOpen"
                   :nextDisabledDate="nextDisabledDate"
                   :options="$props"
+                  :periodDates="periodDates"
                   :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :tooltipMessage="tooltipMessage"
+                  @clear-selection="clearSelection"
                   @day-clicked="handleDayClick"
                 ></Day>
               </div>
@@ -259,6 +263,10 @@ export default {
     DateInput
   },
   props: {
+    disableCheckoutOnCheckin: {
+      type: Boolean,
+      default: false
+    },
     showPrice: {
       type: Boolean,
       default: false
@@ -270,7 +278,7 @@ export default {
       type: Array
     },
     currentDateStyle: {
-      default: () => ({ border: "1px solid #00c690" })
+      default: () => ({ border: "2px solid #234c56" })
     },
     value: {
       type: String
