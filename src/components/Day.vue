@@ -419,10 +419,17 @@ export default {
       return null;
     },
     dayClicked(date) {
-      if (
-        this.disableCheckoutOnCheckin &&
-        this.compareDay(this.checkIn, date) !== 0
-      ) {
+      let disableCheckoutOnCheckin = !this.disableCheckoutOnCheckin;
+
+      if (this.disableCheckoutOnCheckin) {
+        if (this.checkIn && this.checkIn === date) {
+          disableCheckoutOnCheckin = false;
+        } else {
+          disableCheckoutOnCheckin = true;
+        }
+      }
+
+      if (disableCheckoutOnCheckin) {
         if (!this.isDisabled || this.isClickable()) {
           if (this.options.allowedRanges.length !== 0) {
             this.createAllowedCheckoutDays(date);
