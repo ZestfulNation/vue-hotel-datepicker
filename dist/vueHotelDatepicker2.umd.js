@@ -3624,12 +3624,12 @@ var fecha = {
 
 //# sourceMappingURL=fecha.js.map
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6d1d4e83-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=0c3cb78d&
-var Dayvue_type_template_id_0c3cb78d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && this.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[_vm.dayClass, _vm.checkinCheckoutClass],style:(_vm.isToday ? _vm.currentDateStyle : ''),attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
-var Dayvue_type_template_id_0c3cb78d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6d1d4e83-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=730d6898&
+var Dayvue_type_template_id_730d6898_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && this.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[_vm.dayClass, _vm.checkinCheckoutClass],style:(_vm.isToday ? _vm.currentDateStyle : ''),attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
+var Dayvue_type_template_id_730d6898_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=0c3cb78d&
+// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=730d6898&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -4140,7 +4140,17 @@ var es_array_some = __webpack_require__("45fc");
       return null;
     },
     dayClicked: function dayClicked(date) {
-      if (this.disableCheckoutOnCheckin && this.compareDay(this.checkIn, date) !== 0) {
+      var disableCheckoutOnCheckin = !this.disableCheckoutOnCheckin;
+
+      if (this.disableCheckoutOnCheckin) {
+        if (this.checkIn && this.checkIn === date) {
+          disableCheckoutOnCheckin = false;
+        } else {
+          disableCheckoutOnCheckin = true;
+        }
+      }
+
+      if (disableCheckoutOnCheckin) {
         if (!this.isDisabled || this.isClickable()) {
           if (this.options.allowedRanges.length !== 0) {
             this.createAllowedCheckoutDays(date);
@@ -4330,8 +4340,8 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   components_Dayvue_type_script_lang_js_,
-  Dayvue_type_template_id_0c3cb78d_render,
-  Dayvue_type_template_id_0c3cb78d_staticRenderFns,
+  Dayvue_type_template_id_730d6898_render,
+  Dayvue_type_template_id_730d6898_staticRenderFns,
   false,
   null,
   null,
