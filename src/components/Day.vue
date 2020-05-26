@@ -70,6 +70,10 @@ export default {
     mounseOverFunction: {
       type: Function
     },
+    minNightCount: {
+      type: Number,
+      default: 0
+    },
     belongsToThisMonth: {
       type: Boolean
     },
@@ -97,10 +101,10 @@ export default {
   },
   data() {
     return {
-      isHighlighted: false,
-      isDisabled: false,
       allowedCheckoutDays: [],
-      currentDate: new Date()
+      currentDate: new Date(),
+      isDisabled: false,
+      isHighlighted: false
     };
   },
   computed: {
@@ -129,30 +133,46 @@ export default {
       return "";
     },
     checkinCheckoutClass() {
-      let currentDate = null;
+      let currentPeriod = null;
 
       this.periodDates.forEach(d => {
         if (
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
         ) {
-          currentDate = d;
+          currentPeriod = d;
         }
       });
 
-      if (currentDate) {
+      if (currentPeriod) {
         if (
-          currentDate.periodType === "nightly" &&
+          currentPeriod.periodType === "nightly" &&
           this.belongsToThisMonth &&
           !this.isDisabled
         ) {
+          if (
+            this.checkIn &&
+            !this.checkOut &&
+            this.notAllowedDayDueToNextPeriod(currentPeriod)
+          ) {
+            return "datepicker__month-day--not-allowed nightly";
+          }
+
+          if (
+            !this.checkIn &&
+            !this.checkOut &&
+            this.notAllowedDayDueToNextPeriod(currentPeriod)
+          ) {
+            return "datepicker__month-day--disabled datepicker__month-day--not-allowed nightly";
+          }
+
           return "nightly";
         }
 
         // date.getDay() === 6 => saturday
         if (
-          currentDate.periodType === "weekly_by_saturday" &&
-          currentDate.startAt !== this.formatDate &&
-          currentDate.endAt !== this.formatDate &&
+          currentPeriod.periodType === "weekly_by_saturday" &&
+          currentPeriod.startAt !== this.formatDate &&
+          currentPeriod.endAt !== this.formatDate &&
           this.date.getDay() !== 6
         ) {
           return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
@@ -160,9 +180,9 @@ export default {
 
         // date.getDay() === 0 => sunday
         if (
-          currentDate.periodType === "weekly_by_sunday" &&
-          currentDate.startAt !== this.formatDate &&
-          currentDate.endAt !== this.formatDate &&
+          currentPeriod.periodType === "weekly_by_sunday" &&
+          currentPeriod.startAt !== this.formatDate &&
+          currentPeriod.endAt !== this.formatDate &&
           this.date.getDay() !== 0
         ) {
           return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_sunday";
@@ -211,16 +231,37 @@ export default {
     isToday() {
       return this.compareDay(this.currentDate, this.date) === 0;
     },
+    halfDayClass() {
+      if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
+        const keyDate = fecha.format(this.date, "YYYY-MM-DD");
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkIn
+        ) {
+          return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
+        }
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkOut
+        ) {
+          return "datepicker__month-day--halfCheckOut datepicker__month-day--valid";
+        }
+      }
+
+      return false;
+    },
     dayClass() {
       if (this.belongsToThisMonth) {
         // If the calendar has a minimum number of nights
         if (
           !this.isDisabled &&
           this.compareDay(this.date, this.checkIn) === 1 &&
-          this.options.minNights > 0 &&
+          this.minNightCount > 0 &&
           this.compareDay(
             this.date,
-            this.addDays(this.checkIn, this.options.minNights)
+            this.addDays(this.checkIn, this.minNightCount)
           ) === -1
         ) {
           return "datepicker__month-day--selected datepicker__month-day--out-of-range";
@@ -281,7 +322,7 @@ export default {
           fecha.format(this.checkIn, "YYYYMMDD") ===
             fecha.format(this.date, "YYYYMMDD")
         ) {
-          if (this.options.minNights === 0) {
+          if (this.minNightCount === 0) {
             return "datepicker__month-day--first-day-selected";
           }
 
@@ -293,6 +334,10 @@ export default {
             fecha.format(this.checkOut, "YYYYMMDD") ===
             fecha.format(this.date, "YYYYMMDD")
           ) {
+            if (this.halfDayClass) {
+              return `datepicker__month-day--disabled datepicker__month-day--last-day-selected ${this.halfDayClass}`;
+            }
+
             return "datepicker__month-day--disabled datepicker__month-day--last-day-selected";
           }
         }
@@ -322,22 +367,8 @@ export default {
         return "datepicker__month-day--hidden";
       }
 
-      if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
-        const keyDate = fecha.format(this.date, "YYYY-MM-DD");
-
-        if (
-          this.checkIncheckOutHalfDay[keyDate] &&
-          this.checkIncheckOutHalfDay[keyDate].checkIn
-        ) {
-          return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
-        }
-
-        if (
-          this.checkIncheckOutHalfDay[keyDate] &&
-          this.checkIncheckOutHalfDay[keyDate].checkOut
-        ) {
-          return "datepicker__month-day--halfCheckOut datepicker__month-day--valid";
-        }
+      if (this.halfDayClass) {
+        return `${this.halfDayClass}`;
       }
 
       return "datepicker__month-day--valid";
@@ -390,6 +421,48 @@ export default {
   },
   methods: {
     ...Helpers,
+    notAllowedDayDueToNextPeriod(currentPeriod) {
+      // Check if the next period is directly after the current period
+      const date = new Date(currentPeriod.endAt);
+      let nextPeriod = null;
+
+      this.periodDates.forEach(period => {
+        const dateA = new Date(period.startAt).setHours(0, 0, 0, 0);
+        const dateB = new Date(date).setHours(0, 0, 0, 0);
+
+        if (dateA === dateB) {
+          nextPeriod = period;
+        }
+      });
+
+      if (nextPeriod) {
+        // Subtract the startAt nextPeriod to the currentPeriod minimumDuration
+        const subtractTimestamp = new Date(nextPeriod.startAt).setHours(
+          0,
+          0,
+          0,
+          0
+        );
+        const subtractDate = new Date(subtractTimestamp);
+        const resultDate = new Date(
+          subtractDate.setDate(
+            subtractDate.getDate() - currentPeriod.minimumDuration
+          )
+        );
+
+        if (
+          !this.validateDateBetweenTwoDates(
+            currentPeriod.startAt,
+            resultDate,
+            this.date
+          )
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    },
     isDateLessOrEquals(time1, time2) {
       return new Date(time1) <= new Date(time2);
     },
@@ -447,15 +520,43 @@ export default {
             ) ||
             Infinity;
 
-          if (this.options.enableCheckout) {
-            nextDisabledDate = Infinity;
+          if (this.periodDates) {
+            let currentPeriod = null;
+
+            this.periodDates.forEach(d => {
+              if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
+                currentPeriod = d;
+              }
+            });
+
+            if (currentPeriod) {
+              if (
+                currentPeriod.periodType === "nightly" &&
+                currentPeriod.endAt !== date
+              ) {
+                this.$emit("setMinNightCount", currentPeriod.minimumDuration);
+              }
+
+              if (
+                currentPeriod.periodType === "weekly_by_saturday" ||
+                currentPeriod.periodType === "weekly_by_sunday"
+              ) {
+                this.$emit("setMinNightCount", 7);
+              }
+            } else {
+              this.$emit("setMinNightCount", 0);
+            }
+
+            if (this.options.enableCheckout) {
+              nextDisabledDate = Infinity;
+            }
           }
 
           const formatDate = fecha.format(date, "YYYY-MM-DD");
 
-          this.$emit("day-clicked", date, formatDate, nextDisabledDate);
+          this.$emit("dayClicked", date, formatDate, nextDisabledDate);
         } else {
-          this.$emit("clear-selection");
+          this.$emit("clearSelection");
           this.dayClicked(date);
         }
       }
@@ -529,7 +630,7 @@ export default {
 
       if (
         this.compareDay(this.date, this.checkIn) === 0 &&
-        this.options.minNights === 0
+        this.minNightCount === 0
       ) {
         this.isDisabled = false;
       }

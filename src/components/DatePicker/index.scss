@@ -229,6 +229,9 @@ $extra-small-screen: '(max-width: 23em)';
     height: 100%;
     padding: 6px 0px;
     justify-content: center;
+    span {
+      z-index: 1;
+    }
   }
 
   &__month-day {
@@ -279,6 +282,16 @@ $extra-small-screen: '(max-width: 23em)';
       background: transparent
     }
 
+
+    &--not-allowed.nightly,
+    &--not-allowed.nightly:hover {
+      color: $gray;
+    }
+
+    &--selected#{&}--not-allowed.nightly {
+      color: white;
+    }
+
     &--halfCheckIn,
     &--halfCheckOut {
       position: relative;
@@ -291,7 +304,7 @@ $extra-small-screen: '(max-width: 23em)';
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         content: '';
-        z-index: -1;
+        z-index: 0;
         height: 0;
         width: 0;
         border-bottom: 100px solid $disabledBg;

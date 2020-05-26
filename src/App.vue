@@ -8,11 +8,15 @@
           <strong>disableCheckoutOnCheckin</strong> props
         </h3>
         <DatePicker
+          :disabledDates="[
+            '2020-06-16',
+            '2020-06-17',
+            '2020-06-18',
+            '2020-06-19'
+          ]"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
-          :minNights="minNights"
           :periodDates="periodDates"
-          @day-clicked="dayClicked"
         />
       </div>
       <div class="box">
@@ -331,8 +335,8 @@
               'December'
             ]
           }"
-          v-on:check-in-changed="checkInChanged($event)"
-          v-on:check-out-changed="checkOutChanged($event)"
+          @check-in-changed="checkInChanged($event)"
+          @check-out-changed="checkOutChanged($event)"
         />
 
         new Check In Date : {{ newCheckInDate }} <br />
@@ -374,32 +378,32 @@ export default {
       },
       periodDates: [
         {
-          endAt: "2020-05-09",
-          minimumDuration: 1,
+          startAt: "2020-06-01",
+          endAt: "2020-06-06",
+          minimumDuration: 4,
           periodType: "nightly",
-          price: 500.0,
-          startAt: "2020-04-29"
+          price: 500.0
         },
         {
-          endAt: "2020-05-22",
-          minimumDuration: 3,
-          periodType: "nightly",
-          price: 500.0,
-          startAt: "2020-05-19"
-        },
-        {
-          endAt: "2020-05-30",
+          startAt: "2020-06-06",
+          endAt: "2020-06-13",
           minimumDuration: 1,
           periodType: "weekly_by_saturday",
-          price: 1000.0,
-          startAt: "2020-05-23"
+          price: 1000.0
         },
         {
-          endAt: "2020-06-21",
+          startAt: "2020-06-22",
+          endAt: "2020-06-28",
+          minimumDuration: 3,
+          periodType: "nightly",
+          price: 500.0
+        },
+        {
+          startAt: "2020-06-28",
+          endAt: "2020-07-05",
           minimumDuration: 1,
           periodType: "weekly_by_sunday",
-          price: 4000.0,
-          startAt: "2020-06-07"
+          price: 4000.0
         }
       ],
       newCheckInDate: null,
@@ -418,33 +422,8 @@ export default {
         getvalidDate(givenDate) >= getvalidDate(fromDate)
       );
     },
-    dayClicked(_, formatDate) {
-      let currentDate = null;
-
-      this.periodDates.forEach(d => {
-        if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, formatDate)) {
-          currentDate = d;
-        }
-      });
-
-      if (currentDate) {
-        if (
-          currentDate.periodType === "nightly" &&
-          currentDate.endAt !== formatDate
-        ) {
-          this.minNights = currentDate.minimumDuration;
-        }
-
-        if (currentDate.periodType === "weekly_by_saturday") {
-          this.minNights = 7;
-        }
-
-        if (currentDate.periodType === "weekly_by_sunday") {
-          this.minNights = 7;
-        }
-      } else {
-        this.minNights = 0;
-      }
+    dayClicked(date, formatDate, nextDisabledDate) {
+      console.log(date, formatDate, nextDisabledDate);
     },
     checkInChanged(newDate) {
       this.newCheckInDate = newDate;

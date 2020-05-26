@@ -28,16 +28,19 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   * Remove v-html / v-text use `{{ }}`
 * Add emit when clearSelection
 * Remove querySelector, use refs
-* Fix bug: impossible to open the calendar when clearselection is trigger
-* Allows to have half a day, if you have check in at noon and checkout before noon
+* Fix bug: impossible to open the calendar when clearselection is triggered
+* Allow to have half a day, in order to enable checkIn on a checkOut day
 * Refacto the paginate infinite scroll on mobile
-* Disable date when checkin only on one day
-* Add periodDates array for specific period with different minimumStay / Price or periodType
+* Prevent checkOut on the same day as checkIn
+* Add periodDates array for specific periods with different minimumStay / Price or periodType
 * Show price of your Object periodDates
 * Review style
 * Add a `--hovering` class
-* When dates selected => click on new date makes in checkin and clears checkout
-* Disable checkOut on the same date as checkIn
+* When there are checkIn and checkOut => Click on new date makes a new checkIn and clears checkOut
+* If there is a periodDates, automatically update minNights
+* Create a *not allowed* status which is different from the *disabled* status
+  * NotAllowed inside a weekly period
+  * NotAllowed inside a nightly period right before a weekly period (to respect min nights)
 
 ------------
 
@@ -311,7 +314,7 @@ Emitted every time when day is clicked
 Params:
 name                                 | Description
 -------------------------------------|-------------------------
-  date                               | new Date() 
+  date                               | new Date()
   formatDate                         | YYYY-MM-DD
   nextDisabledDate                   | Date, Number, String
 

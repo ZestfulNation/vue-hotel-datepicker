@@ -131,15 +131,17 @@
                 :date="day.date"
                 :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                 :hoveringDate="hoveringDate"
-                :is-open="isOpen"
+                :isOpen="isOpen"
+                :minNightCount="minNightCount"
                 :nextDisabledDate="nextDisabledDate"
                 :options="$props"
                 :periodDates="periodDates"
                 :showPrice="showPrice"
                 :sortedDisabledDates="sortedDisabledDates"
                 :tooltipMessage="tooltipMessage"
-                @clear-selection="clearSelection"
-                @day-clicked="handleDayClick"
+                @setMinNightCount="setMinNightCount"
+                @clearSelection="clearSelection"
+                @dayClicked="handleDayClick"
               ></Day>
             </div>
           </div>
@@ -198,15 +200,17 @@
                   :date="day.date"
                   :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                   :hoveringDate="hoveringDate"
-                  :is-open="isOpen"
+                  :isOpen="isOpen"
+                  :minNightCount="minNightCount"
                   :nextDisabledDate="nextDisabledDate"
                   :options="$props"
                   :periodDates="periodDates"
                   :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :tooltipMessage="tooltipMessage"
-                  @clear-selection="clearSelection"
-                  @day-clicked="handleDayClick"
+                  @setMinNightCount="setMinNightCount"
+                  @clearSelection="clearSelection"
+                  @dayClicked="handleDayClick"
                 ></Day>
               </div>
             </div>
@@ -310,8 +314,8 @@ export default {
       type: Number
     },
     minNights: {
-      default: 1,
-      type: Number
+      type: Number,
+      default: 1
     },
     maxNights: {
       default: null,
@@ -374,24 +378,31 @@ export default {
   },
   data() {
     return {
-      hoveringDate: null,
-      checkIn: this.startingDateValue,
-      checkOut: this.endingDateValue,
-      checkIncheckOutHalfDay: {},
-      months: [],
       activeMonthIndex: 0,
-      nextDisabledDate: null,
-      show: true,
+      currentMinNights: 0,
+      checkIn: this.startingDateValue,
+      checkIncheckOutHalfDay: {},
+      checkOut: this.endingDateValue,
+      hoveringDate: null,
       isOpen: false,
-      xDown: null,
-      yDown: null,
-      xUp: null,
-      yUp: null,
+      months: [],
+      nextDisabledDate: null,
+      screenSize: null,
+      show: true,
       sortedDisabledDates: null,
-      screenSize: null
+      xDown: null,
+      xUp: null,
+      yDown: null,
+      yUp: null
     };
   },
   computed: {
+    minNightCount() {
+      if (this.periodDates && this.periodDates.length > 0)
+        return this.currentMinNights;
+
+      return this.minNights;
+    },
     showClearSelectionButton() {
       return Boolean(
         (this.checkIn || this.checkOut) && this.displayClearButton
@@ -510,6 +521,9 @@ export default {
   },
   methods: {
     ...Helpers,
+    setMinNightCount(minNights) {
+      this.currentMinNights = minNights;
+    },
     formatDate(date) {
       if (date) {
         return fecha.format(date, this.format);
