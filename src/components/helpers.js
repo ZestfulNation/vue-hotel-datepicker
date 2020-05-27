@@ -154,7 +154,9 @@ export default {
   },
   validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
     const getvalidDate = d => {
-      return new Date(d);
+      const formatDateAt00 = new Date(d).setHours(0, 0, 0, 0);
+
+      return new Date(formatDateAt00);
     };
 
     return (
