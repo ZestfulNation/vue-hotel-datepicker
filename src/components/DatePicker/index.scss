@@ -259,7 +259,6 @@ $extra-small-screen: '(max-width: 23em)';
     &--allowed-checkout:hover {
       background-color: $primary-color;
       color: $colorValidHoverDate;
-      z-index: 1;
       position: relative;
     }
 
@@ -304,7 +303,7 @@ $extra-small-screen: '(max-width: 23em)';
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         content: '';
-        z-index: 0;
+        z-index: -1;
         height: 0;
         width: 0;
         border-bottom: 100px solid $disabledBg;
@@ -368,6 +367,10 @@ $extra-small-screen: '(max-width: 23em)';
       cursor: pointer;
       color: $primary-color;
       font-weight: bold;
+    }
+
+    &--valid#{&}--halfCheckIn#{&}--last-day-selected {
+      color: white
     }
 
     &--hidden {
