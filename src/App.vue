@@ -9,11 +9,40 @@
         </h3>
         <DatePicker
           :disabledDates="[
-            '2020-06-16',
-            '2020-06-17',
-            '2020-06-18',
-            '2020-06-19'
+            '2020-08-15',
+            '2020-08-16',
+            '2020-08-17',
+            '2020-08-18',
+            '2020-08-19',
+            '2020-08-20',
+            '2020-08-21',
+            '2020-08-01',
+            '2020-08-02',
+            '2020-08-03',
+            '2020-08-04',
+            '2020-08-05',
+            '2020-08-06',
+            '2020-08-07',
+            '2020-07-11',
+            '2020-07-12',
+            '2020-07-13',
+            '2020-07-14',
+            '2020-07-15',
+            '2020-07-16',
+            '2020-07-17',
+            '2020-07-18',
+            '2020-07-01',
+            '2020-07-02',
+            '2020-07-03',
+            '2020-07-04',
+            '2020-07-05',
+            '2020-07-06',
+            '2020-07-07',
+            '2020-07-08',
+            '2020-07-09'
           ]"
+          :i18n="frFR"
+          firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
           :periodDates="periodDates"
@@ -375,6 +404,27 @@ export default {
           "Novembro",
           "Dezembro"
         ]
+      },
+      frFR: {
+        "check-in": "Départ",
+        "check-out": "Arrivée",
+        "day-names": ["lu", "ma", "me", "je", "ve", "sa", "di"],
+        "month-names": [
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre"
+        ],
+        night: "Nuit",
+        nights: "Nuits"
       },
       periodDates: [
         {

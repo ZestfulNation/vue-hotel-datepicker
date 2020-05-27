@@ -692,6 +692,21 @@ export default {
       let sortedDates = [];
       const checkIncheckOutHalfDay = {};
 
+      // Sorted disabledDates
+      this.disabledDates.sort((a, b) => {
+        const aa = a
+          .split("/")
+          .reverse()
+          .join();
+        const bb = b
+          .split("/")
+          .reverse()
+          .join();
+
+        // eslint-disable-next-line no-nested-ternary
+        return aa < bb ? -1 : aa > bb ? 1 : 0;
+      });
+
       for (let i = 0; i < this.disabledDates.length; i++) {
         const newDate = this.disabledDates[i];
 
