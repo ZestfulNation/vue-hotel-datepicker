@@ -30,6 +30,7 @@
             '2020-07-15',
             '2020-07-16',
             '2020-07-17',
+            '2020-07-18',
             '2020-07-01',
             '2020-07-02',
             '2020-07-03',
@@ -40,6 +41,8 @@
             '2020-07-08',
             '2020-07-09'
           ]"
+          :i18n="frFR"
+          firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
           :periodDates="periodDates"
@@ -401,6 +404,27 @@ export default {
           "Novembro",
           "Dezembro"
         ]
+      },
+      frFR: {
+        "check-in": "Départ",
+        "check-out": "Arrivée",
+        "day-names": ["lu", "ma", "me", "je", "ve", "sa", "di"],
+        "month-names": [
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre"
+        ],
+        night: "Nuit",
+        nights: "Nuits"
       },
       periodDates: [
         {

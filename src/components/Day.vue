@@ -334,10 +334,6 @@ export default {
             fecha.format(this.checkOut, "YYYYMMDD") ===
             fecha.format(this.date, "YYYYMMDD")
           ) {
-            if (this.halfDayClass) {
-              return `datepicker__month-day--disabled datepicker__month-day--last-day-selected ${this.halfDayClass}`;
-            }
-
             return "datepicker__month-day--disabled datepicker__month-day--last-day-selected";
           }
         }
