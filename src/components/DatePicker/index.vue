@@ -94,6 +94,7 @@
             class="datepicker__month-button datepicker__month-button--next -hide-up-to-tablet"
             @click="renderNextMonth"
             @keyup.enter.stop.prevent="renderNextMonth"
+            :disabled="isPreventedMaxMonth"
             :tabindex="isOpen ? 0 : -1"
           />
         </div>
@@ -272,6 +273,10 @@ export default {
       type: Boolean,
       default: false
     },
+    lastDateAvailable: {
+      default: null,
+      type: Date
+    },
     showPrice: {
       type: Boolean,
       default: false
@@ -398,6 +403,14 @@ export default {
     };
   },
   computed: {
+    isPreventedMaxMonth() {
+      const lastIndexMonthAvailable = this.getMonthDiff(
+        this.startDate,
+        this.lastDateAvailable
+      );
+
+      return this.activeMonthIndex >= lastIndexMonthAvailable - 1;
+    },
     minNightCount() {
       return this.dynamicNightCounts || this.minNights;
     },

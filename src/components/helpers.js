@@ -96,7 +96,7 @@ export default {
     return nextMonth;
   },
   handleTouchStart(evt) {
-    if (this.isOpen) {
+    if (this.isOpen && !this.isPreventedMaxMonth) {
       this.xDown = evt.touches[0].clientX;
       this.yDown = evt.touches[0].clientY;
     }
@@ -125,32 +125,6 @@ export default {
 
     this.xDown = null;
     this.yDown = null;
-  },
-  swipeAfterScroll(direction) {
-    if (
-      this.screenSize !== "desktop" &&
-      this.$refs &&
-      this.$refs.swiperWrapper &&
-      this.isOpen
-    ) {
-      const { swiperWrapper } = this.$refs;
-
-      // If wrapper has vertical scroll
-      if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-        if (
-          swiperWrapper.scrollTop ===
-          swiperWrapper.scrollHeight - swiperWrapper.offsetHeight
-        ) {
-          this.renderNextMonth();
-        } else if (swiperWrapper.scrollTop === 0) {
-          this.renderPreviousMonth();
-        }
-      } else if (direction === "up") {
-        this.renderNextMonth();
-      } else if (direction === "down") {
-        this.renderPreviousMonth();
-      }
-    }
   },
   validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
     const getvalidDate = d => {
