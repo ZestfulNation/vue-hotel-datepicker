@@ -522,7 +522,7 @@ export default {
 
           this.$emit("setMinNightCount", null);
 
-          if (this.periodDates) {
+          if (this.checkIn === null && this.periodDates) {
             let currentPeriod = null;
 
             this.periodDates.forEach(d => {

@@ -26,7 +26,7 @@
           ]"
           :minNights="minNights"
           :i18n="frFR"
-          firstDayOfWeek="1"
+          :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
           :periodDates="periodDates"
