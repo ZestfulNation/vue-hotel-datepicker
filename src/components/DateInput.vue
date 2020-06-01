@@ -34,10 +34,6 @@ export default {
       type: Function,
       required: true
     },
-    showDatepicker: {
-      type: Function,
-      required: true
-    },
     i18n: {
       type: Object,
       required: true

@@ -382,10 +382,18 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__month-button {
     background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #00ca9d;
+    outline: none;
+    text-align: center;
     cursor: pointer;
-    display: inline-block;
-    height: 60px;
-    width: 60px;
+    opacity: 1;
+    transition: opacity ease .5s;
+
+    &:hover {
+      opacity: .65;
+    }
 
     @include focusStyle();
 
@@ -397,7 +405,7 @@ $extra-small-screen: '(max-width: 23em)';
       float: right;
     }
 
-    &--locked {
+    &[disabled] {
       opacity: .2;
       cursor: not-allowed;
       pointer-events: none;
@@ -481,7 +489,7 @@ $extra-small-screen: '(max-width: 23em)';
     font-size: 16px;
     font-weight: bold;
     margin-top: -40px;
-    padding-bottom: 17px;
+    padding: 13px 0 26px;
     pointer-events: none;
     text-align: center;
 

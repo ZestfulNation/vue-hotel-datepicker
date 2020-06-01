@@ -21,7 +21,6 @@
         :input-date="formatDate(checkIn)"
         input-date-type="check-in"
         :is-open="isOpen"
-        :show-datepicker="showDatepicker"
         :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       />
@@ -32,7 +31,6 @@
         :input-date="formatDate(checkOut)"
         input-date-type="check-out"
         :is-open="isOpen"
-        :showDatepicker="showDatepicker"
         :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       />
@@ -83,18 +81,21 @@
       </div>
       <div class="datepicker__inner">
         <div class="datepicker__header">
-          <span
+          <button
+            type="button"
             class="datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet"
             @click="renderPreviousMonth"
             @keyup.enter.stop.prevent="renderPreviousMonth"
             :tabindex="isOpen ? 0 : -1"
-          ></span
-          ><span
+            :disabled="activeMonthIndex === 0"
+          />
+          <button
+            type="button"
             class="datepicker__month-button datepicker__month-button--next -hide-up-to-tablet"
             @click="renderNextMonth"
             @keyup.enter.stop.prevent="renderNextMonth"
             :tabindex="isOpen ? 0 : -1"
-          ></span>
+          />
         </div>
         <div class="datepicker__months" v-if="screenSize == 'desktop'">
           <div
