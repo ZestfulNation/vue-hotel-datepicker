@@ -494,7 +494,7 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: center;
 
     @include device($up-to-tablet) {
-      margin-top: -25px;
+      margin-top: -50px;
       margin-bottom: 0;
       position: absolute;
       width: 100%;
