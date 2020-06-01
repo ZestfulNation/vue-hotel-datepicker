@@ -1,7 +1,15 @@
 <template>
-  <div id="app" style="width: 60rem; margin: 0 auto;">
+  <div id="app" style="margin: 0 auto;">
     <h1>Vue Hotel datepicker@2</h1>
     <div>
+      <div class="box">
+        <h3>
+          Last date available
+          <strong>lastDateAvailable</strong> props <br />
+        </h3>
+        <p>Stop pagination two years later</p>
+        <DatePicker :lastDateAvailable="lastDateAvailable" />
+      </div>
       <div class="box">
         <h3>
           Disable checkout on the same date as checkin with
@@ -24,6 +32,7 @@
             '2020-08-06',
             '2020-08-07'
           ]"
+          :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
           :firstDayOfWeek="1"
@@ -438,7 +447,15 @@ export default {
       minNights: 3
     };
   },
+  computed: {
+    lastDateAvailable() {
+      return this.addYears(new Date(), 2);
+    }
+  },
   methods: {
+    addYears(dt, n) {
+      return new Date(dt.setFullYear(dt.getFullYear() + n));
+    },
     validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
       const getvalidDate = d => {
         return new Date(d);

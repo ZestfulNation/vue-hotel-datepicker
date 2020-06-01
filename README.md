@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.4.5
+# Release 0.4.7
 
 # vue-hotel-datepicker@2
 
@@ -44,7 +44,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Remove useless props on the DateInput component
 * Change `<span>` to `<button>` on pagination and put a `disabled` attribute when activeMonthIndex equal to 0
 * Fix disable calcul of minNightsCount when checkout
-
+* Add the lastDateAvailable
 ------------
 
 ## What I will improve
@@ -92,6 +92,12 @@ export default {
 
 
 ## Props/Options
+
+### lastDateAvailable
+- Type: `Date`
+- Default: `null`
+
+Allows to stop calendar pagination after the month of that date
 
 ### halfDay
 
