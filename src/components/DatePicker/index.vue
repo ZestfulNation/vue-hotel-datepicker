@@ -379,7 +379,7 @@ export default {
   data() {
     return {
       activeMonthIndex: 0,
-      currentMinNights: 0,
+      dynamicNightCounts: null,
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
       checkOut: this.endingDateValue,
@@ -398,10 +398,7 @@ export default {
   },
   computed: {
     minNightCount() {
-      if (this.periodDates && this.periodDates.length > 0)
-        return this.currentMinNights;
-
-      return this.minNights;
+      return this.dynamicNightCounts || this.minNights;
     },
     showClearSelectionButton() {
       return Boolean(
@@ -522,7 +519,7 @@ export default {
   methods: {
     ...Helpers,
     setMinNightCount(minNights) {
-      this.currentMinNights = minNights;
+      this.dynamicNightCounts = minNights;
     },
     formatDate(date) {
       if (date) {

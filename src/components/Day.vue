@@ -520,6 +520,8 @@ export default {
             ) ||
             Infinity;
 
+          this.$emit("setMinNightCount", null);
+
           if (this.periodDates) {
             let currentPeriod = null;
 

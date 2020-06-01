@@ -22,25 +22,9 @@
             '2020-08-04',
             '2020-08-05',
             '2020-08-06',
-            '2020-08-07',
-            '2020-07-11',
-            '2020-07-12',
-            '2020-07-13',
-            '2020-07-14',
-            '2020-07-15',
-            '2020-07-16',
-            '2020-07-17',
-            '2020-07-18',
-            '2020-07-01',
-            '2020-07-02',
-            '2020-07-03',
-            '2020-07-04',
-            '2020-07-05',
-            '2020-07-06',
-            '2020-07-07',
-            '2020-07-08',
-            '2020-07-09'
+            '2020-08-07'
           ]"
+          :minNights="minNights"
           :i18n="frFR"
           firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
@@ -428,29 +412,22 @@ export default {
       },
       periodDates: [
         {
-          startAt: "2020-06-01",
-          endAt: "2020-06-06",
+          startAt: "2020-07-01",
+          endAt: "2020-07-07",
           minimumDuration: 4,
           periodType: "nightly",
           price: 500.0
         },
         {
-          startAt: "2020-06-06",
-          endAt: "2020-06-13",
+          startAt: "2020-07-11",
+          endAt: "2020-07-18",
           minimumDuration: 1,
           periodType: "weekly_by_saturday",
           price: 1000.0
         },
         {
-          startAt: "2020-06-22",
-          endAt: "2020-06-28",
-          minimumDuration: 3,
-          periodType: "nightly",
-          price: 500.0
-        },
-        {
-          startAt: "2020-06-28",
-          endAt: "2020-07-05",
+          startAt: "2020-07-18",
+          endAt: "2020-07-25",
           minimumDuration: 1,
           periodType: "weekly_by_sunday",
           price: 4000.0
@@ -458,7 +435,7 @@ export default {
       ],
       newCheckInDate: null,
       newCheckOutDate: null,
-      minNights: 0
+      minNights: 3
     };
   },
   methods: {
