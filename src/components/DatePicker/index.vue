@@ -274,8 +274,8 @@ export default {
       default: false
     },
     lastDateAvailable: {
-      default: null,
-      type: Date
+      type: [Number, Date],
+      default: Infinity
     },
     showPrice: {
       type: Boolean,
