@@ -23,8 +23,8 @@
       </div>
       <div class="box">
         <h3>
-          Disable checkout on the same date as checkin with
-          <strong>disableCheckoutOnCheckin</strong> props
+          Periods
+          <strong>periodDates</strong> props
         </h3>
         <DatePicker
           :disabledDates="[
@@ -100,8 +100,8 @@
         />
       </div>
       <div class="box">
-        <h3>Allow check-in and check-out on the same day</h3>
-        <DatePicker :minNights="0" />
+        <h3>Disable check-in and check-out on the same day</h3>
+        <DatePicker :disableCheckoutOnCheckin="true" :minNights="0" />
       </div>
       <div class="box">
         <h3>Allow selection of single day</h3>
