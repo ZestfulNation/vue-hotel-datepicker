@@ -10,7 +10,7 @@
       v-if="isOpen"
       @click="hideDatepicker"
     >
-      ＋
+      <i>+</i>
     </div>
     <div
       class="datepicker__dummy-wrapper"
@@ -168,11 +168,11 @@
             <div
               ref="datepickerMonth"
               class="datepicker__month"
-              v-for="(a, n) in months"
+              v-for="(a, n) in sliceMonthMobile"
               :key="n"
             >
               <p class="datepicker__month-name">
-                {{ getMonth(months[n].days[15].date) }}
+                {{ getMonth(sliceMonthMobile[n].days[15].date) }}
               </p>
               <div class="datepicker__week-row -hide-up-to-tablet">
                 <div
@@ -187,7 +187,7 @@
               </div>
               <div
                 class="square"
-                v-for="(day, index) in months[n].days"
+                v-for="(day, index) in sliceMonthMobile[n].days"
                 @mouseover="hoveringDate = day.date"
                 @focus="hoveringDate = day.date"
                 v-bind:key="index"
@@ -216,15 +216,10 @@
                 ></Day>
               </div>
             </div>
-            <div
-              class="next--mobile"
-              @click="renderNextMonth"
-              type="button"
-            ></div>
           </div>
         </div>
 
-        <slot name="content"></slot>
+        <slot name="content" />
       </div>
     </div>
   </div>
@@ -387,12 +382,13 @@ export default {
   data() {
     return {
       activeMonthIndex: 0,
-      dynamicNightCounts: null,
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
       checkOut: this.endingDateValue,
+      dynamicNightCounts: null,
       hoveringDate: null,
       isOpen: false,
+      isTouchMove: false,
       months: [],
       nextDisabledDate: null,
       screenSize: null,
@@ -405,6 +401,18 @@ export default {
     };
   },
   computed: {
+    sliceMonthMobile() {
+      const nbMonthRenderDom = 4;
+
+      if (this.activeMonthIndex >= nbMonthRenderDom) {
+        return this.months.slice(
+          this.activeMonthIndex - 3,
+          this.activeMonthIndex + 1
+        );
+      }
+
+      return this.months.slice(0, nbMonthRenderDom);
+    },
     isPreventedMaxMonth() {
       const lastIndexMonthAvailable = this.getMonthDiff(
         this.startDate,
@@ -429,12 +437,16 @@ export default {
 
         if (value) {
           body.style.overflow = "hidden";
+
           this.$nextTick(() => {
             if (this.$refs) {
               const { swiperWrapper } = this.$refs;
               const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight;
+              const currentSelectionIndex = this.checkOut
+                ? this.getMonthDiff(new Date(), this.checkOut)
+                : 0;
 
-              swiperWrapper.scrollTop = this.activeMonthIndex * monthHeihgt;
+              swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt;
             }
           });
         } else {
@@ -671,7 +683,7 @@ export default {
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
 
       this.activeMonthIndex++;
-    }, 200),
+    }, 350),
     setCheckIn(date) {
       this.checkIn = date;
     },
@@ -689,13 +701,13 @@ export default {
       const month = {
         days: []
       };
+      let i = 0;
 
-      for (let i = 0; i < 42; i++) {
+      while (i++ < 42) {
         month.days.push({
           date: this.addDays(firstDay, i),
           belongsToThisMonth:
-            this.addDays(firstDay, i).getMonth() === date.getMonth(),
-          isInRange: false
+            this.addDays(firstDay, i).getMonth() === date.getMonth()
         });
       }
 

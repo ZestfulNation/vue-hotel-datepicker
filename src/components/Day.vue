@@ -496,8 +496,13 @@ export default {
 
       if (this.disableCheckoutOnCheckin) {
         if (this.checkIn && this.checkIn === date) {
-          disableCheckoutOnCheckin = false;
-          this.$emit("clearSelection");
+          if (this.checkOut) {
+            disableCheckoutOnCheckin = true;
+            this.$emit("clearSelection");
+          } else {
+            disableCheckoutOnCheckin = false;
+            this.$emit("clearSelection");
+          }
         } else {
           disableCheckoutOnCheckin = true;
         }

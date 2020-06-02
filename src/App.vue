@@ -6,7 +6,7 @@
         <h3>
           Insert content with the content slot
         </h3>
-        <DatePicker :lastDateAvailable="lastDateAvailable">
+        <DatePicker :lastDateAvailable="lastDateAvailable" show-year>
           <!-- Insert content here -->
           <div slot="content">
             Hello

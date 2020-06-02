@@ -4,7 +4,8 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.4.9
+# Release 0.5.0
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.0
 
 # vue-hotel-datepicker@2
 
@@ -46,6 +47,13 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Fix disable calcul of minNightsCount when checkout
 * Add the lastDateAvailable
 * Create a content slot
+* Mobile:
+  * CheckIn - CheckOut scroll to current month
+* Performance
+  * Dynamic dom rendering on mobile
+* If CheckIn, click on CheckIn clearSelection
+* Review the style of the modal cross
+
 ------------
 
 ## What I will improve

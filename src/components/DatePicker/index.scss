@@ -164,7 +164,6 @@ $extra-small-screen: '(max-width: 23em)';
     height: 100%;
 
     &--no-border.datepicker__dummy-wrapper {
-      margin-top: 15px;
       border: 0;
     }
 
@@ -541,9 +540,16 @@ $extra-small-screen: '(max-width: 23em)';
     outline: 0;
     z-index: 10000;
     position: fixed;
-    left: 7px;
-    top: 5px;
-    transform: rotate(45deg);
+    right: 15px;
+    top: 0;
+    height: 48px;
+    line-height: 48px;
+
+    i {
+      display: block;
+      font-style: inherit;
+      transform: rotate(45deg);
+    }
   }
 
   &__clear-button {
