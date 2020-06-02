@@ -223,6 +223,8 @@
             ></div>
           </div>
         </div>
+
+        <slot name="content"></slot>
       </div>
     </div>
   </div>
