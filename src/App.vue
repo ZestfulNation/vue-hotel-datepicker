@@ -4,6 +4,17 @@
     <div>
       <div class="box">
         <h3>
+          Insert content with the content slot
+        </h3>
+        <DatePicker :lastDateAvailable="lastDateAvailable">
+          <!-- Insert content here -->
+          <div slot="content">
+            Hello
+          </div>
+        </DatePicker>
+      </div>
+      <div class="box">
+        <h3>
           Last date available
           <strong>lastDateAvailable</strong> props <br />
         </h3>
