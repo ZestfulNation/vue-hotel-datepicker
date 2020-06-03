@@ -49,8 +49,6 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Create a content slot
 * Mobile:
   * CheckIn - CheckOut scroll to current month
-* Performance
-  * Dynamic dom rendering on mobile
 * If CheckIn, click on CheckIn clearSelection
 * Review the style of the modal cross
 
