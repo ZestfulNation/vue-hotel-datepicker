@@ -168,11 +168,11 @@
             <div
               ref="datepickerMonth"
               class="datepicker__month"
-              v-for="(a, n) in sliceMonthMobile"
+              v-for="(a, n) in months"
               :key="n"
             >
               <p class="datepicker__month-name">
-                {{ getMonth(sliceMonthMobile[n].days[15].date) }}
+                {{ getMonth(months[n].days[15].date) }}
               </p>
               <div class="datepicker__week-row -hide-up-to-tablet">
                 <div
@@ -187,7 +187,7 @@
               </div>
               <div
                 class="square"
-                v-for="(day, index) in sliceMonthMobile[n].days"
+                v-for="(day, index) in months[n].days"
                 @mouseover="hoveringDate = day.date"
                 @focus="hoveringDate = day.date"
                 v-bind:key="index"
