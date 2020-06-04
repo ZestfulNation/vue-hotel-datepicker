@@ -51,6 +51,9 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   * CheckIn - CheckOut scroll to current month
 * If CheckIn, click on CheckIn clearSelection
 * Review the style of the modal cross
+* Rewrite the ReRender function
+* Rewrite the clickOnDay function
+* Rewrite the clickOutside function
 
 ------------
 
