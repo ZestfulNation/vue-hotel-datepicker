@@ -223,6 +223,7 @@ export default {
     showTooltip() {
       return (
         !this.isDisabled &&
+        this.tabIndex !== -1 &&
         this.date === this.hoveringDate &&
         this.checkIn !== null &&
         this.checkOut == null
@@ -349,10 +350,15 @@ export default {
               i => i === fecha.format(this.date, "dddd")
             )
           ) {
-            return " datepicker__month-day--selected datepicker__month-day--disabled";
+            return "datepicker__month-day--selected datepicker__month-day--disabled";
           }
 
-          return " datepicker__month-day--selected";
+          if (
+            this.isDateLessOrEquals(this.date, this.hoveringDate) ||
+            (this.checkIn && this.checkOut)
+          ) {
+            return " datepicker__month-day--selected";
+          }
         }
 
         if (
@@ -492,13 +498,14 @@ export default {
       return null;
     },
     dayClicked(date) {
+      let resetCheckin = false;
       let disableCheckoutOnCheckin = !this.disableCheckoutOnCheckin;
 
       if (this.disableCheckoutOnCheckin) {
         if (this.checkIn && this.checkIn === date) {
           if (this.checkOut) {
             disableCheckoutOnCheckin = true;
-            this.$emit("clearSelection");
+            resetCheckin = true;
           } else {
             disableCheckoutOnCheckin = false;
             this.$emit("clearSelection");
@@ -510,59 +517,19 @@ export default {
 
       if (disableCheckoutOnCheckin) {
         if (!this.isDisabled || this.isClickable()) {
+          const formatDate = fecha.format(date, "YYYY-MM-DD");
+
           if (this.options.allowedRanges.length !== 0) {
             this.createAllowedCheckoutDays(date);
           }
 
-          let nextDisabledDate =
-            (this.options.maxNights
-              ? this.addDays(this.date, this.options.maxNights)
-              : null) ||
-            this.allowedCheckoutDays[this.allowedCheckoutDays.length - 1] ||
-            this.getNextDate(this.sortedDisabledDates, this.date) ||
-            this.nextDateByDayOfWeekArray(
-              this.options.disabledDaysOfWeek,
-              this.date
-            ) ||
-            Infinity;
-
-          this.$emit("setMinNightCount", null);
-
-          if (this.checkIn === null && this.periodDates) {
-            let currentPeriod = null;
-
-            this.periodDates.forEach(d => {
-              if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
-                currentPeriod = d;
-              }
-            });
-
-            if (currentPeriod) {
-              if (
-                currentPeriod.periodType === "nightly" &&
-                currentPeriod.endAt !== date
-              ) {
-                this.$emit("setMinNightCount", currentPeriod.minimumDuration);
-              }
-
-              if (
-                currentPeriod.periodType === "weekly_by_saturday" ||
-                currentPeriod.periodType === "weekly_by_sunday"
-              ) {
-                this.$emit("setMinNightCount", 7);
-              }
-            } else {
-              this.$emit("setMinNightCount", 0);
-            }
-
-            if (this.options.enableCheckout) {
-              nextDisabledDate = Infinity;
-            }
-          }
-
-          const formatDate = fecha.format(date, "YYYY-MM-DD");
-
-          this.$emit("dayClicked", date, formatDate, nextDisabledDate);
+          this.$emit(
+            "dayClicked",
+            date,
+            formatDate,
+            this.allowedCheckoutDays,
+            resetCheckin
+          );
         } else {
           this.$emit("clearSelection");
           this.dayClicked(date);

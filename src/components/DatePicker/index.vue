@@ -1,14 +1,9 @@
 <template>
-  <div
-    class="datepicker__wrapper"
-    v-if="show"
-    v-on-click-outside="clickOutside"
-    @blur="clickOutside"
-  >
+  <div class="datepicker__wrapper" :ref="`DatePicker-${hash}`" v-if="show">
     <div
       class="datepicker__close-button -hide-on-desktop"
       v-if="isOpen"
-      @click="hideDatepicker"
+      @click="closeMobileDatepicker"
     >
       <i>+</i>
     </div>
@@ -103,7 +98,7 @@
             ref="datepickerMonth"
             class="datepicker__month"
             v-for="n in [0, 1]"
-            :key="n"
+            :key="datepickerMonthKey + n"
           >
             <p class="datepicker__month-name">
               {{ getMonth(months[activeMonthIndex + n].days[15].date) }}
@@ -111,16 +106,19 @@
             <div class="datepicker__week-row -hide-up-to-tablet">
               <div
                 class="datepicker__week-name"
-                v-for="(dayName, datePickerWeekIndex) in i18n['day-names']"
-                :key="`datepicker__week-name-${datePickerWeekIndex}`"
+                v-for="(dayName, datePickerWeekIndexDesktop) in i18n[
+                  'day-names'
+                ]"
+                :key="datepickerWeekKey + datePickerWeekIndexDesktop"
               >
                 {{ dayName }}
               </div>
             </div>
             <div
               class="square"
-              v-for="(day, squareIndex) in months[activeMonthIndex + n].days"
-              :key="`square-${squareIndex}`"
+              v-for="(day, dayIndexDesktop) in months[activeMonthIndex + n]
+                .days"
+              :key="`${datepickerDayKey}-${dayIndexDesktop}`"
               @mouseover="hoveringDate = day.date"
             >
               <Day
@@ -144,7 +142,7 @@
                 @setMinNightCount="setMinNightCount"
                 @clearSelection="clearSelection"
                 @dayClicked="handleDayClick"
-              ></Day>
+              />
             </div>
           </div>
         </div>
@@ -152,10 +150,10 @@
           <div class="datepicker__week-row">
             <div
               class="datepicker__week-name"
-              v-for="(dayName, datePickerIndex) in this.i18n['day-names']"
-              :key="
-                `datepicker__week-row-datepicker__week-name-${datePickerIndex}`
-              "
+              v-for="(dayName, datePickerWeekIndexMobile) in this.i18n[
+                'day-names'
+              ]"
+              :key="datepickerWeekKey + datePickerWeekIndexMobile"
             >
               {{ dayName }}
             </div>
@@ -169,7 +167,7 @@
               ref="datepickerMonth"
               class="datepicker__month"
               v-for="(a, n) in months"
-              :key="n"
+              :key="datepickerMonthKey + n"
             >
               <p class="datepicker__month-name">
                 {{ getMonth(months[n].days[15].date) }}
@@ -187,10 +185,10 @@
               </div>
               <div
                 class="square"
-                v-for="(day, index) in months[n].days"
+                v-for="(day, dayIndexMobile) in months[n].days"
+                :key="`${datepickerDayKey}-${dayIndexMobile}`"
                 @mouseover="hoveringDate = day.date"
                 @focus="hoveringDate = day.date"
-                v-bind:key="index"
               >
                 <Day
                   :activeMonthIndex="activeMonthIndex"
@@ -213,7 +211,7 @@
                   @setMinNightCount="setMinNightCount"
                   @clearSelection="clearSelection"
                   @dayClicked="handleDayClick"
-                ></Day>
+                />
               </div>
             </div>
           </div>
@@ -227,7 +225,6 @@
 
 <script>
 import throttle from "lodash.throttle";
-import { directive as onClickOutside } from "vue-on-click-outside";
 import fecha from "fecha";
 
 import Day from "../Day.vue";
@@ -258,9 +255,6 @@ const defaulti18n = {
 
 export default {
   name: "HotelDatePicker",
-  directives: {
-    "on-click-outside": onClickOutside
-  },
   components: {
     Day,
     DateInput
@@ -381,6 +375,10 @@ export default {
   },
   data() {
     return {
+      hash: Date.now(),
+      datepickerDayKey: 0,
+      datepickerMonthKey: 0,
+      datepickerWeekKey: 0,
       activeMonthIndex: 0,
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
@@ -461,7 +459,6 @@ export default {
       if (this.checkOut !== null && this.checkOut !== null) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
-        this.show = true;
         this.parseDisabledDates();
         this.reRender();
         this.isOpen = false;
@@ -528,6 +525,7 @@ export default {
       document.addEventListener("touchmove", this.handleTouchMove, false);
       document.addEventListener("touchend", this.handleTouchEnd, false);
     } else {
+      document.addEventListener("click", this.handleClickOutside, false);
       window.addEventListener("resize", this.handleWindowResize);
     }
 
@@ -542,10 +540,24 @@ export default {
       document.removeEventListener("touchend", this.handleTouchEnd);
     } else {
       window.removeEventListener("resize", this.handleWindowResize);
+      document.removeEventListener("click", this.handleClickOutside);
     }
   },
   methods: {
     ...Helpers,
+    handleClickOutside(event) {
+      const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`];
+
+      if (ignoreClickOnMeElement) {
+        const isClickInsideElement = ignoreClickOnMeElement.contains(
+          event.target
+        );
+
+        if (!isClickInsideElement) {
+          this.hideDatepicker();
+        }
+      }
+    },
     setMinNightCount(minNights) {
       this.dynamicNightCounts = minNights;
     },
@@ -598,20 +610,25 @@ export default {
       this.$emit("height-changed");
     },
     reRender() {
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      this.datepickerDayKey += 1;
+      this.datepickerMonthKey += 1;
+      this.datepickerWeekKey += 1;
     },
     clearSelection() {
       this.hoveringDate = null;
       this.checkIn = null;
       this.checkOut = null;
       this.nextDisabledDate = null;
-      this.show = true;
       this.parseDisabledDates();
       this.reRender();
       this.$emit("clear-selection");
+    },
+    closeMobileDatepicker() {
+      this.hideDatepicker();
+
+      if (this.checkIn && !this.checkOut) {
+        this.clearSelection();
+      }
     },
     hideDatepicker() {
       this.isOpen = false;
@@ -622,18 +639,37 @@ export default {
     toggleDatepicker() {
       this.isOpen = !this.isOpen;
     },
-    clickOutside(e) {
-      // hide datePicker when event is outside
-      if (
-        this.closeDatepickerOnClickOutside &&
-        e.target.dataset.qa !== "datepickerInput"
-      ) {
+    clickOutside() {
+      if (this.show && this.closeDatepickerOnClickOutside) {
         this.hideDatepicker();
       }
     },
-    handleDayClick(date, formatDate, nextDisabledDate) {
+    handleDayClick(date, formatDate, allowedCheckoutDays, resetCheckin) {
+      if (resetCheckin) {
+        this.clearSelection();
+        this.$nextTick(() => {
+          this.handleDayClick(date, formatDate, allowedCheckoutDays, false);
+        });
+
+        return;
+      }
+
+      let nextDisabledDate =
+        (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
+        allowedCheckoutDays[allowedCheckoutDays.length - 1] ||
+        this.getNextDate(this.sortedDisabledDates, date) ||
+        this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
+        Infinity;
+
+      this.setMinNightCount(null);
+
+      if (this.enableCheckout) {
+        nextDisabledDate = Infinity;
+      }
+
       if (this.checkIn == null && this.singleDaySelection === false) {
         this.checkIn = date;
+        this.setPeriods(date);
       } else if (this.singleDaySelection === true) {
         this.checkIn = date;
         this.checkOut = date;
@@ -642,10 +678,40 @@ export default {
       } else {
         this.checkOut = null;
         this.checkIn = date;
+        this.setPeriods(date);
       }
 
       this.nextDisabledDate = nextDisabledDate;
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);
+    },
+    setPeriods(date) {
+      if (this.periodDates) {
+        let currentPeriod = null;
+
+        this.periodDates.forEach(d => {
+          if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
+            currentPeriod = d;
+          }
+        });
+
+        if (currentPeriod) {
+          if (
+            currentPeriod.periodType === "nightly" &&
+            currentPeriod.endAt !== date
+          ) {
+            this.setMinNightCount(currentPeriod.minimumDuration);
+          }
+
+          if (
+            currentPeriod.periodType === "weekly_by_saturday" ||
+            currentPeriod.periodType === "weekly_by_sunday"
+          ) {
+            this.setMinNightCount(7);
+          }
+        } else {
+          this.setMinNightCount(0);
+        }
+      }
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
@@ -681,7 +747,6 @@ export default {
       }
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
-
       this.activeMonthIndex++;
     }, 350),
     setCheckIn(date) {
@@ -701,9 +766,8 @@ export default {
       const month = {
         days: []
       };
-      let i = 0;
 
-      while (i++ < 42) {
+      for (let i = 0; i < 42; i++) {
         month.days.push({
           date: this.addDays(firstDay, i),
           belongsToThisMonth:
