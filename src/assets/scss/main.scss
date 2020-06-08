@@ -106,7 +106,8 @@
         word-spacing: 0.4166666666666666666666666666666em;
         border: 0;
         @include focusStyle();
-
+        appearance: none;
+        
         &::-webkit-input-placeholder,
         &::-moz-placeholder,
         &:-ms-input-placeholder,
