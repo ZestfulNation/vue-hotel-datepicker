@@ -303,6 +303,8 @@ periodDates: [
 ]
 ```
 
+#### `MinimumDuration` with a periodType `weekly-~` equals to a week
+
 ### showPrice
 
 - Type: `Boolean`

@@ -440,8 +440,8 @@ export default {
         },
         {
           startAt: "2020-07-11",
-          endAt: "2020-07-18",
-          minimumDuration: 1,
+          endAt: "2020-07-25",
+          minimumDuration: 2,
           periodType: "weekly_by_saturday",
           price: 1000.0
         },

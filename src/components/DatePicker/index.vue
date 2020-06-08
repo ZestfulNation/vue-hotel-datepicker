@@ -706,7 +706,9 @@ export default {
             currentPeriod.periodType === "weekly_by_saturday" ||
             currentPeriod.periodType === "weekly_by_sunday"
           ) {
-            this.setMinNightCount(7);
+            const minimumDuration = currentPeriod.minimumDuration * 7;
+
+            this.setMinNightCount(minimumDuration);
           }
         } else {
           this.setMinNightCount(0);
