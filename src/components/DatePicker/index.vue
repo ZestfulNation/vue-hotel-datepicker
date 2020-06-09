@@ -134,6 +134,7 @@
                 :isOpen="isOpen"
                 :minNightCount="minNightCount"
                 :nextDisabledDate="nextDisabledDate"
+                :nextPeriodDisableDates="nextPeriodDisableDates"
                 :options="$props"
                 :periodDates="periodDates"
                 :showPrice="showPrice"
@@ -203,6 +204,7 @@
                   :isOpen="isOpen"
                   :minNightCount="minNightCount"
                   :nextDisabledDate="nextDisabledDate"
+                  :nextPeriodDisableDates="nextPeriodDisableDates"
                   :options="$props"
                   :periodDates="periodDates"
                   :showPrice="showPrice"
@@ -378,6 +380,7 @@ export default {
       hash: Date.now(),
       datepickerDayKey: 0,
       datepickerMonthKey: 0,
+      nextPeriodDisableDates: [],
       datepickerWeekKey: 0,
       activeMonthIndex: 0,
       checkIn: this.startingDateValue,
@@ -619,6 +622,7 @@ export default {
       this.checkIn = null;
       this.checkOut = null;
       this.nextDisabledDate = null;
+      this.nextPeriodDisableDates = [];
       this.parseDisabledDates();
       this.reRender();
       this.$emit("clear-selection");
@@ -645,6 +649,8 @@ export default {
       }
     },
     handleDayClick(date, formatDate, allowedCheckoutDays, resetCheckin) {
+      this.nextPeriodDisableDates = [];
+
       if (resetCheckin) {
         this.clearSelection();
         this.$nextTick(() => {
@@ -686,15 +692,39 @@ export default {
     },
     setPeriods(date) {
       if (this.periodDates) {
+        let nextPeriod = null;
         let currentPeriod = null;
 
         this.periodDates.forEach(d => {
-          if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
+          if (
+            d.startAt === date ||
+            this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
+          ) {
             currentPeriod = d;
           }
         });
 
         if (currentPeriod) {
+          this.periodDates.forEach(period => {
+            if (period.startAt === currentPeriod.endAt) {
+              nextPeriod = period;
+            }
+          });
+
+          if (this.checkIn && !this.checkOut && nextPeriod) {
+            const endNextPeriod = this.addDays(
+              nextPeriod.startAt,
+              nextPeriod.minimumDuration - 1
+            );
+            const startNextPeriodPlusOne = this.addDays(nextPeriod.startAt, 1);
+            const newDisablesDates = this.getDaysArray(
+              startNextPeriodPlusOne,
+              endNextPeriod
+            );
+
+            this.nextPeriodDisableDates = newDisablesDates;
+          }
+
           if (
             currentPeriod.periodType === "nightly" &&
             currentPeriod.endAt !== date

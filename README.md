@@ -4,8 +4,8 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.5.5
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.5
+# Release 0.5.7
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
 
@@ -54,6 +54,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Rewrite the ReRender function
 * Rewrite the clickOnDay function
 * Rewrite the clickOutside function
+* Create a dynamic array for disabled dates of the nextPeriod
 
 ------------
 
