@@ -1,3 +1,4 @@
+/* eslint-disable vars-on-top */
 export default {
   getNextDate(datesArray, referenceDate) {
     const now = new Date(referenceDate);
@@ -169,5 +170,18 @@ export default {
     }
 
     return newArr;
+  },
+  getDaysArray(start, end) {
+    for (
+      // eslint-disable-next-line no-var
+      var arr = [], dt = new Date(start);
+      dt <= end;
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      arr.push(new Date(dt));
+    }
+
+    // eslint-disable-next-line block-scoped-var
+    return arr;
   }
 };

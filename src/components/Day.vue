@@ -55,6 +55,10 @@ export default {
       type: Array,
       default: () => []
     },
+    nextPeriodDisableDates: {
+      type: Array,
+      default: () => []
+    },
     options: {
       type: Object
     },
@@ -137,11 +141,22 @@ export default {
 
       this.periodDates.forEach(d => {
         if (
+          d.startAt === this.formatDate ||
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
         ) {
           currentPeriod = d;
         }
       });
+
+      if (
+        this.nextPeriodDisableDates
+          ? this.nextPeriodDisableDates.some(
+              i => this.compareDay(i, this.date) === 0
+            )
+          : null
+      ) {
+        return "datepicker__month-day--disabled datepicker__month-day--not-allowed nightly";
+      }
 
       if (currentPeriod) {
         if (
