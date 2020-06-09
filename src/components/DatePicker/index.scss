@@ -280,7 +280,6 @@ $extra-small-screen: '(max-width: 23em)';
       background: transparent
     }
 
-
     &--not-allowed.nightly,
     &--not-allowed.nightly:hover {
       color: $gray;
@@ -362,10 +361,17 @@ $extra-small-screen: '(max-width: 23em)';
       pointer-events: none;
     }
 
-    &--valid {
+    &--valid,
+    &--not-allowed.nightly.datepicker__month-day--cliquable {
       cursor: pointer;
       color: $primary-color;
       font-weight: bold;
+    }
+
+    &--not-allowed.nightly.datepicker__month-day--cliquable:hover,
+    &--not-allowed.nightly.datepicker__month-day--cliquable.datepicker__month-day--selected {
+      color: $white;
+      font-weight: 300
     }
 
     &--valid#{&}--halfCheckIn#{&}--last-day-selected {

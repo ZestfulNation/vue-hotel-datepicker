@@ -55,6 +55,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Rewrite the clickOnDay function
 * Rewrite the clickOutside function
 * Create a dynamic array for disabled dates of the nextPeriod
+* Sort in ascending order periodDates (startAt)
 
 ------------
 

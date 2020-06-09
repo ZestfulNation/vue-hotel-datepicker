@@ -136,7 +136,7 @@
                 :nextDisabledDate="nextDisabledDate"
                 :nextPeriodDisableDates="nextPeriodDisableDates"
                 :options="$props"
-                :periodDates="periodDates"
+                :sortedPeriodDates="sortedPeriodDates"
                 :showPrice="showPrice"
                 :sortedDisabledDates="sortedDisabledDates"
                 :tooltipMessage="tooltipMessage"
@@ -206,7 +206,7 @@
                   :nextDisabledDate="nextDisabledDate"
                   :nextPeriodDisableDates="nextPeriodDisableDates"
                   :options="$props"
-                  :periodDates="periodDates"
+                  :sortedPeriodDates="sortedPeriodDates"
                   :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :tooltipMessage="tooltipMessage"
@@ -402,6 +402,27 @@ export default {
     };
   },
   computed: {
+    sortedPeriodDates() {
+      if (this.periodDates) {
+        const periodDates = [...this.periodDates];
+
+        return periodDates.sort((a, b) => {
+          const aa = a.startAt
+            .split("/")
+            .reverse()
+            .join();
+          const bb = b.startAt
+            .split("/")
+            .reverse()
+            .join();
+
+          // eslint-disable-next-line no-nested-ternary
+          return aa < bb ? -1 : aa > bb ? 1 : 0;
+        });
+      }
+
+      return this.periodDates;
+    },
     sliceMonthMobile() {
       const nbMonthRenderDom = 4;
 
@@ -691,11 +712,11 @@ export default {
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);
     },
     setPeriods(date) {
-      if (this.periodDates) {
+      if (this.sortedPeriodDates) {
         let nextPeriod = null;
         let currentPeriod = null;
 
-        this.periodDates.forEach(d => {
+        this.sortedPeriodDates.forEach(d => {
           if (
             d.startAt === date ||
             this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
@@ -705,7 +726,7 @@ export default {
         });
 
         if (currentPeriod) {
-          this.periodDates.forEach(period => {
+          this.sortedPeriodDates.forEach(period => {
             if (period.startAt === currentPeriod.endAt) {
               nextPeriod = period;
             }
