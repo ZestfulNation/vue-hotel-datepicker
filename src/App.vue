@@ -432,18 +432,16 @@ export default {
       },
       periodDates: [
         {
-          startAt: "2020-07-11",
-          endAt: "2020-07-18",
+          startAt: "2020-07-26",
+          endAt: "2020-08-30",
           minimumDuration: 1,
-          periodType: "weekly_by_saturday",
-          price: 1000.0
+          periodType: "weekly_by_sunday"
         },
         {
-          startAt: "2020-07-18",
+          startAt: "2020-06-09",
           endAt: "2020-07-26",
           minimumDuration: 4,
-          periodType: "nightly",
-          price: 500.0
+          periodType: "nightly"
         },
         {
           startAt: "2020-08-09",

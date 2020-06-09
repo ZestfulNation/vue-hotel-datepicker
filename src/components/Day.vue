@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false
     },
-    periodDates: {
+    sortedPeriodDates: {
       type: Array,
       default: () => []
     },
@@ -118,7 +118,7 @@ export default {
     dayPrice() {
       let currentDate = null;
 
-      this.periodDates.forEach(d => {
+      this.sortedPeriodDates.forEach(d => {
         if (
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
         ) {
@@ -139,7 +139,7 @@ export default {
     checkinCheckoutClass() {
       let currentPeriod = null;
 
-      this.periodDates.forEach(d => {
+      this.sortedPeriodDates.forEach(d => {
         if (
           d.startAt === this.formatDate ||
           this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
@@ -169,7 +169,7 @@ export default {
             !this.checkOut &&
             this.notAllowedDayDueToNextPeriod(currentPeriod)
           ) {
-            return "datepicker__month-day--not-allowed nightly";
+            return "datepicker__month-day--not-allowed nightly datepicker__month-day--cliquable";
           }
 
           if (
@@ -447,7 +447,7 @@ export default {
       const date = new Date(currentPeriod.endAt);
       let nextPeriod = null;
 
-      this.periodDates.forEach(period => {
+      this.sortedPeriodDates.forEach(period => {
         const dateA = new Date(period.startAt).setHours(0, 0, 0, 0);
         const dateB = new Date(date).setHours(0, 0, 0, 0);
 
