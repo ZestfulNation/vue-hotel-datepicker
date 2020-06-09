@@ -96,6 +96,7 @@
     }
 
     &__input {
+        appearance: none;
         background: transparent;
         height: 4em;
         color: $primary-text-color;
@@ -106,7 +107,6 @@
         word-spacing: 0.4166666666666666666666666666666em;
         border: 0;
         @include focusStyle();
-
         &::-webkit-input-placeholder,
         &::-moz-placeholder,
         &:-ms-input-placeholder,
