@@ -895,6 +895,7 @@ export default {
 
       this.sortedDisabledDates = sortedDates.sort((a, b) => a - b);
       this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
+      this.$emit("handleCheckIncheckOutHalfDay", this.checkIncheckOutHalfDay);
     }
   }
 };

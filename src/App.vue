@@ -50,6 +50,7 @@
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
           :periodDates="periodDates"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
         />
       </div>
       <div class="box">
@@ -462,6 +463,9 @@ export default {
     }
   },
   methods: {
+    handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
+      console.log(checkIncheckOutHalfDay);
+    },
     addYears(dt, n) {
       return new Date(dt.setFullYear(dt.getFullYear() + n));
     },

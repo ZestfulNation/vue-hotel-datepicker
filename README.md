@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.5.7
+# Release 0.5.9
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -56,6 +56,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Rewrite the clickOutside function
 * Create a dynamic array for disabled dates of the nextPeriod
 * Sort in ascending order periodDates (startAt)
+* Add handleCheckIncheckOutHalfDay to get a checkIncheckOutHalfDay
 
 ------------
 
@@ -349,6 +350,14 @@ Emitted every time a new check out date is selected with the new date as payload
 
 ### clearSelection
 Emitted every time you clicked on clearDate button
+
+### handleCheckIncheckOutHalfDay
+Emitted on [beforeMount, clearSelection, checkOut]
+
+Params:
+name                                 | Description
+-------------------------------------|-------------------------
+  checkIncheckOutHalfDay             | Object of checkinCheckout date
 
 ## Credits
 This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.
