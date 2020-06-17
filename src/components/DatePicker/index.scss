@@ -158,8 +158,9 @@ $extra-small-screen: '(max-width: 23em)';
   &__dummy-wrapper {
     border: solid 1px $light-gray;
     cursor: pointer;
-    display: block;
-    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
 
@@ -176,7 +177,6 @@ $extra-small-screen: '(max-width: 23em)';
     color: $primary-text-color;
     padding-top: 0;
     font-size: $font-small;
-    float: left;
     height: 48px;
     line-height: 48px;
     text-align: left;
@@ -416,33 +416,45 @@ $extra-small-screen: '(max-width: 23em)';
       pointer-events: none;
     }
   }
-
   &__inner {
-    padding: 20px;
-    float: left;
+    padding: 35px;
 
     @include device($up-to-tablet) {
       padding: 0;
     }
   }
 
+  .show-tooltip {
+    .datepicker__months {
+      margin-top: 140px;
+      height: calc(100% - 140px);
+    }
+    .datepicker__tooltip--mobile {
+      height: auto;
+      opacity: 1;
+      padding: 15px;
+      visibility: visible;
+    }
+  }
+
   &__months {
     @include device($desktop) {
+      display: flex;
+      flex-wrap: wrap;
       width: 650px;
+      justify-content: space-between;
     }
 
     @include device($up-to-tablet) {
-      margin-top: 92px;
-      height: calc(100% - 92px);
+      margin-top: 90px;
+      height: calc(100% - 90px);
       position: absolute;
       left: 0;
       top: 0;
-      overflow: scroll;
+      overflow-y: scroll;
       right: 0;
       bottom: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      transition: all ease .2s;
     }
 
     &::before {
@@ -463,7 +475,6 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__month {
     font-size: 12px;
-    float: left;
     width: 50%;
     padding-right: 10px;
 
@@ -471,6 +482,7 @@ $extra-small-screen: '(max-width: 23em)';
       width: 100%;
       padding-right: 0;
       padding-top: 60px;
+      height: 300px;
 
       &:last-of-type {
         margin-bottom: 65px;
@@ -512,16 +524,11 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__week-row {
-    border-bottom: 5px solid $white;
-    height: 38px;
+    height: 40px;
+    line-height: 40px;
 
     @include device($up-to-tablet) {
-      box-shadow: 0 13px 18px -8px rgba($black, .07);
-      height: 25px;
-      left: 0;
-      top: 65px;
-      position: absolute;
-      width: 100%;
+      box-shadow: 0px 8px 12px 0px rgba($black, .1);
     }
   }
 
@@ -601,6 +608,18 @@ $extra-small-screen: '(max-width: 23em)';
     bottom: 100%;
     white-space: nowrap;
     transform: translateX(-50%);
+    text-align: center;
+
+    &--mobile {
+      height: 0;
+      opacity: 0;
+      visibility: hidden;
+      padding: 0 15px;
+      border: 1px solid #d7d9e2;
+      font-size: 14px;
+      line-height: 1.4;
+      transition: all ease .2s;
+    }
 
     &:after {
       border-left: 4px solid transparent;

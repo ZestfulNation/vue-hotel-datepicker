@@ -68,6 +68,10 @@ export default {
     checkOut: {
       type: Date
     },
+    currentPeriod: {
+      type: Object,
+      default: () => {}
+    },
     hoveringDate: {
       type: Date
     },
@@ -93,6 +97,14 @@ export default {
     hoveringTooltip: {
       default: true,
       type: Boolean
+    },
+    showCustomTooltip: {
+      default: false,
+      type: Boolean
+    },
+    screenSize: {
+      type: String,
+      default: ""
     },
     tooltipMessage: {
       default: null,
@@ -141,8 +153,13 @@ export default {
 
       this.sortedPeriodDates.forEach(d => {
         if (
-          d.startAt === this.formatDate ||
-          this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
+          d.endAt !== this.formatDate &&
+          (d.startAt === this.formatDate ||
+            this.validateDateBetweenTwoDates(
+              d.startAt,
+              d.endAt,
+              this.formatDate
+            ))
         ) {
           currentPeriod = d;
         }
@@ -236,13 +253,20 @@ export default {
           }`;
     },
     showTooltip() {
-      return (
-        !this.isDisabled &&
-        this.tabIndex !== -1 &&
-        this.date === this.hoveringDate &&
-        this.checkIn !== null &&
-        this.checkOut == null
-      );
+      if (this.screenSize === "desktop") {
+        const showTooltipOnHalfDay =
+          this.showCustomTooltip && this.date === this.hoveringDate;
+        const showTooltip =
+          !this.isDisabled &&
+          this.belongsToThisMonth &&
+          this.date === this.hoveringDate &&
+          this.checkIn !== null &&
+          this.checkOut === null;
+
+        return showTooltipOnHalfDay || showTooltip;
+      }
+
+      return false;
     },
     isToday() {
       return this.compareDay(this.currentDate, this.date) === 0;
@@ -270,8 +294,52 @@ export default {
     },
     dayClass() {
       if (this.belongsToThisMonth) {
-        // If the calendar has a minimum number of nights
+        // Only hightlight dates that are on periods
         if (
+          !this.checkOut &&
+          !this.isDisabled &&
+          this.checkIn &&
+          this.currentPeriod &&
+          this.isDateLessOrEquals(this.date, this.hoveringDate)
+        ) {
+          const countOfDays = this.countDays(this.checkIn, this.hoveringDate);
+          const minNightInPeriod = this.currentPeriod.minNight;
+          const modulo = countOfDays % minNightInPeriod;
+          const isAWeekPeriod =
+            this.currentPeriod.type && this.currentPeriod.type !== "nightly";
+          const isInACurrentPeriod =
+            this.getDayDiff(this.hoveringDate, this.currentPeriod.endAt) > 0;
+          const isDateAfterNextDate =
+            this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) < 0;
+          const isDateBeforeNextDate =
+            this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) > 0;
+
+          if (isAWeekPeriod) {
+            if (isInACurrentPeriod) {
+              if (modulo === 0) {
+                return " datepicker__month-day--selected";
+              }
+
+              if (isDateAfterNextDate) {
+                return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+              }
+
+              return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            }
+
+            return "datepicker__month-day--selected";
+          }
+
+          if (isDateBeforeNextDate) {
+            return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+          }
+
+          return "datepicker__month-day--selected";
+        }
+
+        // If the calendar has a minimum number of nights && checkOut
+        if (
+          this.checkOut &&
           !this.isDisabled &&
           this.compareDay(this.date, this.checkIn) === 1 &&
           this.minNightCount > 0 &&
@@ -281,6 +349,20 @@ export default {
           ) === -1
         ) {
           return "datepicker__month-day--selected datepicker__month-day--out-of-range";
+        }
+
+        // If the calendar has a minimum number of nights && !checkOut
+        if (
+          !this.checkOut &&
+          !this.isDisabled &&
+          this.compareDay(this.date, this.checkIn) === 1 &&
+          this.minNightCount > 0 &&
+          this.compareDay(
+            this.date,
+            this.addDays(this.checkIn, this.minNightCount)
+          ) === -1
+        ) {
+          return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
         }
 
         if (
@@ -543,7 +625,8 @@ export default {
             date,
             formatDate,
             this.allowedCheckoutDays,
-            resetCheckin
+            resetCheckin,
+            this.belongsToThisMonth
           );
         } else {
           this.$emit("clearSelection");

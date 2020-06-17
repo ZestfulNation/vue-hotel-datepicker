@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.5.9
+# Release 0.6.0
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -57,6 +57,22 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Create a dynamic array for disabled dates of the nextPeriod
 * Sort in ascending order periodDates (startAt)
 * Add handleCheckIncheckOutHalfDay to get a checkIncheckOutHalfDay
+* Rethink UI/UX of the calendar thank's to *Elsa Morand*
+  - Cancel prefill disabled days
+  - Review the tooltip on mobile
+  -- Remove the tooltip on mobile, show the content text at the top of the calendar to display several types of messages according to your needs.
+  - Review the tooltip on desktop
+  -- How the tooltip appears
+  - Add some i18n translations
+  ```
+  tooltip: {
+    halfDayCheckIn: "Available CheckIn",
+    halfDayCheckOut: "Available CheckOut",
+    saturdayToSaturday: "Only Saturday to Saturday",
+    sundayToSunday: "Only Sunday to Sunday",
+    minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
+  },
+  ```
 
 ------------
 
@@ -89,18 +105,18 @@ npm install vue-hotel-datepicker2 --save
 ```
 
 ```javascript
-import HotelDatePicker from 'vue-hotel-datepicker2'
+import DatePicker from 'vue-hotel-datepicker2'
 import 'vue-hotel-datepicker2/dist/vueHotelDatepicker2.css';
 
 export default {
   components: {
-    HotelDatePicker,
+    DatePicker,
   },
 }
 ```
 
 ```html
-<HotelDatePicker />
+<DatePicker />
 ```
 
 
@@ -262,6 +278,13 @@ i18n: {
   'check-in': 'Check-in',
   'check-out': 'Check-Out',
   'month-names': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  tooltip: {
+    halfDayCheckIn: "Available CheckIn",
+    halfDayCheckOut: "Available CheckOut",
+    saturdayToSaturday: "Only Saturday to Saturday",
+    sundayToSunday: "Only Sunday to Sunday",
+    minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
+  },
 }
 ```
 
@@ -275,7 +298,7 @@ Key                                  | Type       | Description
 -------------------------------------|------------|-------------------------
   endAt                              | String     | YYYY-MM-DD
   startAt                            | String     | YYYY-MM-DD
-  minimumDuration                    | Number     | Minimum stay
+  minimumDuration                    | Number     | Minimum stay (Type: weekly => per_week | Type: nightly => per night)
   periodType                         | String     | *nightly*, *weekly_by_saturday*, *weekly_by_sunday*
 
 
@@ -283,27 +306,25 @@ Example:
 ```js
 periodDates: [
   {
-    endAt: "2020-05-19",
+    startAt: "2020-06-09",
+    endAt: "2020-07-26",
     minimumDuration: 4,
-    periodType: "nightly",
-    price: 500.0,
-    startAt: "2020-05-10"
+    periodType: "nightly"
   },
   {
-    endAt: "2020-05-30",
+    startAt: "2020-07-26",
+    endAt: "2020-09-30",
     minimumDuration: 1,
-    periodType: "weekly_by_saturday",
-    price: 1000.0,
-    startAt: "2020-05-23"
+    periodType: "weekly_by_saturday"
   },
   {
-    endAt: "2020-05-30",
-    minimumDuration: 1,
+    startAt: "2020-09-30",
+    endAt: "2020-11-30",
+    minimumDuration: 2,
     periodType: "weekly_by_sunday",
-    price: 1000.0,
-    startAt: "2020-05-23"
+    price: 4000.0
   }
-]
+],
 ```
 
 #### `MinimumDuration` with a periodType `weekly-~` equals to a week
