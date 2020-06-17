@@ -119,7 +119,7 @@
               v-for="(day, dayIndexDesktop) in months[activeMonthIndex + n]
                 .days"
               :key="`${datepickerDayKey}-${dayIndexDesktop}`"
-              @mouseover="hoveringDate = day.date"
+              @mouseover="handleHoveringDate(day)"
             >
               <Day
                 :activeMonthIndex="activeMonthIndex"
@@ -128,6 +128,7 @@
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
                 :currentDateStyle="currentDateStyle"
+                :currentPeriod="currentPeriod"
                 :date="day.date"
                 :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                 :hoveringDate="hoveringDate"
@@ -136,10 +137,12 @@
                 :nextDisabledDate="nextDisabledDate"
                 :nextPeriodDisableDates="nextPeriodDisableDates"
                 :options="$props"
-                :sortedPeriodDates="sortedPeriodDates"
+                :screenSize="screenSize"
+                :showCustomTooltip="showCustomTooltip"
                 :showPrice="showPrice"
                 :sortedDisabledDates="sortedDisabledDates"
-                :tooltipMessage="tooltipMessage"
+                :sortedPeriodDates="sortedPeriodDates"
+                :tooltipMessage="customTooltipMessage"
                 @setMinNightCount="setMinNightCount"
                 @clearSelection="clearSelection"
                 @dayClicked="handleDayClick"
@@ -147,7 +150,15 @@
             </div>
           </div>
         </div>
-        <div v-if="screenSize !== 'desktop' && isOpen">
+        <div
+          v-if="screenSize !== 'desktop' && isOpen"
+          :class="{ 'show-tooltip': showCustomTooltip }"
+        >
+          <div class="datepicker__tooltip--mobile">
+            <template v-if="customTooltipMessage">
+              {{ cleanString(customTooltipMessage) }}
+            </template>
+          </div>
           <div class="datepicker__week-row">
             <div
               class="datepicker__week-name"
@@ -188,8 +199,8 @@
                 class="square"
                 v-for="(day, dayIndexMobile) in months[n].days"
                 :key="`${datepickerDayKey}-${dayIndexMobile}`"
-                @mouseover="hoveringDate = day.date"
-                @focus="hoveringDate = day.date"
+                @mouseover="handleHoveringDate(day)"
+                @click="test(day, $event)"
               >
                 <Day
                   :activeMonthIndex="activeMonthIndex"
@@ -198,6 +209,7 @@
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
                   :currentDateStyle="currentDateStyle"
+                  :currentPeriod="currentPeriod"
                   :date="day.date"
                   :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                   :hoveringDate="hoveringDate"
@@ -206,10 +218,12 @@
                   :nextDisabledDate="nextDisabledDate"
                   :nextPeriodDisableDates="nextPeriodDisableDates"
                   :options="$props"
-                  :sortedPeriodDates="sortedPeriodDates"
+                  :screenSize="screenSize"
+                  :showCustomTooltip="showCustomTooltip"
                   :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
-                  :tooltipMessage="tooltipMessage"
+                  :sortedPeriodDates="sortedPeriodDates"
+                  :tooltipMessage="customTooltipMessage"
                   @setMinNightCount="setMinNightCount"
                   @clearSelection="clearSelection"
                   @dayClicked="handleDayClick"
@@ -252,7 +266,15 @@ const defaulti18n = {
     "October",
     "November",
     "December"
-  ]
+  ],
+  tooltip: {
+    halfDayCheckIn: "Available CheckIn",
+    halfDayCheckOut: "Available CheckOut",
+    saturdayToSaturday: "Only Saturday to Saturday",
+    sundayToSunday: "Only Sunday to Sunday",
+    minimumRequiredPeriod:
+      "A minimum of <br/> %{minNightInPeriod} %{night} is required."
+  }
 };
 
 export default {
@@ -386,6 +408,8 @@ export default {
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
       checkOut: this.endingDateValue,
+      currentPeriod: null,
+      customTooltip: "",
       dynamicNightCounts: null,
       hoveringDate: null,
       isOpen: false,
@@ -394,6 +418,7 @@ export default {
       nextDisabledDate: null,
       screenSize: null,
       show: true,
+      showCustomTooltip: false,
       sortedDisabledDates: null,
       xDown: null,
       xUp: null,
@@ -402,6 +427,21 @@ export default {
     };
   },
   computed: {
+    customTooltipMessage() {
+      if (
+        this.screenSize === "desktop" &&
+        this.hoveringDate &&
+        this.customTooltip
+      ) {
+        return this.customTooltip;
+      }
+
+      if (this.screenSize !== "desktop" && this.customTooltip) {
+        return this.customTooltip;
+      }
+
+      return this.tooltipMessage;
+    },
     sortedPeriodDates() {
       if (this.periodDates) {
         const periodDates = [...this.periodDates];
@@ -485,6 +525,7 @@ export default {
         this.nextDisabledDate = null;
         this.parseDisabledDates();
         this.reRender();
+        this.showCustomTooltip = false;
         this.isOpen = false;
       }
 
@@ -569,6 +610,128 @@ export default {
   },
   methods: {
     ...Helpers,
+    cleanString(string) {
+      // eslint-disable-next-line no-useless-escape
+      return string.replace(/\<br\/>/g, "");
+    },
+    dateIsInCheckInCheckOut(date) {
+      const compareDate = this.formatDate(date);
+      let currentPeriod = null;
+
+      this.sortedPeriodDates.forEach(d => {
+        if (
+          d.endAt !== compareDate &&
+          (d.startAt === compareDate ||
+            this.validateDateBetweenTwoDates(d.startAt, d.endAt, compareDate))
+        ) {
+          currentPeriod = d;
+        }
+      });
+
+      return currentPeriod;
+    },
+    pluralizeNight(countDays) {
+      return countDays !== 1 ? this.i18n.nights : this.i18n.night;
+    },
+    handleHoveringDate(day) {
+      if (this.screenSize === "desktop") {
+        this.setCustomTooltip(day);
+      }
+    },
+    test(day) {
+      if (this.screenSize !== "desktop") {
+        this.setCustomTooltip(day);
+      }
+    },
+    setCustomTooltip(day) {
+      if (day.belongsToThisMonth) {
+        if (this.screenSize === "desktop") {
+          this.hoveringDate = day.date;
+          if (this.showCustomTooltip) this.showCustomTooltip = false;
+        }
+
+        if (!this.checkout && this.checkIn && this.currentPeriod) {
+          this.setPeriodCustomTooltip(day.date);
+        } else if (this.halfDay) {
+          this.setHalfDayCustomTooltip(day.date);
+        }
+      }
+    },
+    setPeriodCustomTooltip(date) {
+      let countDays;
+      const countOfDays = this.countDays(this.checkIn, date);
+      const minNightInPeriod = this.currentPeriod.minNight;
+      const modulo = countOfDays % minNightInPeriod;
+      const isAWeekPeriod =
+        this.currentPeriod.type && this.currentPeriod.type !== "nightly";
+      const isInACurrentPeriod =
+        this.getDayDiff(date, this.currentPeriod.endAt) > 0;
+      const isDateAfterNextDate =
+        this.getDayDiff(date, this.currentPeriod.nextDate) < 0;
+      const isDateBeforeNextDate =
+        this.getDayDiff(date, this.currentPeriod.nextDate) > 0;
+
+      if (isAWeekPeriod) {
+        if (isInACurrentPeriod) {
+          if (modulo === 0 && this.checkIn !== date) {
+            this.customTooltip = `${countOfDays} ${this.pluralizeNight(
+              countDays
+            )}`;
+          } else if (isDateAfterNextDate) {
+            if (this.currentPeriod.type === "weekly_by_saturday") {
+              this.customTooltip = this.i18n.tooltip.saturdayToSaturday;
+            } else if (this.currentPeriod.type === "weekly_by_sunday") {
+              this.customTooltip = this.i18n.tooltip.sundayToSunday;
+            }
+          } else {
+            const night = this.pluralizeNight(countDays);
+
+            this.customTooltip = this.completeTrad(
+              this.i18n.tooltip.minimumRequiredPeriod,
+              { minNightInPeriod, night }
+            );
+          }
+        } else {
+          this.customTooltip = `${countOfDays} ${this.pluralizeNight(
+            countOfDays
+          )}`;
+        }
+      } else if (isDateBeforeNextDate) {
+        const night = this.pluralizeNight(countDays);
+
+        this.customTooltip = this.completeTrad(
+          this.i18n.tooltip.minimumRequiredPeriod,
+          { minNightInPeriod, night }
+        );
+      } else {
+        this.customTooltip = `${countOfDays} ${this.pluralizeNight(
+          countOfDays
+        )}`;
+      }
+    },
+    completeTrad(translation, keys) {
+      let newT = translation;
+      const keysTranslations = Object.keys(keys);
+
+      keysTranslations.forEach(key => {
+        newT = newT.replace(`%{${key}}`, keys[key]);
+      });
+
+      return newT;
+    },
+    setHalfDayCustomTooltip(date) {
+      const formatedHoveringDate = this.formatDate(date);
+
+      if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
+        this.showCustomTooltip = true;
+
+        if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
+          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
+        } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
+          this.customTooltip = this.i18n.tooltip.halfDayCheckOut;
+        }
+      }
+    },
     handleClickOutside(event) {
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`];
 
@@ -591,12 +754,6 @@ export default {
       }
 
       return "";
-    },
-    getDayDiff(d1, d2) {
-      const t2 = new Date(d2).getTime();
-      const t1 = new Date(d1).getTime();
-
-      return parseInt((t2 - t1) / (24 * 3600 * 1000), 10);
     },
     handleWindowResize() {
       if (window.innerWidth < 480) {
@@ -644,6 +801,7 @@ export default {
       this.checkOut = null;
       this.nextDisabledDate = null;
       this.nextPeriodDisableDates = [];
+      this.showCustomTooltip = false;
       this.parseDisabledDates();
       this.reRender();
       this.$emit("clear-selection");
@@ -709,17 +867,37 @@ export default {
       }
 
       this.nextDisabledDate = nextDisabledDate;
+
+      if (this.minNightCount > 0) {
+        this.currentPeriod = {
+          date,
+          minNight: this.minNightCount,
+          nextDate: this.addDays(date, this.minNightCount)
+        };
+        const currentPeriod = this.dateIsInCheckInCheckOut(date);
+
+        if (currentPeriod) {
+          this.currentPeriod.type = currentPeriod.periodType;
+          this.currentPeriod.endAt = currentPeriod.endAt;
+        }
+
+        this.showCustomTooltip = true;
+        this.setPeriodCustomTooltip(date);
+      }
+
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);
     },
     setPeriods(date) {
       if (this.sortedPeriodDates) {
         let nextPeriod = null;
         let currentPeriod = null;
+        const compareDate = this.formatDate(date);
 
         this.sortedPeriodDates.forEach(d => {
           if (
-            d.startAt === date ||
-            this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
+            d.endAt !== compareDate &&
+            (d.startAt === compareDate ||
+              this.validateDateBetweenTwoDates(d.startAt, d.endAt, date))
           ) {
             currentPeriod = d;
           }

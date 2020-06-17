@@ -4,6 +4,38 @@
     <div>
       <div class="box">
         <h3>
+          Periods
+          <strong>periodDates</strong> props
+        </h3>
+        <DatePicker
+          :disabledDates="[
+            '2020-10-15',
+            '2020-10-16',
+            '2020-10-17',
+            '2020-10-18',
+            '2020-10-19',
+            '2020-10-20',
+            '2020-10-21',
+            '2020-10-01',
+            '2020-10-02',
+            '2020-10-03',
+            '2020-10-04',
+            '2020-10-05',
+            '2020-10-06',
+            '2020-10-07'
+          ]"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+          :firstDayOfWeek="1"
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
+          :periodDates="periodDates"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Insert content with the content slot
         </h3>
         <DatePicker :lastDateAvailable="lastDateAvailable" show-year>
@@ -20,38 +52,6 @@
         </h3>
         <p>Stop pagination two years later</p>
         <DatePicker :lastDateAvailable="lastDateAvailable" />
-      </div>
-      <div class="box">
-        <h3>
-          Periods
-          <strong>periodDates</strong> props
-        </h3>
-        <DatePicker
-          :disabledDates="[
-            '2020-08-15',
-            '2020-08-16',
-            '2020-08-17',
-            '2020-08-18',
-            '2020-08-19',
-            '2020-08-20',
-            '2020-08-21',
-            '2020-08-01',
-            '2020-08-02',
-            '2020-08-03',
-            '2020-08-04',
-            '2020-08-05',
-            '2020-08-06',
-            '2020-08-07'
-          ]"
-          :lastDateAvailable="lastDateAvailable"
-          :minNights="minNights"
-          :i18n="frFR"
-          :firstDayOfWeek="1"
-          :disableCheckoutOnCheckin="true"
-          :halfDay="true"
-          :periodDates="periodDates"
-          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
-        />
       </div>
       <div class="box">
         <h3>Show prices with <strong>periodDates</strong></h3>
@@ -408,7 +408,15 @@ export default {
           "Outubro",
           "Novembro",
           "Dezembro"
-        ]
+        ],
+        tooltip: {
+          halfDayCheckIn: "Reservas possíveis",
+          halfDayCheckOut: "Reservas possíveis",
+          saturdayToSaturday: "Sábado a Sábado<br/> apenas",
+          sundayToSunday: "Domingo a domingo<br/> apenas",
+          minimumRequiredPeriod:
+            "É necessário um mínimo de <br/> %{minNightInPeriod} %{night}."
+        }
       },
       frFR: {
         "check-in": "Départ",
@@ -429,15 +437,17 @@ export default {
           "Décembre"
         ],
         night: "Nuit",
-        nights: "Nuits"
+        nights: "Nuits",
+        tooltip: {
+          halfDayCheckIn: "Réservation possible",
+          halfDayCheckOut: "Réservation possible",
+          saturdayToSaturday: "Du samedi au samedi<br/> uniquement",
+          sundayToSunday: "Du dimanche au dimanche<br/> uniquement",
+          minimumRequiredPeriod:
+            "Un minimum de <br/> %{minNightInPeriod} %{night} est requis"
+        }
       },
       periodDates: [
-        {
-          startAt: "2020-07-26",
-          endAt: "2020-08-30",
-          minimumDuration: 1,
-          periodType: "weekly_by_sunday"
-        },
         {
           startAt: "2020-06-09",
           endAt: "2020-07-26",
@@ -445,8 +455,14 @@ export default {
           periodType: "nightly"
         },
         {
-          startAt: "2020-08-09",
-          endAt: "2020-08-23",
+          startAt: "2020-07-26",
+          endAt: "2020-09-30",
+          minimumDuration: 1,
+          periodType: "weekly_by_saturday"
+        },
+        {
+          startAt: "2020-09-30",
+          endAt: "2020-11-30",
           minimumDuration: 2,
           periodType: "weekly_by_sunday",
           price: 4000.0

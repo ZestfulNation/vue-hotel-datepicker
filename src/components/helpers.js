@@ -70,6 +70,12 @@ export default {
 
     return result;
   },
+  getDayDiff(d1, d2) {
+    const t2 = new Date(d2).getTime();
+    const t1 = new Date(d1).getTime();
+
+    return parseInt((t2 - t1) / (24 * 3600 * 1000), 10);
+  },
   getFirstDay(date, firstDayOfWeek) {
     const firstDay = this.getFirstDayOfMonth(date);
     let offset = 0;
