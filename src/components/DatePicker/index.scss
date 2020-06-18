@@ -443,6 +443,7 @@ $extra-small-screen: '(max-width: 23em)';
       flex-wrap: wrap;
       width: 650px;
       justify-content: space-between;
+
     }
 
     @include device($up-to-tablet) {
@@ -458,9 +459,9 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &::before {
+      content: '';
       background: $light-gray;
       bottom: 0;
-      content: '';
       display: block;
       left: 50%;
       position: absolute;
@@ -468,6 +469,19 @@ $extra-small-screen: '(max-width: 23em)';
       width: 1px;
 
       @include device($up-to-tablet) {
+        display: none;
+      }
+    }
+
+    &--full {
+      width: 100%;
+
+      .datepicker__month {
+        width: 470px;
+        padding: 0
+      }
+
+      &::before {
         display: none;
       }
     }

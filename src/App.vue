@@ -4,6 +4,38 @@
     <div>
       <div class="box">
         <h3>
+          Display one month only
+        </h3>
+        <DatePicker
+          :disabledDates="[
+            '2020-10-15',
+            '2020-10-16',
+            '2020-10-17',
+            '2020-10-18',
+            '2020-10-19',
+            '2020-10-20',
+            '2020-10-21',
+            '2020-10-01',
+            '2020-10-02',
+            '2020-10-03',
+            '2020-10-04',
+            '2020-10-05',
+            '2020-10-06',
+            '2020-10-07'
+          ]"
+          :showSingleMonth="true"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+          :firstDayOfWeek="1"
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
+          :periodDates="periodDates"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Periods
           <strong>periodDates</strong> props
         </h3>
@@ -70,17 +102,24 @@
         </h3>
         <DatePicker
           :disabledDates="[
-            '2020-06-01',
-            '2020-06-02',
-            '2020-06-03',
-            '2020-06-04',
-            '2020-06-05',
-            '2020-06-06'
+            '2020-10-15',
+            '2020-10-16',
+            '2020-10-17',
+            '2020-10-18',
+            '2020-10-19',
+            '2020-10-20',
+            '2020-10-21',
+            '2020-10-01',
+            '2020-10-02',
+            '2020-10-03',
+            '2020-10-04',
+            '2020-10-05',
+            '2020-10-06',
+            '2020-10-07'
           ]"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
           :minNights="minNights"
-          :periodDates="periodDates"
           @day-clicked="dayClicked"
         />
       </div>
