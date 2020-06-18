@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.6.0
+# Release 0.6.1
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -73,6 +73,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
     minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
   },
   ```
+* Add `showSingleMonth` which allows to show 1 month
 
 ------------
 
@@ -105,18 +106,18 @@ npm install vue-hotel-datepicker2 --save
 ```
 
 ```javascript
-import DatePicker from 'vue-hotel-datepicker2'
+import HotelDatePicker from 'vue-hotel-datepicker2'
 import 'vue-hotel-datepicker2/dist/vueHotelDatepicker2.css';
 
 export default {
   components: {
-    DatePicker,
+    HotelDatePicker,
   },
 }
 ```
 
 ```html
-<DatePicker />
+<HotelDatePicker />
 ```
 
 
@@ -335,6 +336,14 @@ periodDates: [
 - Default: `false`
 
 If set to true, displays a price contains on your periodDates
+
+### showSingleMonth
+
+- Type: `Boolean`
+- Default: `false`
+
+If set to true, display one month only
+
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false

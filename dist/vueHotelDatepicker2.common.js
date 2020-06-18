@@ -4441,22 +4441,22 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=7c0b3d35&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=ac089cea&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),(_vm.showClearSelectionButton)?_c('div',{staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]):_vm._e(),_c('div',{staticClass:"datepicker",class:{ 'datepicker--open': _vm.isOpen, 'datepicker--closed': !_vm.isOpen }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active': _vm.isOpen && _vm.checkIn == null
           },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkIn ? _vm.formatDate(_vm.checkIn) : _vm.i18n["check-in"])))+" ")]),_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active':
               _vm.isOpen && _vm.checkOut == null && _vm.checkIn !== null
-          },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkOut ? _vm.formatDate(_vm.checkOut) : _vm.i18n["check-out"])))+" ")])]):_vm._e()]),_c('div',{staticClass:"datepicker__inner"},[_c('div',{staticClass:"datepicker__header"},[_c('button',{staticClass:"datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet",attrs:{"type":"button","tabindex":_vm.isOpen ? 0 : -1,"disabled":_vm.activeMonthIndex === 0},on:{"click":_vm.renderPreviousMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderPreviousMonth($event)}}}),_c('button',{staticClass:"datepicker__month-button datepicker__month-button--next -hide-up-to-tablet",attrs:{"type":"button","disabled":_vm.isPreventedMaxMonth,"tabindex":_vm.isOpen ? 0 : -1},on:{"click":_vm.renderNextMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderNextMonth($event)}}})]),(_vm.screenSize == 'desktop')?_c('div',{staticClass:"datepicker__months"},_vm._l(([0, 1]),function(n){return _c('div',{key:_vm.datepickerMonthKey + n,ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[_vm.activeMonthIndex + n].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n[
+          },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkOut ? _vm.formatDate(_vm.checkOut) : _vm.i18n["check-out"])))+" ")])]):_vm._e()]),_c('div',{staticClass:"datepicker__inner"},[_c('div',{staticClass:"datepicker__header"},[_c('button',{staticClass:"datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet",attrs:{"type":"button","tabindex":_vm.isOpen ? 0 : -1,"disabled":_vm.activeMonthIndex === 0},on:{"click":_vm.renderPreviousMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderPreviousMonth($event)}}}),_c('button',{staticClass:"datepicker__month-button datepicker__month-button--next -hide-up-to-tablet",attrs:{"type":"button","disabled":_vm.isPreventedMaxMonth,"tabindex":_vm.isOpen ? 0 : -1},on:{"click":_vm.renderNextMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderNextMonth($event)}}})]),(_vm.screenSize == 'desktop')?_c('div',{staticClass:"datepicker__months",class:{ 'datepicker__months--full': _vm.showSingleMonth }},_vm._l((_vm.paginateDesktop),function(month){return _c('div',{key:(_vm.datepickerMonthKey + "-" + month),ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[_vm.activeMonthIndex + month].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n[
                 'day-names'
-              ]),function(dayName,datePickerWeekIndexDesktop){return _c('div',{key:_vm.datepickerWeekKey + datePickerWeekIndexDesktop,staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[_vm.activeMonthIndex + n]
+              ]),function(dayName,datePickerWeekIndexDesktop){return _c('div',{key:(_vm.datepickerWeekKey + "-" + datePickerWeekIndexDesktop),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[_vm.activeMonthIndex + month]
               .days),function(day,dayIndexDesktop){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexDesktop),staticClass:"square",on:{"mouseover":function($event){return _vm.handleHoveringDate(day)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentDateStyle":_vm.currentDateStyle,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0):_vm._e(),(_vm.screenSize !== 'desktop' && _vm.isOpen)?_c('div',{class:{ 'show-tooltip': _vm.showCustomTooltip }},[_c('div',{staticClass:"datepicker__tooltip--mobile"},[(_vm.customTooltipMessage)?[_vm._v(" "+_vm._s(_vm.cleanString(_vm.customTooltipMessage))+" ")]:_vm._e()],2),_c('div',{staticClass:"datepicker__week-row"},_vm._l((this.i18n[
               'day-names'
-            ]),function(dayName,datePickerWeekIndexMobile){return _c('div',{key:_vm.datepickerWeekKey + datePickerWeekIndexMobile,staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_c('div',{ref:"swiperWrapper",staticClass:"datepicker__months",attrs:{"id":"swiperWrapper"}},_vm._l((_vm.months),function(a,n){return _c('div',{key:_vm.datepickerMonthKey + n,ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[n].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n['day-names']),function(dayName,datePickerIndex){return _c('div',{key:("datepicker__month-name-datepicker__week-name-" + datePickerIndex),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[n].days),function(day,dayIndexMobile){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexMobile),staticClass:"square",on:{"mouseover":function($event){return _vm.handleHoveringDate(day)},"click":function($event){return _vm.test(day, $event)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentDateStyle":_vm.currentDateStyle,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0)]):_vm._e(),_vm._t("content")],2)])]):_vm._e()}
+            ]),function(dayName,datePickerWeekIndexMobile){return _c('div',{key:_vm.datepickerWeekKey + datePickerWeekIndexMobile,staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_c('div',{ref:"swiperWrapper",staticClass:"datepicker__months",attrs:{"id":"swiperWrapper"}},_vm._l((_vm.months),function(a,n){return _c('div',{key:(_vm.datepickerMonthKey + "-" + n),ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[n].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n['day-names']),function(dayName,datePickerIndex){return _c('div',{key:("datepicker__month-name-datepicker__week-name-" + datePickerIndex),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[n].days),function(day,dayIndexMobile){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexMobile),staticClass:"square",on:{"mouseover":function($event){return _vm.handleHoveringDate(day)},"click":function($event){return _vm.handleClickMobileDate(day, $event)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentDateStyle":_vm.currentDateStyle,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0)]):_vm._e(),_vm._t("content")],2)])]):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=7c0b3d35&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=ac089cea&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -6233,6 +6233,10 @@ var DateInput_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -6273,12 +6277,13 @@ var defaulti18n = {
       default: false
     },
     periodDates: {
+      type: Array,
       default: function _default() {
         return [];
-      },
-      type: Array
+      }
     },
     currentDateStyle: {
+      type: Object,
       default: function _default() {
         return {
           border: "2px solid #234c56"
@@ -6289,94 +6294,98 @@ var defaulti18n = {
       type: String
     },
     startingDateValue: {
-      default: null,
-      type: Date
+      type: Date,
+      default: null
     },
     endingDateValue: {
-      default: null,
-      type: Date
+      type: Date,
+      default: null
     },
     format: {
-      default: "YYYY-MM-DD",
-      type: String
+      type: String,
+      default: "YYYY-MM-DD"
     },
     startDate: {
+      type: [Date, String],
       default: function _default() {
         return new Date();
-      },
-      type: [Date, String]
+      }
     },
     endDate: {
-      default: Infinity,
-      type: [Date, String, Number]
+      type: [Date, String, Number],
+      default: Infinity
     },
     firstDayOfWeek: {
-      default: 0,
-      type: Number
+      type: Number,
+      default: 0
     },
     minNights: {
       type: Number,
       default: 1
     },
     maxNights: {
-      default: null,
-      type: Number
+      type: Number,
+      default: null
     },
     halfDay: {
       type: Boolean,
       default: false
     },
     disabledDates: {
+      type: Array,
       default: function _default() {
         return [];
-      },
-      type: Array
+      }
     },
     disabledDaysOfWeek: {
+      type: Array,
       default: function _default() {
         return [];
-      },
-      type: Array
+      }
     },
     allowedRanges: {
+      type: Array,
       default: function _default() {
         return [];
-      },
-      type: Array
+      }
     },
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
     },
     tooltipMessage: {
-      default: null,
-      type: String
+      type: String,
+      default: null
     },
     i18n: {
+      type: Object,
       default: function _default() {
         return defaulti18n;
-      },
-      type: Object
+      }
     },
     enableCheckout: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
+    },
+    showSingleMonth: {
+      type: Boolean,
+      default: false
     },
     singleDaySelection: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     showYear: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     closeDatepickerOnClickOutside: {
-      default: true,
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     displayClearButton: {
-      default: true,
-      type: Boolean
+      type: Boolean,
+      default: true
     }
   },
   data: function data() {
@@ -6409,6 +6418,13 @@ var defaulti18n = {
     };
   },
   computed: {
+    paginateDesktop: function paginateDesktop() {
+      if (this.showSingleMonth) {
+        return [0];
+      }
+
+      return [0, 1];
+    },
     customTooltipMessage: function customTooltipMessage() {
       if (this.screenSize === "desktop" && this.hoveringDate && this.customTooltip) {
         return this.customTooltip;
@@ -6582,7 +6598,7 @@ var defaulti18n = {
         this.setCustomTooltip(day);
       }
     },
-    test: function test(day) {
+    handleClickMobileDate: function handleClickMobileDate(day) {
       if (this.screenSize !== "desktop") {
         this.setCustomTooltip(day);
       }
@@ -6596,7 +6612,9 @@ var defaulti18n = {
 
         if (!this.checkout && this.checkIn && this.currentPeriod) {
           this.setPeriodCustomTooltip(day.date);
-        } else if (this.halfDay) {
+        }
+
+        if (this.halfDay) {
           this.setHalfDayCustomTooltip(day.date);
         }
       }
@@ -6642,14 +6660,6 @@ var defaulti18n = {
         this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countOfDays));
       }
     },
-    completeTrad: function completeTrad(translation, keys) {
-      var newT = translation;
-      var keysTranslations = Object.keys(keys);
-      keysTranslations.forEach(function (key) {
-        newT = newT.replace("%{".concat(key, "}"), keys[key]);
-      });
-      return newT;
-    },
     setHalfDayCustomTooltip: function setHalfDayCustomTooltip(date) {
       var formatedHoveringDate = this.formatDate(date);
 
@@ -6657,11 +6667,19 @@ var defaulti18n = {
         this.showCustomTooltip = true;
 
         if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
-          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
-        } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
           this.customTooltip = this.i18n.tooltip.halfDayCheckOut;
+        } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
+          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
         }
       }
+    },
+    completeTrad: function completeTrad(translation, keys) {
+      var newT = translation;
+      var keysTranslations = Object.keys(keys);
+      keysTranslations.forEach(function (key) {
+        newT = newT.replace("%{".concat(key, "}"), keys[key]);
+      });
+      return newT;
     },
     handleClickOutside: function handleClickOutside(event) {
       var ignoreClickOnMeElement = this.$refs["DatePicker-".concat(this.hash)];
@@ -6807,6 +6825,10 @@ var defaulti18n = {
 
         this.showCustomTooltip = true;
         this.setPeriodCustomTooltip(date);
+      }
+
+      if (this.checkIncheckOutHalfDay && Object.keys(this.checkIncheckOutHalfDay).length > 0) {
+        this.setHalfDayCustomTooltip(date);
       }
 
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);

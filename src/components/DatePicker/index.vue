@@ -93,15 +93,19 @@
             :tabindex="isOpen ? 0 : -1"
           />
         </div>
-        <div class="datepicker__months" v-if="screenSize == 'desktop'">
+        <div
+          class="datepicker__months"
+          :class="{ 'datepicker__months--full': showSingleMonth }"
+          v-if="screenSize == 'desktop'"
+        >
           <div
             ref="datepickerMonth"
             class="datepicker__month"
-            v-for="n in [0, 1]"
-            :key="datepickerMonthKey + n"
+            v-for="month in paginateDesktop"
+            :key="`${datepickerMonthKey}-${month}`"
           >
             <p class="datepicker__month-name">
-              {{ getMonth(months[activeMonthIndex + n].days[15].date) }}
+              {{ getMonth(months[activeMonthIndex + month].days[15].date) }}
             </p>
             <div class="datepicker__week-row -hide-up-to-tablet">
               <div
@@ -109,14 +113,14 @@
                 v-for="(dayName, datePickerWeekIndexDesktop) in i18n[
                   'day-names'
                 ]"
-                :key="datepickerWeekKey + datePickerWeekIndexDesktop"
+                :key="`${datepickerWeekKey}-${datePickerWeekIndexDesktop}`"
               >
                 {{ dayName }}
               </div>
             </div>
             <div
               class="square"
-              v-for="(day, dayIndexDesktop) in months[activeMonthIndex + n]
+              v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month]
                 .days"
               :key="`${datepickerDayKey}-${dayIndexDesktop}`"
               @mouseover="handleHoveringDate(day)"
@@ -179,7 +183,7 @@
               ref="datepickerMonth"
               class="datepicker__month"
               v-for="(a, n) in months"
-              :key="datepickerMonthKey + n"
+              :key="`${datepickerMonthKey}-${n}`"
             >
               <p class="datepicker__month-name">
                 {{ getMonth(months[n].days[15].date) }}
@@ -200,7 +204,7 @@
                 v-for="(day, dayIndexMobile) in months[n].days"
                 :key="`${datepickerDayKey}-${dayIndexMobile}`"
                 @mouseover="handleHoveringDate(day)"
-                @click="test(day, $event)"
+                @click="handleClickMobileDate(day, $event)"
               >
                 <Day
                   :activeMonthIndex="activeMonthIndex"
@@ -297,104 +301,109 @@ export default {
       default: false
     },
     periodDates: {
+      type: Array,
       default() {
         return [];
-      },
-      type: Array
+      }
     },
     currentDateStyle: {
+      type: Object,
       default: () => ({ border: "2px solid #234c56" })
     },
     value: {
       type: String
     },
     startingDateValue: {
-      default: null,
-      type: Date
+      type: Date,
+      default: null
     },
     endingDateValue: {
-      default: null,
-      type: Date
+      type: Date,
+      default: null
     },
     format: {
-      default: "YYYY-MM-DD",
-      type: String
+      type: String,
+      default: "YYYY-MM-DD"
     },
     startDate: {
+      type: [Date, String],
       default() {
         return new Date();
-      },
-      type: [Date, String]
+      }
     },
     endDate: {
-      default: Infinity,
-      type: [Date, String, Number]
+      type: [Date, String, Number],
+      default: Infinity
     },
     firstDayOfWeek: {
-      default: 0,
-      type: Number
+      type: Number,
+      default: 0
     },
     minNights: {
       type: Number,
       default: 1
     },
     maxNights: {
-      default: null,
-      type: Number
+      type: Number,
+      default: null
     },
     halfDay: {
       type: Boolean,
       default: false
     },
     disabledDates: {
+      type: Array,
       default() {
         return [];
-      },
-      type: Array
+      }
     },
     disabledDaysOfWeek: {
+      type: Array,
       default() {
         return [];
-      },
-      type: Array
+      }
     },
     allowedRanges: {
+      type: Array,
       default() {
         return [];
-      },
-      type: Array
+      }
     },
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
     },
     tooltipMessage: {
-      default: null,
-      type: String
+      type: String,
+      default: null
     },
     i18n: {
-      default: () => defaulti18n,
-      type: Object
+      type: Object,
+      default: () => defaulti18n
     },
     enableCheckout: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
+    },
+    showSingleMonth: {
+      type: Boolean,
+      default: false
     },
     singleDaySelection: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     showYear: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     closeDatepickerOnClickOutside: {
-      default: true,
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     displayClearButton: {
-      default: true,
-      type: Boolean
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -427,6 +436,13 @@ export default {
     };
   },
   computed: {
+    paginateDesktop() {
+      if (this.showSingleMonth) {
+        return [0];
+      }
+
+      return [0, 1];
+    },
     customTooltipMessage() {
       if (
         this.screenSize === "desktop" &&
@@ -638,7 +654,7 @@ export default {
         this.setCustomTooltip(day);
       }
     },
-    test(day) {
+    handleClickMobileDate(day) {
       if (this.screenSize !== "desktop") {
         this.setCustomTooltip(day);
       }
@@ -652,7 +668,9 @@ export default {
 
         if (!this.checkout && this.checkIn && this.currentPeriod) {
           this.setPeriodCustomTooltip(day.date);
-        } else if (this.halfDay) {
+        }
+
+        if (this.halfDay) {
           this.setHalfDayCustomTooltip(day.date);
         }
       }
@@ -709,6 +727,19 @@ export default {
         )}`;
       }
     },
+    setHalfDayCustomTooltip(date) {
+      const formatedHoveringDate = this.formatDate(date);
+
+      if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
+        this.showCustomTooltip = true;
+
+        if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
+          this.customTooltip = this.i18n.tooltip.halfDayCheckOut;
+        } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
+          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
+        }
+      }
+    },
     completeTrad(translation, keys) {
       let newT = translation;
       const keysTranslations = Object.keys(keys);
@@ -718,19 +749,6 @@ export default {
       });
 
       return newT;
-    },
-    setHalfDayCustomTooltip(date) {
-      const formatedHoveringDate = this.formatDate(date);
-
-      if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
-        this.showCustomTooltip = true;
-
-        if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
-          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
-        } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
-          this.customTooltip = this.i18n.tooltip.halfDayCheckOut;
-        }
-      }
     },
     handleClickOutside(event) {
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`];
@@ -883,6 +901,13 @@ export default {
 
         this.showCustomTooltip = true;
         this.setPeriodCustomTooltip(date);
+      }
+
+      if (
+        this.checkIncheckOutHalfDay &&
+        Object.keys(this.checkIncheckOutHalfDay).length > 0
+      ) {
+        this.setHalfDayCustomTooltip(date);
       }
 
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);
