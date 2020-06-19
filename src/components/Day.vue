@@ -313,37 +313,48 @@ export default {
             this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) < 0;
           const isDateBeforeNextDate =
             this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) > 0;
+          let periodClass = "";
 
           if (isAWeekPeriod) {
             if (isInACurrentPeriod) {
-              if (modulo === 0) {
-                return " datepicker__month-day--selected";
-              }
-
-              if (isDateAfterNextDate) {
-                if (
-                  (this.currentPeriod.type === "weekly_by_saturday" &&
-                    this.date.getDay() !== 6) ||
-                  (this.currentPeriod.type === "weekly_by_sunday" &&
-                    this.date.getDay() !== 0)
-                ) {
-                  return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+              if (modulo === 0 && this.checkIn !== this.hoveringDate) {
+                periodClass = "datepicker__month-day--selected";
+              } else if (isDateAfterNextDate) {
+                if (this.currentPeriod.type === "weekly_by_saturday") {
+                  if (this.hoveringDate.getDay() !== 6) {
+                    periodClass =
+                      "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                  } else {
+                    periodClass = "datepicker__month-day--selected";
+                  }
+                } else if (this.currentPeriod.type === "weekly_by_sunday") {
+                  if (this.hoveringDate.getDay() !== 0) {
+                    periodClass =
+                      "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                  } else {
+                    periodClass = "datepicker__month-day--selected";
+                  }
                 }
-
-                return "datepicker__month-day--selected";
+              } else if (minNightInPeriod > 1) {
+                periodClass =
+                  "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
               }
-
-              return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            } else {
+              periodClass = "datepicker__month-day--selected";
             }
-
-            return "datepicker__month-day--selected";
+          } else if (isDateBeforeNextDate) {
+            if (minNightInPeriod > 1) {
+              periodClass =
+                "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            } else {
+              periodClass =
+                "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            }
+          } else {
+            periodClass = "datepicker__month-day--selected";
           }
 
-          if (isDateBeforeNextDate) {
-            return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-          }
-
-          return "datepicker__month-day--selected";
+          return periodClass;
         }
 
         // If the calendar has a minimum number of nights && !checkOut
