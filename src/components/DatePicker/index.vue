@@ -203,7 +203,6 @@
                 class="square"
                 v-for="(day, dayIndexMobile) in months[n].days"
                 :key="`${datepickerDayKey}-${dayIndexMobile}`"
-                @mouseover="handleHoveringDate(day)"
                 @click="handleClickMobileDate(day, $event)"
               >
                 <Day
@@ -419,6 +418,7 @@ export default {
       checkOut: this.endingDateValue,
       currentPeriod: null,
       customTooltip: "",
+      customTooltipHalfday: "",
       dynamicNightCounts: null,
       hoveringDate: null,
       isOpen: false,
@@ -444,16 +444,29 @@ export default {
       return [0, 1];
     },
     customTooltipMessage() {
+      let tooltip = "";
+
       if (
         this.screenSize === "desktop" &&
         this.hoveringDate &&
-        this.customTooltip
+        (this.customTooltip || this.customTooltipHalfday)
       ) {
-        return this.customTooltip;
+        if (this.customTooltipHalfday)
+          tooltip = `${this.customTooltipHalfday}<br/>. `;
+        tooltip += this.customTooltip;
+
+        return tooltip;
       }
 
-      if (this.screenSize !== "desktop" && this.customTooltip) {
-        return this.customTooltip;
+      if (
+        this.screenSize !== "desktop" &&
+        (this.customTooltip || this.customTooltipHalfday)
+      ) {
+        if (this.customTooltipHalfday)
+          tooltip = `${this.customTooltipHalfday}<br/>. `;
+        tooltip += this.customTooltip;
+
+        return tooltip;
       }
 
       return this.tooltipMessage;
@@ -651,9 +664,7 @@ export default {
       return countDays !== 1 ? this.i18n.nights : this.i18n.night;
     },
     handleHoveringDate(day) {
-      if (this.screenSize === "desktop") {
-        this.setCustomTooltip(day);
-      }
+      this.setCustomTooltip(day);
     },
     handleClickMobileDate(day) {
       if (this.screenSize !== "desktop") {
@@ -705,10 +716,12 @@ export default {
           } else {
             const night = this.pluralizeNight(countDays);
 
-            this.customTooltip = this.completeTrad(
-              this.i18n.tooltip.minimumRequiredPeriod,
-              { minNightInPeriod, night }
-            );
+            if (minNightInPeriod > 1) {
+              this.customTooltip = this.completeTrad(
+                this.i18n.tooltip.minimumRequiredPeriod,
+                { minNightInPeriod, night }
+              );
+            }
           }
         } else {
           this.customTooltip = `${countOfDays} ${this.pluralizeNight(
@@ -718,10 +731,12 @@ export default {
       } else if (isDateBeforeNextDate) {
         const night = this.pluralizeNight(countDays);
 
-        this.customTooltip = this.completeTrad(
-          this.i18n.tooltip.minimumRequiredPeriod,
-          { minNightInPeriod, night }
-        );
+        if (minNightInPeriod > 1) {
+          this.customTooltip = this.completeTrad(
+            this.i18n.tooltip.minimumRequiredPeriod,
+            { minNightInPeriod, night }
+          );
+        }
       } else {
         this.customTooltip = `${countOfDays} ${this.pluralizeNight(
           countOfDays
@@ -729,15 +744,16 @@ export default {
       }
     },
     setHalfDayCustomTooltip(date) {
+      this.customTooltipHalfday = "";
       const formatedHoveringDate = this.formatDate(date);
 
       if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
         this.showCustomTooltip = true;
 
         if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
-          this.customTooltip = this.i18n.tooltip.halfDayCheckOut;
+          this.customTooltipHalfday = this.i18n.tooltip.halfDayCheckOut;
         } else if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkOut) {
-          this.customTooltip = this.i18n.tooltip.halfDayCheckIn;
+          this.customTooltipHalfday = this.i18n.tooltip.halfDayCheckIn;
         }
       }
     },
