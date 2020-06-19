@@ -5041,12 +5041,12 @@ var fecha = {
 
 //# sourceMappingURL=fecha.js.map
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=7a0d1d6a&
-var Dayvue_type_template_id_7a0d1d6a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && this.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[_vm.dayClass, _vm.checkinCheckoutClass],style:(_vm.isToday ? _vm.currentDateStyle : ''),attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
-var Dayvue_type_template_id_7a0d1d6a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=e58062c0&
+var Dayvue_type_template_id_e58062c0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && this.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[_vm.dayClass, _vm.checkinCheckoutClass],style:(_vm.isToday ? _vm.currentDateStyle : ''),attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
+var Dayvue_type_template_id_e58062c0_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=7a0d1d6a&
+// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=e58062c0&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
 var es_array_some = __webpack_require__("45fc");
@@ -5485,32 +5485,43 @@ var es_array_some = __webpack_require__("45fc");
           var isInACurrentPeriod = this.getDayDiff(this.hoveringDate, this.currentPeriod.endAt) > 0;
           var isDateAfterNextDate = this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) < 0;
           var isDateBeforeNextDate = this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) > 0;
+          var periodClass = "";
 
           if (isAWeekPeriod) {
             if (isInACurrentPeriod) {
-              if (modulo === 0) {
-                return " datepicker__month-day--selected";
-              }
-
-              if (isDateAfterNextDate) {
-                if (this.currentPeriod.type === "weekly_by_saturday" && this.date.getDay() !== 6 || this.currentPeriod.type === "weekly_by_sunday" && this.date.getDay() !== 0) {
-                  return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+              if (modulo === 0 && this.checkIn !== this.hoveringDate) {
+                periodClass = "datepicker__month-day--selected";
+              } else if (isDateAfterNextDate) {
+                if (this.currentPeriod.type === "weekly_by_saturday") {
+                  if (this.hoveringDate.getDay() !== 6) {
+                    periodClass = "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                  } else {
+                    periodClass = "datepicker__month-day--selected";
+                  }
+                } else if (this.currentPeriod.type === "weekly_by_sunday") {
+                  if (this.hoveringDate.getDay() !== 0) {
+                    periodClass = "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                  } else {
+                    periodClass = "datepicker__month-day--selected";
+                  }
                 }
-
-                return "datepicker__month-day--selected";
+              } else if (minNightInPeriod > 1) {
+                periodClass = "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
               }
-
-              return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            } else {
+              periodClass = "datepicker__month-day--selected";
             }
-
-            return "datepicker__month-day--selected";
+          } else if (isDateBeforeNextDate) {
+            if (minNightInPeriod > 1) {
+              periodClass = "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            } else {
+              periodClass = "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+            }
+          } else {
+            periodClass = "datepicker__month-day--selected";
           }
 
-          if (isDateBeforeNextDate) {
-            return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-          }
-
-          return "datepicker__month-day--selected";
+          return periodClass;
         } // If the calendar has a minimum number of nights && !checkOut
 
 
@@ -5892,8 +5903,8 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   components_Dayvue_type_script_lang_js_,
-  Dayvue_type_template_id_7a0d1d6a_render,
-  Dayvue_type_template_id_7a0d1d6a_staticRenderFns,
+  Dayvue_type_template_id_e58062c0_render,
+  Dayvue_type_template_id_e58062c0_staticRenderFns,
   false,
   null,
   null,
