@@ -226,7 +226,7 @@ export default {
       return "nothing";
     },
     formatDate() {
-      return fecha.format(this.date, "YYYY-MM-DD");
+      return this.dateFormater(this.date);
     },
     tabIndex() {
       if (
@@ -273,7 +273,7 @@ export default {
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
-        const keyDate = fecha.format(this.date, "YYYY-MM-DD");
+        const keyDate = this.dateFormater(this.date);
 
         if (
           this.checkIncheckOutHalfDay[keyDate] &&
@@ -403,8 +403,7 @@ export default {
         // the same date for checkout and checkin
         if (
           this.checkIn !== null &&
-          fecha.format(this.checkIn, "YYYYMMDD") ===
-            fecha.format(this.date, "YYYYMMDD")
+          this.dateFormater(this.checkIn) === this.dateFormater(this.date)
         ) {
           if (this.minNightCount === 0) {
             return "datepicker__month-day--first-day-selected";
@@ -415,8 +414,7 @@ export default {
 
         if (this.checkOut !== null) {
           if (
-            fecha.format(this.checkOut, "YYYYMMDD") ===
-            fecha.format(this.date, "YYYYMMDD")
+            this.dateFormater(this.checkOut) === this.dateFormater(this.date)
           ) {
             if (this.halfDayClass) {
               return `datepicker__month-day--disabled datepicker__month-day--last-day-selected ${this.halfDayClass}`;
@@ -600,7 +598,7 @@ export default {
 
       if (disableCheckoutOnCheckin) {
         if (!this.isDisabled || this.isClickable()) {
-          const formatDate = fecha.format(date, "YYYY-MM-DD");
+          const formatDate = this.dateFormater(date);
 
           if (this.options.allowedRanges.length !== 0) {
             this.createAllowedCheckoutDays(date);
