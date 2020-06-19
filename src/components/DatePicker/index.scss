@@ -239,6 +239,7 @@ $extra-small-screen: '(max-width: 23em)';
     margin: 0;
     border: 0;
     height: 40px;
+    cursor: pointer;
 
     @include focusStyle();
 
@@ -496,7 +497,7 @@ $extra-small-screen: '(max-width: 23em)';
       width: 100%;
       padding-right: 0;
       padding-top: 60px;
-      height: 300px;
+      height: 360px;
 
       &:last-of-type {
         margin-bottom: 65px;
@@ -662,4 +663,8 @@ $extra-small-screen: '(max-width: 23em)';
   @include device($desktop) {
     display: none;
   }
+}
+
+.test {
+  background: red !important
 }
