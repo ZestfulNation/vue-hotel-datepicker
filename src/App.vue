@@ -27,6 +27,7 @@
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
+          :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
@@ -56,6 +57,7 @@
             '2020-10-06',
             '2020-10-07'
           ]"
+          :showYear="true"
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"

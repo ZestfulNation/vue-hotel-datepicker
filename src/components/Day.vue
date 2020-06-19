@@ -337,20 +337,6 @@ export default {
           return "datepicker__month-day--selected";
         }
 
-        // If the calendar has a minimum number of nights && checkOut
-        if (
-          this.checkOut &&
-          !this.isDisabled &&
-          this.compareDay(this.date, this.checkIn) === 1 &&
-          this.minNightCount > 0 &&
-          this.compareDay(
-            this.date,
-            this.addDays(this.checkIn, this.minNightCount)
-          ) === -1
-        ) {
-          return "datepicker__month-day--selected datepicker__month-day--out-of-range";
-        }
-
         // If the calendar has a minimum number of nights && !checkOut
         if (
           !this.checkOut &&

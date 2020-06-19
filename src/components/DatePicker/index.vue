@@ -34,7 +34,7 @@
       class="datepicker__clear-button"
       tabindex="0"
       @click="clearSelection"
-      v-if="showClearSelectionButton"
+      v-show="showClearSelectionButton"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68">
         <path d="M6.5 6.5l55 55M61.5 6.5l-55 55"></path>
@@ -536,7 +536,7 @@ export default {
       this.$emit("check-in-changed", newDate);
     },
     checkOut(newDate) {
-      if (this.checkOut !== null && this.checkOut !== null) {
+      if (this.checkOut !== null) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
         this.parseDisabledDates();
@@ -548,7 +548,7 @@ export default {
       this.$emit("check-out-changed", newDate);
     }
   },
-  beforeMount() {
+  created() {
     fecha.i18n = {
       dayNames: this.i18n["day-names"],
       dayNamesShort: this.shortenString(this.i18n["day-names"], 3),
@@ -601,13 +601,14 @@ export default {
   mounted() {
     this.handleWindowResize();
 
+    window.addEventListener("resize", this.handleWindowResize);
+
     if (this.screenSize !== "desktop") {
       document.addEventListener("touchstart", this.handleTouchStart, false);
       document.addEventListener("touchmove", this.handleTouchMove, false);
       document.addEventListener("touchend", this.handleTouchEnd, false);
     } else {
       document.addEventListener("click", this.handleClickOutside, false);
-      window.addEventListener("resize", this.handleWindowResize);
     }
 
     this.onElementHeightChange(document.body, () => {
