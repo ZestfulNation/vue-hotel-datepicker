@@ -418,7 +418,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
   &__inner {
-    padding: 35px;
+    padding: 1.5rem;
 
     @include device($up-to-tablet) {
       padding: 0;
