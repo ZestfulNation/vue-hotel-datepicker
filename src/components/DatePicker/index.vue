@@ -59,7 +59,7 @@
             }"
             type="button"
           >
-            {{ `${checkIn ? formatDate(checkIn) : i18n["check-in"]}` }}
+            {{ `${checkIn ? dateFormater(checkIn) : i18n["check-in"]}` }}
           </div>
           <div
             class="datepicker__input"
@@ -70,7 +70,7 @@
             }"
             type="button"
           >
-            {{ `${checkOut ? formatDate(checkOut) : i18n["check-out"]}` }}
+            {{ `${checkOut ? dateFormater(checkOut) : i18n["check-out"]}` }}
           </div>
         </div>
       </div>
@@ -451,9 +451,13 @@ export default {
         this.hoveringDate &&
         (this.customTooltip || this.customTooltipHalfday)
       ) {
-        if (this.customTooltipHalfday)
-          tooltip = `${this.customTooltipHalfday}<br/>. `;
-        tooltip += this.customTooltip;
+        if (this.customTooltip && this.customTooltipHalfday) {
+          tooltip = `${this.customTooltipHalfday}. <br/> ${this.customTooltip}`;
+        } else if (this.customTooltipHalfday && !this.customTooltip) {
+          tooltip = this.customTooltipHalfday;
+        } else {
+          tooltip = this.customTooltip;
+        }
 
         return tooltip;
       }
@@ -462,9 +466,13 @@ export default {
         this.screenSize !== "desktop" &&
         (this.customTooltip || this.customTooltipHalfday)
       ) {
-        if (this.customTooltipHalfday)
-          tooltip = `${this.customTooltipHalfday}<br/>. `;
-        tooltip += this.customTooltip;
+        if (this.customTooltip && this.customTooltipHalfday) {
+          tooltip = `${this.customTooltipHalfday}. <br/> ${this.customTooltip}`;
+        } else if (this.customTooltipHalfday && !this.customTooltip) {
+          tooltip = this.customTooltipHalfday;
+        } else {
+          tooltip = this.customTooltip;
+        }
 
         return tooltip;
       }
@@ -640,12 +648,15 @@ export default {
   },
   methods: {
     ...Helpers,
+    formatDate(date) {
+      return this.dateFormater(date, this.format);
+    },
     cleanString(string) {
       // eslint-disable-next-line no-useless-escape
       return string.replace(/\<br\/>/g, "");
     },
     dateIsInCheckInCheckOut(date) {
-      const compareDate = this.formatDate(date);
+      const compareDate = this.dateFormater(date);
       let currentPeriod = null;
 
       this.sortedPeriodDates.forEach(d => {
@@ -745,7 +756,7 @@ export default {
     },
     setHalfDayCustomTooltip(date) {
       this.customTooltipHalfday = "";
-      const formatedHoveringDate = this.formatDate(date);
+      const formatedHoveringDate = this.dateFormater(date);
 
       if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
         this.showCustomTooltip = true;
@@ -782,13 +793,6 @@ export default {
     },
     setMinNightCount(minNights) {
       this.dynamicNightCounts = minNights;
-    },
-    formatDate(date) {
-      if (date) {
-        return fecha.format(date, this.format);
-      }
-
-      return "";
     },
     handleWindowResize() {
       if (window.innerWidth < 480) {
@@ -933,7 +937,7 @@ export default {
       if (this.sortedPeriodDates) {
         let nextPeriod = null;
         let currentPeriod = null;
-        const compareDate = this.formatDate(date);
+        const compareDate = this.dateFormater(date);
 
         this.sortedPeriodDates.forEach(d => {
           if (

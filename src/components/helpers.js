@@ -1,4 +1,6 @@
 /* eslint-disable vars-on-top */
+import fecha from "fecha";
+
 export default {
   getNextDate(datesArray, referenceDate) {
     const now = new Date(referenceDate);
@@ -189,5 +191,14 @@ export default {
 
     // eslint-disable-next-line block-scoped-var
     return arr;
+  },
+  dateFormater(date, format) {
+    const f = format || "YYYY-MM-DD";
+
+    if (date) {
+      return fecha.format(date, f);
+    }
+
+    return "";
   }
 };
