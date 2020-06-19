@@ -123,7 +123,7 @@
               v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month]
                 .days"
               :key="`${datepickerDayKey}-${dayIndexDesktop}`"
-              @mouseover="handleHoveringDate(day)"
+              @mouseenter="handleHoveringDate(day)"
             >
               <Day
                 :activeMonthIndex="activeMonthIndex"
@@ -203,7 +203,7 @@
                 class="square"
                 v-for="(day, dayIndexMobile) in months[n].days"
                 :key="`${datepickerDayKey}-${dayIndexMobile}`"
-                @click="handleClickMobileDate(day, $event)"
+                @click="handleHoveringDate(day)"
               >
                 <Day
                   :activeMonthIndex="activeMonthIndex"
@@ -677,11 +677,6 @@ export default {
     handleHoveringDate(day) {
       this.setCustomTooltip(day);
     },
-    handleClickMobileDate(day) {
-      if (this.screenSize !== "desktop") {
-        this.setCustomTooltip(day);
-      }
-    },
     setCustomTooltip(day) {
       if (day.belongsToThisMonth) {
         if (this.screenSize === "desktop") {
@@ -689,8 +684,10 @@ export default {
           if (this.showCustomTooltip) this.showCustomTooltip = false;
         }
 
-        if (!this.checkout && this.checkIn && this.currentPeriod) {
+        if (!this.checkOut && this.checkIn && this.currentPeriod) {
           this.setPeriodCustomTooltip(day.date);
+        } else {
+          this.customTooltip = "";
         }
 
         if (this.halfDay) {
