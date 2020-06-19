@@ -4441,7 +4441,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=645d634a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=026051e8&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClearSelectionButton),expression:"showClearSelectionButton"}],staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]),_c('div',{staticClass:"datepicker",class:{ 'datepicker--open': _vm.isOpen, 'datepicker--closed': !_vm.isOpen }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active': _vm.isOpen && _vm.checkIn == null
           },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkIn ? _vm.dateFormater(_vm.checkIn) : _vm.i18n["check-in"])))+" ")]),_c('div',{staticClass:"datepicker__input",class:{
@@ -4456,7 +4456,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=645d634a&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=026051e8&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -6684,6 +6684,8 @@ var defaulti18n = {
             minNightInPeriod: minNightInPeriod,
             night: _night
           });
+        } else {
+          this.customTooltip = "";
         }
       } else {
         this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countOfDays));
@@ -6784,6 +6786,10 @@ var defaulti18n = {
       }
     },
     hideDatepicker: function hideDatepicker() {
+      if (this.checkIn && !this.checkOut) {
+        this.clearSelection();
+      }
+
       this.isOpen = false;
     },
     showDatepicker: function showDatepicker() {

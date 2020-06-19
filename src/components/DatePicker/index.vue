@@ -747,6 +747,8 @@ export default {
             this.i18n.tooltip.minimumRequiredPeriod,
             { minNightInPeriod, night }
           );
+        } else {
+          this.customTooltip = "";
         }
       } else {
         this.customTooltip = `${countOfDays} ${this.pluralizeNight(
@@ -853,6 +855,10 @@ export default {
       }
     },
     hideDatepicker() {
+      if (this.checkIn && !this.checkOut) {
+        this.clearSelection();
+      }
+
       this.isOpen = false;
     },
     showDatepicker() {
