@@ -427,8 +427,8 @@ $extra-small-screen: '(max-width: 23em)';
 
   .show-tooltip {
     .datepicker__months {
-      margin-top: 140px;
-      height: calc(100% - 140px);
+      margin-top: 160px;
+      height: calc(100% - 160px);
     }
     .datepicker__tooltip--mobile {
       height: auto;
@@ -663,8 +663,4 @@ $extra-small-screen: '(max-width: 23em)';
   @include device($desktop) {
     display: none;
   }
-}
-
-.test {
-  background: red !important
 }
