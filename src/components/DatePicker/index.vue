@@ -720,9 +720,21 @@ export default {
             )}`;
           } else if (isDateAfterNextDate) {
             if (this.currentPeriod.type === "weekly_by_saturday") {
-              this.customTooltip = this.i18n.tooltip.saturdayToSaturday;
+              if (date.getDay() !== 6) {
+                this.customTooltip = this.i18n.tooltip.saturdayToSaturday;
+              } else {
+                this.customTooltip = `${countOfDays} ${this.pluralizeNight(
+                  countDays
+                )}`;
+              }
             } else if (this.currentPeriod.type === "weekly_by_sunday") {
-              this.customTooltip = this.i18n.tooltip.sundayToSunday;
+              if (date.getDay() !== 0) {
+                this.customTooltip = this.i18n.tooltip.sundayToSunday;
+              } else {
+                this.customTooltip = `${countOfDays} ${this.pluralizeNight(
+                  countDays
+                )}`;
+              }
             }
           } else {
             const night = this.pluralizeNight(countDays);

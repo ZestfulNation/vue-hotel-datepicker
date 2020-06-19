@@ -321,7 +321,16 @@ export default {
               }
 
               if (isDateAfterNextDate) {
-                return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                if (
+                  (this.currentPeriod.type === "weekly_by_saturday" &&
+                    this.date.getDay() !== 6) ||
+                  (this.currentPeriod.type === "weekly_by_sunday" &&
+                    this.date.getDay() !== 0)
+                ) {
+                  return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
+                }
+
+                return "datepicker__month-day--selected";
               }
 
               return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
