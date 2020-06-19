@@ -23,44 +23,12 @@
             '2020-07-06',
             '2020-07-07'
           ]"
+          :format="dateFormat"
           :showSingleMonth="true"
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
           :showYear="true"
-          :firstDayOfWeek="1"
-          :disableCheckoutOnCheckin="true"
-          :halfDay="true"
-          :periodDates="periodDates"
-          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
-        />
-      </div>
-      <div class="box">
-        <h3>
-          Periods
-          <strong>periodDates</strong> props
-        </h3>
-        <DatePicker
-          :disabledDates="[
-            '2020-06-15',
-            '2020-06-16',
-            '2020-06-17',
-            '2020-06-18',
-            '2020-06-19',
-            '2020-06-20',
-            '2020-06-21',
-            '2020-07-01',
-            '2020-07-02',
-            '2020-07-03',
-            '2020-07-04',
-            '2020-07-05',
-            '2020-07-06',
-            '2020-07-07'
-          ]"
-          :showYear="true"
-          :lastDateAvailable="lastDateAvailable"
-          :minNights="minNights"
-          :i18n="frFR"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
           :halfDay="true"
@@ -515,6 +483,9 @@ export default {
     };
   },
   computed: {
+    dateFormat() {
+      return "DD/MM/YYYY";
+    },
     lastDateAvailable() {
       return this.addYears(new Date(), 2);
     }
