@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.6.8
+# Release 0.6.9
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -75,6 +75,8 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
   ```
 * Add `showSingleMonth` which allows to show 1 month
 * Trigger `window.resize` on desktop, mobile, tablet
+* Add `event clicked Esc` for `clearSelection`
+* Add `invalid` class on checkIn date
 
 ------------
 

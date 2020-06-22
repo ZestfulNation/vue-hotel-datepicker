@@ -19,9 +19,14 @@
             '2020-07-02',
             '2020-07-03',
             '2020-07-04',
-            '2020-07-05',
-            '2020-07-06',
-            '2020-07-07'
+            '2020-07-11',
+            '2020-07-12',
+            '2020-07-13',
+            '2020-07-14',
+            '2020-07-15',
+            '2020-07-16',
+            '2020-07-17',
+            '2020-07-18'
           ]"
           :format="dateFormat"
           :showSingleMonth="true"
@@ -445,8 +450,8 @@ export default {
           "Novembre",
           "Décembre"
         ],
-        night: "Nuit",
-        nights: "Nuits",
+        night: "nuit",
+        nights: "nuits",
         tooltip: {
           halfDayCheckIn: "Réservation possible",
           halfDayCheckOut: "Réservation possible",

@@ -279,6 +279,10 @@ export default {
           this.checkIncheckOutHalfDay[keyDate] &&
           this.checkIncheckOutHalfDay[keyDate].checkIn
         ) {
+          if (!this.checkIn) {
+            return "datepicker__month-day--halfCheckIn datepicker__month-day--invalid";
+          }
+
           return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
         }
 
