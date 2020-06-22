@@ -251,8 +251,8 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--invalid {
-      color: $lightest-gray;
       cursor: not-allowed;
+      pointer-events: none;
     }
 
     &--valid:hover,
@@ -418,7 +418,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
   &__inner {
-    padding: 1.5rem;
+    padding: 1.5rem 2.5rem;
 
     @include device($up-to-tablet) {
       padding: 0;

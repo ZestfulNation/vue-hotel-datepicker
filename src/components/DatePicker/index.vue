@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <div class="datepicker__inner">
+      <div class="datepicker__inner" v-if="isOpen">
         <div class="datepicker__header">
           <button
             type="button"
@@ -630,6 +630,7 @@ export default {
       document.addEventListener("touchend", this.handleTouchEnd, false);
     } else {
       document.addEventListener("click", this.handleClickOutside, false);
+      document.addEventListener("keyup", this.escFunction, false);
     }
 
     this.onElementHeightChange(document.body, () => {
@@ -637,17 +638,26 @@ export default {
     });
   },
   destroyed() {
+    window.removeEventListener("resize", this.handleWindowResize);
+
     if (this.screenSize !== "desktop") {
       document.removeEventListener("touchstart", this.handleTouchStart);
       document.removeEventListener("touchmove", this.handleTouchMove);
       document.removeEventListener("touchend", this.handleTouchEnd);
     } else {
-      window.removeEventListener("resize", this.handleWindowResize);
+      document.removeEventListener("keyup", this.escFunction, false);
       document.removeEventListener("click", this.handleClickOutside);
     }
   },
   methods: {
     ...Helpers,
+    escFunction(e) {
+      const escTouch = 27;
+
+      if (e.keyCode === escTouch && this.isOpen && this.checkIn) {
+        this.clearSelection();
+      }
+    },
     formatDate(date) {
       return this.dateFormater(date, this.format);
     },
@@ -1131,7 +1141,6 @@ export default {
       }
 
       sortedDates = sortedDates.map(date => new Date(date));
-
       this.sortedDisabledDates = sortedDates.sort((a, b) => a - b);
       this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
       this.$emit("handleCheckIncheckOutHalfDay", this.checkIncheckOutHalfDay);
