@@ -146,6 +146,37 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
+  &__fullview {
+    background: none;
+    height: auto;
+
+    .datepicker__close-button, .datepicker__dummy-wrapper, .datepicker__clear-button, .-hide-on-desktop{
+      display: none;
+    }
+    .datepicker {
+      position: relative;
+      top: 0;
+    }
+
+    .-hide-up-to-tablet {
+      display: block;
+    }
+
+    .datepicker__month-button {
+      display: inline-block;
+    }
+
+    .datepicker__months {
+      margin: 0;
+      width: auto;
+
+      &::before {
+        display: none;
+      }
+    }
+
+  }
+
   &__input {
     background: transparent;
     height: 48px;

@@ -1,7 +1,10 @@
 <template>
   <div
     class="datepicker__wrapper"
-    :class="{ 'datepicker__wrapper--grid': gridStyle }"
+    :class="{
+      'datepicker__wrapper--grid': gridStyle,
+      datepicker__fullview: alwaysVisible
+    }"
     :ref="`DatePicker-${hash}`"
     v-if="show"
   >
@@ -48,8 +51,8 @@
     <div
       class="datepicker"
       :class="{
-        'datepicker--open': isOpen,
-        'datepicker--closed': !isOpen,
+        'datepicker--open': isOpen && !alwaysVisible,
+        'datepicker--closed': !isOpen && !alwaysVisible,
         'datepicker--right': positionRight
       }"
     >
@@ -83,7 +86,7 @@
           </div>
         </div>
       </div>
-      <div class="datepicker__inner" v-if="isOpen">
+      <div v-if="isOpen || alwaysVisible" class="datepicker__inner">
         <div class="datepicker__header">
           <button
             type="button"
@@ -105,7 +108,7 @@
         <div
           class="datepicker__months"
           :class="{ 'datepicker__months--full': showSingleMonth }"
-          v-if="screenSize === 'desktop'"
+          v-if="screenSize === 'desktop' || alwaysVisible"
         >
           <div
             ref="datepickerMonth"
@@ -164,7 +167,7 @@
           </div>
         </div>
         <div
-          v-if="screenSize !== 'desktop' && isOpen"
+          v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
           :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
         >
           <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
@@ -296,6 +299,10 @@ export default {
     DateInput
   },
   props: {
+    alwaysVisible: {
+      type: Boolean,
+      default: false
+    },
     disableCheckoutOnCheckin: {
       type: Boolean,
       default: false
@@ -445,7 +452,10 @@ export default {
   },
   computed: {
     paginateDesktop() {
-      if (this.showSingleMonth) {
+      if (
+        this.showSingleMonth ||
+        (this.alwaysVisible && this.screenSize !== "desktop")
+      ) {
         return [0];
       }
 
@@ -523,7 +533,7 @@ export default {
   },
   watch: {
     isOpen(value) {
-      if (this.screenSize !== "desktop") {
+      if (this.screenSize !== "desktop" && !this.alwaysVisible) {
         const body = document.querySelector("body");
 
         if (value) {
