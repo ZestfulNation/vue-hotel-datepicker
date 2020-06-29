@@ -43,6 +43,45 @@
       </div>
       <div class="box">
         <h3>
+          Hide grid style
+        </h3>
+        <DatePicker
+          :disabledDates="[
+            '2020-06-15',
+            '2020-06-16',
+            '2020-06-17',
+            '2020-06-18',
+            '2020-06-19',
+            '2020-06-20',
+            '2020-06-21',
+            '2020-07-01',
+            '2020-07-02',
+            '2020-07-03',
+            '2020-07-04',
+            '2020-07-11',
+            '2020-07-12',
+            '2020-07-13',
+            '2020-07-14',
+            '2020-07-15',
+            '2020-07-16',
+            '2020-07-17',
+            '2020-07-18'
+          ]"
+          :format="dateFormat"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+          :gridStyle="false"
+          :showYear="true"
+          :firstDayOfWeek="1"
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
+          :periodDates="periodDates"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Insert content with the content slot
         </h3>
         <DatePicker :lastDateAvailable="lastDateAvailable" show-year>
@@ -430,7 +469,9 @@ export default {
           sundayToSunday: "Domingo a domingo<br/> apenas",
           minimumRequiredPeriod:
             "É necessário um mínimo de <br/> %{minNightInPeriod} %{night}."
-        }
+        },
+        week: "semana",
+        weeks: "semanas"
       },
       frFR: {
         "check-in": "Départ",
@@ -459,7 +500,9 @@ export default {
           sundayToSunday: "Du dimanche au dimanche<br/> uniquement",
           minimumRequiredPeriod:
             "Un minimum de <br/> %{minNightInPeriod} %{night} est requis"
-        }
+        },
+        week: "semaine",
+        weeks: "semaines"
       },
       periodDates: [
         {

@@ -4441,8 +4441,8 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=69d9de99&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClearSelectionButton),expression:"showClearSelectionButton"}],staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]),_c('div',{staticClass:"datepicker",class:{ 'datepicker--open': _vm.isOpen, 'datepicker--closed': !_vm.isOpen }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=06a7fa7e&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper",class:{ 'datepicker__wrapper--grid': _vm.gridStyle }},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClearSelectionButton),expression:"showClearSelectionButton"}],staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]),_c('div',{staticClass:"datepicker",class:{ 'datepicker--open': _vm.isOpen, 'datepicker--closed': !_vm.isOpen }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active': _vm.isOpen && _vm.checkIn == null
           },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkIn ? _vm.dateFormater(_vm.checkIn) : _vm.i18n["check-in"])))+" ")]),_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active':
@@ -4450,13 +4450,13 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
           },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkOut ? _vm.dateFormater(_vm.checkOut) : _vm.i18n["check-out"])))+" ")])]):_vm._e()]),(_vm.isOpen)?_c('div',{staticClass:"datepicker__inner"},[_c('div',{staticClass:"datepicker__header"},[_c('button',{staticClass:"datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet",attrs:{"type":"button","tabindex":_vm.isOpen ? 0 : -1,"disabled":_vm.activeMonthIndex === 0},on:{"click":_vm.renderPreviousMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderPreviousMonth($event)}}}),_c('button',{staticClass:"datepicker__month-button datepicker__month-button--next -hide-up-to-tablet",attrs:{"type":"button","disabled":_vm.isPreventedMaxMonth,"tabindex":_vm.isOpen ? 0 : -1},on:{"click":_vm.renderNextMonth,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.renderNextMonth($event)}}})]),(_vm.screenSize == 'desktop')?_c('div',{staticClass:"datepicker__months",class:{ 'datepicker__months--full': _vm.showSingleMonth }},_vm._l((_vm.paginateDesktop),function(month){return _c('div',{key:(_vm.datepickerMonthKey + "-" + month),ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[_vm.activeMonthIndex + month].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n[
                 'day-names'
               ]),function(dayName,datePickerWeekIndexDesktop){return _c('div',{key:(_vm.datepickerWeekKey + "-" + datePickerWeekIndexDesktop),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[_vm.activeMonthIndex + month]
-              .days),function(day,dayIndexDesktop){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexDesktop),staticClass:"square",on:{"mouseenter":function($event){return _vm.handleHoveringDate(day)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentDateStyle":_vm.currentDateStyle,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0):_vm._e(),(_vm.screenSize !== 'desktop' && _vm.isOpen)?_c('div',{class:{ 'show-tooltip': _vm.showCustomTooltip }},[_c('div',{staticClass:"datepicker__tooltip--mobile"},[(_vm.customTooltipMessage)?[_vm._v(" "+_vm._s(_vm.cleanString(_vm.customTooltipMessage))+" ")]:_vm._e()],2),_c('div',{staticClass:"datepicker__week-row"},_vm._l((this.i18n[
+              .days),function(day,dayIndexDesktop){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexDesktop),staticClass:"square",on:{"mouseenter":function($event){return _vm.handleHoveringDate(day)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"i18n":_vm.i18n,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0):_vm._e(),(_vm.screenSize !== 'desktop' && _vm.isOpen)?_c('div',{class:{ 'show-tooltip': _vm.showCustomTooltip }},[_c('div',{staticClass:"datepicker__tooltip--mobile"},[(_vm.customTooltipMessage)?[_vm._v(" "+_vm._s(_vm.cleanString(_vm.customTooltipMessage))+" ")]:_vm._e()],2),_c('div',{staticClass:"datepicker__week-row"},_vm._l((this.i18n[
               'day-names'
-            ]),function(dayName,datePickerWeekIndexMobile){return _c('div',{key:_vm.datepickerWeekKey + datePickerWeekIndexMobile,staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_c('div',{ref:"swiperWrapper",staticClass:"datepicker__months",attrs:{"id":"swiperWrapper"}},_vm._l((_vm.months),function(a,n){return _c('div',{key:(_vm.datepickerMonthKey + "-" + n),ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[n].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n['day-names']),function(dayName,datePickerIndex){return _c('div',{key:("datepicker__month-name-datepicker__week-name-" + datePickerIndex),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[n].days),function(day,dayIndexMobile){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexMobile),staticClass:"square",on:{"click":function($event){return _vm.handleHoveringDate(day)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentDateStyle":_vm.currentDateStyle,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0)]):_vm._e(),_vm._t("content")],2):_vm._e()])]):_vm._e()}
+            ]),function(dayName,datePickerWeekIndexMobile){return _c('div',{key:_vm.datepickerWeekKey + datePickerWeekIndexMobile,staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_c('div',{ref:"swiperWrapper",staticClass:"datepicker__months",attrs:{"id":"swiperWrapper"}},_vm._l((_vm.months),function(a,n){return _c('div',{key:(_vm.datepickerMonthKey + "-" + n),ref:"datepickerMonth",refInFor:true,staticClass:"datepicker__month"},[_c('p',{staticClass:"datepicker__month-name"},[_vm._v(" "+_vm._s(_vm.getMonth(_vm.months[n].days[15].date))+" ")]),_c('div',{staticClass:"datepicker__week-row -hide-up-to-tablet"},_vm._l((_vm.i18n['day-names']),function(dayName,datePickerIndex){return _c('div',{key:("datepicker__month-name-datepicker__week-name-" + datePickerIndex),staticClass:"datepicker__week-name"},[_vm._v(" "+_vm._s(dayName)+" ")])}),0),_vm._l((_vm.months[n].days),function(day,dayIndexMobile){return _c('div',{key:(_vm.datepickerDayKey + "-" + dayIndexMobile),staticClass:"square",on:{"click":function($event){return _vm.handleHoveringDate(day)}}},[_c('Day',{attrs:{"activeMonthIndex":_vm.activeMonthIndex,"belongsToThisMonth":day.belongsToThisMonth,"checkIn":_vm.checkIn,"checkIncheckOutHalfDay":_vm.checkIncheckOutHalfDay,"checkOut":_vm.checkOut,"currentPeriod":_vm.currentPeriod,"date":day.date,"disableCheckoutOnCheckin":_vm.disableCheckoutOnCheckin,"hoveringDate":_vm.hoveringDate,"i18n":_vm.i18n,"isOpen":_vm.isOpen,"minNightCount":_vm.minNightCount,"nextDisabledDate":_vm.nextDisabledDate,"nextPeriodDisableDates":_vm.nextPeriodDisableDates,"options":_vm.$props,"screenSize":_vm.screenSize,"showCustomTooltip":_vm.showCustomTooltip,"showPrice":_vm.showPrice,"sortedDisabledDates":_vm.sortedDisabledDates,"sortedPeriodDates":_vm.sortedPeriodDates,"tooltipMessage":_vm.customTooltipMessage},on:{"setMinNightCount":_vm.setMinNightCount,"clearSelection":_vm.clearSelection,"dayClicked":_vm.handleDayClick}})],1)})],2)}),0)]):_vm._e(),_vm._t("content")],2):_vm._e()])]):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=69d9de99&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=06a7fa7e&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -5041,12 +5041,16 @@ var fecha = {
 
 //# sourceMappingURL=fecha.js.map
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=46347d58&
-var Dayvue_type_template_id_46347d58_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && this.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[_vm.dayClass, _vm.checkinCheckoutClass],style:(_vm.isToday ? _vm.currentDateStyle : ''),attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
-var Dayvue_type_template_id_46347d58_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=5bd64de7&
+var Dayvue_type_template_id_5bd64de7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && _vm.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[
+      _vm.dayClass,
+      _vm.checkinCheckoutClass,
+      { 'datepicker__month-day--today': _vm.isToday }
+    ],attrs:{"tabindex":_vm.tabIndex},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.preventDefault();$event.stopPropagation();return _vm.dayClicked(_vm.date)}}},[_c('div',{staticClass:"datepicker__month-day-wrapper"},[_c('span',[_vm._v(_vm._s(_vm.dayNumber))]),(_vm.showPrice && _vm.dayPrice)?_c('strong',{staticStyle:{"font-size":"10px"}},[_vm._v(" "+_vm._s(_vm.dayPrice)+" ")]):_vm._e()])])])}
+var Dayvue_type_template_id_5bd64de7_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=46347d58&
+// CONCATENATED MODULE: ./src/components/Day.vue?vue&type=template&id=5bd64de7&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
 var es_array_some = __webpack_require__("45fc");
@@ -5222,6 +5226,15 @@ var es_array_some = __webpack_require__("45fc");
     }
 
     return "";
+  },
+  pluralize: function pluralize(countOfDays) {
+    var periodType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "night";
+
+    if (periodType === "week") {
+      return countOfDays > 7 ? this.i18n.weeks : this.i18n.week;
+    }
+
+    return countOfDays !== 1 ? this.i18n.nights : this.i18n.night;
   }
 });
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=script&lang=js&
@@ -5232,6 +5245,9 @@ var es_array_some = __webpack_require__("45fc");
 
 
 
+//
+//
+//
 //
 //
 //
@@ -5283,7 +5299,9 @@ var es_array_some = __webpack_require__("45fc");
     },
     checkIncheckOutHalfDay: {
       type: Object,
-      default: function _default() {}
+      default: function _default() {
+        return {};
+      }
     },
     sortedDisabledDates: {
       type: Array,
@@ -5308,7 +5326,9 @@ var es_array_some = __webpack_require__("45fc");
     },
     currentPeriod: {
       type: Object,
-      default: function _default() {}
+      default: function _default() {
+        return {};
+      }
     },
     hoveringDate: {
       type: Date
@@ -5348,9 +5368,11 @@ var es_array_some = __webpack_require__("45fc");
       default: null,
       type: String
     },
-    currentDateStyle: {
+    i18n: {
       type: Object,
-      required: true
+      default: function _default() {
+        return {};
+      }
     }
   },
   data: function data() {
@@ -5443,13 +5465,24 @@ var es_array_some = __webpack_require__("45fc");
       return this.countDays(this.checkIn, this.hoveringDate);
     },
     tooltipMessageDisplay: function tooltipMessageDisplay() {
-      return this.tooltipMessage ? this.tooltipMessage : "".concat(this.nightsCount, " ").concat(this.nightsCount !== 1 ? this.options.i18n.nights : this.options.i18n.night);
+      var dateIsInPeriod = this.validateDateBetweenTwoDates(this.currentPeriod.startAt, this.currentPeriod.endAt, this.date);
+      var checkInIsInPeriod = this.validateDateBetweenTwoDates(this.currentPeriod.startAt, this.currentPeriod.endAt, this.checkIn);
+
+      if (this.tooltipMessage) {
+        return this.tooltipMessage;
+      }
+
+      if (this.currentPeriod && this.currentPeriod.type !== "nightly" && dateIsInPeriod && checkInIsInPeriod) {
+        return "".concat(this.nightsCount / 7, " ").concat(this.pluralize(this.nightsCount, "week"));
+      }
+
+      return "".concat(this.nightsCount, " ").concat(this.nightsCount !== 1 ? this.i18n.nights : this.i18n.night);
     },
     showTooltip: function showTooltip() {
       if (this.screenSize === "desktop") {
-        var showTooltipOnHalfDay = this.showCustomTooltip && this.date === this.hoveringDate;
-        var showTooltip = !this.isDisabled && this.belongsToThisMonth && this.date === this.hoveringDate && this.checkIn !== null && this.checkOut === null;
-        return showTooltipOnHalfDay || showTooltip;
+        var showCustomTooltip = this.showCustomTooltip && this.date === this.hoveringDate;
+        var showDefaultTooltip = !this.isDisabled && this.belongsToThisMonth && this.date === this.hoveringDate && this.checkIn !== null && this.checkOut === null;
+        return showCustomTooltip || showDefaultTooltip;
       }
 
       return false;
@@ -5907,8 +5940,8 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   components_Dayvue_type_script_lang_js_,
-  Dayvue_type_template_id_46347d58_render,
-  Dayvue_type_template_id_46347d58_staticRenderFns,
+  Dayvue_type_template_id_5bd64de7_render,
+  Dayvue_type_template_id_5bd64de7_staticRenderFns,
   false,
   null,
   null,
@@ -5917,7 +5950,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var Day = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DateInput.vue?vue&type=template&id=ad7d2006&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DateInput.vue?vue&type=template&id=ad7d2006&
 var DateInputvue_type_template_id_ad7d2006_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"datepicker__input",class:_vm.inputClass,attrs:{"data-qa":"datepickerInput","tabindex":_vm.tabIndex},on:{"click":_vm.toggleDatepicker,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.toggleDatepicker($event)}}},[_vm._v(" "+_vm._s(_vm.inputDate ? _vm.inputDate : _vm.i18n[_vm.inputDateType])+" ")])}
 var DateInputvue_type_template_id_ad7d2006_staticRenderFns = []
 
@@ -6260,6 +6293,11 @@ var DateInput_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -6278,7 +6316,9 @@ var defaulti18n = {
     saturdayToSaturday: "Only Saturday to Saturday",
     sundayToSunday: "Only Sunday to Sunday",
     minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
-  }
+  },
+  week: "week",
+  weeks: "weeks"
 };
 /* harmony default export */ var DatePickervue_type_script_lang_js_ = ({
   name: "HotelDatePicker",
@@ -6305,13 +6345,9 @@ var defaulti18n = {
         return [];
       }
     },
-    currentDateStyle: {
-      type: Object,
-      default: function _default() {
-        return {
-          border: "2px solid #234c56"
-        };
-      }
+    gridStyle: {
+      type: Boolean,
+      default: true
     },
     value: {
       type: String
@@ -6422,7 +6458,7 @@ var defaulti18n = {
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
       checkOut: this.endingDateValue,
-      currentPeriod: null,
+      currentPeriod: {},
       customTooltip: "",
       customTooltipHalfday: "",
       dynamicNightCounts: null,
@@ -6544,6 +6580,7 @@ var defaulti18n = {
         this.parseDisabledDates();
         this.reRender();
         this.showCustomTooltip = false;
+        this.currentPeriod = {};
         this.isOpen = false;
       }
 
@@ -6645,10 +6682,33 @@ var defaulti18n = {
       });
       return currentPeriod;
     },
-    pluralizeNight: function pluralizeNight(countDays) {
-      return countDays !== 1 ? this.i18n.nights : this.i18n.night;
-    },
     handleHoveringDate: function handleHoveringDate(day) {
+      var _this4 = this;
+
+      var date = day.date;
+      var currentPeriod = {};
+      var compareDate = this.dateFormater(date);
+      this.sortedPeriodDates.forEach(function (d) {
+        if (d.startAt === compareDate || _this4.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
+          currentPeriod = d;
+        }
+      });
+
+      if (currentPeriod && currentPeriod.periodType && currentPeriod.periodType.includes("weekly_by")) {
+        var currentDate = this.checkIn || date;
+        var minNightCount = 7 * currentPeriod.minimumDuration;
+        this.currentPeriod = {
+          date: date,
+          minNight: minNightCount,
+          nextDate: this.addDays(currentDate, minNightCount),
+          type: currentPeriod.periodType,
+          endAt: currentPeriod.endAt,
+          startAt: currentPeriod.startAt
+        };
+      } else if (this.currentPeriod && this.currentPeriod.type !== "nightly") {
+        this.currentPeriod = {};
+      }
+
       this.setCustomTooltip(day);
     },
     setCustomTooltip: function setCustomTooltip(day) {
@@ -6658,8 +6718,8 @@ var defaulti18n = {
           if (this.showCustomTooltip) this.showCustomTooltip = false;
         }
 
-        if (!this.checkOut && this.checkIn && this.currentPeriod) {
-          this.setPeriodCustomTooltip(day.date);
+        if (Object.keys(this.currentPeriod).length > 0) {
+          this.setPeriodCustomTooltip(day.date, true);
         } else {
           this.customTooltip = "";
         }
@@ -6670,48 +6730,50 @@ var defaulti18n = {
       }
     },
     setPeriodCustomTooltip: function setPeriodCustomTooltip(date) {
+      var isHover = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var countDays;
       var countOfDays = this.countDays(this.checkIn, date);
       var minNightInPeriod = this.currentPeriod.minNight;
-      var modulo = countOfDays % minNightInPeriod;
       var isAWeekPeriod = this.currentPeriod.type && this.currentPeriod.type !== "nightly";
-      var isInACurrentPeriod = this.getDayDiff(date, this.currentPeriod.endAt) > 0;
+      var isInACurrentPeriod = this.getDayDiff(date, this.currentPeriod.endAt) >= 0;
       var isDateAfterNextDate = this.getDayDiff(date, this.currentPeriod.nextDate) < 0;
       var isDateBeforeNextDate = this.getDayDiff(date, this.currentPeriod.nextDate) > 0;
 
       if (isAWeekPeriod) {
         if (isInACurrentPeriod) {
-          if (modulo === 0 && this.checkIn !== date) {
-            this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countDays));
-          } else if (isDateAfterNextDate) {
+          if (this.checkIn && countOfDays === minNightInPeriod && this.checkIn !== date) {
+            this.customTooltip = "".concat(countOfDays / 7, " ").concat(this.pluralize(countOfDays, "week"));
+          } else if (isDateAfterNextDate || !this.checkIn && isHover) {
+            this.showCustomTooltip = true;
+
             if (this.currentPeriod.type === "weekly_by_saturday") {
               if (date.getDay() !== 6) {
                 this.customTooltip = this.i18n.tooltip.saturdayToSaturday;
-              } else {
-                this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countDays));
+              } else if (isHover) {
+                this.customTooltip = "";
+                this.showCustomTooltip = false;
               }
             } else if (this.currentPeriod.type === "weekly_by_sunday") {
               if (date.getDay() !== 0) {
                 this.customTooltip = this.i18n.tooltip.sundayToSunday;
-              } else {
-                this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countDays));
+              } else if (isHover) {
+                this.customTooltip = "";
+                this.showCustomTooltip = false;
               }
             }
           } else {
-            var night = this.pluralizeNight(countDays);
+            var night = this.pluralize(minNightInPeriod, "week");
 
             if (minNightInPeriod > 1) {
               this.customTooltip = this.completeTrad(this.i18n.tooltip.minimumRequiredPeriod, {
-                minNightInPeriod: minNightInPeriod,
+                minNightInPeriod: minNightInPeriod / 7,
                 night: night
               });
             }
           }
-        } else {
-          this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countOfDays));
         }
       } else if (isDateBeforeNextDate) {
-        var _night = this.pluralizeNight(countDays);
+        var _night = this.pluralize(countDays);
 
         if (minNightInPeriod > 1) {
           this.customTooltip = this.completeTrad(this.i18n.tooltip.minimumRequiredPeriod, {
@@ -6722,7 +6784,7 @@ var defaulti18n = {
           this.customTooltip = "";
         }
       } else {
-        this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralizeNight(countOfDays));
+        this.customTooltip = "".concat(countOfDays, " ").concat(this.pluralize(countOfDays));
       }
     },
     setHalfDayCustomTooltip: function setHalfDayCustomTooltip(date) {
@@ -6838,14 +6900,14 @@ var defaulti18n = {
       }
     },
     handleDayClick: function handleDayClick(date, formatDate, allowedCheckoutDays, resetCheckin) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.nextPeriodDisableDates = [];
 
       if (resetCheckin) {
         this.clearSelection();
         this.$nextTick(function () {
-          _this4.handleDayClick(date, formatDate, allowedCheckoutDays, false);
+          _this5.handleDayClick(date, formatDate, allowedCheckoutDays, false);
         });
         return;
       }
@@ -6884,6 +6946,7 @@ var defaulti18n = {
         if (currentPeriod) {
           this.currentPeriod.type = currentPeriod.periodType;
           this.currentPeriod.endAt = currentPeriod.endAt;
+          this.currentPeriod.startAt = currentPeriod.startAt;
         }
 
         this.showCustomTooltip = true;
@@ -6897,14 +6960,14 @@ var defaulti18n = {
       this.$emit("day-clicked", date, formatDate, nextDisabledDate);
     },
     setPeriods: function setPeriods(date) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.sortedPeriodDates) {
         var nextPeriod = null;
         var currentPeriod = null;
         var compareDate = this.dateFormater(date);
         this.sortedPeriodDates.forEach(function (d) {
-          if (d.endAt !== compareDate && (d.startAt === compareDate || _this5.validateDateBetweenTwoDates(d.startAt, d.endAt, date))) {
+          if (d.endAt !== compareDate && (d.startAt === compareDate || _this6.validateDateBetweenTwoDates(d.startAt, d.endAt, date))) {
             currentPeriod = d;
           }
         });

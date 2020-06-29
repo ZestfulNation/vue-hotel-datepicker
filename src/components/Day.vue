@@ -3,14 +3,17 @@
     <div
       class="datepicker__tooltip"
       v-html="tooltipMessageDisplay"
-      v-if="showTooltip && this.options.hoveringTooltip"
+      v-if="showTooltip && options.hoveringTooltip"
     />
     <div
       class="datepicker__month-day"
       @click.prevent.stop="dayClicked(date)"
       @keyup.enter.prevent.stop="dayClicked(date)"
-      :class="[dayClass, checkinCheckoutClass]"
-      :style="isToday ? currentDateStyle : ''"
+      :class="[
+        dayClass,
+        checkinCheckoutClass,
+        { 'datepicker__month-day--today': isToday }
+      ]"
       :tabindex="tabIndex"
       ref="day"
     >
@@ -49,7 +52,7 @@ export default {
     },
     checkIncheckOutHalfDay: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     sortedDisabledDates: {
       type: Array,
@@ -70,7 +73,7 @@ export default {
     },
     currentPeriod: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     hoveringDate: {
       type: Date
@@ -110,9 +113,9 @@ export default {
       default: null,
       type: String
     },
-    currentDateStyle: {
+    i18n: {
       type: Object,
-      required: true
+      default: () => ({})
     }
   },
   data() {
@@ -244,26 +247,49 @@ export default {
       return this.countDays(this.checkIn, this.hoveringDate);
     },
     tooltipMessageDisplay() {
-      return this.tooltipMessage
-        ? this.tooltipMessage
-        : `${this.nightsCount} ${
-            this.nightsCount !== 1
-              ? this.options.i18n.nights
-              : this.options.i18n.night
-          }`;
+      const dateIsInPeriod = this.validateDateBetweenTwoDates(
+        this.currentPeriod.startAt,
+        this.currentPeriod.endAt,
+        this.date
+      );
+      const checkInIsInPeriod = this.validateDateBetweenTwoDates(
+        this.currentPeriod.startAt,
+        this.currentPeriod.endAt,
+        this.checkIn
+      );
+
+      if (this.tooltipMessage) {
+        return this.tooltipMessage;
+      }
+
+      if (
+        this.currentPeriod &&
+        this.currentPeriod.type !== "nightly" &&
+        dateIsInPeriod &&
+        checkInIsInPeriod
+      ) {
+        return `${this.nightsCount / 7} ${this.pluralize(
+          this.nightsCount,
+          "week"
+        )}`;
+      }
+
+      return `${this.nightsCount} ${
+        this.nightsCount !== 1 ? this.i18n.nights : this.i18n.night
+      }`;
     },
     showTooltip() {
       if (this.screenSize === "desktop") {
-        const showTooltipOnHalfDay =
+        const showCustomTooltip =
           this.showCustomTooltip && this.date === this.hoveringDate;
-        const showTooltip =
+        const showDefaultTooltip =
           !this.isDisabled &&
           this.belongsToThisMonth &&
           this.date === this.hoveringDate &&
           this.checkIn !== null &&
           this.checkOut === null;
 
-        return showTooltipOnHalfDay || showTooltip;
+        return showCustomTooltip || showDefaultTooltip;
       }
 
       return false;
