@@ -356,6 +356,13 @@ If set to true, display one month only
 
 **Show** or **hide** a grid around the days
 
+### positionRight
+
+- Type: `Boolean`
+- Default: `false`
+
+Display calendar on the **right** or the **left** of the input (left by default)
+
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
 
