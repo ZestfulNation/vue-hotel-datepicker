@@ -200,5 +200,12 @@ export default {
     }
 
     return "";
+  },
+  pluralize(countOfDays, periodType = "night") {
+    if (periodType === "week") {
+      return countOfDays > 7 ? this.i18n.weeks : this.i18n.week;
+    }
+
+    return countOfDays !== 1 ? this.i18n.nights : this.i18n.night;
   }
 };

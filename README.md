@@ -289,6 +289,8 @@ i18n: {
     sundayToSunday: "Only Sunday to Sunday",
     minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
   },
+  week: "week",
+  weeks: "weeks",
 }
 ```
 
@@ -347,6 +349,12 @@ If set to true, displays a price contains on your periodDates
 
 If set to true, display one month only
 
+### gridStyle
+
+- Type: `Boolean`
+- Default: `true`
+
+**Show** or **hide** a grid around the days
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false

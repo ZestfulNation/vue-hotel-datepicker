@@ -14,7 +14,6 @@ describe("Datepicker Day", () => {
         belongsToThisMonth: true,
         checkIn: null,
         checkOut: null,
-        currentDateStyle: { border: "1px solid #00c690" },
         date: new Date(),
         dayNumber: "1",
         hoveringDate: null,
