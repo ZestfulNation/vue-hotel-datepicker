@@ -74,10 +74,13 @@ $extra-small-screen: '(max-width: 23em)';
   font-size: 16px;
   line-height: 14px;
   overflow: hidden;
-  left: 0;
   top: 48px;
   position: absolute;
   z-index: 999;
+
+  &--right {
+    right: 0;
+  }
 
   button.next--mobile {
     background: none;
@@ -232,7 +235,7 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__month-day-wrapper {
     height: 0;
-    padding-top: 100%;
+    padding-top: calc(100% - 1px); //fix for safari
     span {
       z-index: 1;
       position: absolute;
@@ -255,7 +258,7 @@ $extra-small-screen: '(max-width: 23em)';
 
       .datepicker__month-day-wrapper {
         border: 2px solid $primary-color;
-        padding-top: calc(100% - 4px);
+        padding-top: calc(100% - 5px);
       }
     }
 

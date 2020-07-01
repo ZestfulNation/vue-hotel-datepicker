@@ -4450,8 +4450,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=06a7fa7e&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper",class:{ 'datepicker__wrapper--grid': _vm.gridStyle }},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClearSelectionButton),expression:"showClearSelectionButton"}],staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]),_c('div',{staticClass:"datepicker",class:{ 'datepicker--open': _vm.isOpen, 'datepicker--closed': !_vm.isOpen }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=4cd01c6a&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper",class:{ 'datepicker__wrapper--grid': _vm.gridStyle }},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__close-button -hide-on-desktop",on:{"click":_vm.closeMobileDatepicker}},[_c('i',[_vm._v("+")])]):_vm._e(),_c('div',{staticClass:"datepicker__dummy-wrapper",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen }},[_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkIn),"input-date-type":"check-in","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}),(!_vm.singleDaySelection)?_c('date-input',{attrs:{"i18n":_vm.i18n,"input-date":_vm.formatDate(_vm.checkOut),"input-date-type":"check-out","is-open":_vm.isOpen,"toggle-datepicker":_vm.toggleDatepicker,"single-day-selection":_vm.singleDaySelection}}):_vm._e()],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClearSelectionButton),expression:"showClearSelectionButton"}],staticClass:"datepicker__clear-button",attrs:{"tabindex":"0"},on:{"click":_vm.clearSelection}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 68 68"}},[_c('path',{attrs:{"d":"M6.5 6.5l55 55M61.5 6.5l-55 55"}})])]),_c('div',{staticClass:"datepicker",class:{
+      'datepicker--open': _vm.isOpen,
+      'datepicker--closed': !_vm.isOpen,
+      'datepicker--right': _vm.positionRight
+    }},[_c('div',{staticClass:"-hide-on-desktop"},[(_vm.isOpen)?_c('div',{staticClass:"datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border",class:{ 'datepicker__dummy-wrapper--is-active': _vm.isOpen },on:{"click":_vm.toggleDatepicker}},[_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active': _vm.isOpen && _vm.checkIn == null
           },attrs:{"tabindex":"0","type":"button"}},[_vm._v(" "+_vm._s(("" + (_vm.checkIn ? _vm.dateFormater(_vm.checkIn) : _vm.i18n["check-in"])))+" ")]),_c('div',{staticClass:"datepicker__input",class:{
             'datepicker__dummy-input--is-active':
@@ -4465,7 +4469,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=06a7fa7e&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=4cd01c6a&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -5050,7 +5054,7 @@ var fecha = {
 
 //# sourceMappingURL=fecha.js.map
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=5bd64de7&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Day.vue?vue&type=template&id=5bd64de7&
 var Dayvue_type_template_id_5bd64de7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.showTooltip && _vm.options.hoveringTooltip)?_c('div',{staticClass:"datepicker__tooltip",domProps:{"innerHTML":_vm._s(_vm.tooltipMessageDisplay)}}):_vm._e(),_c('div',{ref:"day",staticClass:"datepicker__month-day",class:[
       _vm.dayClass,
       _vm.checkinCheckoutClass,
@@ -5959,7 +5963,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var Day = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DateInput.vue?vue&type=template&id=ad7d2006&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d39b66c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DateInput.vue?vue&type=template&id=ad7d2006&
 var DateInputvue_type_template_id_ad7d2006_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"datepicker__input",class:_vm.inputClass,attrs:{"data-qa":"datepickerInput","tabindex":_vm.tabIndex},on:{"click":_vm.toggleDatepicker,"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }$event.stopPropagation();$event.preventDefault();return _vm.toggleDatepicker($event)}}},[_vm._v(" "+_vm._s(_vm.inputDate ? _vm.inputDate : _vm.i18n[_vm.inputDateType])+" ")])}
 var DateInputvue_type_template_id_ad7d2006_staticRenderFns = []
 
@@ -6307,6 +6311,10 @@ var DateInput_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -6357,6 +6365,10 @@ var defaulti18n = {
     gridStyle: {
       type: Boolean,
       default: true
+    },
+    positionRight: {
+      type: Boolean,
+      default: false
     },
     value: {
       type: String
@@ -6694,28 +6706,30 @@ var defaulti18n = {
     handleHoveringDate: function handleHoveringDate(day) {
       var _this4 = this;
 
-      var date = day.date;
-      var currentPeriod = {};
-      var compareDate = this.dateFormater(date);
-      this.sortedPeriodDates.forEach(function (d) {
-        if (d.startAt === compareDate || _this4.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
-          currentPeriod = d;
-        }
-      });
+      if (this.periodDates.length > 0) {
+        var date = day.date;
+        var currentPeriod = {};
+        var compareDate = this.dateFormater(date);
+        this.sortedPeriodDates.forEach(function (d) {
+          if (d.startAt === compareDate || _this4.validateDateBetweenTwoDates(d.startAt, d.endAt, date)) {
+            currentPeriod = d;
+          }
+        });
 
-      if (currentPeriod && currentPeriod.periodType && currentPeriod.periodType.includes("weekly_by")) {
-        var currentDate = this.checkIn || date;
-        var minNightCount = 7 * currentPeriod.minimumDuration;
-        this.currentPeriod = {
-          date: date,
-          minNight: minNightCount,
-          nextDate: this.addDays(currentDate, minNightCount),
-          type: currentPeriod.periodType,
-          endAt: currentPeriod.endAt,
-          startAt: currentPeriod.startAt
-        };
-      } else if (this.currentPeriod && this.currentPeriod.type !== "nightly") {
-        this.currentPeriod = {};
+        if (currentPeriod && currentPeriod.periodType && currentPeriod.periodType.includes("weekly_by")) {
+          var currentDate = this.checkIn || date;
+          var minNightCount = 7 * currentPeriod.minimumDuration;
+          this.currentPeriod = {
+            date: date,
+            minNight: minNightCount,
+            nextDate: this.addDays(currentDate, minNightCount),
+            type: currentPeriod.periodType,
+            endAt: currentPeriod.endAt,
+            startAt: currentPeriod.startAt
+          };
+        } else if (this.currentPeriod && this.currentPeriod.type !== "nightly") {
+          this.currentPeriod = {};
+        }
       }
 
       this.setCustomTooltip(day);

@@ -82,6 +82,45 @@
       </div>
       <div class="box">
         <h3>
+          Show calendar on the right
+        </h3>
+        <DatePicker
+          :disabledDates="[
+            '2020-06-15',
+            '2020-06-16',
+            '2020-06-17',
+            '2020-06-18',
+            '2020-06-19',
+            '2020-06-20',
+            '2020-06-21',
+            '2020-07-01',
+            '2020-07-02',
+            '2020-07-03',
+            '2020-07-04',
+            '2020-07-11',
+            '2020-07-12',
+            '2020-07-13',
+            '2020-07-14',
+            '2020-07-15',
+            '2020-07-16',
+            '2020-07-17',
+            '2020-07-18'
+          ]"
+          :format="dateFormat"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+          :positionRight="true"
+          :showYear="true"
+          :firstDayOfWeek="1"
+          :disableCheckoutOnCheckin="true"
+          :halfDay="true"
+          :periodDates="periodDates"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Insert content with the content slot
         </h3>
         <DatePicker :lastDateAvailable="lastDateAvailable" show-year>

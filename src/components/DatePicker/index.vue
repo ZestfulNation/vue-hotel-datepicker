@@ -47,7 +47,11 @@
     </div>
     <div
       class="datepicker"
-      :class="{ 'datepicker--open': isOpen, 'datepicker--closed': !isOpen }"
+      :class="{
+        'datepicker--open': isOpen,
+        'datepicker--closed': !isOpen,
+        'datepicker--right': positionRight
+      }"
     >
       <div class="-hide-on-desktop">
         <div
@@ -315,6 +319,10 @@ export default {
     gridStyle: {
       type: Boolean,
       default: true
+    },
+    positionRight: {
+      type: Boolean,
+      default: false
     },
     value: {
       type: String
@@ -690,37 +698,42 @@ export default {
       return currentPeriod;
     },
     handleHoveringDate(day) {
-      const { date } = day;
-      let currentPeriod = {};
-      const compareDate = this.dateFormater(date);
+      if (this.periodDates.length > 0) {
+        const { date } = day;
+        let currentPeriod = {};
+        const compareDate = this.dateFormater(date);
 
-      this.sortedPeriodDates.forEach(d => {
+        this.sortedPeriodDates.forEach(d => {
+          if (
+            d.startAt === compareDate ||
+            this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
+          ) {
+            currentPeriod = d;
+          }
+        });
+
         if (
-          d.startAt === compareDate ||
-          this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
+          currentPeriod &&
+          currentPeriod.periodType &&
+          currentPeriod.periodType.includes("weekly_by")
         ) {
-          currentPeriod = d;
+          const currentDate = this.checkIn || date;
+          const minNightCount = 7 * currentPeriod.minimumDuration;
+
+          this.currentPeriod = {
+            date,
+            minNight: minNightCount,
+            nextDate: this.addDays(currentDate, minNightCount),
+            type: currentPeriod.periodType,
+            endAt: currentPeriod.endAt,
+            startAt: currentPeriod.startAt
+          };
+        } else if (
+          this.currentPeriod &&
+          this.currentPeriod.type !== "nightly"
+        ) {
+          this.currentPeriod = {};
         }
-      });
-
-      if (
-        currentPeriod &&
-        currentPeriod.periodType &&
-        currentPeriod.periodType.includes("weekly_by")
-      ) {
-        const currentDate = this.checkIn || date;
-        const minNightCount = 7 * currentPeriod.minimumDuration;
-
-        this.currentPeriod = {
-          date,
-          minNight: minNightCount,
-          nextDate: this.addDays(currentDate, minNightCount),
-          type: currentPeriod.periodType,
-          endAt: currentPeriod.endAt,
-          startAt: currentPeriod.startAt
-        };
-      } else if (this.currentPeriod && this.currentPeriod.type !== "nightly") {
-        this.currentPeriod = {};
       }
 
       this.setCustomTooltip(day);
