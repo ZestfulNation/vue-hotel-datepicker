@@ -4,7 +4,7 @@
     <div>
       <div class="box">
         <h3>
-          Display one month only
+          Show calendar on the right
         </h3>
         <DatePicker
           :disabledDates="[
@@ -29,10 +29,10 @@
             '2020-07-18'
           ]"
           :format="dateFormat"
-          :showSingleMonth="true"
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
+          :positionRight="true"
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
@@ -82,7 +82,7 @@
       </div>
       <div class="box">
         <h3>
-          Show calendar on the right
+          Display one month only
         </h3>
         <DatePicker
           :disabledDates="[
@@ -107,10 +107,10 @@
             '2020-07-18'
           ]"
           :format="dateFormat"
+          :showSingleMonth="true"
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
-          :positionRight="true"
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"

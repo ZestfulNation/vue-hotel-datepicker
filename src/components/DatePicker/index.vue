@@ -820,8 +820,10 @@ export default {
         } else {
           this.customTooltip = "";
         }
-      } else {
+      } else if (this.checkIn) {
         this.customTooltip = `${countOfDays} ${this.pluralize(countOfDays)}`;
+      } else {
+        this.customTooltip = "";
       }
     },
     setHalfDayCustomTooltip(date) {
