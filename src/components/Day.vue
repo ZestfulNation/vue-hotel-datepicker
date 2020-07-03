@@ -34,29 +34,58 @@ import Helpers from "./helpers";
 export default {
   name: "Day",
   props: {
-    disableCheckoutOnCheckin: {
-      type: Boolean,
-      default: false
+    activeMonthIndex: {
+      type: Number
     },
-    sortedPeriodDates: {
-      type: Array,
-      default: () => []
+    belongsToThisMonth: {
+      type: Boolean
     },
-    showPrice: {
-      type: Boolean,
-      default: false
-    },
-    isOpen: {
-      type: Boolean,
-      required: true
+    checkIn: {
+      type: Date
     },
     checkIncheckOutHalfDay: {
       type: Object,
       default: () => ({})
     },
-    sortedDisabledDates: {
-      type: Array,
-      default: () => []
+    checkInPeriod: {
+      type: Object,
+      default: () => ({})
+    },
+    checkOut: {
+      type: Date
+    },
+    date: {
+      type: Date
+    },
+    disableCheckoutOnCheckin: {
+      type: Boolean,
+      default: false
+    },
+    hoveringDate: {
+      type: Date
+    },
+    hoveringPeriod: {
+      type: Object,
+      default: () => ({})
+    },
+    hoveringTooltip: {
+      default: true,
+      type: Boolean
+    },
+    i18n: {
+      type: Object,
+      default: () => ({})
+    },
+    isOpen: {
+      type: Boolean,
+      required: true
+    },
+    minNightCount: {
+      type: Number,
+      default: 0
+    },
+    nextDisabledDate: {
+      type: [Date, Number, String]
     },
     nextPeriodDisableDates: {
       type: Array,
@@ -65,62 +94,33 @@ export default {
     options: {
       type: Object
     },
-    checkIn: {
-      type: Date
-    },
-    checkOut: {
-      type: Date
-    },
-    currentPeriod: {
-      type: Object,
-      default: () => ({})
-    },
-    hoveringDate: {
-      type: Date
-    },
-    mounseOverFunction: {
-      type: Function
-    },
-    minNightCount: {
-      type: Number,
-      default: 0
-    },
-    belongsToThisMonth: {
-      type: Boolean
-    },
-    activeMonthIndex: {
-      type: Number
-    },
-    date: {
-      type: Date
-    },
-    nextDisabledDate: {
-      type: [Date, Number, String]
-    },
-    hoveringTooltip: {
-      default: true,
-      type: Boolean
+    screenSize: {
+      type: String,
+      default: ""
     },
     showCustomTooltip: {
       default: false,
       type: Boolean
     },
-    screenSize: {
-      type: String,
-      default: ""
+    showPrice: {
+      type: Boolean,
+      default: false
+    },
+    sortedDisabledDates: {
+      type: Array,
+      default: () => []
+    },
+    sortedPeriodDates: {
+      type: Array,
+      default: () => []
     },
     tooltipMessage: {
       default: null,
       type: String
-    },
-    i18n: {
-      type: Object,
-      default: () => ({})
     }
   },
   data() {
     return {
-      allowedCheckoutDays: [],
       currentDate: new Date(),
       isDisabled: false,
       isHighlighted: false
@@ -150,6 +150,170 @@ export default {
       }
 
       return "";
+    },
+    halfDayClass() {
+      if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
+        const keyDate = this.dateFormater(this.date);
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkIn
+        ) {
+          if (this.checkIn && !this.checkOut) {
+            return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
+          }
+
+          return "datepicker__month-day--halfCheckIn datepicker__month-day--invalid";
+        }
+
+        if (
+          this.checkIncheckOutHalfDay[keyDate] &&
+          this.checkIncheckOutHalfDay[keyDate].checkOut
+        ) {
+          return "datepicker__month-day--halfCheckOut datepicker__month-day--valid";
+        }
+      }
+
+      return false;
+    },
+    dayClass() {
+      if (this.belongsToThisMonth) {
+        // If the calendar has a minimum number of nights && !checkOut
+        const nextValidDate = this.addDays(this.checkIn, this.minNightCount);
+        const isDateAfterMinimumDuration =
+          this.getDayDiff(this.hoveringDate, nextValidDate) <= 0;
+
+        if (
+          !isDateAfterMinimumDuration &&
+          !this.checkOut &&
+          !this.isDisabled &&
+          this.compareDay(this.date, this.checkIn) === 1 &&
+          this.minNightCount > 0 &&
+          this.compareDay(
+            this.date,
+            this.addDays(this.checkIn, this.minNightCount)
+          ) === -1
+        ) {
+          return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed minimumDurationUnvalidDay";
+        }
+
+        // Current Day
+        if (
+          !this.isDisabled &&
+          this.date === this.hoveringDate &&
+          this.checkIn !== null &&
+          this.checkOut == null
+        ) {
+          return "datepicker__month-day--selected datepicker__month-day--hovering currentDay";
+        }
+
+        // Highlight the selected dates and prevent the user from selecting
+        // the same date for checkout and checkin
+        if (
+          this.checkIn !== null &&
+          this.dateFormater(this.checkIn) === this.dateFormater(this.date)
+        ) {
+          if (this.minNightCount === 0) {
+            return "datepicker__month-day--first-day-selected checkIn";
+          }
+
+          // Good
+          return "datepicker__month-day--disabled datepicker__month-day--first-day-selected checkIn";
+        }
+
+        // Checkout day
+        if (this.checkOut !== null) {
+          if (
+            this.dateFormater(this.checkOut) === this.dateFormater(this.date)
+          ) {
+            if (this.halfDayClass) {
+              return `datepicker__month-day--disabled datepicker__month-day--last-day-selected ${this.halfDayClass} checkOut`;
+            }
+
+            return "datepicker__month-day--disabled datepicker__month-day--last-day-selected checkOut";
+          }
+        }
+
+        // Only highlight dates that are not disabled
+        if (this.isHighlighted && !this.isDisabled) {
+          if (
+            this.options.disabledDaysOfWeek.some(
+              i => i === fecha.format(this.date, "dddd")
+            )
+          ) {
+            return "datepicker__month-day--selected datepicker__month-day--disabled afterMinimumDurationValidDay";
+          }
+
+          if (
+            Object.keys(this.checkInPeriod).length > 0 &&
+            this.checkInPeriod.periodType.includes("weekly") &&
+            this.hoveringDate &&
+            ((this.checkInPeriod.periodType === "weekly_by_saturday" &&
+              this.hoveringDate.getDay() === 6) ||
+              (this.checkInPeriod.periodType === "weekly_by_sunday" &&
+                this.hoveringDate.getDay() === 0)) &&
+            this.isDateLessOrEquals(this.date, this.hoveringDate)
+          ) {
+            // If currentPeriod has a minimumDuration 1
+            if (this.checkInPeriod.minimumDuration === 1) {
+              return "datepicker__month-day--selected afterMinimumDurationValidDay";
+            }
+
+            // If currentPeriod has a minimumDuration superior to 1
+            if (
+              this.getDayDiff(
+                this.hoveringDate,
+                this.checkInPeriod.nextValidDate
+              ) <= 0
+            ) {
+              return "datepicker__month-day--selected afterMinimumDurationValidDay";
+            }
+          } else if (
+            Object.keys(this.checkInPeriod).length > 0 &&
+            this.checkInPeriod.periodType === "nightly" &&
+            this.hoveringDate &&
+            this.hoveringPeriod.periodType.includes("weekly") &&
+            ((this.hoveringPeriod.periodType === "weekly_by_saturday" &&
+              this.hoveringDate.getDay() === 6) ||
+              (this.hoveringPeriod.periodType === "weekly_by_sunday" &&
+                this.hoveringDate.getDay() === 0 &&
+                this.isDateLessOrEquals(this.date, this.hoveringDate)))
+          ) {
+            return "datepicker__month-day--selected afterMinimumDurationValidDay";
+          }
+
+          if (
+            this.hoveringPeriod.periodType === "nightly" &&
+            this.isDateLessOrEquals(this.date, this.hoveringDate)
+          ) {
+            return "datepicker__month-day--selected afterMinimumDurationValidDay";
+          }
+
+          if (this.checkIn && this.checkOut) {
+            return "datepicker__month-day--selected";
+          }
+        }
+
+        // Good
+        if (
+          this.isDisabled ||
+          this.options.disabledDaysOfWeek.some(
+            i => i === fecha.format(this.date, "dddd")
+          )
+        ) {
+          return "datepicker__month-day--disabled";
+        }
+      } else if (!this.belongsToThisMonth) {
+        // Good
+        return "datepicker__month-day--hidden";
+      }
+
+      if (this.halfDayClass) {
+        return `${this.halfDayClass}`;
+      }
+
+      // Good
+      return "datepicker__month-day--valid";
     },
     checkinCheckoutClass() {
       let currentPeriod = null;
@@ -185,16 +349,8 @@ export default {
           !this.isDisabled
         ) {
           if (
-            this.checkIn &&
-            !this.checkOut &&
-            this.notAllowedDayDueToNextPeriod(currentPeriod)
-          ) {
-            return "datepicker__month-day--not-allowed nightly datepicker__month-day--cliquable";
-          }
-
-          if (
-            !this.checkIn &&
-            !this.checkOut &&
+            ((!this.checkIn && !this.checkOut) ||
+              (this.checkIn && this.checkOut)) &&
             this.notAllowedDayDueToNextPeriod(currentPeriod)
           ) {
             return "datepicker__month-day--disabled datepicker__month-day--not-allowed nightly";
@@ -213,6 +369,11 @@ export default {
           return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
         }
 
+        // Disable date between checkIn and nextDate, if minimumDuration is superior to 1
+        if (this.notAllowDaysBetweenCheckInAndNextValidDate(6)) {
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
+        }
+
         // date.getDay() === 0 => sunday
         if (
           currentPeriod.periodType === "weekly_by_sunday" &&
@@ -220,6 +381,11 @@ export default {
           currentPeriod.endAt !== this.formatDate &&
           this.date.getDay() !== 0
         ) {
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_sunday";
+        }
+
+        // Disable date between checkIn and nextDate, if minimumDuration is superior to 1
+        if (this.notAllowDaysBetweenCheckInAndNextValidDate(0)) {
           return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_sunday";
         }
 
@@ -248,13 +414,13 @@ export default {
     },
     tooltipMessageDisplay() {
       const dateIsInPeriod = this.validateDateBetweenTwoDates(
-        this.currentPeriod.startAt,
-        this.currentPeriod.endAt,
+        this.hoveringPeriod.startAt,
+        this.hoveringPeriod.endAt,
         this.date
       );
       const checkInIsInPeriod = this.validateDateBetweenTwoDates(
-        this.currentPeriod.startAt,
-        this.currentPeriod.endAt,
+        this.hoveringPeriod.startAt,
+        this.hoveringPeriod.endAt,
         this.checkIn
       );
 
@@ -263,10 +429,11 @@ export default {
       }
 
       if (
-        this.currentPeriod &&
-        this.currentPeriod.type !== "nightly" &&
+        this.hoveringPeriod &&
+        this.hoveringPeriod.type !== "nightly" &&
         dateIsInPeriod &&
-        checkInIsInPeriod
+        checkInIsInPeriod &&
+        this.nightsCount >= 7
       ) {
         return `${this.nightsCount / 7} ${this.pluralize(
           this.nightsCount,
@@ -274,18 +441,23 @@ export default {
         )}`;
       }
 
-      return `${this.nightsCount} ${
-        this.nightsCount !== 1 ? this.i18n.nights : this.i18n.night
-      }`;
+      if (this.nightsCount >= 1) {
+        return `${this.nightsCount} ${
+          this.nightsCount !== 1 ? this.i18n.nights : this.i18n.night
+        }`;
+      }
+
+      return "";
     },
     showTooltip() {
-      if (this.screenSize === "desktop") {
+      if (this.screenSize === "desktop" || this.screenSize === "tablet") {
         const showCustomTooltip =
           this.showCustomTooltip && this.date === this.hoveringDate;
         const showDefaultTooltip =
           !this.isDisabled &&
           this.belongsToThisMonth &&
           this.date === this.hoveringDate &&
+          this.tooltipMessageDisplay.length > 0 &&
           this.checkIn !== null &&
           this.checkOut === null;
 
@@ -296,219 +468,6 @@ export default {
     },
     isToday() {
       return this.compareDay(this.currentDate, this.date) === 0;
-    },
-    halfDayClass() {
-      if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
-        const keyDate = this.dateFormater(this.date);
-
-        if (
-          this.checkIncheckOutHalfDay[keyDate] &&
-          this.checkIncheckOutHalfDay[keyDate].checkIn
-        ) {
-          if (this.checkIn && !this.checkOut) {
-            return "datepicker__month-day--halfCheckIn datepicker__month-day--valid";
-          }
-
-          return "datepicker__month-day--halfCheckIn datepicker__month-day--invalid";
-        }
-
-        if (
-          this.checkIncheckOutHalfDay[keyDate] &&
-          this.checkIncheckOutHalfDay[keyDate].checkOut
-        ) {
-          return "datepicker__month-day--halfCheckOut datepicker__month-day--valid";
-        }
-      }
-
-      return false;
-    },
-    dayClass() {
-      if (this.belongsToThisMonth) {
-        // Only hightlight dates that are on periods
-        if (
-          !this.checkOut &&
-          !this.isDisabled &&
-          this.checkIn &&
-          this.currentPeriod &&
-          this.isDateLessOrEquals(this.date, this.hoveringDate)
-        ) {
-          const countOfDays = this.countDays(this.checkIn, this.hoveringDate);
-          const minNightInPeriod = this.currentPeriod.minNight;
-          const modulo = countOfDays % minNightInPeriod;
-          const isAWeekPeriod =
-            this.currentPeriod.type && this.currentPeriod.type !== "nightly";
-          const isInACurrentPeriod =
-            this.getDayDiff(this.hoveringDate, this.currentPeriod.endAt) > 0;
-          const isDateAfterNextDate =
-            this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) < 0;
-          const isDateBeforeNextDate =
-            this.getDayDiff(this.hoveringDate, this.currentPeriod.nextDate) > 0;
-          let periodClass = "";
-
-          if (isAWeekPeriod) {
-            if (isInACurrentPeriod) {
-              if (modulo === 0 && this.checkIn !== this.hoveringDate) {
-                periodClass = "datepicker__month-day--selected";
-              } else if (isDateAfterNextDate) {
-                if (this.currentPeriod.type === "weekly_by_saturday") {
-                  if (this.hoveringDate.getDay() !== 6) {
-                    periodClass =
-                      "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-                  } else {
-                    periodClass = "datepicker__month-day--selected";
-                  }
-                } else if (this.currentPeriod.type === "weekly_by_sunday") {
-                  if (this.hoveringDate.getDay() !== 0) {
-                    periodClass =
-                      "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-                  } else {
-                    periodClass = "datepicker__month-day--selected";
-                  }
-                }
-              } else if (minNightInPeriod > 1) {
-                periodClass =
-                  "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-              }
-            } else {
-              periodClass = "datepicker__month-day--selected";
-            }
-          } else if (isDateBeforeNextDate) {
-            if (minNightInPeriod > 1) {
-              periodClass =
-                "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-            } else {
-              periodClass =
-                "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-            }
-          } else {
-            periodClass = "datepicker__month-day--selected";
-          }
-
-          return periodClass;
-        }
-
-        // If the calendar has a minimum number of nights && !checkOut
-        if (
-          !this.checkOut &&
-          !this.isDisabled &&
-          this.compareDay(this.date, this.checkIn) === 1 &&
-          this.minNightCount > 0 &&
-          this.compareDay(
-            this.date,
-            this.addDays(this.checkIn, this.minNightCount)
-          ) === -1
-        ) {
-          return "datepicker__month-day--valid datepicker__month-day--disabled datepicker__month-day--not-allowed";
-        }
-
-        if (
-          !this.isDisabled &&
-          this.date === this.hoveringDate &&
-          this.checkIn !== null &&
-          this.checkOut == null
-        ) {
-          return "datepicker__month-day--selected datepicker__month-day--hovering";
-        }
-
-        // If the calendar has allowed ranges
-        if (this.options.allowedRanges.length !== 0) {
-          if (
-            !this.isDisabled &&
-            this.checkIn !== null &&
-            this.checkOut == null
-          ) {
-            // If the day is one of the allowed check out days and is not highlighted
-            if (
-              this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) === 0 && !this.isHighlighted
-              )
-            ) {
-              return "datepicker__month-day--allowed-checkout";
-            }
-
-            // If the day is one of the allowed check out days and is highlighted
-            if (
-              this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) === 0 && this.isHighlighted
-              )
-            ) {
-              return "datepicker__month-day--selected datepicker__month-day--allowed-checkout";
-            }
-
-            // If the day is not one of the allowed Checkout Days and is highlighted
-            if (
-              !this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) === 0
-              ) &&
-              this.isHighlighted
-            ) {
-              return "datepicker__month-day--out-of-range datepicker__month-day--selected";
-            }
-
-            return "datepicker__month-day--out-of-range";
-          }
-        }
-
-        // Highlight the selected dates and prevent the user from selecting
-        // the same date for checkout and checkin
-        if (
-          this.checkIn !== null &&
-          this.dateFormater(this.checkIn) === this.dateFormater(this.date)
-        ) {
-          if (this.minNightCount === 0) {
-            return "datepicker__month-day--first-day-selected";
-          }
-
-          return "datepicker__month-day--disabled datepicker__month-day--first-day-selected";
-        }
-
-        if (this.checkOut !== null) {
-          if (
-            this.dateFormater(this.checkOut) === this.dateFormater(this.date)
-          ) {
-            if (this.halfDayClass) {
-              return `datepicker__month-day--disabled datepicker__month-day--last-day-selected ${this.halfDayClass}`;
-            }
-
-            return "datepicker__month-day--disabled datepicker__month-day--last-day-selected";
-          }
-        }
-
-        // Only highlight dates that are not disabled
-        if (this.isHighlighted && !this.isDisabled) {
-          if (
-            this.options.disabledDaysOfWeek.some(
-              i => i === fecha.format(this.date, "dddd")
-            )
-          ) {
-            return "datepicker__month-day--selected datepicker__month-day--disabled";
-          }
-
-          if (
-            this.isDateLessOrEquals(this.date, this.hoveringDate) ||
-            (this.checkIn && this.checkOut)
-          ) {
-            return " datepicker__month-day--selected";
-          }
-        }
-
-        if (
-          this.isDisabled ||
-          this.options.disabledDaysOfWeek.some(
-            i => i === fecha.format(this.date, "dddd")
-          )
-        ) {
-          return "datepicker__month-day--disabled";
-        }
-      } else if (!this.belongsToThisMonth) {
-        return "datepicker__month-day--hidden";
-      }
-
-      if (this.halfDayClass) {
-        return `${this.halfDayClass}`;
-      }
-
-      return "datepicker__month-day--valid";
     }
   },
   watch: {
@@ -541,15 +500,12 @@ export default {
         } else {
           this.isHighlighted = false;
         }
-      } else if (this.checkIn !== null && this.checkOut == null) {
+      } else if (this.checkIn !== null && this.checkOut === null) {
         this.disableNextDays();
       }
     },
     nextDisabledDate() {
       this.disableNextDays();
-    },
-    checkIn(date) {
-      this.createAllowedCheckoutDays(date);
     }
   },
   beforeMount() {
@@ -558,6 +514,21 @@ export default {
   },
   methods: {
     ...Helpers,
+    notAllowDaysBetweenCheckInAndNextValidDate(dayCode) {
+      return (
+        this.checkIn &&
+        !this.checkOut &&
+        this.date.getDay() === dayCode &&
+        Object.keys(this.hoveringPeriod).length > 0 &&
+        this.validateDateBetweenTwoDates(
+          this.checkIn,
+          this.hoveringPeriod.nextValidDate,
+          this.date
+        ) &&
+        this.dateFormater(this.checkIn) !== this.formatDate &&
+        this.dateFormater(this.hoveringPeriod.nextValidDate) !== this.formatDate
+      );
+    },
     notAllowedDayDueToNextPeriod(currentPeriod) {
       // Check if the next period is directly after the current period
       const date = new Date(currentPeriod.endAt);
@@ -600,33 +571,12 @@ export default {
 
       return false;
     },
-    isDateLessOrEquals(time1, time2) {
-      return new Date(time1) <= new Date(time2);
-    },
     isClickable() {
       if (this.$refs && this.$refs.day) {
         return getComputedStyle(this.$refs.day).pointerEvents !== "none";
       }
 
       return true;
-    },
-    compareDay(day1, day2) {
-      const date1 = fecha.format(new Date(day1), "YYYYMMDD");
-      const date2 = fecha.format(new Date(day2), "YYYYMMDD");
-
-      if (date1 > date2) {
-        return 1;
-      }
-
-      if (date1 === date2) {
-        return 0;
-      }
-
-      if (date1 < date2) {
-        return -1;
-      }
-
-      return null;
     },
     dayClicked(date) {
       let resetCheckin = false;
@@ -650,18 +600,7 @@ export default {
         if (!this.isDisabled || this.isClickable()) {
           const formatDate = this.dateFormater(date);
 
-          if (this.options.allowedRanges.length !== 0) {
-            this.createAllowedCheckoutDays(date);
-          }
-
-          this.$emit(
-            "dayClicked",
-            date,
-            formatDate,
-            this.allowedCheckoutDays,
-            resetCheckin,
-            this.belongsToThisMonth
-          );
+          this.$emit("dayClicked", date, formatDate, resetCheckin);
         } else {
           this.$emit("clearSelection");
           this.dayClicked(date);
@@ -717,13 +656,6 @@ export default {
           this.isHighlighted = false;
         }
       }
-    },
-    createAllowedCheckoutDays(date) {
-      this.allowedCheckoutDays = [];
-      this.options.allowedRanges.forEach(i =>
-        this.allowedCheckoutDays.push(this.addDays(date, i))
-      );
-      this.allowedCheckoutDays.sort((a, b) => a - b);
     },
     disableNextDays() {
       if (

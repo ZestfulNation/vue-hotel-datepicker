@@ -8,25 +8,19 @@
         </h3>
         <DatePicker
           :disabledDates="[
-            '2020-06-15',
-            '2020-06-16',
-            '2020-06-17',
-            '2020-06-18',
-            '2020-06-19',
-            '2020-06-20',
-            '2020-06-21',
-            '2020-07-01',
-            '2020-07-02',
-            '2020-07-03',
-            '2020-07-04',
-            '2020-07-11',
-            '2020-07-12',
-            '2020-07-13',
-            '2020-07-14',
             '2020-07-15',
             '2020-07-16',
             '2020-07-17',
-            '2020-07-18'
+            '2020-07-18',
+            '2020-07-19',
+            '2020-08-15',
+            '2020-08-16',
+            '2020-08-17',
+            '2020-08-18',
+            '2020-08-19',
+            '2020-08-20',
+            '2020-08-21',
+            '2020-08-22'
           ]"
           :format="dateFormat"
           :lastDateAvailable="lastDateAvailable"
@@ -216,25 +210,6 @@
       </div>
 
       <div class="box">
-        <h3>
-          Check in and check-out only on saturday and maximum stay of 30 nights
-        </h3>
-        <DatePicker
-          :disabledDaysOfWeek="[
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Sunday'
-          ]"
-          :enableCheckout="true"
-          :allowedRanges="[7, 14, 21, 28]"
-          :maxNights="30"
-        />
-      </div>
-
-      <div class="box">
         <h3>Block all dates after December 31st of the current year</h3>
         <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" />
       </div>
@@ -301,23 +276,6 @@
             'Sunday'
           ]"
           :enableCheckout="true"
-          :minNights="7"
-        />
-      </div>
-
-      <div class="box">
-        <h3>Ranges of 7, 10 or 14 days and checkin only on saturdays</h3>
-        <DatePicker
-          :disabledDaysOfWeek="[
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Sunday'
-          ]"
-          :enableCheckout="true"
-          :allowedRanges="[7, 10, 14]"
           :minNights="7"
         />
       </div>
@@ -506,8 +464,7 @@ export default {
           halfDayCheckOut: "Reservas possíveis",
           saturdayToSaturday: "Sábado a Sábado<br/> apenas",
           sundayToSunday: "Domingo a domingo<br/> apenas",
-          minimumRequiredPeriod:
-            "É necessário um mínimo de <br/> %{minNightInPeriod} %{night}."
+          minimumRequiredPeriod: "%{minNightInPeriod} %{night} mínimo."
         },
         week: "semana",
         weeks: "semanas"
@@ -537,29 +494,34 @@ export default {
           halfDayCheckOut: "Réservation possible",
           saturdayToSaturday: "Du samedi au samedi<br/> uniquement",
           sundayToSunday: "Du dimanche au dimanche<br/> uniquement",
-          minimumRequiredPeriod:
-            "Un minimum de <br/> %{minNightInPeriod} %{night} est requis"
+          minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum"
         },
         week: "semaine",
         weeks: "semaines"
       },
       periodDates: [
         {
-          startAt: "2020-06-09",
-          endAt: "2020-07-26",
+          startAt: "2020-07-01",
+          endAt: "2020-08-01",
           minimumDuration: 4,
           periodType: "nightly"
         },
         {
-          startAt: "2020-07-26",
-          endAt: "2020-09-30",
-          minimumDuration: 1,
+          startAt: "2020-08-01",
+          endAt: "2020-09-05",
+          minimumDuration: 2,
           periodType: "weekly_by_saturday"
         },
         {
-          startAt: "2020-09-30",
-          endAt: "2020-11-30",
-          minimumDuration: 2,
+          startAt: "2020-09-05",
+          endAt: "2020-10-04",
+          minimumDuration: 4,
+          periodType: "nightly"
+        },
+        {
+          startAt: "2020-10-04",
+          endAt: "2020-11-29",
+          minimumDuration: 1,
           periodType: "weekly_by_sunday",
           price: 4000.0
         }

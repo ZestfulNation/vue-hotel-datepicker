@@ -105,12 +105,12 @@
         <div
           class="datepicker__months"
           :class="{ 'datepicker__months--full': showSingleMonth }"
-          v-if="screenSize == 'desktop'"
+          v-if="screenSize === 'desktop'"
         >
           <div
             ref="datepickerMonth"
             class="datepicker__month"
-            v-for="month in paginateDesktop"
+            v-for="(month, monthIndex) in paginateDesktop"
             :key="`${datepickerMonthKey}-${month}`"
           >
             <p class="datepicker__month-name">
@@ -131,8 +131,8 @@
               class="square"
               v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month]
                 .days"
-              :key="`${datepickerDayKey}-${dayIndexDesktop}`"
-              @mouseenter="handleHoveringDate(day)"
+              @mouseenter="mouseEnterDay(day)"
+              :key="`${datepickerDayKey}-${monthIndex}-${dayIndexDesktop}`"
             >
               <Day
                 :activeMonthIndex="activeMonthIndex"
@@ -140,7 +140,8 @@
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkOut="checkOut"
-                :currentPeriod="currentPeriod"
+                :hoveringPeriod="hoveringPeriod"
+                :checkInPeriod="checkInPeriod"
                 :date="day.date"
                 :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                 :hoveringDate="hoveringDate"
@@ -156,7 +157,6 @@
                 :sortedDisabledDates="sortedDisabledDates"
                 :sortedPeriodDates="sortedPeriodDates"
                 :tooltipMessage="customTooltipMessage"
-                @setMinNightCount="setMinNightCount"
                 @clearSelection="clearSelection"
                 @dayClicked="handleDayClick"
               />
@@ -211,8 +211,8 @@
               <div
                 class="square"
                 v-for="(day, dayIndexMobile) in months[n].days"
-                :key="`${datepickerDayKey}-${dayIndexMobile}`"
-                @click="handleHoveringDate(day)"
+                :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
+                @mouseenter="mouseEnterDay(day)"
               >
                 <Day
                   :activeMonthIndex="activeMonthIndex"
@@ -220,7 +220,8 @@
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkOut="checkOut"
-                  :currentPeriod="currentPeriod"
+                  :hoveringPeriod="hoveringPeriod"
+                  :checkInPeriod="checkInPeriod"
                   :date="day.date"
                   :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
                   :hoveringDate="hoveringDate"
@@ -231,12 +232,10 @@
                   :nextPeriodDisableDates="nextPeriodDisableDates"
                   :options="$props"
                   :screenSize="screenSize"
-                  :showCustomTooltip="showCustomTooltip"
                   :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :sortedPeriodDates="sortedPeriodDates"
                   :tooltipMessage="customTooltipMessage"
-                  @setMinNightCount="setMinNightCount"
                   @clearSelection="clearSelection"
                   @dayClicked="handleDayClick"
                 />
@@ -284,8 +283,7 @@ const defaulti18n = {
     halfDayCheckOut: "Available CheckOut",
     saturdayToSaturday: "Only Saturday to Saturday",
     sundayToSunday: "Only Sunday to Sunday",
-    minimumRequiredPeriod:
-      "A minimum of <br/> %{minNightInPeriod} %{night} is required."
+    minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum."
   },
   week: "week",
   weeks: "weeks"
@@ -377,12 +375,6 @@ export default {
         return [];
       }
     },
-    allowedRanges: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
@@ -422,24 +414,25 @@ export default {
   },
   data() {
     return {
-      hash: Date.now(),
-      datepickerDayKey: 0,
-      datepickerMonthKey: 0,
-      nextPeriodDisableDates: [],
-      datepickerWeekKey: 0,
       activeMonthIndex: 0,
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
+      checkInPeriod: {},
       checkOut: this.endingDateValue,
-      currentPeriod: {},
+      hoveringPeriod: {},
       customTooltip: "",
       customTooltipHalfday: "",
+      datepickerDayKey: 0,
+      datepickerMonthKey: 0,
+      datepickerWeekKey: 0,
       dynamicNightCounts: null,
+      hash: Date.now(),
       hoveringDate: null,
       isOpen: false,
       isTouchMove: false,
       months: [],
       nextDisabledDate: null,
+      nextPeriodDisableDates: [],
       screenSize: null,
       show: true,
       showCustomTooltip: false,
@@ -462,23 +455,7 @@ export default {
       let tooltip = "";
 
       if (
-        this.screenSize === "desktop" &&
         this.hoveringDate &&
-        (this.customTooltip || this.customTooltipHalfday)
-      ) {
-        if (this.customTooltip && this.customTooltipHalfday) {
-          tooltip = `${this.customTooltipHalfday}. <br/> ${this.customTooltip}`;
-        } else if (this.customTooltipHalfday && !this.customTooltip) {
-          tooltip = this.customTooltipHalfday;
-        } else {
-          tooltip = this.customTooltip;
-        }
-
-        return tooltip;
-      }
-
-      if (
-        this.screenSize !== "desktop" &&
         (this.customTooltip || this.customTooltipHalfday)
       ) {
         if (this.customTooltip && this.customTooltipHalfday) {
@@ -578,7 +555,6 @@ export default {
         this.parseDisabledDates();
         this.reRender();
         this.showCustomTooltip = false;
-        this.currentPeriod = {};
         this.isOpen = false;
       }
 
@@ -697,136 +673,321 @@ export default {
 
       return currentPeriod;
     },
-    handleHoveringDate(day) {
-      if (this.periodDates.length > 0) {
-        const { date } = day;
-        let currentPeriod = {};
-        const compareDate = this.dateFormater(date);
+    dayIsDisabled(date) {
+      if (
+        this.checkIn &&
+        !this.checkOut &&
+        !this.isDateLessOrEquals(date, this.nextDisabledDate) &&
+        this.nextDisabledDate !== Infinity
+      ) {
+        return true;
+      }
 
+      if (
+        this.checkIn &&
+        !this.checkOut &&
+        this.isDateLessOrEquals(date, this.checkIn)
+      ) {
+        return true;
+      }
+
+      return false;
+    },
+    mouseEnterDay(day) {
+      const formatDate = this.dateFormater(day.date);
+      const halfDays = Object.keys(this.checkIncheckOutHalfDay);
+      const disableDays = this.disabledDates
+        .filter(disableDate => !halfDays.includes(disableDate))
+        .includes(formatDate);
+
+      if (
+        !this.dayIsDisabled(day.date) &&
+        day.belongsToThisMonth &&
+        !disableDays
+      ) {
+        this.setCustomTooltipOnHover(day);
+      }
+    },
+    setCurrentPeriod(date, eventType) {
+      let currentPeriod = {};
+
+      if (this.sortedPeriodDates.length > 0) {
         this.sortedPeriodDates.forEach(d => {
           if (
-            d.startAt === compareDate ||
-            this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)
+            eventType === "click" &&
+            (d.startAt === this.dateFormater(date) ||
+              (d.endAt !== this.dateFormater(date) &&
+                this.validateDateBetweenTwoDates(d.startAt, d.endAt, date)))
+          ) {
+            currentPeriod = d;
+          } else if (
+            eventType === "hover" &&
+            (d.startAt === this.dateFormater(date) ||
+              this.validateDateBetweenTwoDates(d.startAt, d.endAt, date))
           ) {
             currentPeriod = d;
           }
         });
 
-        if (
-          currentPeriod &&
-          currentPeriod.periodType &&
-          currentPeriod.periodType.includes("weekly_by")
-        ) {
-          const currentDate = this.checkIn || date;
-          const minNightCount = 7 * currentPeriod.minimumDuration;
-
-          this.currentPeriod = {
-            date,
-            minNight: minNightCount,
-            nextDate: this.addDays(currentDate, minNightCount),
-            type: currentPeriod.periodType,
-            endAt: currentPeriod.endAt,
-            startAt: currentPeriod.startAt
+        if (Object.keys(currentPeriod).length > 0) {
+          this.hoveringPeriod = currentPeriod;
+        } else if (this.minNightCount > 0 && this.checkIn) {
+          this.hoveringPeriod = {
+            periodType: "nightly",
+            minimumDuration: this.minNightCount,
+            startAt: this.checkIn,
+            endAt: this.addDays(this.checkIn, this.minNightCount)
           };
-        } else if (
-          this.currentPeriod &&
-          this.currentPeriod.type !== "nightly"
-        ) {
-          this.currentPeriod = {};
-        }
-      }
-
-      this.setCustomTooltip(day);
-    },
-    setCustomTooltip(day) {
-      if (day.belongsToThisMonth) {
-        if (this.screenSize === "desktop") {
-          this.hoveringDate = day.date;
-          if (this.showCustomTooltip) this.showCustomTooltip = false;
-        }
-
-        if (Object.keys(this.currentPeriod).length > 0) {
-          this.setPeriodCustomTooltip(day.date, true);
         } else {
+          this.hoveringPeriod = {
+            periodType: "nightly",
+            minimumDuration: this.minNightCount,
+            startAt: this.checkIn,
+            endAt: this.addDays(this.checkIn, this.minNightCount)
+          };
+        }
+      } else if (this.minNightCount > 0) {
+        this.hoveringPeriod = {
+          periodType: "nightly",
+          minimumDuration: this.minNightCount,
+          startAt: this.checkIn,
+          endAt: this.addDays(this.checkIn, this.minNightCount)
+        };
+      }
+    },
+    setCustomTooltipOnHover(day) {
+      const { date } = day;
+
+      this.hoveringDate = date;
+      if (this.showCustomTooltip) this.showCustomTooltip = false;
+
+      this.setCurrentPeriod(date, "hover");
+
+      if (Object.keys(this.hoveringPeriod).length > 0) {
+        // Create tooltip
+        if (this.hoveringPeriod.periodType === "weekly_by_saturday") {
+          const dayCode = 6;
+          const text = this.i18n.tooltip.saturdayToSaturday;
+
+          this.showTooltipWeeklyOnHover(date, dayCode, text);
+        } else if (this.hoveringPeriod.periodType === "weekly_by_sunday") {
+          const dayCode = 0;
+          const text = this.i18n.tooltip.sundayToSunday;
+
+          this.showTooltipWeeklyOnHover(date, dayCode, text);
+        } else if (this.hoveringPeriod.periodType === "nightly") {
+          this.showTooltipNightlyOnHover(date);
+        } else {
+          // Clean tooltip
+          this.showCustomTooltip = false;
           this.customTooltip = "";
         }
+      } else {
+        this.hoveringPeriod = {};
+      }
 
-        if (this.halfDay) {
-          this.setHalfDayCustomTooltip(day.date);
-        }
+      if (this.halfDay) {
+        this.createHalfDayTooltip(day.date);
       }
     },
-    setPeriodCustomTooltip(date, isHover = false) {
-      let countDays;
-      const countOfDays = this.countDays(this.checkIn, date);
-      const minNightInPeriod = this.currentPeriod.minNight;
-      const isAWeekPeriod =
-        this.currentPeriod.type && this.currentPeriod.type !== "nightly";
-      const isInACurrentPeriod =
-        this.getDayDiff(date, this.currentPeriod.endAt) >= 0;
-      const isDateAfterNextDate =
-        this.getDayDiff(date, this.currentPeriod.nextDate) < 0;
-      const isDateBeforeNextDate =
-        this.getDayDiff(date, this.currentPeriod.nextDate) > 0;
+    handleDayClick(date, formatDate, resetCheckin) {
+      this.nextPeriodDisableDates = [];
 
-      if (isAWeekPeriod) {
-        if (isInACurrentPeriod) {
+      if (resetCheckin) {
+        this.clearSelection();
+        this.$nextTick(() => {
+          this.handleDayClick(date, formatDate, false);
+        });
+
+        return;
+      }
+
+      let nextDisabledDate =
+        (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
+        this.getNextDate(this.sortedDisabledDates, date) ||
+        this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
+        Infinity;
+
+      this.dynamicNightCounts = null;
+
+      if (this.enableCheckout) {
+        nextDisabledDate = Infinity;
+      }
+
+      if (this.checkIn == null && this.singleDaySelection === false) {
+        this.checkIn = date;
+        this.setMinimumDuration(date);
+      } else if (this.singleDaySelection === true) {
+        this.checkIn = date;
+        this.checkOut = date;
+      } else if (this.checkIn !== null && this.checkOut == null) {
+        this.checkOut = date;
+      } else {
+        this.checkOut = null;
+        this.checkIn = date;
+        this.setMinimumDuration(date);
+      }
+
+      if (this.checkIn && !this.checkOut) {
+        this.setCurrentPeriod(date, "click");
+        this.checkInPeriod = this.hoveringPeriod;
+        this.setCustomTooltipOnClick();
+      }
+
+      this.nextDisabledDate = nextDisabledDate;
+      this.$emit("day-clicked", date, formatDate, nextDisabledDate);
+    },
+    setCustomTooltipOnClick() {
+      if (
+        Object.keys(this.checkInPeriod).length > 0 &&
+        this.checkInPeriod.periodType.includes("weekly")
+      ) {
+        const nextValidDate = this.addDays(this.checkIn, this.minNightCount);
+
+        this.checkInPeriod.nextValidDate = nextValidDate;
+        this.showTooltipWeeklyOnClick();
+      } else if (this.checkInPeriod.periodType === "nightly") {
+        this.showTooltipNightlyOnClick();
+      }
+    },
+    showTooltipWeeklyOnHover(date, periodDayType, text) {
+      const countDaysBetweenCheckInCurrentDay = this.countDays(
+        this.checkIn,
+        date
+      );
+      const notOnPeriodDayType = date.getDay() !== periodDayType;
+      const isCheckInCheckOut = this.checkIn && this.checkOut;
+      const notCheckInNotPeriodDayType = !this.checkIn && notOnPeriodDayType;
+      const isCheckInNotCheckOut = this.checkIn && !this.checkOut;
+      const isNotBetweenCheckInAndCheckOut = !this.validateDateBetweenTwoDates(
+        this.checkIn,
+        this.checkOut,
+        date
+      );
+      const notAllowDaysBetweenCheckInAndNextValidDate =
+        this.hoveringPeriod.nextValidDate &&
+        this.validateDateBetweenTwoDates(
+          this.checkIn,
+          this.hoveringPeriod.nextValidDate,
+          this.hoveringDate
+        ) &&
+        this.dateFormater(this.checkIn) !==
+          this.dateFormater(this.hoveringDate) &&
+        this.dateFormater(this.hoveringPeriod.nextValidDate) !==
+          this.dateFormater(this.hoveringDate);
+      const hasHalfDayOnWeeklyPeriod =
+        Object.keys(this.checkIncheckOutHalfDay).length > 0 &&
+        this.checkIncheckOutHalfDay[this.dateFormater(date)] &&
+        this.checkIncheckOutHalfDay[this.dateFormater(date)].checkIn;
+
+      // Show tooltip on not-allowed day
+      if (notCheckInNotPeriodDayType) {
+        this.showCustomTooltip = true;
+        this.customTooltip = text;
+      } else {
+        this.showCustomTooltip = false;
+        this.customTooltip = "";
+      }
+
+      // Show tooltip when CheckIn
+      if (isCheckInNotCheckOut) {
+        const nextDayValid = this.addDays(this.checkIn, this.minNightCount);
+        const isDateAfterMinimumDuration =
+          this.getDayDiff(date, nextDayValid) <= 0;
+
+        if (isDateAfterMinimumDuration && notOnPeriodDayType) {
+          this.showCustomTooltip = true;
+          this.customTooltip = text;
+        } else if (
+          notOnPeriodDayType ||
+          notAllowDaysBetweenCheckInAndNextValidDate
+        ) {
           if (
-            this.checkIn &&
-            countOfDays === minNightInPeriod &&
-            this.checkIn !== date
+            this.checkInPeriod &&
+            this.checkInPeriod.periodType === "nightly"
           ) {
-            this.customTooltip = `${countOfDays / 7} ${this.pluralize(
-              countOfDays,
-              "week"
-            )}`;
-          } else if (isDateAfterNextDate || (!this.checkIn && isHover)) {
-            this.showCustomTooltip = true;
-
-            if (this.currentPeriod.type === "weekly_by_saturday") {
-              if (date.getDay() !== 6) {
-                this.customTooltip = this.i18n.tooltip.saturdayToSaturday;
-              } else if (isHover) {
-                this.customTooltip = "";
-                this.showCustomTooltip = false;
-              }
-            } else if (this.currentPeriod.type === "weekly_by_sunday") {
-              if (date.getDay() !== 0) {
-                this.customTooltip = this.i18n.tooltip.sundayToSunday;
-              } else if (isHover) {
-                this.customTooltip = "";
-                this.showCustomTooltip = false;
-              }
-            }
+            this.showCustomTooltip = false;
+            this.customTooltip = "";
           } else {
-            const night = this.pluralize(minNightInPeriod, "week");
+            // Show default message on currentDay
+            const night = this.pluralize(this.minNightCount, "week");
 
-            if (minNightInPeriod > 1) {
-              this.customTooltip = this.completeTrad(
-                this.i18n.tooltip.minimumRequiredPeriod,
-                { minNightInPeriod: minNightInPeriod / 7, night }
-              );
-            }
+            this.showCustomTooltip = true;
+            this.customTooltip = this.completeTrad(
+              this.i18n.tooltip.minimumRequiredPeriod,
+              { minNightInPeriod: this.minNightCount / 7, night }
+            );
           }
+        } else if (hasHalfDayOnWeeklyPeriod) {
+          // Show the correct wording in comparison to periodType of this.checkInPeriod equal to "nightly" / "weekly"
+          if (this.checkInPeriod.periodType !== "nightly") {
+            this.customTooltip = `${countDaysBetweenCheckInCurrentDay /
+              7} ${this.pluralize(this.minNightCount, "week")}`;
+          } else if (this.checkInPeriod.periodType === "nightly") {
+            this.customTooltip = `${countDaysBetweenCheckInCurrentDay} ${
+              countDaysBetweenCheckInCurrentDay !== 1
+                ? this.i18n.nights
+                : this.i18n.night
+            }`;
+          }
+        } else {
+          // Clean tooltip
+          this.showCustomTooltip = false;
+          this.customTooltip = "";
         }
-      } else if (isDateBeforeNextDate) {
-        const night = this.pluralize(countDays);
+        // Show tooltip when CheckIn & CheckOut on all the days that are not between checkIn and CheckOut
+      } else if (
+        isCheckInCheckOut &&
+        notOnPeriodDayType &&
+        isNotBetweenCheckInAndCheckOut
+      ) {
+        this.showCustomTooltip = true;
+        this.customTooltip = text;
+      }
+    },
+    showTooltipWeeklyOnClick() {
+      const night = this.pluralize(this.minNightCount, "week");
 
-        if (minNightInPeriod > 1) {
+      this.showCustomTooltip = true;
+      this.customTooltip = this.completeTrad(
+        this.i18n.tooltip.minimumRequiredPeriod,
+        { minNightInPeriod: this.minNightCount / 7, night }
+      );
+    },
+    showTooltipNightlyOnHover(date) {
+      if (this.checkIn && !this.checkOut) {
+        const nextDayValid = this.addDays(this.checkIn, this.minNightCount);
+        const isDateAfterMinimumDuration =
+          this.getDayDiff(date, nextDayValid) <= 0;
+        const countOfDays = this.countDays(this.checkIn, date);
+        const night = this.pluralize(Math.max(this.minNightCount, countOfDays));
+
+        if (!isDateAfterMinimumDuration) {
+          const minNightInPeriod = this.hoveringPeriod.minimumDuration;
+
+          this.showCustomTooltip = true;
           this.customTooltip = this.completeTrad(
             this.i18n.tooltip.minimumRequiredPeriod,
             { minNightInPeriod, night }
           );
         } else {
-          this.customTooltip = "";
+          this.customTooltip = `${countOfDays} ${night}`;
         }
-      } else if (this.checkIn) {
-        this.customTooltip = `${countOfDays} ${this.pluralize(countOfDays)}`;
       } else {
         this.customTooltip = "";
       }
     },
-    setHalfDayCustomTooltip(date) {
+    showTooltipNightlyOnClick() {
+      const minNightInPeriod = this.hoveringPeriod.minimumDuration;
+      const night = this.pluralize(this.minNightCount);
+
+      this.showCustomTooltip = true;
+      this.customTooltip = this.completeTrad(
+        this.i18n.tooltip.minimumRequiredPeriod,
+        { minNightInPeriod, night }
+      );
+    },
+    createHalfDayTooltip(date) {
       this.customTooltipHalfday = "";
       const formatedHoveringDate = this.dateFormater(date);
 
@@ -862,9 +1023,6 @@ export default {
           this.hideDatepicker();
         }
       }
-    },
-    setMinNightCount(minNights) {
-      this.dynamicNightCounts = minNights;
     },
     handleWindowResize() {
       if (window.innerWidth < 480) {
@@ -913,21 +1071,17 @@ export default {
       this.nextDisabledDate = null;
       this.nextPeriodDisableDates = [];
       this.showCustomTooltip = false;
+      this.hoveringPeriod = {};
+      this.checkInPeriod = {};
       this.parseDisabledDates();
       this.reRender();
       this.$emit("clear-selection");
     },
     closeMobileDatepicker() {
       this.hideDatepicker();
-
-      if (this.checkIn && !this.checkOut) {
-        this.clearSelection();
-      }
     },
     hideDatepicker() {
-      if (this.checkIn && !this.checkOut) {
-        this.clearSelection();
-      }
+      this.clearCheckIn();
 
       this.isOpen = false;
     },
@@ -935,82 +1089,21 @@ export default {
       this.isOpen = true;
     },
     toggleDatepicker() {
+      this.clearCheckIn();
+
       this.isOpen = !this.isOpen;
+    },
+    clearCheckIn() {
+      if (this.checkIn && !this.checkOut) {
+        this.clearSelection();
+      }
     },
     clickOutside() {
       if (this.show && this.closeDatepickerOnClickOutside) {
         this.hideDatepicker();
       }
     },
-    handleDayClick(date, formatDate, allowedCheckoutDays, resetCheckin) {
-      this.nextPeriodDisableDates = [];
-
-      if (resetCheckin) {
-        this.clearSelection();
-        this.$nextTick(() => {
-          this.handleDayClick(date, formatDate, allowedCheckoutDays, false);
-        });
-
-        return;
-      }
-
-      let nextDisabledDate =
-        (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
-        allowedCheckoutDays[allowedCheckoutDays.length - 1] ||
-        this.getNextDate(this.sortedDisabledDates, date) ||
-        this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
-        Infinity;
-
-      this.setMinNightCount(null);
-
-      if (this.enableCheckout) {
-        nextDisabledDate = Infinity;
-      }
-
-      if (this.checkIn == null && this.singleDaySelection === false) {
-        this.checkIn = date;
-        this.setPeriods(date);
-      } else if (this.singleDaySelection === true) {
-        this.checkIn = date;
-        this.checkOut = date;
-      } else if (this.checkIn !== null && this.checkOut == null) {
-        this.checkOut = date;
-      } else {
-        this.checkOut = null;
-        this.checkIn = date;
-        this.setPeriods(date);
-      }
-
-      this.nextDisabledDate = nextDisabledDate;
-
-      if (this.minNightCount > 0) {
-        this.currentPeriod = {
-          date,
-          minNight: this.minNightCount,
-          nextDate: this.addDays(date, this.minNightCount)
-        };
-        const currentPeriod = this.dateIsInCheckInCheckOut(date);
-
-        if (currentPeriod) {
-          this.currentPeriod.type = currentPeriod.periodType;
-          this.currentPeriod.endAt = currentPeriod.endAt;
-          this.currentPeriod.startAt = currentPeriod.startAt;
-        }
-
-        this.showCustomTooltip = true;
-        this.setPeriodCustomTooltip(date);
-      }
-
-      if (
-        this.checkIncheckOutHalfDay &&
-        Object.keys(this.checkIncheckOutHalfDay).length > 0
-      ) {
-        this.setHalfDayCustomTooltip(date);
-      }
-
-      this.$emit("day-clicked", date, formatDate, nextDisabledDate);
-    },
-    setPeriods(date) {
+    setMinimumDuration(date) {
       if (this.sortedPeriodDates) {
         let nextPeriod = null;
         let currentPeriod = null;
@@ -1051,7 +1144,7 @@ export default {
             currentPeriod.periodType === "nightly" &&
             currentPeriod.endAt !== date
           ) {
-            this.setMinNightCount(currentPeriod.minimumDuration);
+            this.dynamicNightCounts = currentPeriod.minimumDuration;
           }
 
           if (
@@ -1060,10 +1153,10 @@ export default {
           ) {
             const minimumDuration = currentPeriod.minimumDuration * 7;
 
-            this.setMinNightCount(minimumDuration);
+            this.dynamicNightCounts = minimumDuration;
           }
         } else {
-          this.setMinNightCount(0);
+          this.dynamicNightCounts = 0;
         }
       }
     },
