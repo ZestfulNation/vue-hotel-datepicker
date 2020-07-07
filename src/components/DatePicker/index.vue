@@ -164,7 +164,7 @@
           </div>
         </div>
         <div
-          v-if="screenSize !== 'desktop' && isOpen"
+          v-if="hoveringTooltip && screenSize !== 'desktop' && isOpen"
           :class="{ 'show-tooltip': showCustomTooltip }"
         >
           <div class="datepicker__tooltip--mobile">
