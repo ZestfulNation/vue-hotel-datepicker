@@ -164,10 +164,10 @@
           </div>
         </div>
         <div
-          v-if="hoveringTooltip && screenSize !== 'desktop' && isOpen"
-          :class="{ 'show-tooltip': showCustomTooltip }"
+          v-if="screenSize !== 'desktop' && isOpen"
+          :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
         >
-          <div class="datepicker__tooltip--mobile">
+          <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
             <template v-if="customTooltipMessage">
               {{ cleanString(customTooltipMessage) }}
             </template>
