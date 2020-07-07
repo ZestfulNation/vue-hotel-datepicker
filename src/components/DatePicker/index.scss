@@ -294,6 +294,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--valid#{&}--not-allowed,
+    &--not-allowed.currentDay,
     &--valid#{&}--not-allowed:hover {
       color: $primary-color;
       font-weight: $font-regular;
@@ -302,10 +303,6 @@ $extra-small-screen: '(max-width: 23em)';
       span {
         text-decoration: none;
       }
-    }
-
-    &--selected#{&}--not-allowed.nightly {
-      color: white;
     }
 
     &--halfCheckIn,

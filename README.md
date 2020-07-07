@@ -4,10 +4,12 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.6.9
+# Release 0.8.2
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
+
+👊👊👊An easier Calendar in Vue.js 👊👊👊
 
 ------------
 
@@ -77,6 +79,8 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Trigger `window.resize` on desktop, mobile, tablet
 * Add `event clicked Esc` for `clearSelection`
 * Add `invalid` class on checkIn date
+* Breakings changes: removed `allowedRanges`, use `periods` if you want to have a range of disableDates
+* Refactoring *tooltip*, show on *hover* / show on *click*
 
 ------------
 
@@ -210,13 +214,6 @@ An array of strings in this format: `YYYY-MM-DD`. All the dates passed to the li
 - Default: `[]`
 
 An array of strings in this format: `['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']`. All the days passed to the list will be disabled.
-
-### allowedRanges
-- Type: `Array`
-- Default: `[]`
-
-An array of numbers. Example: `[7,10,14]`.
-After selecting the start date the calendar will be updated only allowing the checkout 7, 10 or 14 days after.
 
 ### enableCheckout
 

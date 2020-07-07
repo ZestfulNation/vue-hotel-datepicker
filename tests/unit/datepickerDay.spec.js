@@ -10,7 +10,6 @@ describe("Datepicker Day", () => {
     wrapper = shallowMount(Day, {
       propsData: {
         activeMonthIndex: 0,
-        allowedCheckoutDays: [],
         belongsToThisMonth: true,
         checkIn: null,
         checkOut: null,
@@ -19,10 +18,8 @@ describe("Datepicker Day", () => {
         hoveringDate: null,
         hoveringTooltip: true,
         isOpen: true,
-        mounseOverFunction: undefined,
         nextDisabledDate: null,
         options: {
-          allowedRanges: [],
           disabledDates: [],
           disabledDaysOfWeek: [],
           endDate: "2017-12-30T23:00:00.000Z",

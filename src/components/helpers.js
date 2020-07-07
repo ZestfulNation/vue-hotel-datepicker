@@ -207,5 +207,26 @@ export default {
     }
 
     return countOfDays !== 1 ? this.i18n.nights : this.i18n.night;
+  },
+  isDateLessOrEquals(time1, time2) {
+    return new Date(time1) < new Date(time2);
+  },
+  compareDay(day1, day2) {
+    const date1 = fecha.format(new Date(day1), "YYYYMMDD");
+    const date2 = fecha.format(new Date(day2), "YYYYMMDD");
+
+    if (date1 > date2) {
+      return 1;
+    }
+
+    if (date1 === date2) {
+      return 0;
+    }
+
+    if (date1 < date2) {
+      return -1;
+    }
+
+    return null;
   }
 };
