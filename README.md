@@ -360,6 +360,12 @@ If set to true, display one month only
 
 Display calendar on the **right** or the **left** of the input (left by default)
 
+### alwaysVisible
+- Type: `Boolean`
+- Default: `false`
+
+Display calendar in the page without an input
+
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
 
