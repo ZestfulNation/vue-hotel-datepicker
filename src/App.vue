@@ -4,29 +4,49 @@
     <div>
       <div class="box">
         <h3>
+          Show list of static bookings
+        </h3>
+        <DatePicker
+          :alwaysVisible="true"
+          :bookings="bookings"
+          :disableCheckoutOnCheckin="true"
+          :firstDayOfWeek="1"
+          :format="dateFormat"
+          :hoveringTooltip="false"
+          :i18n="frFR"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="1"
+          :showYear="true"
+          @bookingClicked="bookingClicked"
+          @periodSelected="periodSelected"
+          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Calendar in full view
         </h3>
         <DatePicker
           :disabledDates="[
-            '2020-06-15',
-            '2020-06-16',
-            '2020-06-17',
-            '2020-06-18',
-            '2020-06-19',
-            '2020-06-20',
-            '2020-06-21',
-            '2020-07-01',
-            '2020-07-02',
-            '2020-07-03',
-            '2020-07-04',
-            '2020-07-11',
-            '2020-07-12',
-            '2020-07-13',
-            '2020-07-14',
             '2020-07-15',
             '2020-07-16',
             '2020-07-17',
-            '2020-07-18'
+            '2020-07-18',
+            '2020-07-19',
+            '2020-07-20',
+            '2020-07-21',
+            '2020-08-01',
+            '2020-08-02',
+            '2020-08-03',
+            '2020-08-04',
+            '2020-08-11',
+            '2020-08-12',
+            '2020-08-13',
+            '2020-08-14',
+            '2020-08-15',
+            '2020-08-16',
+            '2020-08-17',
+            '2020-08-18'
           ]"
           :alwaysVisible="true"
           :format="dateFormat"
@@ -36,7 +56,6 @@
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
-          :halfDay="true"
           @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
         />
       </div>
@@ -68,7 +87,6 @@
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
-          :halfDay="true"
           :periodDates="periodDates"
           @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
         />
@@ -107,7 +125,6 @@
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
-          :halfDay="true"
           :periodDates="periodDates"
           @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
         />
@@ -146,7 +163,6 @@
           :showYear="true"
           :firstDayOfWeek="1"
           :disableCheckoutOnCheckin="true"
-          :halfDay="true"
           :periodDates="periodDates"
           @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
         />
@@ -176,7 +192,7 @@
           :showPrice="true"
           :minNights="minNights"
           :periodDates="periodDates"
-          @day-clicked="dayClicked"
+          @dayClicked="dayClicked"
         />
       </div>
       <div class="box">
@@ -203,16 +219,14 @@
             '2020-10-07'
           ]"
           :disableCheckoutOnCheckin="true"
-          :halfDay="true"
           :minNights="minNights"
-          @day-clicked="dayClicked"
+          @dayClicked="dayClicked"
         />
       </div>
       <div class="box">
         <h3>Half day, If you have check in at noon and checkout before noon</h3>
         <DatePicker
           :minNights="0"
-          :halfDay="true"
           :disabledDates="[
             '2020-05-01',
             '2020-05-02',
@@ -564,6 +578,32 @@ export default {
           price: 4000.0
         }
       ],
+      bookings: [
+        {
+          triggerEvent: true,
+          checkInDate: "2020-08-01",
+          checkOutDate: "2020-08-15",
+          style: {
+            backgroundColor: "#399694"
+          }
+        },
+        {
+          triggerEvent: false,
+          checkInDate: "2020-08-15",
+          checkOutDate: "2020-08-30",
+          style: {
+            backgroundColor: "#9DC1C9"
+          }
+        },
+        {
+          triggerEvent: false,
+          checkInDate: "2020-09-02",
+          checkOutDate: "2020-09-15",
+          style: {
+            backgroundColor: "#9DC1C9"
+          }
+        }
+      ],
       newCheckInDate: null,
       newCheckOutDate: null,
       minNights: 3
@@ -578,8 +618,14 @@ export default {
     }
   },
   methods: {
+    bookingClicked(event, date, currentBooking) {
+      console.log("bookingClicked", event, date, currentBooking);
+    },
+    periodSelected(event, checkIn, checkOut) {
+      console.log("periodSelected", event, checkIn, checkOut);
+    },
     handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
-      console.log(checkIncheckOutHalfDay);
+      console.log("handleCheckIncheckOutHalfDay", checkIncheckOutHalfDay);
     },
     addYears(dt, n) {
       return new Date(dt.setFullYear(dt.getFullYear() + n));

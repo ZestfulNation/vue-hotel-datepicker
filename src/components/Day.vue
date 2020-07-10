@@ -7,11 +7,11 @@
     />
     <div
       class="datepicker__month-day"
-      @click.prevent.stop="dayClicked(date)"
-      @keyup.enter.prevent.stop="dayClicked(date)"
+      @click.prevent.stop="dayClicked($event, date)"
       :class="[
         dayClass,
         checkinCheckoutClass,
+        bookingClass,
         { 'datepicker__month-day--today': isToday }
       ]"
       :tabindex="tabIndex"
@@ -24,21 +24,37 @@
         </strong>
       </div>
     </div>
+    <BookingBullet
+      v-if="currentBooking && belongsToThisMonth && !isDisabled"
+      :currentBooking="currentBooking"
+      :duplicateBookingDates="duplicateBookingDates"
+      :formatDate="formatDate"
+      :previousBooking="previousBooking"
+    />
   </div>
 </template>
 
 <script>
 import fecha from "fecha";
 import Helpers from "./helpers";
+import BookingBullet from "./BookingBullet.vue";
 
 export default {
   name: "Day",
+  components: {
+    BookingBullet
+  },
   props: {
+    bookings: {
+      type: Array,
+      default: () => []
+    },
     activeMonthIndex: {
       type: Number
     },
     belongsToThisMonth: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     checkIn: {
       type: Date
@@ -60,6 +76,10 @@ export default {
     disableCheckoutOnCheckin: {
       type: Boolean,
       default: false
+    },
+    duplicateBookingDates: {
+      type: Array,
+      default: () => []
     },
     hoveringDate: {
       type: Date
@@ -127,6 +147,35 @@ export default {
     };
   },
   computed: {
+    previousBooking() {
+      let previousBooking = null;
+
+      if (
+        this.currentBooking &&
+        this.duplicateBookingDates.includes(this.currentBooking.checkInDate)
+      ) {
+        previousBooking = this.bookings.find(
+          booking =>
+            booking.checkOutDate === this.formatDate &&
+            this.duplicateBookingDates.includes(booking.checkOutDate)
+        );
+      }
+
+      return previousBooking;
+    },
+    currentBooking() {
+      return this.bookings.find(
+        booking =>
+          (this.duplicateBookingDates.includes(this.formatDate) &&
+            booking.checkInDate === this.formatDate) ||
+          (!this.duplicateBookingDates.includes(this.formatDate) &&
+            this.validateDateBetweenTwoDates(
+              booking.checkInDate,
+              booking.checkOutDate,
+              this.formatDate
+            ))
+      );
+    },
     dayNumber() {
       return fecha.format(this.date, "D");
     },
@@ -175,6 +224,57 @@ export default {
       }
 
       return false;
+    },
+    bookingClass() {
+      if (this.bookings.length > 0 && this.currentBooking) {
+        if (
+          this.currentBooking.triggerEvent === true &&
+          this.validateDateBetweenTwoDates(
+            this.currentBooking.checkInDate,
+            this.currentBooking.checkOutDate,
+            this.hoveringDate
+          )
+        ) {
+          if (this.checkIncheckOutHalfDay[this.formatDate]) {
+            if (this.checkIn && !this.checkOut) {
+              return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+            }
+
+            return "datepicker__month-day--not-allowed datepicker__month-day--invalid";
+          }
+
+          if (this.checkIn && !this.checkOut) {
+            return "datepicker__month-day--not-allowed datepicker__month-day--invalid";
+          }
+
+          return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+        }
+
+        if (
+          this.checkIncheckOutHalfDay[this.formatDate] &&
+          this.checkIncheckOutHalfDay[this.formatDate].checkOut &&
+          !this.duplicateBookingDates.includes(this.formatDate)
+        ) {
+          if (!this.checkIn) {
+            return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+          }
+
+          if (
+            (this.checkIn && this.checkIn === this.date) ||
+            (this.checkIn && this.checkOut)
+          ) {
+            return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+          }
+        }
+
+        if (this.checkIn && !this.checkOut && this.hoveringDate === this.date) {
+          return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+        }
+
+        return "datepicker__month-day--not-allowed datepicker__month-day--invalid";
+      }
+
+      return "";
     },
     dayClass() {
       if (this.belongsToThisMonth) {
@@ -389,10 +489,10 @@ export default {
           return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_sunday";
         }
 
-        return "nothing";
+        return "";
       }
 
-      return "nothing";
+      return "";
     },
     formatDate() {
       return this.dateFormater(this.date);
@@ -578,9 +678,19 @@ export default {
 
       return true;
     },
-    dayClicked(date) {
+    dayClicked(event, date) {
       let resetCheckin = false;
       let disableCheckoutOnCheckin = !this.disableCheckoutOnCheckin;
+
+      if (
+        !this.checkIncheckOutHalfDay[this.formatDate] &&
+        this.currentBooking &&
+        this.currentBooking.triggerEvent === true
+      ) {
+        this.$emit("bookingClicked", event, date, this.currentBooking);
+
+        return;
+      }
 
       if (this.disableCheckoutOnCheckin) {
         if (this.checkIn && this.checkIn === date) {
@@ -600,10 +710,10 @@ export default {
         if (!this.isDisabled || this.isClickable()) {
           const formatDate = this.dateFormater(date);
 
-          this.$emit("dayClicked", date, formatDate, resetCheckin);
+          this.$emit("dayClicked", event, date, formatDate, resetCheckin);
         } else {
           this.$emit("clearSelection");
-          this.dayClicked(date);
+          this.dayClicked(event, date);
         }
       }
     },

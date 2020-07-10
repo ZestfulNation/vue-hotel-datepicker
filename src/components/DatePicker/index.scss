@@ -27,6 +27,8 @@ $font-small: 14px;
 $font-regular: 400;
 $font-bold: 700;
 
+$width-half-day: 120px;
+
 /* =============================================================
 * RESPONSIVE LAYOUT HELPERS
 * ============================================================*/
@@ -144,6 +146,20 @@ $extra-small-screen: '(max-width: 23em)';
       border: 1px solid $light-gray;
       margin: -1px 0 0 -1px;
     }
+
+    &--booking {
+      .datepicker__month-day-wrapper span {
+        text-align: right;
+        padding-top: 10px;
+        padding-right: 10px;
+        right: 0;
+        top: 0;
+        transform: none;
+      }
+      .datepicker__month-day:before {
+        display: none;
+      }
+    }
   }
 
   &__fullview {
@@ -167,6 +183,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     .datepicker__months {
+      position: static;
       margin: 0;
       width: auto;
 
@@ -336,6 +353,10 @@ $extra-small-screen: '(max-width: 23em)';
       }
     }
 
+    &--hovering#{&}--not-allowed:hover {
+      cursor: pointer;
+    }
+
     &--halfCheckIn,
     &--halfCheckOut {
       position: relative;
@@ -351,17 +372,17 @@ $extra-small-screen: '(max-width: 23em)';
         z-index: -1;
         height: 0;
         width: 0;
-        border-bottom: 100px solid $disabledBg;
-        border-left: 100px solid transparent;
+        border-bottom: $width-half-day solid $disabledBg;
+        border-left: $width-half-day solid transparent;
       }
     }
 
     &--halfCheckOut {
       &:before {
-        border-top: 100px solid $disabledBg;
+        border-top: $width-half-day solid $disabledBg;
         border-bottom: 0;
         border-left: 0;
-        border-right: 100px solid transparent;
+        border-right: $width-half-day solid transparent;
       }
     }
 
@@ -416,16 +437,9 @@ $extra-small-screen: '(max-width: 23em)';
       }
     }
 
-    &--valid,
-    &--not-allowed.nightly.datepicker__month-day--cliquable {
+    &--valid {
       cursor: pointer;
       font-weight: $font-bold;
-    }
-
-    &--not-allowed.nightly.datepicker__month-day--cliquable:hover,
-    &--not-allowed.nightly.datepicker__month-day--cliquable.datepicker__month-day--selected {
-      color: $white;
-      font-weight: $font-regular
     }
 
     &--valid#{&}--halfCheckIn#{&}--last-day-selected {
@@ -714,5 +728,77 @@ $extra-small-screen: '(max-width: 23em)';
 .-hide-on-desktop {
   @include device($desktop) {
     display: none;
+  }
+}
+
+.parent-bullet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: -1;
+
+  .bullet {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 4px;
+    transition: opacity ease .3s;
+    @include device($desktop) {
+      top: 50%;
+    }
+
+    &.checkInCheckOut,
+    &.checkIn,
+    &.checkOut {
+      width: 8px;
+      height: 18px;
+      border-radius: 10px;
+
+      &.bullet--small {
+        height: 6px;
+        width: 14px;
+      }
+    }
+
+    &.checkInCheckOut {
+      left: calc(50% - 15px);
+    }
+  }
+
+  .pipe {
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    transition: opacity ease .3s;
+    @include device($desktop) {
+      top: 50%;
+    }
+
+    &.pipe--small {
+      height: 3px;
+    }
+
+    &.checkIn {
+      left: calc(50% + 4px);
+      width: calc(50% - 4px);
+    }
+
+    &.checkOut {
+      left: 0px;
+      width: calc(50% - 4px);
+    }
+
+    &.checkInCheckOut {
+      width: calc(50% - 19px);
+    }
   }
 }

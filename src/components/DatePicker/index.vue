@@ -3,6 +3,7 @@
     class="datepicker__wrapper"
     :class="{
       'datepicker__wrapper--grid': gridStyle,
+      'datepicker__wrapper--booking': bookings.length > 0,
       datepicker__fullview: alwaysVisible
     }"
     :ref="`DatePicker-${hash}`"
@@ -140,14 +141,16 @@
               <Day
                 :activeMonthIndex="activeMonthIndex"
                 :belongsToThisMonth="day.belongsToThisMonth"
+                :bookings="bookings"
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                :checkOut="checkOut"
-                :hoveringPeriod="hoveringPeriod"
                 :checkInPeriod="checkInPeriod"
+                :checkOut="checkOut"
                 :date="day.date"
                 :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+                :duplicateBookingDates="duplicateBookingDates"
                 :hoveringDate="hoveringDate"
+                :hoveringPeriod="hoveringPeriod"
                 :i18n="i18n"
                 :isOpen="isOpen"
                 :minNightCount="minNightCount"
@@ -161,6 +164,7 @@
                 :sortedPeriodDates="sortedPeriodDates"
                 :tooltipMessage="customTooltipMessage"
                 @clearSelection="clearSelection"
+                @bookingClicked="handleBookingClicked"
                 @dayClicked="handleDayClick"
               />
             </div>
@@ -220,14 +224,16 @@
                 <Day
                   :activeMonthIndex="activeMonthIndex"
                   :belongsToThisMonth="day.belongsToThisMonth"
+                  :bookings="bookings"
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                  :checkOut="checkOut"
-                  :hoveringPeriod="hoveringPeriod"
                   :checkInPeriod="checkInPeriod"
+                  :checkOut="checkOut"
                   :date="day.date"
                   :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+                  :duplicateBookingDates="duplicateBookingDates"
                   :hoveringDate="hoveringDate"
+                  :hoveringPeriod="hoveringPeriod"
                   :i18n="i18n"
                   :isOpen="isOpen"
                   :minNightCount="minNightCount"
@@ -240,6 +246,7 @@
                   :sortedPeriodDates="sortedPeriodDates"
                   :tooltipMessage="customTooltipMessage"
                   @clearSelection="clearSelection"
+                  @bookingClicked="handleBookingClicked"
                   @dayClicked="handleDayClick"
                 />
               </div>
@@ -299,6 +306,12 @@ export default {
     DateInput
   },
   props: {
+    bookings: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
     alwaysVisible: {
       type: Boolean,
       default: false
@@ -368,7 +381,7 @@ export default {
     },
     halfDay: {
       type: Boolean,
-      default: false
+      default: true
     },
     disabledDates: {
       type: Array,
@@ -451,6 +464,25 @@ export default {
     };
   },
   computed: {
+    duplicateBookingDates() {
+      return this.baseHalfDayDates.filter(
+        (newArr => date => newArr.has(date) || !newArr.add(date))(new Set())
+      );
+    },
+    baseHalfDayDates() {
+      if (this.bookings.length > 0) {
+        const bookings = this.bookings.map(x => [
+          x.checkInDate,
+          x.checkOutDate
+        ]);
+
+        return bookings.reduce((a, b) => {
+          return a.concat(b);
+        });
+      }
+
+      return this.disabledDates;
+    },
     paginateDesktop() {
       if (
         this.showSingleMonth ||
@@ -562,7 +594,7 @@ export default {
       if (this.checkOut !== null) {
         this.hoveringDate = null;
         this.nextDisabledDate = null;
-        this.parseDisabledDates();
+        this.createHalfDayDates(this.baseHalfDayDates);
         this.reRender();
         this.showCustomTooltip = false;
         this.isOpen = false;
@@ -619,7 +651,7 @@ export default {
       this.createMonth(this.getNextMonth(new Date(this.startDate)));
     }
 
-    this.parseDisabledDates();
+    this.createHalfDayDates(this.baseHalfDayDates);
   },
   mounted() {
     this.handleWindowResize();
@@ -653,6 +685,9 @@ export default {
   },
   methods: {
     ...Helpers,
+    handleBookingClicked(event, date, currentBooking) {
+      this.$emit("bookingClicked", event, date, currentBooking);
+    },
     escFunction(e) {
       const escTouch = 27;
 
@@ -800,13 +835,13 @@ export default {
         this.createHalfDayTooltip(day.date);
       }
     },
-    handleDayClick(date, formatDate, resetCheckin) {
+    handleDayClick(event, date, formatDate, resetCheckin) {
       this.nextPeriodDisableDates = [];
 
       if (resetCheckin) {
         this.clearSelection();
         this.$nextTick(() => {
-          this.handleDayClick(date, formatDate, false);
+          this.handleDayClick(event, date, formatDate, false);
         });
 
         return;
@@ -816,6 +851,7 @@ export default {
         (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
         this.getNextDate(this.sortedDisabledDates, date) ||
         this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
+        this.nextBookingDate(date) ||
         Infinity;
 
       this.dynamicNightCounts = null;
@@ -832,6 +868,7 @@ export default {
         this.checkOut = date;
       } else if (this.checkIn !== null && this.checkOut == null) {
         this.checkOut = date;
+        this.$emit("periodSelected", event, this.checkIn, this.checkOut);
       } else {
         this.checkOut = null;
         this.checkIn = date;
@@ -845,7 +882,30 @@ export default {
       }
 
       this.nextDisabledDate = nextDisabledDate;
-      this.$emit("day-clicked", date, formatDate, nextDisabledDate);
+      this.$emit("dayClicked", date, formatDate, nextDisabledDate);
+    },
+    nextBookingDate(date) {
+      let closest = Infinity;
+
+      if (this.bookings.length > 0) {
+        const nextDateFormated = this.dateFormater(this.addDays(date, 1));
+        const nextBooking = this.bookings.find(
+          booking =>
+            this.validateDateBetweenDate(
+              booking.checkInDate,
+              nextDateFormated
+            ) ||
+            this.validateDateBetweenTwoDates(
+              booking.checkInDate,
+              booking.checkOutDate,
+              nextDateFormated
+            )
+        );
+
+        closest = nextBooking ? nextBooking.checkInDate : Infinity;
+      }
+
+      return closest;
     },
     setCustomTooltipOnClick() {
       if (
@@ -1083,7 +1143,7 @@ export default {
       this.showCustomTooltip = false;
       this.hoveringPeriod = {};
       this.checkInPeriod = {};
-      this.parseDisabledDates();
+      this.createHalfDayDates(this.baseHalfDayDates);
       this.reRender();
       this.$emit("clear-selection");
     },
@@ -1234,12 +1294,12 @@ export default {
 
       this.months.push(month);
     },
-    parseDisabledDates() {
+    createHalfDayDates(baseHalfDayDates) {
       let sortedDates = [];
       const checkIncheckOutHalfDay = {};
 
       // Sorted disabledDates
-      this.disabledDates.sort((a, b) => {
+      baseHalfDayDates.sort((a, b) => {
         const aa = a
           .split("/")
           .reverse()
@@ -1253,40 +1313,52 @@ export default {
         return aa < bb ? -1 : aa > bb ? 1 : 0;
       });
 
-      for (let i = 0; i < this.disabledDates.length; i++) {
-        const newDate = this.disabledDates[i];
+      if (this.bookings.length === 0) {
+        for (let i = 0; i < baseHalfDayDates.length; i++) {
+          const newDate = baseHalfDayDates[i];
 
-        if (this.halfDay) {
-          const newDateIncrementOne = this.disabledDates[i + 1];
+          if (this.halfDay) {
+            const newDateIncrementOne = baseHalfDayDates[i + 1];
 
-          if (i === 0) {
-            checkIncheckOutHalfDay[newDate] = {
-              checkIn: true
-            };
+            if (i === 0) {
+              checkIncheckOutHalfDay[newDate] = {
+                checkIn: true
+              };
+            }
+
+            if (
+              !checkIncheckOutHalfDay[newDate] &&
+              baseHalfDayDates[i + 1] &&
+              this.getDayDiff(newDate, newDateIncrementOne) > 1
+            ) {
+              checkIncheckOutHalfDay[newDate] = {
+                checkOut: true
+              };
+              checkIncheckOutHalfDay[newDateIncrementOne] = {
+                checkIn: true
+              };
+            }
+
+            if (i === baseHalfDayDates.length - 1) {
+              checkIncheckOutHalfDay[
+                baseHalfDayDates[baseHalfDayDates.length - 1]
+              ] = {
+                checkOut: true
+              };
+            }
           }
 
-          if (
-            this.disabledDates[i + 1] &&
-            this.getDayDiff(newDate, newDateIncrementOne) > 1
-          ) {
-            checkIncheckOutHalfDay[newDate] = {
-              checkOut: true
-            };
-            checkIncheckOutHalfDay[newDateIncrementOne] = {
-              checkIn: true
-            };
-          }
-
-          if (i === this.disabledDates.length - 1) {
-            checkIncheckOutHalfDay[
-              this.disabledDates[this.disabledDates.length - 1]
-            ] = {
-              checkOut: true
-            };
-          }
+          sortedDates[i] = baseHalfDayDates[i];
         }
-
-        sortedDates[i] = this.disabledDates[i];
+      } else {
+        this.bookings.forEach(booking => {
+          checkIncheckOutHalfDay[booking.checkInDate] = {
+            checkIn: true
+          };
+          checkIncheckOutHalfDay[booking.checkOutDate] = {
+            checkOut: true
+          };
+        });
       }
 
       if (this.halfDay) {
