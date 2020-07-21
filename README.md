@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.8.4
+# Release 0.9.0
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -81,6 +81,9 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Add `invalid` class on checkIn date
 * Breakings changes: removed `allowedRanges`, use `periods` if you want to have a range of disableDates
 * Refactoring *tooltip*, show on *hover* / show on *click*
+* Review the tooltips when there is periods array #50
+* Display the calendar in full size without input #61
+* Add a range of bookings #65
 
 ------------
 
@@ -139,7 +142,7 @@ Allows to stop calendar pagination after the month of that date
 ### halfDay
 
 - Type: `Boolean`
-- Default: `false`
+- Default: `true`
 
 Allows to have half a day, if you have check in at noon and checkout before noon
 
@@ -292,8 +295,8 @@ i18n: {
 ```
 
 ### periodDates
-
 - Type: `Array`
+- Default: `[]`
 
 If you want to have specific startAt and endAt period with different duration or price or type of period-
 
@@ -366,6 +369,42 @@ Display calendar on the **right** or the **left** of the input (left by default)
 
 Display calendar in the page without an input
 
+### bookings
+- Type: `Array`
+- Default: `[]`
+
+If you want to show bookings
+
+Key                                   | Type        | Description
+--------------------------------------|-------------|-------------------------
+  triggerEvent                        | Boolean     | If you want to trigger a click
+  checkInDate                         | String      | YYYY-MM-DD
+  checkOutDate                        | String      | YYYY-MM-DD
+  style                               | Object      | Style, (see the example)
+
+Example:
+```js
+bookings: [
+  {
+    event: true,
+    checkInDate: "2020-08-26",
+    checkOutDate: "2020-08-29",
+    style: {
+      backgroundColor: "#399694"
+    }
+  },
+  {
+    event: false,
+    checkInDate: "2020-07-01",
+    checkOutDate: "2020-07-08",
+    style: {
+      backgroundColor: "#9DC1C9"
+    }
+  }
+],
+```
+
+
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
 
@@ -409,6 +448,39 @@ Params:
 name                                 | Description
 -------------------------------------|-------------------------
   checkIncheckOutHalfDay             | Object of checkinCheckout date
+
+### bookingClicked
+Emitted every time a booking is clicked
+
+Params:
+name                | Type       | Description
+--------------------|-------------------------
+  event             | MouseEvent | Mouse javascript event
+  date              | Date       | Clicked Date
+  currentBooking    | Object     | Clicked Booking
+
+Example of currentBooking:
+```js
+{
+  checkInDate: "YYYY-MM-DD",
+  checkOutDate: "YYYY-MM-DD",
+  style: {
+    backgroundColor: "#399694",
+    triggerEvent: true
+  }
+}
+```
+
+### periodSelected
+Emitted every time when a checkOut is clicked
+
+name                | Type       | Description
+--------------------|-------------------------
+  event             | MouseEvent | Mouse javascript event
+  checkIn           | Date       | checkIn
+  checkIn           | Date       | checkOut
+
+
 
 ## Credits
 This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.
