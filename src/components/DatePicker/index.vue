@@ -141,7 +141,7 @@
               <Day
                 :activeMonthIndex="activeMonthIndex"
                 :belongsToThisMonth="day.belongsToThisMonth"
-                :bookings="bookings"
+                :bookings="sortBookings"
                 :checkIn="checkIn"
                 :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                 :checkInPeriod="checkInPeriod"
@@ -224,7 +224,7 @@
                 <Day
                   :activeMonthIndex="activeMonthIndex"
                   :belongsToThisMonth="day.belongsToThisMonth"
-                  :bookings="bookings"
+                  :bookings="sortBookings"
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
                   :checkInPeriod="checkInPeriod"
@@ -464,14 +464,35 @@ export default {
     };
   },
   computed: {
+    sortBookings() {
+      if (this.bookings.length > 0) {
+        const bookings = [...this.bookings];
+
+        return bookings.sort((a, b) => {
+          const aa = a.checkInDate
+            .split("/")
+            .reverse()
+            .join();
+          const bb = b.checkOutDate
+            .split("/")
+            .reverse()
+            .join();
+
+          // eslint-disable-next-line no-nested-ternary
+          return aa < bb ? -1 : aa > bb ? 1 : 0;
+        });
+      }
+
+      return [];
+    },
     duplicateBookingDates() {
       return this.baseHalfDayDates.filter(
         (newArr => date => newArr.has(date) || !newArr.add(date))(new Set())
       );
     },
     baseHalfDayDates() {
-      if (this.bookings.length > 0) {
-        const bookings = this.bookings.map(x => [
+      if (this.sortBookings.length > 0) {
+        const bookings = this.sortBookings.map(x => [
           x.checkInDate,
           x.checkOutDate
         ]);
@@ -887,9 +908,9 @@ export default {
     nextBookingDate(date) {
       let closest = Infinity;
 
-      if (this.bookings.length > 0) {
+      if (this.sortBookings.length > 0) {
         const nextDateFormated = this.dateFormater(this.addDays(date, 1));
-        const nextBooking = this.bookings.find(
+        const nextBooking = this.sortBookings.find(
           booking =>
             this.validateDateBetweenDate(
               booking.checkInDate,
@@ -1313,7 +1334,7 @@ export default {
         return aa < bb ? -1 : aa > bb ? 1 : 0;
       });
 
-      if (this.bookings.length === 0) {
+      if (this.sortBookings.length === 0) {
         for (let i = 0; i < baseHalfDayDates.length; i++) {
           const newDate = baseHalfDayDates[i];
 
@@ -1351,7 +1372,7 @@ export default {
           sortedDates[i] = baseHalfDayDates[i];
         }
       } else {
-        this.bookings.forEach(booking => {
+        this.sortBookings.forEach(booking => {
           checkIncheckOutHalfDay[booking.checkInDate] = {
             checkIn: true
           };
