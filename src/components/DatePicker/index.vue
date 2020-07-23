@@ -671,8 +671,6 @@ export default {
       this.createMonth(new Date(this.startDate));
       this.createMonth(this.getNextMonth(new Date(this.startDate)));
     }
-
-    this.createHalfDayDates(this.baseHalfDayDates);
   },
   mounted() {
     this.handleWindowResize();
@@ -691,6 +689,8 @@ export default {
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent();
     });
+
+    this.createHalfDayDates(this.baseHalfDayDates);
   },
   destroyed() {
     window.removeEventListener("resize", this.handleWindowResize);
