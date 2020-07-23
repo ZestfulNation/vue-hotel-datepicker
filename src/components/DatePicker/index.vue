@@ -585,6 +585,9 @@ export default {
     }
   },
   watch: {
+    bookings() {
+      this.createHalfDayDates(this.baseHalfDayDates);
+    },
     isOpen(value) {
       if (this.screenSize !== "desktop" && !this.alwaysVisible) {
         const body = document.querySelector("body");
