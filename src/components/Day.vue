@@ -228,7 +228,7 @@ export default {
     bookingClass() {
       if (this.bookings.length > 0 && this.currentBooking) {
         if (
-          this.currentBooking.triggerEvent === true &&
+          !this.isDisabled &&
           this.validateDateBetweenTwoDates(
             this.currentBooking.checkInDate,
             this.currentBooking.checkOutDate,
@@ -237,6 +237,10 @@ export default {
         ) {
           if (this.checkIncheckOutHalfDay[this.formatDate]) {
             if (this.checkIn && !this.checkOut) {
+              return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
+            }
+
+            if (this.checkIncheckOutHalfDay[this.formatDate].checkOut) {
               return "datepicker__month-day--not-allowed datepicker__month-day--hovering";
             }
 
@@ -684,8 +688,7 @@ export default {
 
       if (
         !this.checkIncheckOutHalfDay[this.formatDate] &&
-        this.currentBooking &&
-        this.currentBooking.triggerEvent === true
+        this.currentBooking
       ) {
         this.$emit("bookingClicked", event, date, this.currentBooking);
 

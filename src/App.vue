@@ -581,7 +581,6 @@ export default {
       bookings: [
         {
           id: "1726359",
-          triggerEvent: false,
           checkInDate: "2020-08-22",
           checkOutDate: "2020-08-29",
           style: {
@@ -590,7 +589,6 @@ export default {
         },
         {
           id: "1726360",
-          triggerEvent: false,
           checkInDate: "2020-08-15",
           checkOutDate: "2020-08-22",
           style: {
@@ -599,7 +597,6 @@ export default {
         },
         {
           id: "1726358",
-          triggerEvent: false,
           checkInDate: "2020-08-01",
           checkOutDate: "2020-08-15",
           style: {
@@ -608,16 +605,14 @@ export default {
         },
         {
           id: "1726357",
-          triggerEvent: false,
-          checkInDate: "2020-07-01",
-          checkOutDate: "2020-07-23",
+          checkInDate: "2020-09-01",
+          checkOutDate: "2020-09-23",
           style: {
             backgroundColor: "#9DC1C9"
           }
         },
         {
           id: "1726356",
-          triggerEvent: false,
           checkInDate: "2020-06-01",
           checkOutDate: "2020-06-18",
           style: {
@@ -626,7 +621,6 @@ export default {
         },
         {
           id: "181412",
-          triggerEvent: false,
           checkInDate: "2019-09-15",
           checkOutDate: "2019-10-15",
           style: {
@@ -635,7 +629,6 @@ export default {
         },
         {
           id: "181491",
-          triggerEvent: false,
           checkInDate: "2019-07-01",
           checkOutDate: "2019-08-31",
           style: {
@@ -644,7 +637,6 @@ export default {
         },
         {
           id: "178234",
-          triggerEvent: false,
           checkInDate: "2018-08-04",
           checkOutDate: "2018-08-25",
           style: {
@@ -653,7 +645,6 @@ export default {
         },
         {
           id: "178235",
-          triggerEvent: false,
           checkInDate: "2018-07-01",
           checkOutDate: "2018-07-31",
           style: {

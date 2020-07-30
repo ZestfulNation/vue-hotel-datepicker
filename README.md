@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
 [![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
-# Release 0.9.3
+# Release 0.9.4
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -377,7 +377,6 @@ If you want to show bookings
 
 Key                                   | Type        | Description
 --------------------------------------|-------------|-------------------------
-  triggerEvent                        | Boolean     | If you want to trigger a click
   checkInDate                         | String      | YYYY-MM-DD
   checkOutDate                        | String      | YYYY-MM-DD
   style                               | Object      | Style, (see the example)
@@ -466,7 +465,6 @@ Example of currentBooking:
   checkOutDate: "YYYY-MM-DD",
   style: {
     backgroundColor: "#399694",
-    triggerEvent: true
   }
 }
 ```
