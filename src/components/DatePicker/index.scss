@@ -1,0 +1,804 @@
+/* =============================================================
+* VARIABLES
+* ============================================================*/
+$white: #fff;
+$black: #000;
+$gray: #424b53;
+$primary-text-color: #35343d;
+$lightest-gray: #f3f5f8;
+$primary-color: #195252;
+$medium-gray: #424b53;
+$light-gray: #eaeaea;
+$disabledBg: #f5f7f8;
+$disabled-color: #D8D8D8;
+$dark-gray: #2d3047;
+$box-shadow: 0 0 10px 3px rgba(red, .4);
+
+// Bg Date when hover it
+$bgValidHoverDate: $primary-color;
+$colorValidHoverDate: $white;
+
+// Bg Date when range or valid it
+$bgRollActiveDage: $primary-color;
+$colorRollActiveDage: $white;
+
+$font-family: 'Helvetica Neue';
+$font-small: 14px;
+$font-regular: 400;
+$font-bold: 700;
+
+$width-half-day: 120px;
+
+/* =============================================================
+* RESPONSIVE LAYOUT HELPERS
+* ============================================================*/
+$tablet: '(min-width: 480px) and (max-width: 767px)';
+$phone: '(max-width: 479px)';
+$desktop: '(min-width: 768px)';
+$up-to-tablet: '(max-width: 767px)';
+$extra-small-screen: '(max-width: 23em)';
+
+@mixin focusStyle() {
+  &:focus {
+    outline: none
+  }
+}
+
+@mixin device($device-widths) {
+  @media screen and #{$device-widths} {
+    @content
+  }
+}
+
+.square {
+  position: relative;
+  width: calc(100% / 7);
+  float: left;
+  font-family: $font-family;
+}
+
+.datepicker__wrapper {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+/* =============================================================
+* BASE STYLES
+* ============================================================*/
+
+.datepicker {
+  transition: all .2s ease-in-out;
+  background-color: $white;
+  font-size: 16px;
+  line-height: 14px;
+  overflow: hidden;
+  top: 48px;
+  position: absolute;
+  z-index: 999;
+
+  &--right {
+    right: 0;
+  }
+
+  button.next--mobile {
+    background: none;
+    border: 1px solid $light-gray;
+    float: none;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    background-position: center;
+    appearance: none;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    outline: none;
+    box-shadow: 0 5px 30px 10px rgba($black, .08);
+    background: white;
+
+    &:after {
+      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+      transform: rotate(90deg);
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
+  }
+
+  &--closed {
+    box-shadow: 0 15px 30px 10px rgba($black, 0);
+    max-height: 0;
+  }
+
+  &--open {
+    box-shadow: 0 15px 30px 10px rgba($black, .08);
+    max-height: 900px;
+
+    @include device($up-to-tablet) {
+      box-shadow: none;
+      height: 100%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-overflow-scrolling: touch !important;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 48px;
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+
+    &--grid .square .datepicker__month-day {
+      border: 1px solid $light-gray;
+      margin: -1px 0 0 -1px;
+    }
+
+    &--booking {
+      .datepicker__month-day-wrapper span {
+        text-align: right;
+        padding-top: 10px;
+        padding-right: 10px;
+        right: 0;
+        top: 0;
+        transform: none;
+      }
+      .datepicker__month-day:before {
+        display: none;
+      }
+    }
+  }
+
+  &__fullview {
+    background: none;
+    height: auto;
+
+    .datepicker__close-button, .datepicker__dummy-wrapper, .datepicker__clear-button, .-hide-on-desktop{
+      display: none;
+    }
+    .datepicker {
+      position: relative;
+      top: 0;
+    }
+
+    .-hide-up-to-tablet {
+      display: block;
+    }
+
+    .datepicker__month-button {
+      display: inline-block;
+    }
+
+    .datepicker__months {
+      position: static;
+      margin: 0;
+      width: auto;
+
+      &::before {
+        display: none;
+      }
+    }
+
+  }
+
+  &__input {
+    background: transparent;
+    height: 48px;
+    color: $primary-text-color;
+    font-size: 12px;
+    outline: none;
+    padding: 4px 30px 2px;
+    width: 100%;
+    word-spacing: 5px;
+    border: 0;
+
+    @include focusStyle();
+
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder,
+    &:-moz-placeholder {
+      color: $primary-text-color;
+    }
+  }
+
+  &__dummy-wrapper {
+    border: solid 1px $light-gray;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+
+    &--no-border.datepicker__dummy-wrapper {
+      border: 0;
+    }
+
+    &--is-active {
+      border: 1px solid $primary-color;
+    }
+  }
+
+  &__input {
+    color: $primary-text-color;
+    padding-top: 0;
+    font-size: $font-small;
+    height: 48px;
+    line-height: 48px;
+    text-align: left;
+    text-indent: 5px;
+    width: calc(50% + 4px);
+
+    @include device($phone) {
+      text-indent: 0;
+      text-align: center;
+    }
+
+    &:first-child {
+      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+      width: calc(50% - 4px);
+      text-indent: 20px;
+    }
+
+    &--is-active {
+      color: $primary-color;
+    }
+
+    &--is-active::placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active::-moz-placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active:-ms-input-placeholder {
+      color: $primary-color;
+    }
+
+    &--is-active:-moz-placeholder {
+      color: $primary-color;
+    }
+
+    &--single-date:first-child {
+      width: 100%;
+      background: none;
+      text-align: left;
+    }
+  }
+
+  &__month-day-wrapper {
+    height: 0;
+    padding-top: calc(100% - 1px); //fix for safari
+    span {
+      z-index: 1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__month-day {
+    visibility: visible;
+    text-align: center;
+    color: $primary-color;
+    cursor: pointer;
+
+    @include focusStyle();
+
+    &--today {
+      border: 0;
+
+      .datepicker__month-day-wrapper {
+        border: 2px solid $primary-color;
+        padding-top: calc(100% - 5px);
+      }
+    }
+
+    &--invalid-range {
+      background-color: rgba($primary-color, .3);
+      color: $lightest-gray;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    &--invalid {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    &--valid:hover,
+    &--allowed-checkout:hover {
+      background-color: $primary-color;
+      color: $colorValidHoverDate;
+    }
+
+    &--disabled {
+      opacity: 1;
+      background: $disabledBg;
+      color: $disabled-color;
+      cursor: not-allowed;
+      pointer-events: none;
+      font-weight: $font-regular;
+      position: relative;
+      span {
+        text-decoration: line-through;
+      }
+    }
+
+    &--valid#{&}--not-allowed,
+    &--not-allowed.currentDay,
+    &--valid#{&}--not-allowed:hover {
+      color: $primary-color;
+      font-weight: $font-regular;
+      cursor: default;
+      background: transparent;
+      span {
+        text-decoration: none;
+      }
+    }
+
+    &--hovering#{&}--not-allowed:hover {
+      cursor: pointer;
+    }
+
+    &--halfCheckIn,
+    &--halfCheckOut {
+      position: relative;
+      overflow: hidden;
+      &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        content: '';
+        z-index: -1;
+        height: 0;
+        width: 0;
+        border-bottom: $width-half-day solid $disabledBg;
+        border-left: $width-half-day solid transparent;
+      }
+    }
+
+    &--halfCheckOut {
+      &:before {
+        border-top: $width-half-day solid $disabledBg;
+        border-bottom: 0;
+        border-left: 0;
+        border-right: $width-half-day solid transparent;
+      }
+    }
+
+    &--selected {
+      background-color: rgba($primary-color, .7);
+      color: $white;
+      span {
+        text-decoration: none;
+      }
+      &:hover {
+        font-weight: $font-bold;
+        background-color: $bgRollActiveDage;
+        color: $colorRollActiveDage;
+        z-index: 1;
+      }
+    }
+
+    &--hovering {
+      background-color: rgba($primary-color, .7);
+      color: $white;
+      font-weight: $font-bold;
+      cursor: pointer;
+      span {
+        text-decoration: none;
+      }
+    }
+
+    &--first-day-selected,
+    &--last-day-selected {
+      background: $primary-color;
+      color: $white;
+      cursor: pointer;
+      font-weight: $font-bold;
+      pointer-events: auto;
+      span {
+        text-decoration: none;
+      }
+    }
+
+    &--allowed-checkout {
+      color: $medium-gray;
+    }
+
+    &--out-of-range {
+      color: $lightest-gray;
+      cursor: not-allowed;
+      font-weight: $font-regular;
+      position: relative;
+      pointer-events: none;
+      span {
+        text-decoration: none;
+      }
+    }
+
+    &--valid {
+      cursor: pointer;
+      font-weight: $font-bold;
+    }
+
+    &--valid#{&}--halfCheckIn#{&}--last-day-selected {
+      color: white
+    }
+
+    &--hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__month-button {
+    background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #00ca9d;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity ease .5s;
+
+    &:hover {
+      opacity: .65;
+    }
+
+    @include focusStyle();
+
+    &--prev {
+      transform: rotateY(180deg);
+    }
+
+    &--next {
+      float: right;
+    }
+
+    &[disabled] {
+      opacity: .2;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+  &__inner {
+    padding: 1.5rem 2.5rem;
+
+    @include device($up-to-tablet) {
+      padding: 0;
+    }
+  }
+
+  .show-tooltip {
+    .datepicker__months {
+      margin-top: 160px;
+      height: calc(100% - 160px);
+    }
+    .datepicker__tooltip--mobile {
+      height: auto;
+      opacity: 1;
+      padding: 15px;
+      visibility: visible;
+    }
+  }
+
+  &__months {
+    @include device($desktop) {
+      display: flex;
+      flex-wrap: wrap;
+      width: 650px;
+      justify-content: space-between;
+
+    }
+
+    @include device($up-to-tablet) {
+      margin-top: 90px;
+      height: calc(100% - 90px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow-y: scroll;
+      right: 0;
+      bottom: 0;
+      transition: all ease .2s;
+    }
+
+    &::before {
+      content: '';
+      background: $light-gray;
+      bottom: 0;
+      display: block;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      width: 1px;
+
+      @include device($up-to-tablet) {
+        display: none;
+      }
+    }
+
+    &--full {
+      width: 100%;
+
+      .datepicker__month {
+        width: 470px;
+        padding: 0
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &__month {
+    font-size: 12px;
+    width: 50%;
+    padding-right: 10px;
+
+    @include device($up-to-tablet) {
+      width: 100%;
+      padding-right: 0;
+      padding-top: 60px;
+      height: 360px;
+
+      &:last-of-type {
+        margin-bottom: 65px;
+      }
+    }
+
+    @include device($desktop) {
+      &:last-of-type {
+        padding-right: 0;
+        padding-left: 10px;
+      }
+    }
+  }
+
+  &__month-caption {
+    height: 2.5em;
+    vertical-align: middle;
+  }
+
+  &__month-name {
+    font-size: 16px;
+    font-weight: $font-bold;
+    margin-top: -40px;
+    padding: 13px 0 26px;
+    pointer-events: none;
+    text-align: center;
+
+    @include device($up-to-tablet) {
+      margin-top: -50px;
+      margin-bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__week-days {
+    height: 2em;
+    vertical-align: middle;
+  }
+
+  &__week-row {
+    height: 40px;
+    line-height: 40px;
+
+    @include device($up-to-tablet) {
+      box-shadow: 0px 8px 12px 0px rgba($black, .1);
+    }
+  }
+
+  &__week-name {
+    width: calc(100% / 7);
+    float: left;
+    font-size: 12px;
+    font-weight: 400;
+    color: $medium-gray;
+    text-align: center;
+  }
+
+  &__close-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: $primary-color;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: $font-bold;
+    margin-top: 0;
+    outline: 0;
+    z-index: 10000;
+    position: fixed;
+    right: 15px;
+    top: 0;
+    height: 48px;
+    line-height: 48px;
+
+    i {
+      display: block;
+      font-style: inherit;
+      transform: rotate(45deg);
+    }
+  }
+
+  &__clear-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: $font-bold;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+
+    svg {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 8px;
+      stroke: $medium-gray;
+      width: 20px;
+      width: 14px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @include focusStyle();
+  }
+
+  &__tooltip {
+    background-color: $dark-gray;
+    border-radius: 2px;
+    color: $white;
+    font-size: 11px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 50;
+    left: 50%;
+    bottom: 100%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    text-align: center;
+
+    &--mobile {
+      height: 0;
+      opacity: 0;
+      visibility: hidden;
+      padding: 0 15px;
+      border: 1px solid #d7d9e2;
+      font-size: 14px;
+      line-height: 1.4;
+      transition: all ease .2s;
+    }
+
+    &:after {
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid $dark-gray;
+      bottom: -4px;
+      content: '';
+      left: 50%;
+      margin-left: -4px;
+      position: absolute;
+    }
+  }
+}
+
+.-is-hidden {
+  display: none;
+}
+
+.-hide-up-to-tablet {
+  @include device($up-to-tablet) {
+    display: none;
+  }
+}
+
+.-hide-on-desktop {
+  @include device($desktop) {
+    display: none;
+  }
+}
+
+.parent-bullet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: -1;
+
+  .bullet {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 4px;
+    transition: opacity ease .3s;
+    @include device($desktop) {
+      top: 50%;
+    }
+
+    &.checkInCheckOut,
+    &.checkIn,
+    &.checkOut {
+      width: 8px;
+      height: 18px;
+      border-radius: 10px;
+
+      &.bullet--small {
+        height: 6px;
+        width: 14px;
+      }
+    }
+
+    &.checkInCheckOut {
+      left: calc(50% - 15px);
+    }
+  }
+
+  .pipe {
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    transition: opacity ease .3s;
+    @include device($desktop) {
+      top: 50%;
+    }
+
+    &.pipe--small {
+      height: 3px;
+    }
+
+    &.checkIn {
+      left: calc(50% + 4px);
+      width: calc(50% - 4px);
+    }
+
+    &.checkOut {
+      left: 0px;
+      width: calc(50% - 4px);
+    }
+
+    &.checkInCheckOut {
+      width: calc(50% - 19px);
+    }
+  }
+}

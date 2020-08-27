@@ -1,9 +1,8 @@
-import DatePicker from './components/DatePicker.vue';
+import Vue from "vue";
+import App from "./App.vue";
 
-const VueHotelDatePicker = {
-  install: function (Vue, options) {
-    Vue.component(DatePicker.name, DatePicker);
-  }
-};
+Vue.config.productionTip = false;
 
-export default VueHotelDatePicker;
+new Vue({
+  render: h => h(App)
+}).$mount("#app");
