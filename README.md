@@ -1,104 +1,11 @@
-[![Code Climate](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/gpa.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/)
-[![Issue Count](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/issue_count.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker)
 [![dependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker) [![devDependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/dev-status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker?type=dev)
 [![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
-[![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
-
-# Release 0.9.4
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
-
-# vue-hotel-datepicker@2
-
-👊👊👊An easier Calendar in Vue.js 👊👊👊
-
-------------
-
-## What I did:
-https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=true
-
-------------
-
-* forked https://github.com/krystalcampioni/vue-hotel-datepicker
-* Use vue-cli
-* Remove the pug html, use html
-* Remove some useless dependencies
-* Rewrite code
-  * Add eslint airbnb + prettier
-  * Remove useless condition like empty if or else
-  * Add return for all computed
-  * Add a bind key on `v-for`
-  * Rewrite jest test
-  * Remove v-html / v-text use `{{ }}`
-* Add emit when clearSelection
-* Remove querySelector, use refs
-* Fix bug: impossible to open the calendar when clearselection is triggered
-* Allow to have half a day, in order to enable checkIn on a checkOut day
-* Refacto the paginate infinite scroll on mobile
-* Prevent checkOut on the same day as checkIn
-* Add periodDates array for specific periods with different minimumStay / Price or periodType
-* Show price of your Object periodDates
-* Review style
-* Add a `--hovering` class
-* When there are checkIn and checkOut => Click on new date makes a new checkIn and clears checkOut
-* If there is a periodDates, automatically update minNights
-* Create a *not allowed* status which is different from the *disabled* status
-  * NotAllowed inside a weekly period
-  * NotAllowed inside a nightly period right before a weekly period (to respect min nights)
-* Remove useless props on the DateInput component
-* Change `<span>` to `<button>` on pagination and put a `disabled` attribute when activeMonthIndex equal to 0
-* Fix disable calcul of minNightsCount when checkout
-* Add the lastDateAvailable
-* Create a content slot
-* Mobile:
-  * CheckIn - CheckOut scroll to current month
-* If CheckIn, click on CheckIn clearSelection
-* Review the style of the modal cross
-* Rewrite the ReRender function
-* Rewrite the clickOnDay function
-* Rewrite the clickOutside function
-* Create a dynamic array for disabled dates of the nextPeriod
-* Sort in ascending order periodDates (startAt)
-* Add handleCheckIncheckOutHalfDay to get a checkIncheckOutHalfDay
-* Rethink UI/UX of the calendar thank's to *Elsa Morand*
-  - Cancel prefill disabled days
-  - Review the tooltip on mobile
-  -- Remove the tooltip on mobile, show the content text at the top of the calendar to display several types of messages according to your needs.
-  - Review the tooltip on desktop
-  -- How the tooltip appears
-  - Add some i18n translations
-  ```
-  tooltip: {
-    halfDayCheckIn: "Available CheckIn",
-    halfDayCheckOut: "Available CheckOut",
-    saturdayToSaturday: "Only Saturday to Saturday",
-    sundayToSunday: "Only Sunday to Sunday",
-    minimumRequiredPeriod: "A minimum of <br/> %{minNightInPeriod} %{night} is required."
-  },
-  ```
-* Add `showSingleMonth` which allows to show 1 month
-* Trigger `window.resize` on desktop, mobile, tablet
-* Add `event clicked Esc` for `clearSelection`
-* Add `invalid` class on checkIn date
-* Breakings changes: removed `allowedRanges`, use `periods` if you want to have a range of disableDates
-* Refactoring *tooltip*, show on *hover* / show on *click*
-* Review the tooltips when there is periods array #50
-* Display the calendar in full size without input #61
-* Add a range of bookings #65
-
-------------
-
-## What I will improve
-
-------------
-
-project: https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=true
-
-------------
+[![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=main)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
 
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localisation support and more.
 
 
-![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo.gif?raw=true)
+![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/main/demo.gif?raw=true)
 
 
 
