@@ -48,6 +48,7 @@
     ]
   },
   "main": "dist/vue-hotel-datepicker.umd.min.js",
+  "module": "dist/vue-hotel-datepicker.common.js",
   "files": [
     "dist"
   ],
