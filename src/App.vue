@@ -472,6 +472,11 @@ export default {
       } else if (this.singleDaySelection == true) {
         this.checkIn = event.date;
         this.checkOut = event.date;
+      } else if (
+        this.checkIn !== null && this.checkOut == null &&
+        this.isDateLessOrEquals(event.date, this.checkIn)
+      ) {
+        this.checkIn = event.date;
       } else if (this.checkIn !== null && this.checkOut == null) {
         this.checkOut = event.date;
       } else {
@@ -480,6 +485,8 @@ export default {
       }
 
       this.nextDisabledDate = event.nextDisabledDate;
+      this.hoveringDate = null;
+      this.hoveringDate = event.date;
     },
 
     renderPreviousMonth() {

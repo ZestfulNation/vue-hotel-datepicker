@@ -206,22 +206,7 @@ export default {
 
   watch: {
     hoveringDate(date) {
-      if (
-        this.checkIn !== null &&
-        this.checkOut == null &&
-        this.isDisabled == false
-      ) {
-        this.isDateLessOrEquals(this.checkIn, this.date) &&
-        this.isDateLessOrEquals(this.date, this.hoveringDate)
-          ? (this.isHighlighted = true)
-          : (this.isHighlighted = false);
-      }
-      if (
-        this.checkIn !== null &&
-        this.checkOut == null &&
-        this.allowedCheckoutDays.length !== 0
-      ) {
-      }
+      this.fetchHighlight();
     },
     activeMonthIndex(index) {
       this.checkIfDisabled();
@@ -242,6 +227,7 @@ export default {
     },
     checkIn(date) {
       this.createAllowedCheckoutDays(date);
+      this.fetchHighlight();
     }
   },
   beforeMount() {
@@ -361,7 +347,7 @@ export default {
         this.nextDisabledDate !== Infinity
       ) {
         this.isDisabled = true;
-      } else if (this.isDateLessOrEquals(this.date, this.checkIn)) {
+      } else if (this.isDateLessOrEquals(this.date, (new Date).setDate(this.options.startDate.getDate() - 1))) {
         this.isDisabled = true;
       }
       if (
@@ -378,7 +364,29 @@ export default {
       } else {
         return;
       }
-    }
+    },
+
+    fetchHighlight() {
+      if (
+        this.checkIn !== null &&
+        this.checkOut == null &&
+        this.isDisabled == false
+      ) {
+        if (! this.isDateLessOrEquals(this.checkIn, this.date)) {
+          this.isHighlighted = false;
+        } else {
+          this.isDateLessOrEquals(this.date, this.hoveringDate)
+            ? (this.isHighlighted = true)
+            : (this.isHighlighted = false);
+        }
+      }
+      if (
+        this.checkIn !== null &&
+        this.checkOut == null &&
+        this.allowedCheckoutDays.length !== 0
+      ) {
+      }
+    },
   },
 
 };
