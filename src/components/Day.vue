@@ -36,7 +36,7 @@
 
 <script>
 import fecha from "fecha";
-import Helpers from "./helpers";
+import Helpers from "../helpers";
 import BookingBullet from "./BookingBullet.vue";
 
 export default {
