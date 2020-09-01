@@ -1,5 +1,5 @@
 {
-    "endOfLine": "crlf",
+    "endOfLine": "lf",
     "printWidth": 120,
     "singleQuote": true,
     "tabWidth": 4,
