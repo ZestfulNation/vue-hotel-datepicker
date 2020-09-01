@@ -266,7 +266,7 @@ import fecha from "fecha";
 
 import Day from "../Day.vue";
 import DateInput from "../DateInput.vue";
-import Helpers from "../helpers";
+import Helpers from "../../helpers";
 
 const defaulti18n = {
   night: "Night",
