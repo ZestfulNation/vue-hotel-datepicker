@@ -243,37 +243,7 @@ import fecha from 'fecha'
 import Day from '../Day.vue'
 import DateInput from '../DateInput.vue'
 import Helpers from '../../helpers'
-
-const defaulti18n = {
-    night: 'Night',
-    nights: 'Nights',
-    'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-    'check-in': 'Check-in',
-    'check-out': 'Check-out',
-    'month-names': [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ],
-    tooltip: {
-        halfDayCheckIn: 'Available CheckIn',
-        halfDayCheckOut: 'Available CheckOut',
-        saturdayToSaturday: 'Only Saturday to Saturday',
-        sundayToSunday: 'Only Sunday to Sunday',
-        minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum.',
-    },
-    week: 'week',
-    weeks: 'weeks',
-}
+import i18nDefaults from '../../i18n'
 
 export default {
     name: 'HotelDatePicker',
@@ -381,7 +351,7 @@ export default {
         },
         i18n: {
             type: Object,
-            default: () => defaulti18n,
+            default: () => i18nDefaults,
         },
         enableCheckout: {
             type: Boolean,
