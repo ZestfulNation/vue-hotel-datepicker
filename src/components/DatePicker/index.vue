@@ -1177,9 +1177,10 @@ export default {
 
             this.months.push(month)
         },
-        createHalfDayDates(baseHalfDayDates) {
+        createHalfDayDates(_baseHalfDayDates) {
             let sortedDates = []
             const checkIncheckOutHalfDay = {}
+            const baseHalfDayDates = [..._baseHalfDayDates]
 
             // Sorted disabledDates
             baseHalfDayDates.sort((a, b) => {
