@@ -34,8 +34,8 @@ yarn add vue-hotel-datepicker
 
 
 ```javascript
-import HotelDatePicker from 'vue-hotel-datepicker2'
-import 'vue-hotel-datepicker2/dist/vueHotelDatepicker2.css';
+import HotelDatePicker from 'vue-hotel-datepicker'
+import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';
 
 export default {
   components: {
