@@ -119,87 +119,68 @@ export default {
     },
 
     dayClass() {
-      if (this.belongsToThisMonth) {
-        // If the calendar has a minimum number of nights
-        if (
-          !this.isDisabled &&
-          this.compareDay(this.date, this.checkIn) == 1 &&
-          this.options.minNights > 0 &&
-          this.compareDay(
-            this.date,
-            this.addDays(this.checkIn, this.options.minNights)
-          ) == -1
-        ) {
-          return 'datepicker__month-day--selected datepicker__month-day--out-of-range';
-        }
-
-        // If the calendar has allowed ranges
-        if (this.options.allowedRanges.length !== 0) {
-          if (
-            !this.isDisabled &&
-            this.checkIn !== null &&
-            this.checkOut == null
-          ) {
-            // If the day is one of the allowed check out days and is not highlighted
-            if (
-              this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) == 0 && !this.isHighlighted
-              )
-            ) {
-              return 'datepicker__month-day--allowed-checkout';
-            }
-            // If the day is one of the allowed check out days and is highlighted
-            if (
-              this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) == 0 && this.isHighlighted
-              )
-            ) {
-              return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout';
-            }
-            // If the day is not one of the allowed Checkout Days and is highlighted
-            if (
-              !this.allowedCheckoutDays.some(
-                i => this.compareDay(i, this.date) == 0
-              ) &&
-              this.isHighlighted
-            ) {
-              return 'datepicker__month-day--out-of-range datepicker__month-day--selected';
-            } else {
-              return 'datepicker__month-day--out-of-range';
-            }
-          }
-        }
-        // Highlight the selected dates and prevent the user from selecting
-        // the same date for checkout and checkin
-        if (
-          this.checkIn !== null &&
-          fecha.format(this.checkIn, 'YYYYMMDD') ==
-            fecha.format(this.date, 'YYYYMMDD')
-        ) {
-          if (this.options.minNights == 0) {
-            return 'datepicker__month-day--first-day-selected';
-          } else {
-            return 'datepicker__month-day--disabled datepicker__month-day--first-day-selected';
-          }
-        }
-        if (this.checkOut !== null) {
-          if (
-            fecha.format(this.checkOut, 'YYYYMMDD') ==
-            fecha.format(this.date, 'YYYYMMDD')
-          ) {
-            return 'datepicker__month-day--disabled datepicker__month-day--last-day-selected';
-          }
-        }
-        // Only highlight dates that are not disabled
-        if (this.isHighlighted && !this.isDisabled) {
-          return ' datepicker__month-day--selected';
-        }
-        if (this.isDisabled) {
-          return 'datepicker__month-day--disabled';
-        }
-      } else if (!this.belongsToThisMonth) {
+      if (!this.belongsToThisMonth) {
         return 'datepicker__month-day--hidden';
       }
+
+      // If the calendar has a minimum number of nights
+      if (
+        !this.isDisabled &&
+        this.compareDay(this.date, this.checkIn) == 1 &&
+        this.options.minNights > 0 &&
+        this.compareDay(this.date, this.addDays(this.checkIn, this.options.minNights)) == -1
+      ) {
+        return 'datepicker__month-day--selected datepicker__month-day--out-of-range';
+      }
+
+      // If the calendar has allowed ranges
+      if (
+        this.options.allowedRanges.length !== 0 &&
+        !this.isDisabled &&
+        this.checkIn !== null &&
+        this.checkOut == null
+      ) {
+        // If the day is one of the allowed check out days and is not highlighted
+        if (this.allowedCheckoutDays.some(i => this.compareDay(i, this.date) == 0 && !this.isHighlighted)) {
+          return 'datepicker__month-day--allowed-checkout';
+        }
+
+        // If the day is one of the allowed check out days and is highlighted
+        if (this.allowedCheckoutDays.some(i => this.compareDay(i, this.date) == 0 && this.isHighlighted)) {
+          return 'datepicker__month-day--selected datepicker__month-day--allowed-checkout';
+        }
+
+        // If the day is not one of the allowed Checkout Days and is highlighted
+        if (!this.allowedCheckoutDays.some(i => this.compareDay(i, this.date) == 0) && this.isHighlighted) {
+          return 'datepicker__month-day--out-of-range datepicker__month-day--selected';
+        }
+
+        return 'datepicker__month-day--out-of-range';
+      }
+
+      // Highlight the selected dates and prevent the user from selecting
+      // the same date for checkout and checkin
+      if (this.checkIn !== null && fecha.format(this.checkIn, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')) {
+        if (this.options.minNights == 0) {
+          return 'datepicker__month-day--first-day-selected';
+        }
+
+        return 'datepicker__month-day--disabled datepicker__month-day--first-day-selected';
+      }
+
+      if (this.checkOut !== null && fecha.format(this.checkOut, 'YYYYMMDD') == fecha.format(this.date, 'YYYYMMDD')) {
+        return 'datepicker__month-day--disabled datepicker__month-day--last-day-selected';
+      }
+
+      // Only highlight dates that are not disabled
+      if (this.isHighlighted && !this.isDisabled) {
+        return 'datepicker__month-day--selected';
+      }
+
+      if (this.isDisabled) {
+        return 'datepicker__month-day--disabled';
+      }
+
       return 'datepicker__month-day--valid';
     }
   },
