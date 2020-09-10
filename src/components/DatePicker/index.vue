@@ -830,6 +830,8 @@ export default {
             } else if (this.singleDaySelection === true) {
                 this.checkIn = date
                 this.checkOut = date
+            } else if (this.checkIn !== null && this.checkOut == null && this.isDateLessOrEquals(date, this.checkIn)) {
+                this.checkIn = date
             } else if (this.checkIn !== null && this.checkOut == null) {
                 this.checkOut = date
                 this.$emit('periodSelected', event, this.checkIn, this.checkOut)
@@ -846,6 +848,8 @@ export default {
             }
 
             this.nextDisabledDate = nextDisabledDate
+            this.hoveringDate = null
+            this.hoveringDate = date
             this.$emit('dayClicked', date, formatDate, nextDisabledDate)
         },
         nextBookingDate(date) {

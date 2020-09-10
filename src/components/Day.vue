@@ -505,16 +505,10 @@ export default {
     },
     watch: {
         hoveringDate() {
-            if (this.checkIn !== null && this.checkOut == null && this.isDisabled === false) {
-                if (
-                    this.isDateLessOrEquals(this.checkIn, this.date) &&
-                    this.isDateLessOrEquals(this.date, this.hoveringDate)
-                ) {
-                    this.isHighlighted = true
-                } else {
-                    this.isHighlighted = false
-                }
-            }
+            this.fetchHighlight()
+        },
+        checkIn() {
+            this.fetchHighlight()
         },
         activeMonthIndex() {
             this.checkIfDisabled()
@@ -670,7 +664,7 @@ export default {
         disableNextDays() {
             if (!this.isDateLessOrEquals(this.date, this.nextDisabledDate) && this.nextDisabledDate !== Infinity) {
                 this.isDisabled = true
-            } else if (this.isDateLessOrEquals(this.date, this.checkIn)) {
+            } else if (this.isDateLessOrEquals(this.date, new Date().setDate(this.options.startDate.getDate() - 1))) {
                 this.isDisabled = true
             }
 
@@ -680,6 +674,17 @@ export default {
 
             if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout) {
                 this.isDisabled = false
+            }
+        },
+        fetchHighlight() {
+            if (this.checkIn !== null && this.checkOut === null && this.isDisabled === false) {
+                if (!this.isDateLessOrEquals(this.checkIn, this.date)) {
+                    this.isHighlighted = false
+                } else if (this.isDateLessOrEquals(this.date, this.hoveringDate)) {
+                    this.isHighlighted = true
+                } else if (!this.isDateLessOrEquals(this.date, this.hoveringDate)) {
+                    this.isHighlighted = false
+                }
             }
         },
     },
