@@ -1,6 +1,15 @@
 <template>
     <div id="app" style="margin: 0 auto;">
-        <h1>Vue Hotel datepicker@2</h1>
+        <h1>Vue Hotel Datepicker v4</h1>
+        <div>
+            Language Selection:
+            <select v-model="language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
         <div>
             <div class="box">
                 <h3>
@@ -13,7 +22,7 @@
                     :firstDayOfWeek="1"
                     :format="dateFormat"
                     :hoveringTooltip="false"
-                    :i18n="en"
+                    :i18n="i18n"
                     :lastDateAvailable="lastDateAvailable"
                     :minNights="1"
                     :showYear="true"
@@ -52,7 +61,7 @@
                     :format="dateFormat"
                     :lastDateAvailable="lastDateAvailable"
                     :minNights="minNights"
-                    :i18n="en"
+                    :i18n="i18n"
                     :showYear="true"
                     :firstDayOfWeek="1"
                     :disableCheckoutOnCheckin="true"
@@ -82,7 +91,7 @@
                     :format="dateFormat"
                     :lastDateAvailable="lastDateAvailable"
                     :minNights="minNights"
-                    :i18n="en"
+                    :i18n="i18n"
                     :positionRight="true"
                     :showYear="true"
                     :firstDayOfWeek="1"
@@ -120,7 +129,7 @@
                     :format="dateFormat"
                     :lastDateAvailable="lastDateAvailable"
                     :minNights="minNights"
-                    :i18n="en"
+                    :i18n="i18n"
                     :gridStyle="false"
                     :showYear="true"
                     :firstDayOfWeek="1"
@@ -159,7 +168,7 @@
                     :showSingleMonth="true"
                     :lastDateAvailable="lastDateAvailable"
                     :minNights="minNights"
-                    :i18n="en"
+                    :i18n="i18n"
                     :showYear="true"
                     :firstDayOfWeek="1"
                     :disableCheckoutOnCheckin="true"
@@ -317,85 +326,18 @@
 
             <div class="box">
                 <h3>Change the first day of the week to Monday</h3>
-                <DatePicker
-                    :i18n="{
-                        night: 'Night',
-                        nights: 'Nights',
-                        'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                        'check-in': 'Check-in',
-                        'check-out': 'Check-Out',
-                        'month-names': [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                        ],
-                    }"
-                    :firstDayOfWeek="1"
-                />
+                <DatePicker :i18n="i18n" :firstDayOfWeek="1" />
             </div>
 
             <div class="box">
                 <h3>Set checkIn value</h3>
-                <DatePicker
-                    :i18n="{
-                        night: 'Night',
-                        nights: 'Nights',
-                        'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                        'check-in': 'Check-in',
-                        'check-out': 'Check-Out',
-                        'month-names': [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                        ],
-                    }"
-                    :firstDayOfWeek="1"
-                    :checkInValue="new Date()"
-                />
+                <DatePicker :i18n="i18n" :firstDayOfWeek="1" :checkInValue="new Date()" />
             </div>
 
             <div class="box">
                 <h3>Set checkOut value</h3>
                 <DatePicker
-                    :i18n="{
-                        night: 'Night',
-                        nights: 'Nights',
-                        'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                        'check-in': 'Check-in',
-                        'check-out': 'Check-Out',
-                        'month-names': [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                        ],
-                    }"
+                    :i18n="i18n"
                     :firstDayOfWeek="1"
                     :checkInValue="new Date()"
                     :checkOutValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
@@ -405,27 +347,7 @@
             <div class="box">
                 <h3>Event CheckIn</h3>
                 <DatePicker
-                    :i18n="{
-                        night: 'Night',
-                        nights: 'Nights',
-                        'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-                        'check-in': 'Check-in',
-                        'check-out': 'Check-Out',
-                        'month-names': [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                        ],
-                    }"
+                    :i18n="i18n"
                     @check-in-changed="checkInChanged($event)"
                     @check-out-changed="checkOutChanged($event)"
                 />
@@ -439,6 +361,10 @@
 
 <script>
 import DatePicker from './components/DatePicker/index.vue'
+import pt from './i18n/pt'
+import fr from './i18n/fr'
+import en from './i18n/en'
+import es from './i18n/es'
 
 export default {
     components: {
@@ -446,66 +372,8 @@ export default {
     },
     data() {
         return {
-            ptPT: {
-                night: 'Noite',
-                nights: 'Noites',
-                'day-names': ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                'check-in': 'Chegada',
-                'check-out': 'Partida',
-                'month-names': [
-                    'Janeiro',
-                    'Fevereiro',
-                    'Março',
-                    'Abril',
-                    'Maio',
-                    'Junho',
-                    'Julho',
-                    'Agosto',
-                    'Setembro',
-                    'Outubro',
-                    'Novembro',
-                    'Dezembro',
-                ],
-                tooltip: {
-                    halfDayCheckIn: 'Reservas possíveis',
-                    halfDayCheckOut: 'Reservas possíveis',
-                    saturdayToSaturday: 'Sábado a Sábado<br/> apenas',
-                    sundayToSunday: 'Domingo a domingo<br/> apenas',
-                    minimumRequiredPeriod: '%{minNightInPeriod} %{night} mínimo.',
-                },
-                week: 'semana',
-                weeks: 'semanas',
-            },
-            frFR: {
-                'check-in': 'Départ',
-                'check-out': 'Arrivée',
-                'day-names': ['lu', 'ma', 'me', 'je', 've', 'sa', 'di'],
-                'month-names': [
-                    'Janvier',
-                    'Février',
-                    'Mars',
-                    'Avril',
-                    'Mai',
-                    'Juin',
-                    'Juillet',
-                    'Août',
-                    'Septembre',
-                    'Octobre',
-                    'Novembre',
-                    'Décembre',
-                ],
-                night: 'nuit',
-                nights: 'nuits',
-                tooltip: {
-                    halfDayCheckIn: 'Réservation possible',
-                    halfDayCheckOut: 'Réservation possible',
-                    saturdayToSaturday: 'Du samedi au samedi<br/> uniquement',
-                    sundayToSunday: 'Du dimanche au dimanche<br/> uniquement',
-                    minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum',
-                },
-                week: 'semaine',
-                weeks: 'semaines',
-            },
+            language: 'en',
+            languages: { pt, fr, en, es },
             periodDates: [
                 {
                     startAt: '2020-07-01',
@@ -618,6 +486,9 @@ export default {
         },
         lastDateAvailable() {
             return this.addYears(new Date(), 2)
+        },
+        i18n() {
+            return this.languages[this.language] ? this.languages[this.language] : this.languages.en
         },
     },
     methods: {
