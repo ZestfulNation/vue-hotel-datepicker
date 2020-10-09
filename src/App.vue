@@ -1,5 +1,5 @@
 <template>
-    <div id="app" style="margin: 0 auto;">
+    <div id="app">
         <h1>Vue Hotel Datepicker v4</h1>
         <div>
             Language Selection:
@@ -10,7 +10,7 @@
                 <option value="fr">Français</option>
             </select>
         </div>
-        <div>
+        <div class="container">
             <div class="box">
                 <h3>
                     Show list of static bookings
@@ -18,17 +18,7 @@
                 <DatePicker
                     :alwaysVisible="true"
                     :bookings="bookings"
-                    :disableCheckoutOnCheckin="true"
-                    :firstDayOfWeek="1"
-                    :format="dateFormat"
-                    :hoveringTooltip="false"
-                    :lastDateAvailable="lastDateAvailable"
-                    :minNights="1"
-                    :showYear="true"
                     :i18n="i18n"
-                    @bookingClicked="bookingClicked"
-                    @periodSelected="periodSelected"
-                    @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
                 />
             </div>
             <div class="box">
@@ -36,106 +26,24 @@
                     Calendar in full view
                 </h3>
                 <DatePicker
-                    :disabledDates="[
-                        '2020-07-15',
-                        '2020-07-16',
-                        '2020-07-17',
-                        '2020-07-18',
-                        '2020-07-19',
-                        '2020-07-20',
-                        '2020-07-21',
-                        '2020-08-01',
-                        '2020-08-02',
-                        '2020-08-03',
-                        '2020-08-04',
-                        '2020-08-11',
-                        '2020-08-12',
-                        '2020-08-13',
-                        '2020-08-14',
-                        '2020-08-15',
-                        '2020-08-16',
-                        '2020-08-17',
-                        '2020-08-18',
-                    ]"
                     :alwaysVisible="true"
-                    :format="dateFormat"
-                    :lastDateAvailable="lastDateAvailable"
-                    :minNights="minNights"
                     :showYear="true"
-                    :firstDayOfWeek="1"
-                    :disableCheckoutOnCheckin="true"
                     :i18n="i18n"
-                    @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
                 />
             </div>
             <div class="box">
                 <h3>
                     Show calendar on the right
                 </h3>
-                <DatePicker
-                    :disabledDates="[
-                        '2020-07-15',
-                        '2020-07-16',
-                        '2020-07-17',
-                        '2020-07-18',
-                        '2020-07-19',
-                        '2020-08-15',
-                        '2020-08-16',
-                        '2020-08-17',
-                        '2020-08-18',
-                        '2020-08-19',
-                        '2020-08-20',
-                        '2020-08-21',
-                        '2020-08-22',
-                    ]"
-                    :format="dateFormat"
-                    :lastDateAvailable="lastDateAvailable"
-                    :minNights="minNights"
-                    :positionRight="true"
-                    :showYear="true"
-                    :firstDayOfWeek="1"
-                    :disableCheckoutOnCheckin="true"
-                    :periodDates="periodDates"
-                    :i18n="i18n"
-                    @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
-                />
+                <DatePicker :positionRight="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
                     Hide grid style
                 </h3>
                 <DatePicker
-                    :disabledDates="[
-                        '2020-06-15',
-                        '2020-06-16',
-                        '2020-06-17',
-                        '2020-06-18',
-                        '2020-06-19',
-                        '2020-06-20',
-                        '2020-06-21',
-                        '2020-07-01',
-                        '2020-07-02',
-                        '2020-07-03',
-                        '2020-07-04',
-                        '2020-07-11',
-                        '2020-07-12',
-                        '2020-07-13',
-                        '2020-07-14',
-                        '2020-07-15',
-                        '2020-07-16',
-                        '2020-07-17',
-                        '2020-07-18',
-                    ]"
-                    :format="dateFormat"
-                    :lastDateAvailable="lastDateAvailable"
-                    :minNights="minNights"
                     :gridStyle="false"
-                    :showYear="true"
-                    :firstDayOfWeek="1"
-                    :disableCheckoutOnCheckin="true"
-                    :periodDates="periodDates"
                     :i18n="i18n"
-                    @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
                 />
             </div>
             <div class="box">
@@ -143,47 +51,19 @@
                     Display one month only
                 </h3>
                 <DatePicker
-                    :disabledDates="[
-                        '2020-06-15',
-                        '2020-06-16',
-                        '2020-06-17',
-                        '2020-06-18',
-                        '2020-06-19',
-                        '2020-06-20',
-                        '2020-06-21',
-                        '2020-07-01',
-                        '2020-07-02',
-                        '2020-07-03',
-                        '2020-07-04',
-                        '2020-07-11',
-                        '2020-07-12',
-                        '2020-07-13',
-                        '2020-07-14',
-                        '2020-07-15',
-                        '2020-07-16',
-                        '2020-07-17',
-                        '2020-07-18',
-                    ]"
-                    :format="dateFormat"
                     :showSingleMonth="true"
-                    :lastDateAvailable="lastDateAvailable"
-                    :minNights="minNights"
-                    :showYear="true"
-                    :firstDayOfWeek="1"
-                    :disableCheckoutOnCheckin="true"
-                    :periodDates="periodDates"
                     :i18n="i18n"
-                    @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
                 />
             </div>
             <div class="box">
                 <h3>
                     Insert content with the content slot
                 </h3>
-                <DatePicker :lastDateAvailable="lastDateAvailable" show-year :i18n="i18n" >
+
+                <DatePicker :i18n="i18n">
                     <!-- Insert content here -->
-                    <div slot="content">
-                        Hello
+                    <div slot="content" style="background: #FF8000; color: white; padding: 1rem; font-size: 2rem;">
+                        Content Slot with style
                     </div>
                 </DatePicker>
             </div>
@@ -191,9 +71,9 @@
                 <h3>
                     Last date available
                     <strong>lastDateAvailable</strong> props <br />
+                    <small style="font-weight: normal">Stop pagination two years later</small>
                 </h3>
-                <p>Stop pagination two years later</p>
-                <DatePicker :lastDateAvailable="lastDateAvailable" :i18n="i18n" />
+                <DatePicker :lastDateAvailable="lastDateAvailable" :showYear="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>Show prices with <strong>periodDates</strong></h3>
@@ -237,7 +117,6 @@
             <div class="box">
                 <h3>Half day, If you have check in at noon and checkout before noon</h3>
                 <DatePicker
-                    :minNights="0"
                     :i18n="i18n"
                     :disabledDates="[
                         '2020-05-01',
@@ -252,11 +131,11 @@
             </div>
             <div class="box">
                 <h3>Disable check-in and check-out on the same day</h3>
-                <DatePicker :disableCheckoutOnCheckin="true" :minNights="0" :i18n="i18n" />
+                <DatePicker :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>Allow selection of single day</h3>
-                <DatePicker :singleDaySelection="true" :i18n="i18n"/>
+                <DatePicker :singleDaySelection="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>Check in only on saturday and minimum stay of 10 nights</h3>
@@ -265,88 +144,74 @@
                     :enableCheckout="true"
                 />
             </div>
-                <div class="box">
-                    <h3>Block all dates after December 31st of the current year</h3>
-                    <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)"
-                    :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Block all dates after September 15th</h3>
-                    <DatePicker :endDate="new Date(new Date().getFullYear(), 8, 15)"
-                    :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Block all date ranges of more than 30 days</h3>
-                    <DatePicker :maxNights="30" :showBottomBar="false" :selectForward="false" :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Minimum stay of 3 days</h3>
-                    <DatePicker :minNights="3" :showBottomBar="true" :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Certain dates blocked</h3>
-                    <DatePicker :disabledDates="['2017-09-14', '2017-09-26']" :showCloseButton="true" :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>
-                        Allow setting a default date range ( can be used to set a range from a url param )
-                    </h3>
-                    <DatePicker
-                        :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
-                        :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)"
-                        :i18n="i18n"
-                    />
-                </div>
-
-                <div class="box">
-                    <h3>Checkin only on saturdays</h3>
-                    <DatePicker
-                        :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
-                        :enableCheckout="true"
-                        :minNights="7"
-                        :i18n="i18n"
-                    />
-                </div>
-
-                <div class="box">
-                    <h3>Custom tooltip text</h3>
-                    <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Show year</h3>
-                    <DatePicker :showYear="true" :i18n="i18n" />
-                </div>
-
-                <div class="box">
-                    <h3>Custom date format</h3>
-                    <DatePicker :minNights="0" :singleDateSelection="true" format="MMMM D" :i18n="i18n" />
-                </div>
+            <div class="box">
+                <h3>Block all dates after December 31st of the current year</h3>
+                <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Block all dates after 15th of next month</h3>
+                <DatePicker :endDate="new Date(new Date().getFullYear(), new Date().getMonth(), 15)" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Block all date ranges of more than 30 days</h3>
+                <DatePicker :maxNights="30" :selectForward="false" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Minimum stay of 3 days</h3>
+                <DatePicker :minNights="3" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Certain dates blocked</h3>
+                <DatePicker :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>
+                    Allow setting a default date range ( can be used to set a range from a url param )
+                </h3>
+                <DatePicker
+                    :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
+                    :endingDateValue="
+                        new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)
+                    "
+                    :i18n="i18n"
+                />
+            </div>
+            <div class="box">
+                <h3>Checkin only on saturdays</h3>
+                <DatePicker
+                    :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
+                    :enableCheckout="true"
+                    :i18n="i18n"
+                />
+            </div>
+            <div class="box">
+                <h3>Custom tooltip text</h3>
+                <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Hide year</h3>
+                <DatePicker :showYear="false" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Custom date format (MMMM D)</h3>
+                <DatePicker format="MMMM D" :i18n="i18n" />
+            </div>
             <div class="box">
                 <h3>Change the first day of the week to Monday</h3>
                 <DatePicker :firstDayOfWeek="1" :i18n="i18n" />
             </div>
-
             <div class="box">
                 <h3>Set checkIn value</h3>
                 <DatePicker :firstDayOfWeek="1" :checkInValue="new Date()" :i18n="i18n" />
             </div>
-
             <div class="box">
                 <h3>Set checkOut value</h3>
                 <DatePicker
-                    :firstDayOfWeek="1"
                     :checkInValue="new Date()"
                     :checkOutValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
                     :i18n="i18n"
                 />
             </div>
-
             <div class="box">
                 <h3>Event CheckIn</h3>
                 <DatePicker
@@ -354,15 +219,15 @@
                     @check-in-changed="checkInChanged($event)"
                     @check-out-changed="checkOutChanged($event)"
                 />
-                    new Check In Date : {{ newCheckInDate }} <br />
-                    new Check Out Date : {{ newCheckOutDate }}
-                </div>
+                <p>new Check In Date: {{ newCheckInDate }}</p>
+                <p>new Check Out Date : {{ newCheckOutDate }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import './assets/scss/index.scss'
 import DatePicker from './components/DatePicker/index.vue'
 import pt from './i18n/pt'
 import fr from './i18n/fr'
@@ -531,10 +396,16 @@ export default {
 }
 </script>
 
-<style>
-body,
-html {
-    font-family: 'Source Sans Pro', sans-serif;
+<style lang="scss">
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+html,
+body {
+    font-family: Roboto, 'Source Sans Pro', sans-serif;
+    padding-bottom: 4em;
 }
 #app {
     text-align: center;
@@ -542,9 +413,30 @@ html {
 .container {
     max-width: 1180px;
     margin: 0 auto;
-    text-align: left;
+    /* text-align: left; */
 }
 .box {
     width: 100%;
+    & h3 {
+        background-color: gray;
+        color: white;
+        padding: 1em 0;
+    }
+}
+.vhd__datepicker__wrapper {
+    max-width: 300px;
+    &.vhd__datepicker__fullview {
+        max-width: 90%;
+    }
+}
+pre.code {
+    background: black;
+}
+
+h1 {
+    background-color: #28ca9c;
+    color: white;
+    padding: 1em 0;
+    margin-top: 0;
 }
 </style>
