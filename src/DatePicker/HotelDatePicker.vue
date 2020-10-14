@@ -294,6 +294,7 @@ export default {
         },
         value: {
             type: String,
+            default: false,
         },
         startingDateValue: {
             type: Date,
@@ -371,7 +372,7 @@ export default {
         },
         showYear: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         closeDatepickerOnClickOutside: {
             type: Boolean,

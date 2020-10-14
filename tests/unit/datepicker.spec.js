@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { mount } from '@vue/test-utils'
 
-import Datepicker from '@/components/DatePicker/index.vue'
+import Datepicker from '@/DatePicker/HotelDatePicker.vue'
 
 describe('Datepicker Calendar', () => {
     const wrapper = mount(Datepicker)

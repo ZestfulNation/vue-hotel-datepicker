@@ -214,7 +214,7 @@
 
 <script>
 import './assets/scss/index.scss'
-import DatePicker from './components/DatePicker/index.vue'
+import DatePicker from './DatePicker/HotelDatePicker.vue'
 import pt from './i18n/pt'
 import fr from './i18n/fr'
 import en from './i18n/en'

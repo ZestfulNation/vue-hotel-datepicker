@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import Day from '@/components/Day.vue'
+import Day from '@/DatePicker/components/Day.vue'
 
 describe('Datepicker Day', () => {
     let wrapper
