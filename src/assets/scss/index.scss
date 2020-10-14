@@ -336,7 +336,6 @@ $extra-small-screen: '(max-width: 23em)';
       cursor: not-allowed;
       pointer-events: none;
       font-weight: $font-regular;
-      position: relative;
       span {
         text-decoration: line-through;
       }

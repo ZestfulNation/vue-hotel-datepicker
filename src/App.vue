@@ -15,21 +15,13 @@
                 <h3>
                     Show list of static bookings
                 </h3>
-                <DatePicker
-                    :alwaysVisible="true"
-                    :bookings="bookings"
-                    :i18n="i18n"
-                />
+                <DatePicker :alwaysVisible="true" :bookings="bookings" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
                     Calendar in full view
                 </h3>
-                <DatePicker
-                    :alwaysVisible="true"
-                    :showYear="true"
-                    :i18n="i18n"
-                />
+                <DatePicker :alwaysVisible="true" :showYear="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
@@ -41,19 +33,13 @@
                 <h3>
                     Hide grid style
                 </h3>
-                <DatePicker
-                    :gridStyle="false"
-                    :i18n="i18n"
-                />
+                <DatePicker :gridStyle="false" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
                     Display one month only
                 </h3>
-                <DatePicker
-                    :showSingleMonth="true"
-                    :i18n="i18n"
-                />
+                <DatePicker :showSingleMonth="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
@@ -93,20 +79,20 @@
                 </h3>
                 <DatePicker
                     :disabledDates="[
-                        '2020-10-15',
-                        '2020-10-16',
-                        '2020-10-17',
-                        '2020-10-18',
-                        '2020-10-19',
-                        '2020-10-20',
-                        '2020-10-21',
-                        '2020-10-01',
-                        '2020-10-02',
-                        '2020-10-03',
-                        '2020-10-04',
-                        '2020-10-05',
-                        '2020-10-06',
-                        '2020-10-07',
+                        '2021-10-15',
+                        '2021-10-16',
+                        '2021-10-17',
+                        '2021-10-18',
+                        '2021-10-19',
+                        '2021-10-20',
+                        '2021-10-21',
+                        '2021-10-01',
+                        '2021-10-02',
+                        '2021-10-03',
+                        '2021-10-04',
+                        '2021-10-05',
+                        '2021-10-06',
+                        '2021-10-07',
                     ]"
                     :disableCheckoutOnCheckin="true"
                     :minNights="minNights"
@@ -119,13 +105,13 @@
                 <DatePicker
                     :i18n="i18n"
                     :disabledDates="[
-                        '2020-05-01',
-                        '2020-05-02',
-                        '2020-05-03',
-                        '2020-05-04',
-                        '2020-05-06',
-                        '2020-05-07',
-                        '2020-05-08',
+                        '2021-05-01',
+                        '2021-05-02',
+                        '2021-05-03',
+                        '2021-05-04',
+                        '2021-05-06',
+                        '2021-05-07',
+                        '2021-05-08',
                     ]"
                 />
             </div>
@@ -244,26 +230,26 @@ export default {
             languages: { pt, fr, en, es },
             periodDates: [
                 {
-                    startAt: '2020-07-01',
-                    endAt: '2020-08-01',
+                    startAt: '2021-07-01',
+                    endAt: '2021-08-01',
                     minimumDuration: 4,
                     periodType: 'nightly',
                 },
                 {
-                    startAt: '2020-08-01',
-                    endAt: '2020-09-05',
+                    startAt: '2021-08-01',
+                    endAt: '2021-09-05',
                     minimumDuration: 2,
                     periodType: 'weekly_by_saturday',
                 },
                 {
-                    startAt: '2020-09-05',
-                    endAt: '2020-10-04',
+                    startAt: '2021-09-05',
+                    endAt: '2021-10-04',
                     minimumDuration: 4,
                     periodType: 'nightly',
                 },
                 {
-                    startAt: '2020-10-04',
-                    endAt: '2020-11-29',
+                    startAt: '2021-10-04',
+                    endAt: '2021-11-29',
                     minimumDuration: 1,
                     periodType: 'weekly_by_sunday',
                     price: 4000.0,
@@ -272,72 +258,72 @@ export default {
             bookings: [
                 {
                     id: '1726359',
-                    checkInDate: '2020-08-22',
-                    checkOutDate: '2020-08-29',
+                    checkInDate: '2021-08-22',
+                    checkOutDate: '2021-08-29',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '1726360',
-                    checkInDate: '2020-08-15',
-                    checkOutDate: '2020-08-22',
+                    checkInDate: '2021-08-15',
+                    checkOutDate: '2021-08-22',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '1726358',
-                    checkInDate: '2020-08-01',
-                    checkOutDate: '2020-08-15',
+                    checkInDate: '2021-08-01',
+                    checkOutDate: '2021-08-15',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '1726357',
-                    checkInDate: '2020-09-01',
-                    checkOutDate: '2020-09-23',
+                    checkInDate: '2021-09-01',
+                    checkOutDate: '2021-09-23',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '1726356',
-                    checkInDate: '2020-06-01',
-                    checkOutDate: '2020-06-18',
+                    checkInDate: '2021-06-01',
+                    checkOutDate: '2021-06-18',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '181412',
-                    checkInDate: '2019-09-15',
-                    checkOutDate: '2019-10-15',
+                    checkInDate: '2022-09-15',
+                    checkOutDate: '2022-10-15',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '181491',
-                    checkInDate: '2019-07-01',
-                    checkOutDate: '2019-08-31',
+                    checkInDate: '2022-07-01',
+                    checkOutDate: '2022-08-31',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '178234',
-                    checkInDate: '2018-08-04',
-                    checkOutDate: '2018-08-25',
+                    checkInDate: '2023-08-04',
+                    checkOutDate: '2023-08-25',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
                 },
                 {
                     id: '178235',
-                    checkInDate: '2018-07-01',
-                    checkOutDate: '2018-07-31',
+                    checkInDate: '2023-07-01',
+                    checkOutDate: '2023-07-31',
                     style: {
                         backgroundColor: '#9DC1C9',
                     },
