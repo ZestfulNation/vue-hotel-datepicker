@@ -1,9 +1,9 @@
 <template>
     <div
-        class="datepicker__input"
+        class="vhd__datepicker__input"
         @click="toggleDatepicker"
         @keyup.enter.stop.prevent="toggleDatepicker"
-        data-qa="datepickerInput"
+        data-qa="vhd__datepickerInput"
         :class="inputClass"
         :tabindex="tabIndex"
     >
@@ -42,8 +42,8 @@ export default {
     computed: {
         inputClass() {
             return {
-                'datepicker__input--is-active': this.isOpen && this.inputDate == null,
-                'datepicker__input--single-date': this.singleDaySelection,
+                'vhd__datepicker__input--is-active': this.isOpen && this.inputDate == null,
+                'vhd__datepicker__input--single-date': this.singleDaySelection,
             }
         },
         tabIndex() {

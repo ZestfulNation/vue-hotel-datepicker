@@ -5,14 +5,16 @@ $white: #fff;
 $black: #000;
 $gray: #424b53;
 $primary-text-color: #35343d;
+$primary-text-inverse-color: #fff;
 $lightest-gray: #f3f5f8;
-$primary-color: #195252;
+$primary-color: #0fb8ad;
 $medium-gray: #424b53;
 $light-gray: #eaeaea;
 $disabledBg: #f5f7f8;
 $disabled-color: #D8D8D8;
 $dark-gray: #2d3047;
 $box-shadow: 0 0 10px 3px rgba(red, .4);
+$background-color: #fff;
 
 // Bg Date when hover it
 $bgValidHoverDate: $primary-color;
@@ -22,12 +24,19 @@ $colorValidHoverDate: $white;
 $bgRollActiveDage: $primary-color;
 $colorRollActiveDage: $white;
 
-$font-family: 'Helvetica Neue';
-$font-small: 14px;
+$font-family: 'Source Sans Pro', sans-serif, verdana, arial;
+$font-small: calc($font-size * 0.875);
 $font-regular: 400;
 $font-bold: 700;
+$font-size: 16px;
+$tooltip-font-size: 11px;
 
 $width-half-day: 120px;
+$bullet-size: 4px;
+
+$tooltip-border-width: 4px;
+$tooltip-border-radius: 2px;
+$border-generic-width: 1px;
 
 /* =============================================================
 * RESPONSIVE LAYOUT HELPERS
@@ -50,48 +59,40 @@ $extra-small-screen: '(max-width: 23em)';
   }
 }
 
-.square {
-  position: relative;
-  width: calc(100% / 7);
-  float: left;
-  font-family: $font-family;
-}
-
-.datepicker__wrapper {
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-}
-
 /* =============================================================
 * BASE STYLES
 * ============================================================*/
 
-.datepicker {
-  transition: all .2s ease-in-out;
-  background-color: $white;
-  font-size: 16px;
-  line-height: 14px;
-  overflow: hidden;
-  top: 48px;
+.vhd__datepicker {
   position: absolute;
+  top: 3em;
   z-index: 999;
+  transition: all .2s ease-in-out;
+  background-color: $background-color;
+  font-size: $font-size;
+  font-family: $font-family;
+  line-height: .875em;
+  overflow: hidden;
 
   &--right {
     right: 0;
   }
 
+  & .vhd__square {
+    position: relative;
+    width: calc(100% / 7);
+    float: left;
+    &:last-child {
+      margin-bottom: 1.5em;
+    }
+  }
+
   button.next--mobile {
-    background: none;
-    border: 1px solid $light-gray;
+    border: $border-generic-width solid $light-gray;
     float: none;
-    height: 50px;
+    height: 3.125em;
     width: 100%;
     position: relative;
-    background-position: center;
     appearance: none;
     overflow: hidden;
     position: fixed;
@@ -102,7 +103,7 @@ $extra-small-screen: '(max-width: 23em)';
     background: white;
 
     &:after {
-      background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center / 8px;
+      background: transparent url('../images/ic-arrow-right-green.regular.svg') no-repeat center / 8px;
       transform: rotate(90deg);
       content: "";
       position: absolute;
@@ -114,13 +115,13 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &--closed {
-    box-shadow: 0 15px 30px 10px rgba($black, 0);
+    box-shadow: none;
     max-height: 0;
   }
 
   &--open {
     box-shadow: 0 15px 30px 10px rgba($black, .08);
-    max-height: 900px;
+    max-height: 56.25em;
 
     @include device($up-to-tablet) {
       box-shadow: none;
@@ -135,28 +136,38 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
+  &__header {
+    text-align: left;
+  }
+
   &__wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 48px;
-    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+    height: 3em;
+    background: $white url('../images/calendar_icon.regular.svg') no-repeat 1em center / 1em;
 
-    &--grid .square .datepicker__month-day {
-      border: 1px solid $light-gray;
+    & *,
+    & *::before,
+    & *::after {
+      box-sizing: border-box;
+    }
+
+    &--grid .vhd__square .vhd__datepicker__month-day {
+      border: $border-generic-width solid $light-gray;
       margin: -1px 0 0 -1px;
     }
 
     &--booking {
-      .datepicker__month-day-wrapper span {
+      .vhd__datepicker__month-day-wrapper span {
         text-align: right;
-        padding-top: 10px;
-        padding-right: 10px;
+        padding-top: .75em;
+        padding-right: .75em;
         right: 0;
         top: 0;
         transform: none;
       }
-      .datepicker__month-day:before {
+      .vhd__datepicker__month-day:before {
         display: none;
       }
     }
@@ -166,23 +177,23 @@ $extra-small-screen: '(max-width: 23em)';
     background: none;
     height: auto;
 
-    .datepicker__close-button, .datepicker__dummy-wrapper, .datepicker__clear-button, .-hide-on-desktop{
+    .vhd__datepicker__close-button, .vhd__datepicker__dummy-wrapper, .vhd__datepicker__clear-button, .vhd__hide-on-desktop{
       display: none;
     }
-    .datepicker {
+    .vhd__datepicker {
       position: relative;
       top: 0;
     }
 
-    .-hide-up-to-tablet {
+    .vhd__hide-up-to-tablet {
       display: block;
     }
 
-    .datepicker__month-button {
+    .vhd__datepicker__month-button {
       display: inline-block;
     }
 
-    .datepicker__months {
+    .vhd__datepicker__months {
       position: static;
       margin: 0;
       width: auto;
@@ -194,16 +205,36 @@ $extra-small-screen: '(max-width: 23em)';
 
   }
 
+  &__dummy-wrapper {
+    border: $border-generic-width solid $light-gray;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+
+    &--no-border.vhd__datepicker__dummy-wrapper {
+      border: 0;
+    }
+
+    &--is-active {
+      border: $border-generic-width solid $primary-color;
+    }
+  }
+
   &__input {
     background: transparent;
-    height: 48px;
-    color: $primary-text-color;
-    font-size: 12px;
-    outline: none;
-    padding: 4px 30px 2px;
-    width: 100%;
-    word-spacing: 5px;
     border: 0;
+    color: $primary-text-color;
+    font-size: $font-small;
+    height: 3.43em;
+    line-height: 3.43em;
+    outline: none;
+    padding: 0 1.875em 0.125em;
+    text-align: center;
+    width: 50%;
+    word-spacing: 0.3125em;
 
     @include focusStyle();
 
@@ -213,35 +244,6 @@ $extra-small-screen: '(max-width: 23em)';
     &:-moz-placeholder {
       color: $primary-text-color;
     }
-  }
-
-  &__dummy-wrapper {
-    border: solid 1px $light-gray;
-    cursor: pointer;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-
-    &--no-border.datepicker__dummy-wrapper {
-      border: 0;
-    }
-
-    &--is-active {
-      border: 1px solid $primary-color;
-    }
-  }
-
-  &__input {
-    color: $primary-text-color;
-    padding-top: 0;
-    font-size: $font-small;
-    height: 48px;
-    line-height: 48px;
-    text-align: left;
-    text-indent: 5px;
-    width: calc(50% + 4px);
 
     @include device($phone) {
       text-indent: 0;
@@ -249,35 +251,34 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &:first-child {
-      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
-      width: calc(50% - 4px);
-      text-indent: 20px;
+      background: transparent url('../images/ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
+      width: 50%;
     }
 
     &--is-active {
-      color: $primary-color;
+      color: $primary-text-color;
     }
 
     &--is-active::placeholder {
-      color: $primary-color;
+      color: $primary-text-color;
     }
 
     &--is-active::-moz-placeholder {
-      color: $primary-color;
+      color: $primary-text-color;
     }
 
     &--is-active:-ms-input-placeholder {
-      color: $primary-color;
+      color: $primary-text-color;
     }
 
     &--is-active:-moz-placeholder {
-      color: $primary-color;
+      color: $primary-text-color;
     }
 
     &--single-date:first-child {
       width: 100%;
       background: none;
-      text-align: left;
+      text-align: center;
     }
   }
 
@@ -296,7 +297,7 @@ $extra-small-screen: '(max-width: 23em)';
   &__month-day {
     visibility: visible;
     text-align: center;
-    color: $primary-color;
+    color: $primary-text-color;
     cursor: pointer;
 
     @include focusStyle();
@@ -304,7 +305,7 @@ $extra-small-screen: '(max-width: 23em)';
     &--today {
       border: 0;
 
-      .datepicker__month-day-wrapper {
+      .vhd__datepicker__month-day-wrapper {
         border: 2px solid $primary-color;
         padding-top: calc(100% - 5px);
       }
@@ -335,16 +336,15 @@ $extra-small-screen: '(max-width: 23em)';
       cursor: not-allowed;
       pointer-events: none;
       font-weight: $font-regular;
-      position: relative;
       span {
         text-decoration: line-through;
       }
     }
 
     &--valid#{&}--not-allowed,
-    &--not-allowed.currentDay,
+    &--not-allowed.vhd__currentDay,
     &--valid#{&}--not-allowed:hover {
-      color: $primary-color;
+      color: $primary-text-color;
       font-weight: $font-regular;
       cursor: default;
       background: transparent;
@@ -388,7 +388,7 @@ $extra-small-screen: '(max-width: 23em)';
 
     &--selected {
       background-color: rgba($primary-color, .7);
-      color: $white;
+      color: $primary-text-inverse-color;
       span {
         text-decoration: none;
       }
@@ -402,7 +402,7 @@ $extra-small-screen: '(max-width: 23em)';
 
     &--hovering {
       background-color: rgba($primary-color, .7);
-      color: $white;
+      color: $primary-text-inverse-color;
       font-weight: $font-bold;
       cursor: pointer;
       span {
@@ -413,7 +413,7 @@ $extra-small-screen: '(max-width: 23em)';
     &--first-day-selected,
     &--last-day-selected {
       background: $primary-color;
-      color: $white;
+      color: $primary-text-inverse-color;
       cursor: pointer;
       font-weight: $font-bold;
       pointer-events: auto;
@@ -453,10 +453,10 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__month-button {
-    background: transparent url('ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #00ca9d;
+    background: transparent url('../images/ic-arrow-right-green.regular.svg') no-repeat center center / 8px;
+    width: 2.5em;
+    height: 2.5em;
+    border: $border-generic-width solid #00ca9d;
     outline: none;
     text-align: center;
     cursor: pointer;
@@ -484,22 +484,23 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
   &__inner {
-    padding: 1.5rem 2.5rem;
+    padding: 1.5rem 2.5rem 0;
+    position: relative;
 
     @include device($up-to-tablet) {
       padding: 0;
     }
   }
 
-  .show-tooltip {
-    .datepicker__months {
-      margin-top: 160px;
-      height: calc(100% - 160px);
+  .vhd__show-tooltip {
+    .vhd__datepicker__months {
+      margin-top: 10em;
+      height: calc(100% - 10em);
     }
-    .datepicker__tooltip--mobile {
+    .vhd__datepicker__tooltip--mobile {
       height: auto;
       opacity: 1;
-      padding: 15px;
+      padding: 1em;
       visibility: visible;
     }
   }
@@ -508,14 +509,14 @@ $extra-small-screen: '(max-width: 23em)';
     @include device($desktop) {
       display: flex;
       flex-wrap: wrap;
-      width: 650px;
+      width: 40.625em;
       justify-content: space-between;
 
     }
 
     @include device($up-to-tablet) {
-      margin-top: 90px;
-      height: calc(100% - 90px);
+      margin-top: 5.625em;
+      height: calc(100% - 5.625em);
       position: absolute;
       left: 0;
       top: 0;
@@ -543,8 +544,8 @@ $extra-small-screen: '(max-width: 23em)';
     &--full {
       width: 100%;
 
-      .datepicker__month {
-        width: 470px;
+      .vhd__datepicker__month {
+        width: 29.375em;
         padding: 0
       }
 
@@ -555,25 +556,25 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__month {
-    font-size: 12px;
+    font-size: 0.75em;
     width: 50%;
-    padding-right: 10px;
+    padding-right: 0.83334em;
 
     @include device($up-to-tablet) {
       width: 100%;
       padding-right: 0;
-      padding-top: 60px;
-      height: 360px;
+      padding-top: 5em;
+      height: 30em;
 
       &:last-of-type {
-        margin-bottom: 65px;
+        margin-bottom: 5.416667em;
       }
     }
 
     @include device($desktop) {
       &:last-of-type {
         padding-right: 0;
-        padding-left: 10px;
+        padding-left: 0.83334em;
       }
     }
   }
@@ -584,15 +585,15 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__month-name {
-    font-size: 16px;
+    font-size: $font-size;
     font-weight: $font-bold;
-    margin-top: -40px;
-    padding: 13px 0 26px;
+    margin-top: -2.5em;
+    padding: 0.8125em 0 1.625em;
     pointer-events: none;
     text-align: center;
 
     @include device($up-to-tablet) {
-      margin-top: -50px;
+      margin-top: -3.125em;
       margin-bottom: 0;
       position: absolute;
       width: 100%;
@@ -605,8 +606,8 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__week-row {
-    height: 40px;
-    line-height: 40px;
+    height: 2.5em;
+    line-height: 2.5em;
 
     @include device($up-to-tablet) {
       box-shadow: 0px 8px 12px 0px rgba($black, .1);
@@ -616,8 +617,8 @@ $extra-small-screen: '(max-width: 23em)';
   &__week-name {
     width: calc(100% / 7);
     float: left;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 0.75em;
+    font-weight: $font-regular;
     color: $medium-gray;
     text-align: center;
   }
@@ -626,18 +627,18 @@ $extra-small-screen: '(max-width: 23em)';
     appearance: none;
     background: transparent;
     border: 0;
-    color: $primary-color;
+    color: $primary-text-color;
     cursor: pointer;
-    font-size: 21px;
+    font-size: 1.3125em;
     font-weight: $font-bold;
     margin-top: 0;
     outline: 0;
     z-index: 10000;
     position: fixed;
-    right: 15px;
+    right: 0.7143em;
     top: 0;
-    height: 48px;
-    line-height: 48px;
+    height: 2.286em;
+    line-height: 2.286em;
 
     i {
       display: block;
@@ -651,7 +652,7 @@ $extra-small-screen: '(max-width: 23em)';
     background: transparent;
     border: 0;
     cursor: pointer;
-    font-size: 25px;
+    font-size: 1.5625em;
     font-weight: $font-bold;
     height: 100%;
     margin: 0;
@@ -659,15 +660,14 @@ $extra-small-screen: '(max-width: 23em)';
     position: absolute;
     right: 0;
     top: 0;
-    width: 40px;
+    width: 1.6em;
 
     svg {
       fill: none;
       stroke-linecap: round;
-      stroke-width: 8px;
+      stroke-width: 0.32em;
       stroke: $medium-gray;
-      width: 20px;
-      width: 14px;
+      width: 0.56em;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -679,10 +679,10 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__tooltip {
     background-color: $dark-gray;
-    border-radius: 2px;
-    color: $white;
-    font-size: 11px;
-    padding: 5px 10px;
+    border-radius: $tooltip-border-radius;
+    color: $primary-text-inverse-color;
+    font-size: $tooltip-font-size;
+    padding: 0,45em 0,91em;
     position: absolute;
     z-index: 50;
     left: 50%;
@@ -695,43 +695,43 @@ $extra-small-screen: '(max-width: 23em)';
       height: 0;
       opacity: 0;
       visibility: hidden;
-      padding: 0 15px;
-      border: 1px solid #d7d9e2;
-      font-size: 14px;
+      padding: 0 1.1em;
+      border: $border-generic-width solid #d7d9e2;
+      font-size: $font-small;
       line-height: 1.4;
       transition: all ease .2s;
     }
 
     &:after {
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-top: 4px solid $dark-gray;
-      bottom: -4px;
+      border-left: $tooltip-border-width solid transparent;
+      border-right: $tooltip-border-width solid transparent;
+      border-top: $tooltip-border-width solid $dark-gray;
+      bottom: -0.364em;
       content: '';
       left: 50%;
-      margin-left: -4px;
+      margin-left: -0.364em;
       position: absolute;
     }
   }
 }
 
-.-is-hidden {
+.-vhd__is-hidden {
   display: none;
 }
 
-.-hide-up-to-tablet {
+.vhd__hide-up-to-tablet {
   @include device($up-to-tablet) {
     display: none;
   }
 }
 
-.-hide-on-desktop {
+.vhd__hide-on-desktop {
   @include device($desktop) {
     display: none;
   }
 }
 
-.parent-bullet {
+.vhd__parent-bullet {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -741,40 +741,40 @@ $extra-small-screen: '(max-width: 23em)';
   display: block;
   z-index: -1;
 
-  .bullet {
+  .vhd__bullet {
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 4px;
+    height: $bullet-size;
     transition: opacity ease .3s;
     @include device($desktop) {
       top: 50%;
     }
 
-    &.checkInCheckOut,
-    &.checkIn,
-    &.checkOut {
-      width: 8px;
-      height: 18px;
-      border-radius: 10px;
+    &.vhd__checkInCheckOut,
+    &.vhd__checkIn,
+    &.vhd__checkOut {
+      width: .5em;
+      height: 1.125em;
+      border-radius: .625em;
 
-      &.bullet--small {
-        height: 6px;
-        width: 14px;
+      &.vhd__bullet--small {
+        height: .375em;
+        width: .875em;
       }
     }
 
-    &.checkInCheckOut {
-      left: calc(50% - 15px);
+    &.vhd__checkInCheckOut {
+      left: calc(50% - 1em);
     }
   }
 
-  .pipe {
+  .vhd__pipe {
     display: block;
     width: 100%;
-    height: 4px;
+    height: $bullet-size;
     position: absolute;
     top: 60%;
     transform: translateY(-50%);
@@ -784,21 +784,21 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &.pipe--small {
-      height: 3px;
+      height: calc($bullet-size * .75);
     }
 
-    &.checkIn {
-      left: calc(50% + 4px);
-      width: calc(50% - 4px);
+    &.vhd__checkIn {
+      left: calc(50% + $bullet-size);
+      width: calc(50% - $bullet-size);
     }
 
-    &.checkOut {
+    &.vhd__checkOut {
       left: 0px;
-      width: calc(50% - 4px);
+      width: calc(50% - $bullet-size);
     }
 
-    &.checkInCheckOut {
-      width: calc(50% - 19px);
+    &.vhd__checkInCheckOut {
+      width: calc(50% - 1.1875);
     }
   }
 }

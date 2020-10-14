@@ -1,18 +1,18 @@
 <template>
     <div
-        class="datepicker__wrapper"
+        class="vhd__datepicker__wrapper"
         :class="{
-            'datepicker__wrapper--grid': gridStyle,
-            'datepicker__wrapper--booking': bookings.length > 0,
-            datepicker__fullview: alwaysVisible,
+            'vhd__datepicker__wrapper--grid': gridStyle,
+            'vhd__datepicker__wrapper--booking': bookings.length > 0,
+            vhd__datepicker__fullview: alwaysVisible,
         }"
         :ref="`DatePicker-${hash}`"
         v-if="show"
     >
-        <div class="datepicker__close-button -hide-on-desktop" v-if="isOpen" @click="closeMobileDatepicker">
+        <div class="vhd__datepicker__close-button vhd__hide-on-desktop" v-if="isOpen" @click="closeMobileDatepicker">
             <i>+</i>
         </div>
-        <div class="datepicker__dummy-wrapper" :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }">
+        <div class="vhd__datepicker__dummy-wrapper" :class="{ 'vhd__datepicker__dummy-wrapper--is-active': isOpen }">
             <date-input
                 :i18n="i18n"
                 :input-date="formatDate(checkIn)"
@@ -32,41 +32,46 @@
                 :single-day-selection="singleDaySelection"
             />
         </div>
-        <div class="datepicker__clear-button" tabindex="0" @click="clearSelection" v-show="showClearSelectionButton">
+        <div
+            class="vhd__datepicker__clear-button"
+            tabindex="0"
+            @click="clearSelection"
+            v-show="showClearSelectionButton"
+        >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68">
                 <path d="M6.5 6.5l55 55M61.5 6.5l-55 55"></path>
             </svg>
         </div>
         <div
-            class="datepicker"
+            class="vhd__datepicker"
             :class="{
-                'datepicker--open': isOpen && !alwaysVisible,
-                'datepicker--closed': !isOpen && !alwaysVisible,
-                'datepicker--right': positionRight,
+                'vhd__datepicker--open': isOpen && !alwaysVisible,
+                'vhd__datepicker--closed': !isOpen && !alwaysVisible,
+                'vhd__datepicker--right': positionRight,
             }"
         >
-            <div class="-hide-on-desktop">
+            <div class="vhd__hide-on-desktop">
                 <div
                     v-if="isOpen"
-                    class="datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border"
-                    :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }"
+                    class="vhd__datepicker__dummy-wrapper vhd__datepicker__dummy-wrapper--no-border"
+                    :class="{ 'vhd__datepicker__dummy-wrapper--is-active': isOpen }"
                     @click="toggleDatepicker"
                 >
                     <div
-                        class="datepicker__input"
+                        class="vhd__datepicker__input"
                         tabindex="0"
                         :class="{
-                            'datepicker__dummy-input--is-active': isOpen && checkIn == null,
+                            'vhd__datepicker__dummy-input--is-active': isOpen && checkIn == null,
                         }"
                         type="button"
                     >
                         {{ `${checkIn ? dateFormater(checkIn) : i18n['check-in']}` }}
                     </div>
                     <div
-                        class="datepicker__input"
+                        class="vhd__datepicker__input"
                         tabindex="0"
                         :class="{
-                            'datepicker__dummy-input--is-active': isOpen && checkOut == null && checkIn !== null,
+                            'vhd__datepicker__dummy-input--is-active': isOpen && checkOut == null && checkIn !== null,
                         }"
                         type="button"
                     >
@@ -74,11 +79,11 @@
                     </div>
                 </div>
             </div>
-            <div v-if="isOpen || alwaysVisible" class="datepicker__inner">
-                <div class="datepicker__header">
+            <div v-if="isOpen || alwaysVisible" class="vhd__datepicker__inner">
+                <div class="vhd__datepicker__header">
                     <button
                         type="button"
-                        class="datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet"
+                        class="vhd__datepicker__month-button vhd__datepicker__month-button--prev vhd__hide-up-to-tablet"
                         @click="renderPreviousMonth"
                         @keyup.enter.stop.prevent="renderPreviousMonth"
                         :tabindex="isOpen ? 0 : -1"
@@ -86,7 +91,7 @@
                     />
                     <button
                         type="button"
-                        class="datepicker__month-button datepicker__month-button--next -hide-up-to-tablet"
+                        class="vhd__datepicker__month-button vhd__datepicker__month-button--next vhd__hide-up-to-tablet"
                         @click="renderNextMonth"
                         @keyup.enter.stop.prevent="renderNextMonth"
                         :disabled="isPreventedMaxMonth"
@@ -94,22 +99,22 @@
                     />
                 </div>
                 <div
-                    class="datepicker__months"
-                    :class="{ 'datepicker__months--full': showSingleMonth }"
+                    class="vhd__datepicker__months"
+                    :class="{ 'vhd__datepicker__months--full': showSingleMonth }"
                     v-if="screenSize === 'desktop' || alwaysVisible"
                 >
                     <div
                         ref="datepickerMonth"
-                        class="datepicker__month"
+                        class="vhd__datepicker__month"
                         v-for="(month, monthIndex) in paginateDesktop"
                         :key="`${datepickerMonthKey}-${month}`"
                     >
-                        <p class="datepicker__month-name">
+                        <p class="vhd__datepicker__month-name">
                             {{ getMonth(months[activeMonthIndex + month].days[15].date) }}
                         </p>
-                        <div class="datepicker__week-row -hide-up-to-tablet">
+                        <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
                             <div
-                                class="datepicker__week-name"
+                                class="vhd__datepicker__week-name"
                                 v-for="(dayName, datePickerWeekIndexDesktop) in i18n['day-names']"
                                 :key="`${datepickerWeekKey}-${datePickerWeekIndexDesktop}`"
                             >
@@ -117,7 +122,7 @@
                             </div>
                         </div>
                         <div
-                            class="square"
+                            class="vhd__square"
                             v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month].days"
                             @mouseenter="mouseEnterDay(day)"
                             :key="`${datepickerDayKey}-${monthIndex}-${dayIndexDesktop}`"
@@ -156,35 +161,35 @@
                 </div>
                 <div
                     v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
-                    :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
+                    :class="{ 'vhd__show-tooltip': showCustomTooltip && hoveringTooltip }"
                 >
-                    <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
+                    <div class="vhd__datepicker__tooltip--mobile" v-if="hoveringTooltip">
                         <template v-if="customTooltipMessage">
                             {{ cleanString(customTooltipMessage) }}
                         </template>
                     </div>
-                    <div class="datepicker__week-row">
+                    <div class="vhd__datepicker__week-row">
                         <div
-                            class="datepicker__week-name"
+                            class="vhd__datepicker__week-name"
                             v-for="(dayName, datePickerWeekIndexMobile) in this.i18n['day-names']"
                             :key="datepickerWeekKey + datePickerWeekIndexMobile"
                         >
                             {{ dayName }}
                         </div>
                     </div>
-                    <div class="datepicker__months" id="swiperWrapper" ref="swiperWrapper">
+                    <div class="vhd__datepicker__months" ref="swiperWrapper">
                         <div
                             ref="datepickerMonth"
-                            class="datepicker__month"
+                            class="vhd__datepicker__month"
                             v-for="(a, n) in months"
                             :key="`${datepickerMonthKey}-${n}`"
                         >
-                            <p class="datepicker__month-name">
+                            <p class="vhd__datepicker__month-name">
                                 {{ getMonth(months[n].days[15].date) }}
                             </p>
-                            <div class="datepicker__week-row -hide-up-to-tablet">
+                            <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
                                 <div
-                                    class="datepicker__week-name"
+                                    class="vhd__datepicker__week-name"
                                     v-for="(dayName, datePickerIndex) in i18n['day-names']"
                                     :key="`datepicker__month-name-datepicker__week-name-${datePickerIndex}`"
                                 >
@@ -192,7 +197,7 @@
                                 </div>
                             </div>
                             <div
-                                class="square"
+                                class="vhd__square"
                                 v-for="(day, dayIndexMobile) in months[n].days"
                                 :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
                                 @mouseenter="mouseEnterDay(day)"
@@ -229,9 +234,8 @@
                         </div>
                     </div>
                 </div>
-
-                <slot name="content" />
             </div>
+            <slot name="content" />
         </div>
     </div>
 </template>
@@ -1261,5 +1265,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" src="./index.scss"></style>

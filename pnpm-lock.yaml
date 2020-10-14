@@ -3,6 +3,7 @@ dependencies:
   chai: 4.2.0
   core-js: 3.6.5
   fecha: 4.2.0
+  highlight.js: 10.2.1
   lodash.throttle: 4.1.1
   vue: 2.6.12
 devDependencies:
@@ -5369,6 +5370,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
+  /highlight.js/10.2.1:
+    dev: false
+    resolution:
+      integrity: sha512-A+sckVPIb9zQTUydC9lpRX1qRFO/N0OKEh0NwIr65ckvWA/oMY8v9P3+kGRK3w2ULSh9E8v5MszXafodQ6039g==
   /highlight.js/9.18.3:
     dev: true
     resolution:
@@ -11006,13 +11011,13 @@ packages:
     resolution:
       integrity: sha512-jcKpkthap6x63MB4TxwCyuIGkV0oYP/YRyuQU5UO0Yz/E/ZAu+653/uov+phdmO54n6BcvFRyyt0RRrWdN2mpw==
 specifiers:
-  '@vue/cli-plugin-babel': ~4.5.4
-  '@vue/cli-plugin-eslint': ~4.5.4
-  '@vue/cli-plugin-unit-jest': ~4.5.4
-  '@vue/cli-service': ~4.5.4
+  '@vue/cli-plugin-babel': ~4.5.6
+  '@vue/cli-plugin-eslint': ~4.5.6
+  '@vue/cli-plugin-unit-jest': ~4.5.6
+  '@vue/cli-service': ~4.5.6
   '@vue/eslint-config-airbnb': ^5.1.0
   '@vue/eslint-config-prettier': ^6.0.0
-  '@vue/test-utils': ^1.0.5
+  '@vue/test-utils': ^1.1.0
   babel-eslint: ^10.1.0
   chai: ^4.2.0
   core-js: ^3.6.5
@@ -11020,6 +11025,7 @@ specifiers:
   eslint-plugin-prettier: ^3.1.4
   eslint-plugin-vue: ^6.2.2
   fecha: ^4.2.0
+  highlight.js: ^10.2.1
   lodash.throttle: ^4.1.1
   prettier: ^1.19.1
   sass: ^1.26.10

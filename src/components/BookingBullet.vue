@@ -1,18 +1,18 @@
 <template>
-    <i class="parent-bullet">
+    <i class="vhd__parent-bullet">
         <i
             v-if="previousBooking && duplicateBookingDates.includes(formatDate)"
-            class="bullet"
+            class="vhd__bullet"
             :style="previousBooking.style"
             :class="[
                 {
-                    checkInCheckOut: duplicateBookingDates.includes(formatDate),
+                    vhd__checkInCheckOut: duplicateBookingDates.includes(formatDate),
                 },
             ]"
         />
         <i
             v-if="previousBooking && duplicateBookingDates.includes(formatDate)"
-            class="pipe checkInCheckOut"
+            class="vhd__pipe vhd__checkInCheckOut"
             :style="previousBooking.style"
         />
         <i
@@ -20,22 +20,22 @@
                 currentBooking &&
                     (currentBooking.checkInDate === formatDate || currentBooking.checkOutDate === formatDate)
             "
-            class="bullet"
+            class="vhd__bullet"
             :style="currentBooking.style"
             :class="[
                 {
-                    checkIn: currentBooking.checkInDate === formatDate,
-                    checkOut: currentBooking.checkOutDate === formatDate,
+                    vhd__checkIn: currentBooking.checkInDate === formatDate,
+                    vhd__checkOut: currentBooking.checkOutDate === formatDate,
                 },
             ]"
         />
         <i
             v-if="currentBooking"
-            class="pipe"
+            class="vhd__pipe"
             :class="[
                 {
-                    checkIn: currentBooking.checkInDate === formatDate,
-                    checkOut: currentBooking.checkOutDate === formatDate,
+                    vhd__checkIn: currentBooking.checkInDate === formatDate,
+                    vhd__checkOut: currentBooking.checkOutDate === formatDate,
                 },
             ]"
             :style="currentBooking.style"
