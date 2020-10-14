@@ -430,6 +430,10 @@ export default {
     displayClearButton: {
       type: Boolean,
       default: true
+    },
+    clickOutsideElementId: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -439,7 +443,6 @@ export default {
       checkIncheckOutHalfDay: {},
       checkInPeriod: {},
       checkOut: this.endingDateValue,
-      hoveringPeriod: {},
       customTooltip: "",
       customTooltipHalfday: "",
       datepickerDayKey: 0,
@@ -448,6 +451,7 @@ export default {
       dynamicNightCounts: null,
       hash: Date.now(),
       hoveringDate: null,
+      hoveringPeriod: {},
       isOpen: false,
       isTouchMove: false,
       months: [],
@@ -1106,14 +1110,22 @@ export default {
       return newT;
     },
     handleClickOutside(event) {
-      const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`];
+      const ignoredElement = this.$refs[`DatePicker-${this.hash}`];
+      const ignoredOutsideElement = document.getElementById(
+        this.clickOutsideElementId
+      );
 
-      if (ignoreClickOnMeElement) {
-        const isClickInsideElement = ignoreClickOnMeElement.contains(
-          event.target
-        );
+      if (ignoredElement) {
+        const isIgnoredElementClicked = ignoredElement.contains(event.target);
+        let isIgnoredOutsideElementClicked = true;
 
-        if (!isClickInsideElement) {
+        if (ignoredOutsideElement) {
+          isIgnoredOutsideElementClicked = ignoredOutsideElement.contains(
+            event.target
+          );
+        }
+
+        if (!isIgnoredElementClicked && !isIgnoredOutsideElementClicked) {
           this.hideDatepicker();
         }
       }
