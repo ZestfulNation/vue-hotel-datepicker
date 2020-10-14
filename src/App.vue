@@ -4,6 +4,23 @@
     <div>
       <div class="box">
         <h3>
+          Open DatePicker outside
+          <button id="clickOutsideElement" @click="toggleDatePickerOutside">
+            Open
+          </button>
+        </h3>
+        <DatePicker
+          ref="DatePicker"
+          clickOutsideElementId="clickOutsideElement"
+          :disabledDates="[]"
+          :format="dateFormat"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Show list of static bookings
         </h3>
         <DatePicker
@@ -666,6 +683,9 @@ export default {
     }
   },
   methods: {
+    toggleDatePickerOutside() {
+      this.$refs.DatePicker.showDatepicker();
+    },
     bookingClicked(event, date, currentBooking) {
       console.log("bookingClicked", event, date, currentBooking);
     },
