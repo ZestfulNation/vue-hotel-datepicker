@@ -1,10 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/gpa.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/)
-[![Issue Count](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker/badges/issue_count.svg)](https://codeclimate.com/github/krystalcampioni/vue-hotel-datepicker)
-[![dependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker) [![devDependencies Status](https://david-dm.org/krystalcampioni/vue-hotel-datepicker/dev-status.svg)](https://david-dm.org/krystalcampioni/vue-hotel-datepicker?type=dev)
-[![npm](https://img.shields.io/npm/dt/vue-hotel-datepicker.svg)](vue-hotel-datepicker)
-[![Build Status](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker.svg?branch=master)](https://travis-ci.org/krystalcampioni/vue-hotel-datepicker)
-
-# Release 0.9.4
+# Release 0.9.6
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2
@@ -225,7 +219,6 @@ An array of strings in this format: `['Monday', 'Tuesday', 'Wednesday', 'Thursda
 
 If `true`, allows the checkout on a disabled date.
 
-
 ### hoveringTooltip
 
 - Type: `Boolean` or `Function`
@@ -401,6 +394,40 @@ bookings: [
     }
   }
 ],
+```
+
+### clickOutsideElementId
+
+- Type: `String`
+- Default: `''`
+
+Id of an element outside the DatePIcker that shouldn't close the calendar on click
+
+Example:
+
+```vue
+<template>
+  <button
+    id="clickOutsideElement"
+    @click="toggleDatePickerOutside"
+  >
+    Open Outside
+  </button>
+  <DatePicker
+    ref="DatePicker"
+    clickOutsideElementId="clickOutsideElement"
+    ...
+  />
+</template>
+<script>
+  ...
+  methods: {
+    toggleDatePickerOutside() {
+      this.$refs.DatePicker.showDatepicker();
+    }
+  }
+</script>
+
 ```
 
 
