@@ -1,3 +1,3 @@
-import HotelDatePicker from './components/DatePicker/index.vue'
+import HotelDatePicker from './DatePicker/index.vue'
 
 export default HotelDatePicker
