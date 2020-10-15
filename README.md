@@ -1,4 +1,4 @@
-# Release 0.9.5
+# Release 0.9.6
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
 
 # vue-hotel-datepicker@2

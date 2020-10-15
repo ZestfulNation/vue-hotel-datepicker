@@ -1111,13 +1111,12 @@ export default {
     },
     handleClickOutside(event) {
       const ignoredElement = this.$refs[`DatePicker-${this.hash}`];
-      const ignoredOutsideElement = document.getElementById(
-        this.clickOutsideElementId
-      );
+      const ignoredOutsideElement =
+        document.getElementById(this.clickOutsideElementId) || false;
 
       if (ignoredElement) {
         const isIgnoredElementClicked = ignoredElement.contains(event.target);
-        let isIgnoredOutsideElementClicked = true;
+        let isIgnoredOutsideElementClicked = false;
 
         if (ignoredOutsideElement) {
           isIgnoredOutsideElementClicked = ignoredOutsideElement.contains(

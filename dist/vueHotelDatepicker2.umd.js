@@ -5053,7 +5053,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=864a2b52&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7b9e930c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=de77fbba&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper",class:{
     'datepicker__wrapper--grid': _vm.gridStyle,
     'datepicker__wrapper--booking': _vm.bookings.length > 0,
@@ -5076,7 +5076,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=864a2b52&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=de77fbba&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -7818,11 +7818,11 @@ var defaulti18n = {
     },
     handleClickOutside: function handleClickOutside(event) {
       var ignoredElement = this.$refs["DatePicker-".concat(this.hash)];
-      var ignoredOutsideElement = document.getElementById(this.clickOutsideElementId);
+      var ignoredOutsideElement = document.getElementById(this.clickOutsideElementId) || false;
 
       if (ignoredElement) {
         var isIgnoredElementClicked = ignoredElement.contains(event.target);
-        var isIgnoredOutsideElementClicked = true;
+        var isIgnoredOutsideElementClicked = false;
 
         if (ignoredOutsideElement) {
           isIgnoredOutsideElementClicked = ignoredOutsideElement.contains(event.target);
