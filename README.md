@@ -237,6 +237,7 @@ Key                                  | Type       | Description
   startAt                            | String     | YYYY-MM-DD
   minimumDuration                    | Number     | Minimum stay (Type: weekly => per_week | Type: nightly => per night)
   periodType                         | String     | *nightly*, *weekly_by_saturday*, *weekly_by_sunday*
+  price                              | Float      | Price displayed on each day for this period
 
 
 Example:
