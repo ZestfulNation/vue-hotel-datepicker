@@ -296,8 +296,8 @@ export default {
           bodyClassList.add('-overflow-hidden');
           setTimeout(() => {
             const swiperWrapper = document.getElementById('swiperWrapper');
-            let monthEl = document.querySelector('.datepicker__month')
-            let monthHeight = 1
+            let monthEl = document.querySelector('.datepicker__month');
+            let monthHeight = 1;
 
             if (monthEl) monthHeight = monthEl.offsetHeight;
 
