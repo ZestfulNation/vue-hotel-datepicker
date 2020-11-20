@@ -41,7 +41,6 @@
     "chai": "^4.2.0",
     "core-js": "^3.6.5",
     "fecha": "^4.2.0",
-    "highlight.js": "^10.2.1",
     "lodash.throttle": "^4.1.1",
     "vue": "^2.6.12"
   },
