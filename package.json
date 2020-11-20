@@ -33,8 +33,7 @@
   },
   "files": [
     "dist/*",
-    "src/*",
-    "*.json"
+    "src/*"
   ],
   "dependencies": {
     "@vue/eslint-config-airbnb": "^5.1.0",
