@@ -37,8 +37,6 @@
     "*.json"
   ],
   "dependencies": {
-    "@vue/eslint-config-airbnb": "^5.1.0",
-    "chai": "^4.2.0",
     "core-js": "^3.6.5",
     "fecha": "^4.2.0",
     "lodash.throttle": "^4.1.1",
@@ -49,9 +47,11 @@
     "@vue/cli-plugin-eslint": "~4.5.6",
     "@vue/cli-plugin-unit-jest": "~4.5.6",
     "@vue/cli-service": "~4.5.6",
+    "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^1.1.0",
     "babel-eslint": "^10.1.0",
+    "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
