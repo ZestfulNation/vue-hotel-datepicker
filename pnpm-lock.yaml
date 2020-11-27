@@ -1,8 +1,6 @@
 dependencies:
-  core-js: 3.6.5
   fecha: 4.2.0
   lodash.throttle: 4.1.1
-  vue: 2.6.12
 devDependencies:
   '@vue/cli-plugin-babel': 4.5.9_8ae91920fb9b3c76895c2e8acb765728
   '@vue/cli-plugin-eslint': 4.5.9_6778c0324b153720448c6ab0d5359212
@@ -19,6 +17,7 @@ devDependencies:
   prettier: 1.19.1
   sass: 1.26.10
   sass-loader: 8.0.2_sass@1.26.10
+  vue: 2.6.12
   vue-template-compiler: 2.6.12
 lockfileVersion: 5.2
 packages:
@@ -3475,6 +3474,7 @@ packages:
     resolution:
       integrity: sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
   /core-js/3.6.5:
+    dev: true
     requiresBuild: true
     resolution:
       integrity: sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
@@ -10668,7 +10668,7 @@ packages:
     resolution:
       integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
   /vue/2.6.12:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
   /w3c-hr-time/1.0.2:
@@ -11135,7 +11135,6 @@ specifiers:
   '@vue/test-utils': ^1.1.0
   babel-eslint: ^10.1.0
   chai: ^4.2.0
-  core-js: ^3.6.5
   eslint: ^6.8.0
   eslint-plugin-prettier: ^3.1.4
   eslint-plugin-vue: ^6.2.2
