@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import fecha from 'fecha'
+import { format } from 'fecha'
 import Helpers from '../../helpers'
 import BookingBullet from './BookingBullet.vue'
 
@@ -164,7 +164,7 @@ export default {
             )
         },
         dayNumber() {
-            return fecha.format(this.date, 'D')
+            return format(this.date, 'D')
         },
         dayPrice() {
             let currentDate = null
@@ -307,7 +307,7 @@ export default {
 
                 // Only highlight dates that are not disabled
                 if (this.isHighlighted && !this.isDisabled) {
-                    if (this.options.disabledDaysOfWeek.some(i => i === fecha.format(this.date, 'dddd'))) {
+                    if (this.options.disabledDaysOfWeek.some(i => i === format(this.date, 'dddd'))) {
                         return 'vhd__datepicker__month-day--selected vhd__datepicker__month-day--disabled afterMinimumDurationValidDay'
                     }
 
@@ -356,10 +356,7 @@ export default {
                 }
 
                 // Good
-                if (
-                    this.isDisabled ||
-                    this.options.disabledDaysOfWeek.some(i => i === fecha.format(this.date, 'dddd'))
-                ) {
+                if (this.isDisabled || this.options.disabledDaysOfWeek.some(i => i === format(this.date, 'dddd'))) {
                     return 'vhd__datepicker__month-day--disabled'
                 }
             } else if (!this.belongsToThisMonth) {
@@ -641,7 +638,7 @@ export default {
                 // Or is after the end date
                 this.compareEndDay() ||
                 // Or is in one of the disabled days of the week
-                this.options.disabledDaysOfWeek.some(i => i === fecha.format(this.date, 'dddd'))
+                this.options.disabledDaysOfWeek.some(i => i === format(this.date, 'dddd'))
 
             // Handle checkout enabled
             if (this.options.enableCheckout) {

@@ -110,7 +110,7 @@
                         :key="`${datepickerMonthKey}-${month}`"
                     >
                         <p class="vhd__datepicker__month-name">
-                            {{ getMonth(months[activeMonthIndex + month].days[15].date) }}
+                            {{ getMonthName(months[activeMonthIndex + month].days[15].date) }}
                         </p>
                         <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
                             <div
@@ -185,7 +185,7 @@
                             :key="`${datepickerMonthKey}-${n}`"
                         >
                             <p class="vhd__datepicker__month-name">
-                                {{ getMonth(months[n].days[15].date) }}
+                                {{ getMonthName(months[n].days[15].date) }}
                             </p>
                             <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
                                 <div
@@ -242,7 +242,7 @@
 
 <script>
 import throttle from 'lodash.throttle'
-import fecha from 'fecha'
+import { format } from 'fecha'
 
 import Day from './components/Day.vue'
 import DateInput from './components/DateInput.vue'
@@ -370,9 +370,9 @@ export default {
             type: Boolean,
             default: false,
         },
-        showYear: {
-            type: Boolean,
-            default: true,
+        monthFormat: {
+            type: String,
+            default: 'MMMM YYYY',
         },
         closeDatepickerOnClickOutside: {
             type: Boolean,
@@ -560,18 +560,6 @@ export default {
         },
     },
     created() {
-        fecha.i18n = {
-            dayNames: this.i18n['day-names'],
-            dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
-            monthNames: this.i18n['month-names'],
-            monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
-            amPm: ['am', 'pm'],
-            // D is the day of the month, function returns something like...  3rd or 11th
-            DoFn(D) {
-                return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
-            },
-        }
-
         if (
             this.checkIn &&
             (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 ||
@@ -1148,10 +1136,7 @@ export default {
             }
 
             if (this.endDate !== Infinity) {
-                if (
-                    fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ===
-                    fecha.format(new Date(this.endDate), 'YYYYMM')
-                ) {
+                if (format(firstDayOfLastMonth[0].date, 'YYYYMM') === format(new Date(this.endDate), 'YYYYMM')) {
                     return
                 }
             }
@@ -1165,11 +1150,14 @@ export default {
         setCheckOut(date) {
             this.checkOut = date
         },
-        getMonth(date) {
-            return (
-                this.i18n['month-names'][fecha.format(date, 'M') - 1] +
-                (this.showYear ? fecha.format(date, ' YYYY') : '')
-            )
+        getMonthName(date) {
+            const i18n = { monthNames: this.i18n['month-names'] }
+
+            if ('month-names-short' in this.i18n) {
+                i18n.monthNamesShort = this.i18n['month-names-short']
+            }
+
+            return format(date, this.monthFormat, i18n)
         },
         createMonth(date) {
             const firstDay = this.getFirstDay(date, this.firstDayOfWeek)

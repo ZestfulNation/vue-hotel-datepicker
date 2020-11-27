@@ -8,6 +8,7 @@
                 <option value="es">Español</option>
                 <option value="pt">Português</option>
                 <option value="fr">Français</option>
+                <option value="ja">日本語</option>
             </select>
         </div>
         <div class="container">
@@ -21,7 +22,7 @@
                 <h3>
                     Calendar in full view
                 </h3>
-                <DatePicker :alwaysVisible="true" :showYear="true" :i18n="i18n" />
+                <DatePicker :alwaysVisible="true" monthFormat="MMMM YYYY" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
@@ -59,7 +60,7 @@
                     <strong>lastDateAvailable</strong> props <br />
                     <small style="font-weight: normal">Stop pagination two years later</small>
                 </h3>
-                <DatePicker :lastDateAvailable="lastDateAvailable" :showYear="true" :i18n="i18n" />
+                <DatePicker :lastDateAvailable="lastDateAvailable" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>Show prices with <strong>periodDates</strong></h3>
@@ -176,7 +177,11 @@
             </div>
             <div class="box">
                 <h3>Hide year</h3>
-                <DatePicker :showYear="false" :i18n="i18n" />
+                <DatePicker monthFormat="MMMM" :i18n="i18n" />
+            </div>
+            <div class="box">
+                <h3>Custom month format (YYYY年M月)</h3>
+                <DatePicker monthFormat="YYYY年M月" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>Custom date format (MMMM D)</h3>
@@ -219,6 +224,7 @@ import pt from './i18n/pt'
 import fr from './i18n/fr'
 import en from './i18n/en'
 import es from './i18n/es'
+import ja from './i18n/ja'
 
 export default {
     components: {
@@ -227,7 +233,7 @@ export default {
     data() {
         return {
             language: 'en',
-            languages: { pt, fr, en, es },
+            languages: { pt, fr, en, es, ja },
             periodDates: [
                 {
                     startAt: '2021-07-01',
@@ -335,9 +341,6 @@ export default {
         }
     },
     computed: {
-        dateFormat() {
-            return 'DD/MM/YYYY'
-        },
         lastDateAvailable() {
             return this.addYears(new Date(), 2)
         },
@@ -410,7 +413,7 @@ body {
     }
 }
 .vhd__datepicker__wrapper {
-    max-width: 300px;
+    max-width: 350px;
     &.vhd__datepicker__fullview {
         max-width: 90%;
     }

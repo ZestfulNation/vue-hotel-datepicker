@@ -1,5 +1,5 @@
 /* eslint-disable vars-on-top */
-import fecha from 'fecha'
+import { format } from 'fecha'
 
 export default {
     getNextDate(datesArray, referenceDate) {
@@ -156,15 +156,6 @@ export default {
 
         return d2M + 12 * d2Y - (d1M + 12 * d1Y)
     },
-    shortenString(arr, sLen) {
-        const newArr = []
-
-        for (let i = 0, len = arr.length; i < len; i++) {
-            newArr.push(arr[i].substr(0, sLen))
-        }
-
-        return newArr
-    },
     getDaysArray(start, end) {
         for (
             // eslint-disable-next-line no-var
@@ -178,11 +169,28 @@ export default {
         // eslint-disable-next-line block-scoped-var
         return arr
     },
-    dateFormater(date, format) {
-        const f = format || 'YYYY-MM-DD'
+    dateFormater(date, dateFormat) {
+        const f = dateFormat || 'YYYY-MM-DD'
 
         if (date) {
-            return fecha.format(date, f)
+            const i18n = {
+                monthNames: this.i18n['month-names'],
+                dayNames: this.i18n['day-names'],
+            }
+
+            if ('month-names-short' in this.i18n) {
+                i18n.monthNamesShort = this.i18n['month-names-short']
+            }
+
+            if ('day-names-short' in this.i18n) {
+                i18n.dayNamesShort = this.i18n['day-names-short']
+            }
+
+            if ('do-fn' in this.i18n) {
+                i18n.DoFn = this.i18n['do-fn']
+            }
+
+            return format(date, f, i18n)
         }
 
         return ''
@@ -198,8 +206,8 @@ export default {
         return new Date(time1) < new Date(time2)
     },
     compareDay(day1, day2) {
-        const date1 = fecha.format(new Date(day1), 'YYYYMMDD')
-        const date2 = fecha.format(new Date(day2), 'YYYYMMDD')
+        const date1 = format(new Date(day1), 'YYYYMMDD')
+        const date2 = format(new Date(day2), 'YYYYMMDD')
 
         if (date1 > date2) {
             return 1

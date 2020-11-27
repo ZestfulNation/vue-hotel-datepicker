@@ -163,12 +163,12 @@ If provided, it will override the default tooltip "X nights" with the text provi
 - Type `boolean`
 - Default `false`
 
-## showYear
+## monthFormat
 
-- Type `boolean`
-- Default `false`
+- Type `String`
+- Default `MMMM YYYY`
 
-Shows the year next to the month
+The month format string.
 
 ## closeDatepickerOnClickOutside
 - Type: `boolean`
@@ -385,7 +385,7 @@ Emitted every time a booking is clicked
 
 Params:
 name                | Type       | Description
---------------------|-------------------------
+--------------------|------------|------------
   event             | MouseEvent | Mouse javascript event
   date              | Date       | Clicked Date
   currentBooking    | Object     | Clicked Booking
@@ -404,8 +404,9 @@ Example of currentBooking:
 ### periodSelected
 Emitted every time when a checkOut is clicked
 
+Params:
 name                | Type       | Description
---------------------|-------------------------
+--------------------|------------|------------
   event             | MouseEvent | Mouse javascript event
   checkIn           | Date       | checkIn
   checkIn           | Date       | checkOut
