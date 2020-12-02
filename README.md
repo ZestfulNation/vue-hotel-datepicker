@@ -169,6 +169,20 @@ If provided, it will override the default tooltip "X nights" with the text provi
 - Default `MMMM YYYY`
 
 The month format string.
+The default format shows a month name like `January 2020`.
+
+⚠️ The option `showYear` has been removed since v4. If you need to change the display of the month name, you can use this option.
+```html
+<!-- Old: Shows the year next to the month name like `January 2020` -->
+<HotelDatePicker showYear />
+<!-- New: Shows the year next to the month name like `January 2020` -->
+<HotelDatePicker /> or <HotelDatePicker monthFormat="MMMM YYYY" />
+
+<!-- Old: Shows the month name only like `January` -->
+<HotelDatePicker /> or <HotelDatePicker :showYear="false" />
+<!-- New: Shows the month name only like `January` -->
+<HotelDatePicker monthFormat="MMMM" />
+```
 
 ## closeDatepickerOnClickOutside
 - Type: `boolean`
