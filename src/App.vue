@@ -22,7 +22,7 @@
                 <h3>
                     Calendar in full view
                 </h3>
-                <DatePicker :alwaysVisible="true" monthFormat="MMMM YYYY" :i18n="i18n" />
+                <DatePicker :alwaysVisible="true" :i18n="i18n" />
             </div>
             <div class="box">
                 <h3>
