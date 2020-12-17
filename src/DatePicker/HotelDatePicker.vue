@@ -1156,8 +1156,11 @@ export default {
                 }
             }
 
-            this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date))
+            const nextMonth = this.getNextMonth(firstDayOfLastMonth[0].date)
+
+            this.createMonth(nextMonth)
             this.activeMonthIndex++
+            this.$emit('next-month-rendered', nextMonth)
         }, 350),
         setCheckIn(date) {
             this.checkIn = date
