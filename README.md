@@ -212,7 +212,7 @@ bookings: [
 |`check-out-changed`|  | Emitted every time a new check out date is selected with the new date as payload.
 |`clear-selection`|  | Emitted every time you clicked on clear Date button.
 |`day-clicked`| `Date`, `String`, `Date\|Number\|String`  | Emitted every time when day is clicked. The params are clicked: date, format and next disabled date.
-|`handle-checkin-checkout-half-day`| `Object` | Emitted on [`beforeMount`, `clear-selection`, `checkout`]. Param: Object of checkin-checkout date.
+|<span style="white-space: pre;">`handle-checkin-checkout-half-day`</span>| `Object` | Emitted on [`beforeMount`, `clear-selection`, `checkout`]. Param: Object of checkin-checkout date.
 |`next-month-rendered`|  | Emitted every time the next month is rendered.
 |`period-selected`| `Event`, `Date`, `Date`  | Emitted every time when a checkOut is clicked. Params: Mouse Event, checkIn, checkOut
 
