@@ -593,7 +593,7 @@ export default {
             let disableCheckoutOnCheckin = !this.disableCheckoutOnCheckin
 
             if (!this.checkIncheckOutHalfDay[this.formatDate] && this.currentBooking) {
-                this.$emit('bookingClicked', event, date, this.currentBooking)
+                this.$emit('booking-clicked', event, date, this.currentBooking)
 
                 return
             }
@@ -605,7 +605,7 @@ export default {
                         resetCheckin = true
                     } else {
                         disableCheckoutOnCheckin = false
-                        this.$emit('clearSelection')
+                        this.$emit('clear-selection')
                     }
                 } else {
                     disableCheckoutOnCheckin = true
@@ -616,9 +616,9 @@ export default {
                 if (!this.isDisabled || this.isClickable()) {
                     const formatDate = this.dateFormater(date)
 
-                    this.$emit('dayClicked', event, date, formatDate, resetCheckin)
+                    this.$emit('day-clicked', event, date, formatDate, resetCheckin)
                 } else {
-                    this.$emit('clearSelection')
+                    this.$emit('clear-selection')
                     this.dayClicked(event, date)
                 }
             }

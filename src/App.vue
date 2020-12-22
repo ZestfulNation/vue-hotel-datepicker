@@ -68,7 +68,7 @@
                     :minNights="minNights"
                     :periodDates="periodDates"
                     :i18n="i18n"
-                    @dayClicked="dayClicked"
+                    @day-clicked="dayClicked"
                 />
             </div>
             <div class="box">
@@ -97,7 +97,7 @@
                     :disableCheckoutOnCheckin="true"
                     :minNights="minNights"
                     :i18n="i18n"
-                    @dayClicked="dayClicked"
+                    @day-clicked="dayClicked"
                 />
             </div>
             <div class="box">

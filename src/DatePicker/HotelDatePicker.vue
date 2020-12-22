@@ -152,9 +152,9 @@
                                 :sortedDisabledDates="sortedDisabledDates"
                                 :sortedPeriodDates="sortedPeriodDates"
                                 :tooltipMessage="customTooltipMessage"
-                                @clearSelection="clearSelection"
-                                @bookingClicked="handleBookingClicked"
-                                @dayClicked="handleDayClick"
+                                @clear-selection="clearSelection"
+                                @booking-clicked="handleBookingClicked"
+                                @day-clicked="handleDayClick"
                             />
                         </div>
                     </div>
@@ -226,9 +226,9 @@
                                     :sortedDisabledDates="sortedDisabledDates"
                                     :sortedPeriodDates="sortedPeriodDates"
                                     :tooltipMessage="customTooltipMessage"
-                                    @clearSelection="clearSelection"
-                                    @bookingClicked="handleBookingClicked"
-                                    @dayClicked="handleDayClick"
+                                    @clear-selection="clearSelection"
+                                    @booking-clicked="handleBookingClicked"
+                                    @day-clicked="handleDayClick"
                                 />
                             </div>
                         </div>
@@ -634,7 +634,7 @@ export default {
     methods: {
         ...Helpers,
         handleBookingClicked(event, date, currentBooking) {
-            this.$emit('bookingClicked', event, date, currentBooking)
+            this.$emit('booking-clicked', event, date, currentBooking)
         },
         escFunction(e) {
             const escTouch = 27
@@ -809,7 +809,7 @@ export default {
                 this.checkIn = date
             } else if (this.checkIn !== null && this.checkOut == null) {
                 this.checkOut = date
-                this.$emit('periodSelected', event, this.checkIn, this.checkOut)
+                this.$emit('period-selected', event, this.checkIn, this.checkOut)
             } else {
                 this.checkOut = null
                 this.checkIn = date
@@ -825,7 +825,7 @@ export default {
             this.nextDisabledDate = nextDisabledDate
             this.hoveringDate = null
             this.hoveringDate = date
-            this.$emit('dayClicked', date, formatDate, nextDisabledDate)
+            this.$emit('day-clicked', date, formatDate, nextDisabledDate)
         },
         nextBookingDate(date) {
             let closest = Infinity
@@ -1264,7 +1264,7 @@ export default {
             sortedDates = sortedDates.map(date => new Date(date))
             this.sortedDisabledDates = sortedDates.sort((a, b) => a - b)
             this.checkIncheckOutHalfDay = checkIncheckOutHalfDay
-            this.$emit('handleCheckIncheckOutHalfDay', this.checkIncheckOutHalfDay)
+            this.$emit('handle-checkin-checkout-half-day', this.checkIncheckOutHalfDay)
         },
     },
 }

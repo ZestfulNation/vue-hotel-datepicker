@@ -353,34 +353,7 @@ Toggle datepicker
 
 ## Events
 
-### dayClicked
-Emitted every time when day is clicked
-
-Params:
-name                                 | Description
--------------------------------------|-------------------------
-  date                               | new Date()
-  formatDate                         | YYYY-MM-DD
-  nextDisabledDate                   | Date, Number, String
-
-### checkInChanged
-Emitted every time a new check in date is selected with the new date as payload
-
-### checkOutChanged
-Emitted every time a new check out date is selected with the new date as payload
-
-### clearSelection
-Emitted every time you clicked on clearDate button
-
-### handleCheckIncheckOutHalfDay
-Emitted on [beforeMount, clearSelection, checkOut]
-
-Params:
-name                                 | Description
--------------------------------------|-------------------------
-  checkIncheckOutHalfDay             | Object of checkinCheckout date
-
-### bookingClicked
+### booking-clicked
 Emitted every time a booking is clicked
 
 Params:
@@ -401,7 +374,37 @@ Example of currentBooking:
 }
 ```
 
-### periodSelected
+### check-in-changed
+Emitted every time a new check in date is selected with the new date as payload
+
+### check-out-changed
+Emitted every time a new check out date is selected with the new date as payload
+
+### clear-selection
+Emitted every time you clicked on clearDate button
+
+### day-clicked
+Emitted every time when day is clicked
+
+Params:
+name                                 | Description
+-------------------------------------|-------------------------
+  date                               | new Date()
+  formatDate                         | YYYY-MM-DD
+  nextDisabledDate                   | Date, Number, String
+
+### handle-checkin-checkout-half-day
+Emitted on [beforeMount, clearSelection, checkOut]
+
+Params:
+name                                 | Description
+-------------------------------------|-------------------------
+  checkIncheckOutHalfDay             | Object of checkinCheckout date
+
+### next-month-rendered
+Emitted every time the next month is rendered
+
+### period-selected
 Emitted every time when a checkOut is clicked
 
 name                | Type       | Description
