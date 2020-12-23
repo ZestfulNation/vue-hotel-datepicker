@@ -62,16 +62,16 @@ export default {
 |**disabledDaysOfWeek**|`Array`|`[]`|An array of strings in this format: `['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']`. All the days passed to the list will be disabled. (Before final release it will be changed to lower case english names).
 |**displayClearButton**|`Boolean`|`true`|If set to true, displays a clear button on the right side of the input if there are dates set.
 |**enableCheckout**|`Boolean`|`false`|If `true`, allows the checkout on a disabled date.
-|**endDate**|`Date` or `String` or `Boolean`|`false`|The end view date. All the dates after this date will be disabled.
+|**endDate**|`[Date, String, Number]`|`Infinity`|The end view date. All the dates after this date will be disabled.
 |**endingDateValue**|`Date`|`null`|The initial value of the end date.
 |**firstDayOfWeek**|`Number`|`0`|The first day of the week. Where Sun = 0, Mon = 1, ... Sat = 6. You need to set the right order in `i18n.day-names` too.
 |**format**|`String`|`'YYYY-MM-DD'`|The date format string.
 |**gridStyle**|`Boolean`|`true`|If false hides the grid around the days.
 |**halfDay**|`Boolean`|`true`|Allows to have half a day, if you have check in at noon and checkout before noon
-|**hoveringTooltip**|`Boolean` or `Function`|`true`|Shows a tooltip with the number of nights when hovering a date.
+|**hoveringTooltip**|`[Boolean, Function]`|`true`|Shows a tooltip with the number of nights when hovering a date.
 |**i18n**|`Object`| see below | Holds the traslation of the date picker.
-|**lastDateAvailable**|`Date`|`null`|Allows to stop calendar pagination after the month of that date
-|**maxNights**|`Number`|`0`|Maximum nights required to select a range of dates. `0` for no limit.
+|**lastDateAvailable**|`[Number, Date]`|`Infinity`|Allows to stop calendar pagination after the month of that date
+|**maxNights**|`Number`|`null`|Maximum nights required to select a range of dates. `0` or `null` for no limit.
 |**minNights**|`Number`|`1`|Minimum nights required to select a range of dates.
 |**periodDates**|`Array`| `[]` | If you want to have specific startAt and endAt period with different duration or price or type of period. See below for more information
 |**positionRight**|`Boolean`|`false`|If true shows the calendar on the **right** of the input.
@@ -79,10 +79,10 @@ export default {
 |**showSingleMonth**|`Boolean`|`false`|If set to true, display one month only
 |**showYear**|`Boolean`|`true`|Shows the year next to the month.
 |**singleDaySelection**|`Boolean`|`false`|When true only one day can be selected instead of a range.
-|**startDate**|`Date` or `String`|`null`|The start view date. All the dates before this date will be disabled.
-|**startingDateValue**|`Date`|`new Date()`|The initial value of the start date.
-|**tooltipMessage**|`String`|`null`|If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string..
-
+|**startDate**|`[Date, String]`|`new Date()`|The start view date. All the dates before this date will be disabled.
+|**startingDateValue**|`Date`|`null`|The initial value of the start date.
+|**tooltipMessage**|`String`|`null`|If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
+|**value**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker.
 
 ## i18n Defaults:
 

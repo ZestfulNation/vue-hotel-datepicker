@@ -256,83 +256,23 @@ export default {
         DateInput,
     },
     props: {
+        alwaysVisible: {
+            type: Boolean,
+            default: false,
+        },
         bookings: {
             type: Array,
             default() {
                 return []
             },
         },
-        alwaysVisible: {
+        closeDatepickerOnClickOutside: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         disableCheckoutOnCheckin: {
             type: Boolean,
             default: false,
-        },
-        lastDateAvailable: {
-            type: [Number, Date],
-            default: Infinity,
-        },
-        showPrice: {
-            type: Boolean,
-            default: false,
-        },
-        periodDates: {
-            type: Array,
-            default() {
-                return []
-            },
-        },
-        gridStyle: {
-            type: Boolean,
-            default: true,
-        },
-        positionRight: {
-            type: Boolean,
-            default: false,
-        },
-        value: {
-            type: Boolean,
-            default: false,
-        },
-        startingDateValue: {
-            type: Date,
-            default: null,
-        },
-        endingDateValue: {
-            type: Date,
-            default: null,
-        },
-        format: {
-            type: String,
-            default: 'YYYY-MM-DD',
-        },
-        startDate: {
-            type: [Date, String],
-            default() {
-                return new Date()
-            },
-        },
-        endDate: {
-            type: [Date, String, Number],
-            default: Infinity,
-        },
-        firstDayOfWeek: {
-            type: Number,
-            default: 0,
-        },
-        minNights: {
-            type: Number,
-            default: 1,
-        },
-        maxNights: {
-            type: Number,
-            default: null,
-        },
-        halfDay: {
-            type: Boolean,
-            default: true,
         },
         disabledDates: {
             type: Array,
@@ -346,19 +286,69 @@ export default {
                 return []
             },
         },
+        displayClearButton: {
+            type: Boolean,
+            default: true,
+        },
+        enableCheckout: {
+            type: Boolean,
+            default: false,
+        },
+        endDate: {
+            type: [Date, String, Number],
+            default: Infinity,
+        },
+        endingDateValue: {
+            type: [Date, null],
+            default: null,
+        },
+        firstDayOfWeek: {
+            type: Number,
+            default: 0,
+        },
+        format: {
+            type: String,
+            default: 'YYYY-MM-DD',
+        },
+        gridStyle: {
+            type: Boolean,
+            default: true,
+        },
+        halfDay: {
+            type: Boolean,
+            default: true,
+        },
         hoveringTooltip: {
             default: true,
             type: [Boolean, Function],
-        },
-        tooltipMessage: {
-            type: String,
-            default: null,
         },
         i18n: {
             type: Object,
             default: () => i18nDefaults,
         },
-        enableCheckout: {
+        lastDateAvailable: {
+            type: [Number, Date],
+            default: Infinity,
+        },
+        maxNights: {
+            type: [Number, null],
+            default: null,
+        },
+        minNights: {
+            type: Number,
+            default: 1,
+        },
+        periodDates: {
+            type: Array,
+            default() {
+                return []
+            },
+        },
+        positionRight: {
+            type: Boolean,
+            default: false,
+        },
+        showPrice: {
             type: Boolean,
             default: false,
         },
@@ -366,21 +356,31 @@ export default {
             type: Boolean,
             default: false,
         },
-        singleDaySelection: {
-            type: Boolean,
-            default: false,
-        },
         showYear: {
             type: Boolean,
             default: true,
         },
-        closeDatepickerOnClickOutside: {
+        singleDaySelection: {
             type: Boolean,
-            default: true,
+            default: false,
         },
-        displayClearButton: {
+        startDate: {
+            type: [Date, String],
+            default() {
+                return new Date()
+            },
+        },
+        startingDateValue: {
+            type: [Date, null],
+            default: null,
+        },
+        tooltipMessage: {
+            type: [String, null],
+            default: null,
+        },
+        value: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
     data() {
