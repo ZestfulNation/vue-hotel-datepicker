@@ -7,7 +7,7 @@
             vhd__datepicker__fullview: alwaysVisible,
         }"
         :ref="`DatePicker-${hash}`"
-        v-if="show"
+        v-if="value"
     >
         <div class="vhd__datepicker__close-button vhd__hide-on-desktop" v-if="isOpen" @click="closeMobileDatepicker">
             <i>+</i>
@@ -380,7 +380,7 @@ export default {
         },
         value: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     },
     data() {
@@ -399,13 +399,12 @@ export default {
             dynamicNightCounts: null,
             hash: Date.now(),
             hoveringDate: null,
-            open: false,
             isTouchMove: false,
             months: [],
             nextDisabledDate: null,
             nextPeriodDisableDates: [],
+            open: false,
             screenSize: null,
-            show: true,
             showCustomTooltip: false,
             sortedDisabledDates: null,
             xDown: null,
@@ -416,35 +415,36 @@ export default {
     },
     computed: {
         isOpen: {
-          get() {
-            return this.open;
-          },
-          set(open) {
-            this.open = open
-            if (this.screenSize !== 'desktop' && !this.alwaysVisible) {
-                const body = document.querySelector('body')
+            get() {
+                return this.open
+            },
+            set(open) {
+                this.open = open
 
-                if (open) {
-                    body.style.overflow = 'hidden'
+                if (this.screenSize !== 'desktop' && !this.alwaysVisible) {
+                    const body = document.querySelector('body')
 
-                    this.$nextTick(() => {
-                        if (this.$refs) {
-                            const { swiperWrapper } = this.$refs
-                            const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
-                            const currentSelectionIndex = this.checkOut
-                                ? this.getMonthDiff(new Date(), this.checkOut)
-                                : 0
+                    if (open) {
+                        body.style.overflow = 'hidden'
 
-                            swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
-                        }
-                    })
-                } else {
-                    body.style.overflow = ''
+                        this.$nextTick(() => {
+                            if (this.$refs) {
+                                const { swiperWrapper } = this.$refs
+                                const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
+                                const currentSelectionIndex = this.checkOut
+                                    ? this.getMonthDiff(new Date(), this.checkOut)
+                                    : 0
+
+                                swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
+                            }
+                        })
+                    } else {
+                        body.style.overflow = ''
+                    }
                 }
-            }
-            this.$emit('input', this.open);
-          }
 
+                this.$emit('input', this.open)
+            },
         },
         sortBookings() {
             if (this.bookings.length > 0) {
@@ -1092,7 +1092,7 @@ export default {
             }
         },
         clickOutside() {
-            if (this.show && this.closeDatepickerOnClickOutside) {
+            if (this.closeDatepickerOnClickOutside) {
                 this.hideDatepicker()
             }
         },
