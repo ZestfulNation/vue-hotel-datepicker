@@ -23,7 +23,8 @@ export default {
     nextDateByDayOfWeek(weekDay, referenceDate) {
         const newReferenceDate = new Date(referenceDate)
         let newWeekDay = weekDay.toLowerCase()
-        const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+        // const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+        const days = this.i18n['day-names']
         const referenceDateDay = newReferenceDate.getDay()
 
         for (let i = 7; i--; ) {
@@ -45,6 +46,13 @@ export default {
         }
 
         return this.getNextDate(tempArray, referenceDate)
+    },
+    nextDateByDayOfWeekObject(days, referenceDate) {
+        const daysArray = Object.entries(days)
+            .map(e => (e[1] ? e[0] : false))
+            .filter(v => v)
+
+        return this.nextDateByDayOfWeekArray(daysArray, referenceDate)
     },
     countDays(start, end) {
         const oneDay = 24 * 60 * 60 * 1000

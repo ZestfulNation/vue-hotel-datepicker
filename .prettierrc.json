@@ -2,7 +2,7 @@
     "endOfLine": "lf",
     "printWidth": 120,
     "singleQuote": true,
-    "tabWidth": 4,
+    "tabWidth": 2,
     "useTabs": false,
     "semi": false,
     "trailingComma": "all",
@@ -23,7 +23,7 @@
                 "*.js"
             ],
             "options": {
-                "tabWidth": 4
+                "tabWidth": 2
             }
         }
     ],

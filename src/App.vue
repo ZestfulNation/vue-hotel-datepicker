@@ -126,7 +126,15 @@
             <div class="box">
                 <h3>Check in only on saturday and minimum stay of 10 nights</h3>
                 <DatePicker
-                    :disabledDaysOfWeek="['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']"
+                    :disabledWeekDays="{
+                        sunday: true,
+                        monday: true,
+                        tuesday: true,
+                        wednesday: true,
+                        thursday: true,
+                        friday: true,
+                        saturday: false,
+                    }"
                     :enableCheckout="true"
                 />
             </div>
@@ -165,7 +173,15 @@
             <div class="box">
                 <h3>Checkin only on saturdays</h3>
                 <DatePicker
-                    :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
+                    :disabledWeekDays="{
+                        sunday: true,
+                        monday: true,
+                        tuesday: true,
+                        wednesday: true,
+                        thursday: true,
+                        friday: true,
+                        saturday: false,
+                    }"
                     :enableCheckout="true"
                     :i18n="i18n"
                 />

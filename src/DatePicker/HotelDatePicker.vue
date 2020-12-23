@@ -286,6 +286,12 @@ export default {
                 return []
             },
         },
+        disabledWeekDays: {
+            type: Object,
+            default() {
+                return {}
+            },
+        },
         displayClearButton: {
             type: Boolean,
             default: true,
@@ -546,6 +552,42 @@ export default {
         showClearSelectionButton() {
             return Boolean((this.checkIn || this.checkOut) && this.displayClearButton)
         },
+        disabledWeekDaysObject() {
+            const disabledDays = this.disabledDaysOfWeek.map(d => d.toLowerCase())
+            const names = this.i18n['day-names']
+            const SUNDAY = names[0]
+            const MONDAY = names[1]
+            const TUESDAY = names[2]
+            const WEDNESDAY = names[3]
+            const THURSDAY = names[4]
+            const FRIDAY = names[5]
+            const SATURDAY = names[6]
+            // The order of _default is important!
+            const disabledWeekDaysObject = {
+                sunday: disabledDays.includes(SUNDAY),
+                monday: disabledDays.includes(MONDAY),
+                tuesday: disabledDays.includes(TUESDAY),
+                wednesday: disabledDays.includes(WEDNESDAY),
+                thursday: disabledDays.includes(THURSDAY),
+                friday: disabledDays.includes(FRIDAY),
+                saturday: disabledDays.includes(SATURDAY),
+            }
+
+            return Object.assign(disabledWeekDaysObject, this.disabledWeekDays)
+        },
+        disabledWeekDaysArray() {
+            const days = this.disabledWeekDaysObject
+            const names = this.i18n['day-names']
+            // const names = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+
+            const fn = function fnDisabledWeekDaysArray(day, ix) {
+                return day[1] ? names[ix] : false
+            }
+
+            return Object.entries(days)
+                .map(fn)
+                .filter(v => v)
+        },
     },
     watch: {
         bookings() {
@@ -641,6 +683,7 @@ export default {
     },
     methods: {
         ...Helpers,
+        transformDisabledWeekDays() {},
         handleBookingClicked(event, date, currentBooking) {
             this.$emit('booking-clicked', event, date, currentBooking)
             /**
@@ -801,7 +844,7 @@ export default {
             let nextDisabledDate =
                 (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
                 this.getNextDate(this.sortedDisabledDates, date) ||
-                this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
+                this.nextDateByDayOfWeekArray(this.disabledWeekDaysArray, date) ||
                 this.nextBookingDate(date) ||
                 Infinity
 

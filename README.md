@@ -59,7 +59,8 @@ export default {
 |**closeDatepickerOnClickOutside**|`Boolean`|`true`|Closes the date picker when the user clicks outside the date picker.
 |**disableCheckoutOnCheckin**|`Boolean`|`false`|If set to true, disable checkout on the same date has checkin.
 |**disabledDates**|`Array`|`[]`|An array of strings in this format: `YYYY-MM-DD`. All the dates passed to the list will be disabled.
-|**disabledDaysOfWeek**|`Array`|`[]`|An array of strings in this format: `['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']`. All the days passed to the list will be disabled. (Before final release it will be changed to lower case english names).
+|**disabledDaysOfWeek**|`Array`|`[]`| **DEPRECATED**: An array of strings in this format: `['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']`. All the days passed to the list will be disabled. It depends on the translated names.
+|**disabledWeekDays**|`Object`|`{}`| An object with the following properties: `sunday`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, the value indicates if that day is disabled (true) or enabled (false).
 |**displayClearButton**|`Boolean`|`true`|If set to true, displays a clear button on the right side of the input if there are dates set.
 |**enableCheckout**|`Boolean`|`false`|If `true`, allows the checkout on a disabled date.
 |**endDate**|`[Date, String, Number]`|`Infinity`|The end view date. All the dates after this date will be disabled.
