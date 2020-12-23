@@ -399,7 +399,7 @@ export default {
             dynamicNightCounts: null,
             hash: Date.now(),
             hoveringDate: null,
-            isOpen: false,
+            open: false,
             isTouchMove: false,
             months: [],
             nextDisabledDate: null,
@@ -415,6 +415,37 @@ export default {
         }
     },
     computed: {
+        isOpen: {
+          get() {
+            return this.open;
+          },
+          set(open) {
+            this.open = open
+            if (this.screenSize !== 'desktop' && !this.alwaysVisible) {
+                const body = document.querySelector('body')
+
+                if (open) {
+                    body.style.overflow = 'hidden'
+
+                    this.$nextTick(() => {
+                        if (this.$refs) {
+                            const { swiperWrapper } = this.$refs
+                            const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
+                            const currentSelectionIndex = this.checkOut
+                                ? this.getMonthDiff(new Date(), this.checkOut)
+                                : 0
+
+                            swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
+                        }
+                    })
+                } else {
+                    body.style.overflow = ''
+                }
+            }
+            this.$emit('input', this.open);
+          }
+
+        },
         sortBookings() {
             if (this.bookings.length > 0) {
                 const bookings = [...this.bookings]
@@ -520,29 +551,6 @@ export default {
         bookings() {
             this.createHalfDayDates(this.baseHalfDayDates)
         },
-        isOpen(value) {
-            if (this.screenSize !== 'desktop' && !this.alwaysVisible) {
-                const body = document.querySelector('body')
-
-                if (value) {
-                    body.style.overflow = 'hidden'
-
-                    this.$nextTick(() => {
-                        if (this.$refs) {
-                            const { swiperWrapper } = this.$refs
-                            const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
-                            const currentSelectionIndex = this.checkOut
-                                ? this.getMonthDiff(new Date(), this.checkOut)
-                                : 0
-
-                            swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
-                        }
-                    })
-                } else {
-                    body.style.overflow = ''
-                }
-            }
-        },
         checkIn(newDate) {
             this.$emit('check-in-changed', newDate)
         },
@@ -635,6 +643,10 @@ export default {
         ...Helpers,
         handleBookingClicked(event, date, currentBooking) {
             this.$emit('booking-clicked', event, date, currentBooking)
+            /**
+             * @deprecated since v4.0.0 beta 11
+             */
+            this.$emit('bookingClicked', event, date, currentBooking)
         },
         escFunction(e) {
             const escTouch = 27
@@ -810,6 +822,10 @@ export default {
             } else if (this.checkIn !== null && this.checkOut == null) {
                 this.checkOut = date
                 this.$emit('period-selected', event, this.checkIn, this.checkOut)
+                /**
+                 * @deprecated since v4.0.0 beta 11
+                 */
+                this.$emit('periodSelected', event, this.checkIn, this.checkOut)
             } else {
                 this.checkOut = null
                 this.checkIn = date
@@ -826,6 +842,10 @@ export default {
             this.hoveringDate = null
             this.hoveringDate = date
             this.$emit('day-clicked', date, formatDate, nextDisabledDate)
+            /**
+             * @deprecated since v4.0.0 beta 11
+             */
+            this.$emit('dayClicked', date, formatDate, nextDisabledDate)
         },
         nextBookingDate(date) {
             let closest = Infinity
@@ -1265,6 +1285,10 @@ export default {
             this.sortedDisabledDates = sortedDates.sort((a, b) => a - b)
             this.checkIncheckOutHalfDay = checkIncheckOutHalfDay
             this.$emit('handle-checkin-checkout-half-day', this.checkIncheckOutHalfDay)
+            /**
+             * @deprecated since v4.0.0 beta 11
+             */
+            this.$emit('handleCheckinCheckoutHalfDay', this.checkIncheckOutHalfDay)
         },
     },
 }
