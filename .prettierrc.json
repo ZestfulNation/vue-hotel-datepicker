@@ -6,28 +6,5 @@
     "useTabs": false,
     "semi": false,
     "trailingComma": "all",
-    "insertPragma": false,
-    "overrides": [
-        {
-            "files": [
-                "*.php",
-                "*.yml",
-                "*.yaml"
-            ],
-            "options": {
-                "tabWidth": 4
-            }
-        },
-        {
-            "files": [
-                "*.js"
-            ],
-            "options": {
-                "tabWidth": 2
-            }
-        }
-    ],
-    "plugins": [
-        "eslint-plugin-prettier"
-    ]
+    "insertPragma": false
 }
