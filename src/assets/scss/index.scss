@@ -25,10 +25,10 @@ $bgRollActiveDage: $primary-color;
 $colorRollActiveDage: $white;
 
 $font-family: 'Source Sans Pro', sans-serif, verdana, arial;
-$font-small: calc($font-size * 0.875);
+$font-size: 16px;
+$font-small: calc(#{$font-size} * 0.875);
 $font-regular: 400;
 $font-bold: 700;
-$font-size: 16px;
 $tooltip-font-size: 11px;
 
 $width-half-day: 120px;
@@ -49,13 +49,13 @@ $extra-small-screen: '(max-width: 23em)';
 
 @mixin focusStyle() {
   &:focus {
-    outline: none
+    outline: none;
   }
 }
 
 @mixin device($device-widths) {
   @media screen and #{$device-widths} {
-    @content
+    @content;
   }
 }
 
@@ -484,7 +484,6 @@ $extra-small-screen: '(max-width: 23em)';
       flex-wrap: wrap;
       width: 40.625em;
       justify-content: space-between;
-
     }
 
     @include device($up-to-tablet) {
@@ -748,17 +747,17 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &.pipe--small {
-      height: calc($bullet-size * .75);
+      height: calc(#{$bullet-size} * .75);
     }
 
     &.vhd__checkIn {
-      left: calc(50% + $bullet-size);
-      width: calc(50% - $bullet-size);
+      left: calc(50% + #{$bullet-size});
+      width: calc(50% - #{$bullet-size});
     }
 
     &.vhd__checkOut {
       left: 0px;
-      width: calc(50% - $bullet-size);
+      width: calc(50% - #{$bullet-size});
     }
 
     &.vhd__checkInCheckOut {

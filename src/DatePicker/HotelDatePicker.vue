@@ -244,6 +244,8 @@ import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
 import i18nDefaults from '../i18n/en'
 
+import '../assets/scss/index.scss'
+
 export default {
   name: 'HotelDatePicker',
   components: {
