@@ -87,33 +87,6 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
-  button.next--mobile {
-    border: $border-generic-width solid $light-gray;
-    float: none;
-    height: 3.125em;
-    width: 100%;
-    position: relative;
-    appearance: none;
-    overflow: hidden;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    outline: none;
-    box-shadow: 0 5px 30px 10px rgba($black, .08);
-    background: white;
-
-    &:after {
-      background: transparent url('../images/ic-arrow-right-green.regular.svg') no-repeat center / 8px;
-      transform: rotate(90deg);
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-    }
-  }
-
   &--closed {
     box-shadow: none;
     max-height: 0;
@@ -579,11 +552,6 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
-  &__month-caption {
-    height: 2.5em;
-    vertical-align: middle;
-  }
-
   &__month-name {
     font-size: $font-size;
     font-weight: $font-bold;
@@ -713,10 +681,6 @@ $extra-small-screen: '(max-width: 23em)';
       position: absolute;
     }
   }
-}
-
-.-vhd__is-hidden {
-  display: none;
 }
 
 .vhd__hide-up-to-tablet {
