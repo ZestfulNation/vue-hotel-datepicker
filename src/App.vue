@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1>Vue Hotel Datepicker v4</h1>
-    <div>
+    <h1 style="flex-grow: 0">Vue Hotel Datepicker v4</h1>
+    <div style="flex-grow: 0">
       Language Selection:
       <select v-model="language">
         <option value="en">English</option>
@@ -11,27 +11,72 @@
       </select>
     </div>
     <div class="container">
-      <div class="box">
+      <div class="menu">
+        <ul>
+          <li @click="boxShow = 0" :class="{ selected: boxShow == 0 }">Show list of static bookings</li>
+          <li @click="boxShow = 1" :class="{ selected: boxShow == 1 }">Calendar in full view</li>
+          <li @click="boxShow = 2" :class="{ selected: boxShow == 2 }">Show calendar on the right</li>
+          <li @click="boxShow = 3" :class="{ selected: boxShow == 3 }">Hide grid style</li>
+          <li @click="boxShow = 4" :class="{ selected: boxShow == 4 }">Display one month only</li>
+          <li @click="boxShow = 5" :class="{ selected: boxShow == 5 }">Insert content with the content slot</li>
+          <li @click="boxShow = 6" :class="{ selected: boxShow == 6 }">
+            Last date available <strong>lastDateAvailable</strong> props
+          </li>
+          <li @click="boxShow = 7" :class="{ selected: boxShow == 7 }">
+            Show prices with <strong>periodDates</strong>
+          </li>
+          <li @click="boxShow = 8" :class="{ selected: boxShow == 8 }">
+            Blocked different day when clicked on with <strong>periodDates</strong>
+          </li>
+          <li @click="boxShow = 9" :class="{ selected: boxShow == 9 }">
+            Half day, If you have check in at noon and checkout before noon
+          </li>
+          <li @click="boxShow = 10" :class="{ selected: boxShow == 10 }">
+            Disable check-in and check-out on the same day
+          </li>
+          <li @click="boxShow = 11" :class="{ selected: boxShow == 11 }">Allow selection of single day</li>
+          <li @click="boxShow = 12" :class="{ selected: boxShow == 12 }">
+            Check in only on saturday and minimum stay of 10 nights
+          </li>
+          <li @click="boxShow = 13" :class="{ selected: boxShow == 13 }">
+            Block all dates after December 31st of {{ new Date().getUTCFullYear() }}
+          </li>
+          <li @click="boxShow = 14" :class="{ selected: boxShow == 14 }">Block all dates after 15th of next month</li>
+          <li @click="boxShow = 15" :class="{ selected: boxShow == 15 }">Block all date ranges of more than 30 days</li>
+          <li @click="boxShow = 16" :class="{ selected: boxShow == 16 }">Minimum stay of 3 days</li>
+          <li @click="boxShow = 17" :class="{ selected: boxShow == 17 }">Certain dates blocked</li>
+          <li @click="boxShow = 18" :class="{ selected: boxShow == 18 }">Allow setting a default date range</li>
+          <li @click="boxShow = 19" :class="{ selected: boxShow == 19 }">Checkin only on saturdays</li>
+          <li @click="boxShow = 20" :class="{ selected: boxShow == 20 }">Custom tooltip text</li>
+          <li @click="boxShow = 21" :class="{ selected: boxShow == 21 }">Hide year</li>
+          <li @click="boxShow = 22" :class="{ selected: boxShow == 22 }">Custom date format (MMMM D)</li>
+          <li @click="boxShow = 23" :class="{ selected: boxShow == 23 }">Change the first day of the week to Monday</li>
+          <li @click="boxShow = 24" :class="{ selected: boxShow == 24 }">Set checkIn value</li>
+          <li @click="boxShow = 25" :class="{ selected: boxShow == 25 }">Set checkOut value</li>
+          <li @click="boxShow = 26" :class="{ selected: boxShow == 26 }">Event CheckIn</li>
+        </ul>
+      </div>
+      <div v-if="boxShow == 0" class="box">
         <h3>Show list of static bookings</h3>
         <DatePicker :alwaysVisible="true" :bookings="bookings" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 1" class="box">
         <h3>Calendar in full view</h3>
         <DatePicker :alwaysVisible="true" :showYear="true" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 2" class="box">
         <h3>Show calendar on the right</h3>
         <DatePicker :positionRight="true" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 3" class="box">
         <h3>Hide grid style</h3>
         <DatePicker :gridStyle="false" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 4" class="box">
         <h3>Display one month only</h3>
         <DatePicker :showSingleMonth="true" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 5" class="box">
         <h3>Insert content with the content slot</h3>
 
         <DatePicker :i18n="i18n">
@@ -41,15 +86,14 @@
           </div>
         </DatePicker>
       </div>
-      <div class="box">
+      <div v-if="boxShow == 6" class="box">
         <h3>
-          Last date available
-          <strong>lastDateAvailable</strong> props <br />
+          Last date available <strong>lastDateAvailable</strong> props <br />
           <small style="font-weight: normal">Stop pagination two years later</small>
         </h3>
         <DatePicker :lastDateAvailable="lastDateAvailable" :showYear="true" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 7" class="box">
         <h3>Show prices with <strong>periodDates</strong></h3>
         <DatePicker
           :showPrice="true"
@@ -59,11 +103,10 @@
           @day-clicked="dayClicked"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 8" class="box">
         <h3>
-          Blocked different day when clicked on with
-          <strong>periodDates</strong>&nbsp;
-          <span style="font-weight: 400">Emit dayClicked</span>
+          Blocked different day when clicked on with <strong>periodDates</strong>&nbsp;
+          <span style="font-weight: 400">Emit day-clicked</span>
         </h3>
         <DatePicker
           :disabledDates="[
@@ -88,7 +131,7 @@
           @day-clicked="dayClicked"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 9" class="box">
         <h3>Half day, If you have check in at noon and checkout before noon</h3>
         <DatePicker
           :i18n="i18n"
@@ -103,15 +146,15 @@
           ]"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 10" class="box">
         <h3>Disable check-in and check-out on the same day</h3>
         <DatePicker :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 11" class="box">
         <h3>Allow selection of single day</h3>
         <DatePicker :singleDaySelection="true" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 12" class="box">
         <h3>Check in only on saturday and minimum stay of 10 nights</h3>
         <DatePicker
           :disabledWeekDays="{
@@ -126,27 +169,27 @@
           :enableCheckout="true"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 13" class="box">
         <h3>Block all dates after December 31st of the current year</h3>
         <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 14" class="box">
         <h3>Block all dates after 15th of next month</h3>
         <DatePicker :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 15" class="box">
         <h3>Block all date ranges of more than 30 days</h3>
         <DatePicker :maxNights="30" :selectForward="false" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 16" class="box">
         <h3>Minimum stay of 3 days</h3>
         <DatePicker :minNights="3" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 17" class="box">
         <h3>Certain dates blocked</h3>
         <DatePicker :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 18" class="box">
         <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
         <DatePicker
           :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
@@ -154,7 +197,7 @@
           :i18n="i18n"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 19" class="box">
         <h3>Checkin only on saturdays</h3>
         <DatePicker
           :disabledWeekDays="{
@@ -170,27 +213,27 @@
           :i18n="i18n"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 20" class="box">
         <h3>Custom tooltip text</h3>
         <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 21" class="box">
         <h3>Hide year</h3>
         <DatePicker :showYear="false" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 22" class="box">
         <h3>Custom date format (MMMM D)</h3>
         <DatePicker format="MMMM D" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 23" class="box">
         <h3>Change the first day of the week to Monday</h3>
         <DatePicker :firstDayOfWeek="1" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 24" class="box">
         <h3>Set checkIn value</h3>
         <DatePicker :firstDayOfWeek="1" :checkInValue="new Date()" :i18n="i18n" />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 25" class="box">
         <h3>Set checkOut value</h3>
         <DatePicker
           :checkInValue="new Date()"
@@ -198,7 +241,7 @@
           :i18n="i18n"
         />
       </div>
-      <div class="box">
+      <div v-if="boxShow == 26" class="box">
         <h3>Event CheckIn</h3>
         <DatePicker
           :i18n="i18n"
@@ -226,6 +269,7 @@ export default {
   },
   data() {
     return {
+      boxShow: 0,
       language: 'en',
       languages: { pt, fr, en, es },
       periodDates: [
@@ -395,18 +439,55 @@ body {
 }
 #app {
   text-align: center;
+  max-height: 100%;
 }
 .container {
   max-width: 1180px;
   margin: 0 auto;
-  /* text-align: left; */
+  display: flex;
+  flex-direction: row;
+  padding-top: 1em;
+}
+.menu {
+  flex-grow: 1;
+  max-width: 300px;
+  text-align: left;
+  max-height: 100%;
+  overflow: auto;
+  ul {
+    padding: 3.4em 1em 0.25em 0;
+    margin: 0;
+    font-size: 1.17rem;
+    li {
+      font-size: 1rem;
+      padding: 0.25em 0.75em;
+      margin: 0;
+      text-align: left;
+      cursor: pointer;
+      list-style-type: none;
+      border-bottom: 1px dashed rgba(128, 128, 128, 0.425);
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: gray;
+        color: white;
+      }
+      &.selected {
+        background-color: #28ca9c;
+        color: white;
+      }
+    }
+  }
 }
 .box {
-  width: 100%;
+  flex-grow: 1;
+  max-width: 100%;
   & h3 {
     background-color: gray;
     color: white;
     padding: 1em 0;
+    margin-top: 0;
   }
 }
 .vhd__datepicker__wrapper {

@@ -535,7 +535,8 @@ export default {
     },
     disabledWeekDaysObject() {
       const disabledDays = this.disabledDaysOfWeek.map((d) => d.toLowerCase())
-      const names = this.i18n['day-names']
+      // const names = this.i18n['day-names']
+      const names = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
       const SUNDAY = names[0]
       const MONDAY = names[1]
       const TUESDAY = names[2]
@@ -558,8 +559,8 @@ export default {
     },
     disabledWeekDaysArray() {
       const days = this.disabledWeekDaysObject
-      const names = this.i18n['day-names']
-      // const names = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+      // const names = this.i18n['day-names']
+      const names = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
       const fn = function fnDisabledWeekDaysArray(day, ix) {
         return day[1] ? names[ix] : false
