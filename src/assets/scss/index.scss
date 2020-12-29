@@ -1,6 +1,7 @@
 /* =============================================================
 * VARIABLES
 * ============================================================*/
+$prefix: 'vhd__datepicker';
 $white: #fff;
 $black: #000;
 $gray: #424b53;
@@ -63,7 +64,7 @@ $extra-small-screen: '(max-width: 23em)';
 * BASE STYLES
 * ============================================================*/
 
-.vhd__datepicker {
+.#{$prefix} {
   position: absolute;
   top: 3em;
   z-index: 999;
@@ -140,6 +141,13 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: left;
   }
 
+  &__header-mobile {
+    text-align: left;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+
   &__wrapper {
     position: relative;
     display: inline-block;
@@ -153,13 +161,13 @@ $extra-small-screen: '(max-width: 23em)';
       box-sizing: border-box;
     }
 
-    &--grid .vhd__square .vhd__datepicker__month-day {
+    &--grid .vhd__square .#{$prefix}__month-day {
       border: $border-generic-width solid $light-gray;
       margin: -1px 0 0 -1px;
     }
 
     &--booking {
-      .vhd__datepicker__month-day-wrapper span {
+      .#{$prefix}__month-day-wrapper span {
         text-align: right;
         padding-top: 0.75em;
         padding-right: 0.75em;
@@ -167,7 +175,7 @@ $extra-small-screen: '(max-width: 23em)';
         top: 0;
         transform: none;
       }
-      .vhd__datepicker__month-day:before {
+      .#{$prefix}__month-day:before {
         display: none;
       }
     }
@@ -177,13 +185,13 @@ $extra-small-screen: '(max-width: 23em)';
     background: none;
     height: auto;
 
-    .vhd__datepicker__close-button,
-    .vhd__datepicker__dummy-wrapper,
-    .vhd__datepicker__clear-button,
+    .#{$prefix}__close-button,
+    .#{$prefix}__dummy-wrapper,
+    .#{$prefix}__clear-button,
     .vhd__hide-on-desktop {
       display: none;
     }
-    .vhd__datepicker {
+    .#{$prefix} {
       position: relative;
       top: 0;
     }
@@ -192,11 +200,11 @@ $extra-small-screen: '(max-width: 23em)';
       display: block;
     }
 
-    .vhd__datepicker__month-button {
+    .#{$prefix}__month-button {
       display: inline-block;
     }
 
-    .vhd__datepicker__months {
+    .#{$prefix}__months {
       position: static;
       margin: 0;
       width: auto;
@@ -216,7 +224,7 @@ $extra-small-screen: '(max-width: 23em)';
     width: 100%;
     height: 100%;
 
-    &--no-border.vhd__datepicker__dummy-wrapper {
+    &--no-border.#{$prefix}__dummy-wrapper {
       border: 0;
     }
 
@@ -307,7 +315,7 @@ $extra-small-screen: '(max-width: 23em)';
     &--today {
       border: 0;
 
-      .vhd__datepicker__month-day-wrapper {
+      .#{$prefix}__month-day-wrapper {
         border: 2px solid $primary-color;
         padding-top: calc(100% - 5px);
       }
@@ -488,18 +496,30 @@ $extra-small-screen: '(max-width: 23em)';
   &__inner {
     padding: 1.5rem 2.5rem 0;
     position: relative;
+    height: calc(100% - 3em);
 
     @include device($up-to-tablet) {
       padding: 0;
     }
   }
 
+  &__months-wrapper {
+    height: 100%;
+    .#{$prefix}__months {
+      margin-top: 0;
+      height: 100%;
+      .#{$prefix}__month .#{$prefix}week-name {
+        font-size: 1.25em;
+      }
+    }
+  }
+
   .vhd__show-tooltip {
-    .vhd__datepicker__months {
+    .#{$prefix}__months {
       margin-top: 10em;
       height: calc(100% - 10em);
     }
-    .vhd__datepicker__tooltip--mobile {
+    .#{$prefix}__tooltip--mobile {
       height: auto;
       opacity: 1;
       padding: 1em;
@@ -545,7 +565,7 @@ $extra-small-screen: '(max-width: 23em)';
     &--full {
       width: 100%;
 
-      .vhd__datepicker__month {
+      .#{$prefix}__month {
         width: 29.375em;
         padding: 0;
       }

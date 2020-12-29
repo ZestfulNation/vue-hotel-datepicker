@@ -75,10 +75,15 @@
         </div>
       </div>
       <div v-if="isOpen || alwaysVisible" class="vhd__datepicker__inner">
-        <div class="vhd__datepicker__header">
+        <div
+          :class="{
+            vhd__datepicker__header: screenSize === 'desktop',
+            'vhd__datepicker__header-mobile': screenSize !== 'desktop',
+          }"
+        >
           <button
             type="button"
-            class="vhd__datepicker__month-button vhd__datepicker__month-button--prev vhd__hide-up-to-tablet"
+            class="vhd__datepicker__month-button vhd__datepicker__month-button--prev"
             @click="renderPreviousMonth"
             @keyup.enter.stop.prevent="renderPreviousMonth"
             :tabindex="isOpen ? 0 : -1"
@@ -86,7 +91,7 @@
           />
           <button
             type="button"
-            class="vhd__datepicker__month-button vhd__datepicker__month-button--next vhd__hide-up-to-tablet"
+            class="vhd__datepicker__month-button vhd__datepicker__month-button--next"
             @click="renderNextMonth"
             @keyup.enter.stop.prevent="renderNextMonth"
             :disabled="isPreventedMaxMonth"
@@ -101,7 +106,7 @@
           <div
             ref="datepickerMonth"
             class="vhd__datepicker__month"
-            v-for="(month, monthIndex) in paginateDesktop"
+            v-for="(month, monthIndex) in paginateMonths"
             :key="`${datepickerMonthKey}-${month}`"
           >
             <p class="vhd__datepicker__month-name">
@@ -156,33 +161,24 @@
         </div>
         <div
           v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
-          :class="{ 'vhd__show-tooltip': showCustomTooltip && hoveringTooltip }"
+          :class="['vhd__datepicker__months-wrapper', { 'vhd__show-tooltip': showCustomTooltip && hoveringTooltip }]"
         >
           <div class="vhd__datepicker__tooltip--mobile" v-if="hoveringTooltip">
             <template v-if="customTooltipMessage">
               {{ cleanString(customTooltipMessage) }}
             </template>
           </div>
-          <div class="vhd__datepicker__week-row">
-            <div
-              class="vhd__datepicker__week-name"
-              v-for="(dayName, datePickerWeekIndexMobile) in this.i18n['day-names']"
-              :key="datepickerWeekKey + datePickerWeekIndexMobile"
-            >
-              {{ dayName }}
-            </div>
-          </div>
           <div class="vhd__datepicker__months" ref="swiperWrapper">
             <div
               ref="datepickerMonth"
               class="vhd__datepicker__month"
-              v-for="(a, n) in months"
+              v-for="(a, n) in paginateMonths"
               :key="`${datepickerMonthKey}-${n}`"
             >
               <p class="vhd__datepicker__month-name">
-                {{ getMonth(months[n].days[15].date) }}
+                {{ getMonth(months[activeMonthIndex + n].days[15].date) }}
               </p>
-              <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
+              <div class="vhd__datepicker__week-row">
                 <div
                   class="vhd__datepicker__week-name"
                   v-for="(dayName, datePickerIndex) in i18n['day-names']"
@@ -193,7 +189,7 @@
               </div>
               <div
                 class="vhd__square"
-                v-for="(day, dayIndexMobile) in months[n].days"
+                v-for="(day, dayIndexMobile) in months[activeMonthIndex + n].days"
                 :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
                 @mouseenter="mouseEnterDay(day)"
               >
@@ -474,7 +470,7 @@ export default {
 
       return this.disabledDates
     },
-    paginateDesktop() {
+    paginateMonths() {
       if (this.showSingleMonth || (this.alwaysVisible && this.screenSize !== 'desktop')) {
         return [0]
       }

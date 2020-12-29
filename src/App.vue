@@ -251,14 +251,10 @@
           />
         </div>
         <div v-if="boxShow == 26" class="box">
-          <h3>Event CheckIn</h3>
-          <DatePicker
-            :i18n="i18n"
-            @check-in-changed="checkInChanged($event)"
-            @check-out-changed="checkOutChanged($event)"
-          />
-          <p>new Check In Date: {{ newCheckInDate }}</p>
-          <p>new Check Out Date : {{ newCheckOutDate }}</p>
+          <h3>Event CheckIn / CheckOut</h3>
+          <DatePicker :i18n="i18n" @check-in-changed="console.log($event)" @check-out-changed="console.log($event)" />
+          <p>new Check In Date: {{ checkIn }}</p>
+          <p>new Check Out Date : {{ checkOut }}</p>
         </div>
       </div>
     </div>
@@ -279,11 +275,6 @@ export default {
   },
   data() {
     return {
-      menu: false,
-      currentWidth: window.innerWidth,
-      boxShow: 0,
-      language: 'en',
-      languages: { pt, fr, en, es },
       periodDates: [
         {
           startAt: '2021-07-01',
@@ -385,9 +376,14 @@ export default {
           },
         },
       ],
-      newCheckInDate: null,
-      newCheckOutDate: null,
+      checkIn: null,
+      checkOut: null,
       minNights: 3,
+      menu: false,
+      currentWidth: window.innerWidth,
+      boxShow: 0,
+      language: 'en',
+      languages: { pt, fr, en, es },
     }
   },
   computed: {
@@ -407,7 +403,13 @@ export default {
     })
   },
   methods: {
+    newData() {
+      return {}
+    },
     selectBox(box) {
+      this.boxShow = -1
+      this.checkIn = null
+      this.checkOut = null
       this.boxShow = box
       this.toggleMenu()
     },
@@ -444,10 +446,10 @@ export default {
       console.log(date, formatDate, nextDisabledDate)
     },
     checkInChanged(newDate) {
-      this.newCheckInDate = newDate
+      this.checkIn = newDate
     },
     checkOutChanged(newDate) {
-      this.newCheckOutDate = newDate
+      this.checkOut = newDate
     },
   },
 }
@@ -484,14 +486,16 @@ h1 {
 }
 .container {
   position: relative;
-  max-width: 1180px;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow-y: hidden;
+  /*
   @media (min-width: 1441px) {
     margin: 0 auto;
+    max-width: 1180px;
     width: 1180px;
   }
+  */
 
   .toggle-menu {
     display: inline-block;
@@ -520,7 +524,7 @@ h1 {
     max-width: 300px;
     text-align: left;
     max-height: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
     @media (max-width: 1440px) {
       max-width: 100%;
 
@@ -569,6 +573,9 @@ h1 {
   .box-container {
     flex-grow: 1;
     max-width: 100%;
+    @media (min-width: 1441px) {
+      text-align: left;
+    }
     .box {
       width: 100%;
     }
