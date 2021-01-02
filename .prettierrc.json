@@ -2,32 +2,9 @@
     "endOfLine": "lf",
     "printWidth": 120,
     "singleQuote": true,
-    "tabWidth": 4,
+    "tabWidth": 2,
     "useTabs": false,
     "semi": false,
     "trailingComma": "all",
-    "insertPragma": false,
-    "overrides": [
-        {
-            "files": [
-                "*.php",
-                "*.yml",
-                "*.yaml"
-            ],
-            "options": {
-                "tabWidth": 4
-            }
-        },
-        {
-            "files": [
-                "*.js"
-            ],
-            "options": {
-                "tabWidth": 4
-            }
-        }
-    ],
-    "plugins": [
-        "eslint-plugin-prettier"
-    ]
+    "insertPragma": false
 }

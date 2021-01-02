@@ -1,6 +1,7 @@
 /* =============================================================
 * VARIABLES
 * ============================================================*/
+$prefix: 'vhd__datepicker';
 $white: #fff;
 $black: #000;
 $gray: #424b53;
@@ -11,9 +12,9 @@ $primary-color: #0fb8ad;
 $medium-gray: #424b53;
 $light-gray: #eaeaea;
 $disabledBg: #f5f7f8;
-$disabled-color: #D8D8D8;
+$disabled-color: #d8d8d8;
 $dark-gray: #2d3047;
-$box-shadow: 0 0 10px 3px rgba(red, .4);
+$box-shadow: 0 0 10px 3px rgba(red, 0.4);
 $background-color: #fff;
 
 // Bg Date when hover it
@@ -24,11 +25,11 @@ $colorValidHoverDate: $white;
 $bgRollActiveDage: $primary-color;
 $colorRollActiveDage: $white;
 
+$font-size: 16px;
+$font-small: #{$font-size * 0.875};
 $font-family: 'Source Sans Pro', sans-serif, verdana, arial;
-$font-small: calc($font-size * 0.875);
 $font-regular: 400;
 $font-bold: 700;
-$font-size: 16px;
 $tooltip-font-size: 11px;
 
 $width-half-day: 120px;
@@ -49,13 +50,13 @@ $extra-small-screen: '(max-width: 23em)';
 
 @mixin focusStyle() {
   &:focus {
-    outline: none
+    outline: none;
   }
 }
 
 @mixin device($device-widths) {
   @media screen and #{$device-widths} {
-    @content
+    @content;
   }
 }
 
@@ -63,15 +64,15 @@ $extra-small-screen: '(max-width: 23em)';
 * BASE STYLES
 * ============================================================*/
 
-.vhd__datepicker {
+.#{$prefix} {
   position: absolute;
   top: 3em;
   z-index: 999;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: $background-color;
   font-size: $font-size;
   font-family: $font-family;
-  line-height: .875em;
+  line-height: 0.875em;
   overflow: hidden;
 
   &--right {
@@ -99,13 +100,13 @@ $extra-small-screen: '(max-width: 23em)';
     bottom: 0;
     left: 0;
     outline: none;
-    box-shadow: 0 5px 30px 10px rgba($black, .08);
+    box-shadow: 0 5px 30px 10px rgba($black, 0.08);
     background: white;
 
     &:after {
       background: transparent url('../images/ic-arrow-right-green.regular.svg') no-repeat center / 8px;
       transform: rotate(90deg);
-      content: "";
+      content: '';
       position: absolute;
       width: 200%;
       height: 200%;
@@ -120,7 +121,7 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &--open {
-    box-shadow: 0 15px 30px 10px rgba($black, .08);
+    box-shadow: 0 15px 30px 10px rgba($black, 0.08);
     max-height: 56.25em;
 
     @include device($up-to-tablet) {
@@ -140,6 +141,13 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: left;
   }
 
+  &__header-mobile {
+    text-align: left;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+
   &__wrapper {
     position: relative;
     display: inline-block;
@@ -153,21 +161,21 @@ $extra-small-screen: '(max-width: 23em)';
       box-sizing: border-box;
     }
 
-    &--grid .vhd__square .vhd__datepicker__month-day {
+    &--grid .vhd__square .#{$prefix}__month-day {
       border: $border-generic-width solid $light-gray;
       margin: -1px 0 0 -1px;
     }
 
     &--booking {
-      .vhd__datepicker__month-day-wrapper span {
+      .#{$prefix}__month-day-wrapper span {
         text-align: right;
-        padding-top: .75em;
-        padding-right: .75em;
+        padding-top: 0.75em;
+        padding-right: 0.75em;
         right: 0;
         top: 0;
         transform: none;
       }
-      .vhd__datepicker__month-day:before {
+      .#{$prefix}__month-day:before {
         display: none;
       }
     }
@@ -177,10 +185,13 @@ $extra-small-screen: '(max-width: 23em)';
     background: none;
     height: auto;
 
-    .vhd__datepicker__close-button, .vhd__datepicker__dummy-wrapper, .vhd__datepicker__clear-button, .vhd__hide-on-desktop{
+    .#{$prefix}__close-button,
+    .#{$prefix}__dummy-wrapper,
+    .#{$prefix}__clear-button,
+    .vhd__hide-on-desktop {
       display: none;
     }
-    .vhd__datepicker {
+    .#{$prefix} {
       position: relative;
       top: 0;
     }
@@ -189,11 +200,11 @@ $extra-small-screen: '(max-width: 23em)';
       display: block;
     }
 
-    .vhd__datepicker__month-button {
+    .#{$prefix}__month-button {
       display: inline-block;
     }
 
-    .vhd__datepicker__months {
+    .#{$prefix}__months {
       position: static;
       margin: 0;
       width: auto;
@@ -202,7 +213,6 @@ $extra-small-screen: '(max-width: 23em)';
         display: none;
       }
     }
-
   }
 
   &__dummy-wrapper {
@@ -214,7 +224,7 @@ $extra-small-screen: '(max-width: 23em)';
     width: 100%;
     height: 100%;
 
-    &--no-border.vhd__datepicker__dummy-wrapper {
+    &--no-border.#{$prefix}__dummy-wrapper {
       border: 0;
     }
 
@@ -305,14 +315,14 @@ $extra-small-screen: '(max-width: 23em)';
     &--today {
       border: 0;
 
-      .vhd__datepicker__month-day-wrapper {
+      .#{$prefix}__month-day-wrapper {
         border: 2px solid $primary-color;
         padding-top: calc(100% - 5px);
       }
     }
 
     &--invalid-range {
-      background-color: rgba($primary-color, .3);
+      background-color: rgba($primary-color, 0.3);
       color: $lightest-gray;
       cursor: not-allowed;
       position: relative;
@@ -387,7 +397,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--selected {
-      background-color: rgba($primary-color, .7);
+      background-color: rgba($primary-color, 0.7);
       color: $primary-text-inverse-color;
       span {
         text-decoration: none;
@@ -401,7 +411,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--hovering {
-      background-color: rgba($primary-color, .7);
+      background-color: rgba($primary-color, 0.7);
       color: $primary-text-inverse-color;
       font-weight: $font-bold;
       cursor: pointer;
@@ -443,7 +453,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--valid#{&}--halfCheckIn#{&}--last-day-selected {
-      color: white
+      color: white;
     }
 
     &--hidden {
@@ -461,10 +471,10 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: center;
     cursor: pointer;
     opacity: 1;
-    transition: opacity ease .5s;
+    transition: opacity ease 0.5s;
 
     &:hover {
-      opacity: .65;
+      opacity: 0.65;
     }
 
     @include focusStyle();
@@ -478,7 +488,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &[disabled] {
-      opacity: .2;
+      opacity: 0.2;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -486,18 +496,30 @@ $extra-small-screen: '(max-width: 23em)';
   &__inner {
     padding: 1.5rem 2.5rem 0;
     position: relative;
+    height: calc(100% - 3em);
 
     @include device($up-to-tablet) {
       padding: 0;
     }
   }
 
+  &__months-wrapper {
+    height: 100%;
+    .#{$prefix}__months {
+      margin-top: 0;
+      height: 100%;
+      .#{$prefix}__month .#{$prefix}week-name {
+        font-size: 1.25em;
+      }
+    }
+  }
+
   .vhd__show-tooltip {
-    .vhd__datepicker__months {
+    .#{$prefix}__months {
       margin-top: 10em;
       height: calc(100% - 10em);
     }
-    .vhd__datepicker__tooltip--mobile {
+    .#{$prefix}__tooltip--mobile {
       height: auto;
       opacity: 1;
       padding: 1em;
@@ -511,7 +533,6 @@ $extra-small-screen: '(max-width: 23em)';
       flex-wrap: wrap;
       width: 40.625em;
       justify-content: space-between;
-
     }
 
     @include device($up-to-tablet) {
@@ -523,7 +544,7 @@ $extra-small-screen: '(max-width: 23em)';
       overflow-y: scroll;
       right: 0;
       bottom: 0;
-      transition: all ease .2s;
+      transition: all ease 0.2s;
     }
 
     &::before {
@@ -544,9 +565,9 @@ $extra-small-screen: '(max-width: 23em)';
     &--full {
       width: 100%;
 
-      .vhd__datepicker__month {
+      .#{$prefix}__month {
         width: 29.375em;
-        padding: 0
+        padding: 0;
       }
 
       &::before {
@@ -610,7 +631,7 @@ $extra-small-screen: '(max-width: 23em)';
     line-height: 2.5em;
 
     @include device($up-to-tablet) {
-      box-shadow: 0px 8px 12px 0px rgba($black, .1);
+      box-shadow: 0px 8px 12px 0px rgba($black, 0.1);
     }
   }
 
@@ -682,7 +703,7 @@ $extra-small-screen: '(max-width: 23em)';
     border-radius: $tooltip-border-radius;
     color: $primary-text-inverse-color;
     font-size: $tooltip-font-size;
-    padding: 0,45em 0,91em;
+    padding: 0, 45em 0, 91em;
     position: absolute;
     z-index: 50;
     left: 50%;
@@ -699,7 +720,7 @@ $extra-small-screen: '(max-width: 23em)';
       border: $border-generic-width solid #d7d9e2;
       font-size: $font-small;
       line-height: 1.4;
-      transition: all ease .2s;
+      transition: all ease 0.2s;
     }
 
     &:after {
@@ -748,7 +769,7 @@ $extra-small-screen: '(max-width: 23em)';
     transform: translate(-50%, -50%);
     width: 100%;
     height: $bullet-size;
-    transition: opacity ease .3s;
+    transition: opacity ease 0.3s;
     @include device($desktop) {
       top: 50%;
     }
@@ -756,13 +777,13 @@ $extra-small-screen: '(max-width: 23em)';
     &.vhd__checkInCheckOut,
     &.vhd__checkIn,
     &.vhd__checkOut {
-      width: .5em;
+      width: 0.5em;
       height: 1.125em;
-      border-radius: .625em;
+      border-radius: 0.625em;
 
       &.vhd__bullet--small {
-        height: .375em;
-        width: .875em;
+        height: 0.375em;
+        width: 0.875em;
       }
     }
 
@@ -778,23 +799,23 @@ $extra-small-screen: '(max-width: 23em)';
     position: absolute;
     top: 60%;
     transform: translateY(-50%);
-    transition: opacity ease .3s;
+    transition: opacity ease 0.3s;
     @include device($desktop) {
       top: 50%;
     }
 
     &.pipe--small {
-      height: calc($bullet-size * .75);
+      height: calc(#{$bullet-size} * 0.75);
     }
 
     &.vhd__checkIn {
-      left: calc(50% + $bullet-size);
-      width: calc(50% - $bullet-size);
+      left: calc(50% + #{$bullet-size});
+      width: calc(50% - #{$bullet-size});
     }
 
     &.vhd__checkOut {
       left: 0px;
-      width: calc(50% - $bullet-size);
+      width: calc(50% - #{$bullet-size});
     }
 
     &.vhd__checkInCheckOut {

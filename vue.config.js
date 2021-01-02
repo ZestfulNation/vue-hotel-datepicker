@@ -1,3 +1,3 @@
 module.exports = {
-    css: { extract: true },
+  css: { extract: true },
 }
