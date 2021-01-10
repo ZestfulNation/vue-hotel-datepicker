@@ -8,7 +8,7 @@ A responsive date range picker for Vue.js that displays the number of nights sel
 
 # Release Candidate for v4
 v4 it is almoust there!
-v4.1 will be compatible with Vue v3. Please be patient.
+v5 will be compatible with Vue v3. Please be patient.
 
 ## Demo
 [https://krystalcampioni.github.io/vue-hotel-datepicker/](https://krystalcampioni.github.io/vue-hotel-datepicker/)
