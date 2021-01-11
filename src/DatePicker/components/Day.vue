@@ -314,8 +314,10 @@ export default {
 
       // Only highlight dates that are not disabled
       if (this.isHighlighted && !this.isDisabled) {
+        const classSelected = 'vhd__datepicker__month-day--selected'
+
         if (this.isADisabledDay) {
-          return 'vhd__datepicker__month-day--selected vhd__datepicker__month-day--disabled afterMinimumDurationValidDay'
+          return `${classSelected} vhd__datepicker__month-day--disabled afterMinimumDurationValidDay`
         }
 
         if (
@@ -328,12 +330,12 @@ export default {
         ) {
           // If currentPeriod has a minimumDuration 1
           if (this.checkInPeriod.minimumDuration === 1) {
-            return 'vhd__datepicker__month-day--selected afterMinimumDurationValidDay'
+            return `${classSelected} afterMinimumDurationValidDay`
           }
 
           // If currentPeriod has a minimumDuration superior to 1
           if (this.getDayDiff(this.hoveringDate, this.checkInPeriod.nextValidDate) <= 0) {
-            return 'vhd__datepicker__month-day--selected afterMinimumDurationValidDay'
+            return `${classSelected} afterMinimumDurationValidDay`
           }
         } else if (
           Object.keys(this.checkInPeriod).length > 0 &&
@@ -345,16 +347,18 @@ export default {
               this.hoveringDate.getDay() === 0 &&
               this.isDateLessOrEquals(this.date, this.hoveringDate)))
         ) {
-          return 'vhd__datepicker__month-day--selected afterMinimumDurationValidDay'
+          return `${classSelected} afterMinimumDurationValidDay`
         }
 
         if (this.hoveringPeriod.periodType === 'nightly' && this.isDateLessOrEquals(this.date, this.hoveringDate)) {
-          return 'vhd__datepicker__month-day--selected afterMinimumDurationValidDay'
+          return `${classSelected}  afterMinimumDurationValidDay`
         }
 
         if (this.checkIn && this.checkOut) {
-          return 'vhd__datepicker__month-day--selected'
+          return `${classSelected}`
         }
+
+        return `${classSelected} vhd__datepicker__month-day--valid`
       }
 
       // Good

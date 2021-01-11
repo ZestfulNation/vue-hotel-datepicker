@@ -27,7 +27,7 @@ export default {
     const days = this.i18n['day-names']
     const referenceDateDay = newReferenceDate.getDay()
 
-    for (let i = 7; i--; ) {
+    for (let i = 7; ; i--) {
       if (newWeekDay === days[i]) {
         newWeekDay = i <= referenceDateDay ? i + 7 : i
         break
@@ -76,16 +76,17 @@ export default {
   },
   getFirstDay(date, firstDayOfWeek) {
     const firstDay = this.getFirstDayOfMonth(date)
+    const day = firstDay.getDay()
     let offset = 0
 
     if (firstDayOfWeek > 0) {
-      offset = firstDay.getDay() === 0 ? -7 + firstDayOfWeek : firstDayOfWeek
+      offset = !day ? -6 : firstDayOfWeek
     }
 
-    return new Date(firstDay.setDate(firstDay.getDate() - (firstDay.getDay() - offset)))
+    return new Date(firstDay.setDate(firstDay.getDate() - (day - offset)))
   },
   getFirstDayOfMonth(date) {
-    return new Date(date.getFullYear(), date.getMonth(), 1)
+    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0, 0)
   },
   getNextMonth(date) {
     let nextMonth

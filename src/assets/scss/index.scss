@@ -139,6 +139,11 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__header {
     text-align: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5em;
   }
 
   &__header-mobile {
@@ -211,6 +216,10 @@ $extra-small-screen: '(max-width: 23em)';
 
       &::before {
         display: none;
+      }
+
+      &.#{$prefix}__months--full {
+        width: 100% !important;
       }
     }
   }
@@ -494,7 +503,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
   &__inner {
-    padding: 1.5rem 2.5rem 0;
+    padding: 0 2.5rem;
     position: relative;
     height: calc(100% - 3em);
 
@@ -533,6 +542,10 @@ $extra-small-screen: '(max-width: 23em)';
       flex-wrap: wrap;
       width: 40.625em;
       justify-content: space-between;
+
+      &.#{$prefix}__months--full {
+        width: 20.3125em !important;
+      }
     }
 
     @include device($up-to-tablet) {
@@ -563,10 +576,8 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--full {
-      width: 100%;
-
       .#{$prefix}__month {
-        width: 29.375em;
+        width: 100% !important;
         padding: 0;
       }
 
@@ -608,10 +619,13 @@ $extra-small-screen: '(max-width: 23em)';
   &__month-name {
     font-size: $font-size;
     font-weight: $font-bold;
-    margin-top: -2.5em;
-    padding: 0.8125em 0 1.625em;
+    margin: 0;
+    padding: 0 0 1.625em;
     pointer-events: none;
     text-align: center;
+    line-height: 2em;
+    height: 2.5em;
+    padding-top: 0.5em;
 
     @include device($up-to-tablet) {
       margin-top: -3.125em;
@@ -638,7 +652,7 @@ $extra-small-screen: '(max-width: 23em)';
   &__week-name {
     width: calc(100% / 7);
     float: left;
-    font-size: 0.75em;
+    font-size: 1em;
     font-weight: $font-regular;
     color: $medium-gray;
     text-align: center;

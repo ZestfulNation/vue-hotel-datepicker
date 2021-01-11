@@ -17,18 +17,7 @@
       <div :class="['menu', { hidden: !menu }]">
         <h3>Examples</h3>
         <ul>
-          <li @click="selectBox(0)" :class="{ selected: boxShow == 0 }">Show list of static bookings</li>
-          <li @click="selectBox(1)" :class="{ selected: boxShow == 1 }">Calendar in full view</li>
-          <li @click="selectBox(2)" :class="{ selected: boxShow == 2 }">Show calendar on the right</li>
-          <li @click="selectBox(3)" :class="{ selected: boxShow == 3 }">Hide grid style</li>
-          <li @click="selectBox(4)" :class="{ selected: boxShow == 4 }">Display one month only</li>
-          <li @click="selectBox(5)" :class="{ selected: boxShow == 5 }">Insert content with the content slot</li>
-          <li @click="selectBox(6)" :class="{ selected: boxShow == 6 }">
-            Last date available <strong>lastDateAvailable</strong> props
-          </li>
-          <li @click="selectBox(7)" :class="{ selected: boxShow == 7 }">
-            Show prices with <strong>periodDates</strong>
-          </li>
+          <li @click="selectBox(0)" :class="{ selected: boxShow == 0 }">Sandbox</li>
           <li @click="selectBox(8)" :class="{ selected: boxShow == 8 }">
             Blocked different day when clicked on with <strong>periodDates</strong>
           </li>
@@ -54,63 +43,61 @@
           <li @click="selectBox(18)" :class="{ selected: boxShow == 18 }">Allow setting a default date range</li>
           <li @click="selectBox(19)" :class="{ selected: boxShow == 19 }">Checkin only on saturdays</li>
           <li @click="selectBox(20)" :class="{ selected: boxShow == 20 }">Custom tooltip text</li>
-          <li @click="selectBox(21)" :class="{ selected: boxShow == 21 }">Hide year</li>
           <li @click="selectBox(22)" :class="{ selected: boxShow == 22 }">Custom date format (MMMM D)</li>
-          <li @click="selectBox(23)" :class="{ selected: boxShow == 23 }">
-            Change the first day of the week to Monday
+          <li @click="selectBox(24)" :class="{ selected: boxShow == 24 }">Set startingDateValue value</li>
+          <li @click="selectBox(25)" :class="{ selected: boxShow == 25 }">Set endingDateValue value</li>
+          <li @click="selectBox(26)" :class="{ selected: boxShow == 26 }">
+            Event startingDateValue (check-in-changed) / endingDateValue (check-out-changed)
           </li>
-          <li @click="selectBox(24)" :class="{ selected: boxShow == 24 }">Set checkIn value</li>
-          <li @click="selectBox(25)" :class="{ selected: boxShow == 25 }">Set checkOut value</li>
-          <li @click="selectBox(26)" :class="{ selected: boxShow == 26 }">Event CheckIn</li>
         </ul>
       </div>
       <div v-show="!menu || currentWidth > 1184" class="box-container">
         <div v-if="boxShow == 0" class="box">
-          <h3>Show list of static bookings</h3>
-          <DatePicker :alwaysVisible="true" :bookings="bookings" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 1" class="box">
-          <h3>Calendar in full view</h3>
-          <DatePicker :alwaysVisible="true" :showYear="true" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 2" class="box">
-          <h3>Show calendar on the right</h3>
-          <DatePicker :positionRight="true" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 3" class="box">
-          <h3>Hide grid style</h3>
-          <DatePicker :gridStyle="false" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 4" class="box">
-          <h3>Display one month only</h3>
-          <DatePicker :showSingleMonth="true" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 5" class="box">
-          <h3>Insert content with the content slot</h3>
-
-          <DatePicker :i18n="i18n">
+          <h3>Sandbox</h3>
+          <div style="width: 48%; display: inline-block">
+            <input type="checkbox" v-model="firstDayOfWeek" :true-value="1" :false-value="0" /> First day Monday<br />
+            <input type="checkbox" v-model="alwaysVisible" /> alwaysVisible<br />
+            <input type="checkbox" v-model="gridStyle" /> gridStyle<br />
+            <input type="checkbox" v-model="showSingleMonth" /> showSingleMonth<br />
+            <input type="checkbox" v-model="positionRight" /> positionRight<br />
+            <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
+            <input type="checkbox" v-model="showYear" /> showYear<br />
+          </div>
+          <div style="width: 48%; display: inline-block">
+            <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
+            <input type="checkbox" v-model="showPrice" /> showPrice<br />
+            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
+            <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
+            <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
+            <input type="checkbox" v-model="showBookings" /> showBookings<br />
+            <input type="checkbox" v-model="showLastDateAvailable" />Stop pagination two years later
+            (lastDateAvailable)<br />
+          </div>
+          <hr />
+          <DatePicker
+            :firstDayOfWeek="firstDayOfWeek"
+            :alwaysVisible="alwaysVisible"
+            :gridStyle="gridStyle"
+            :showSingleMonth="showSingleMonth"
+            :showYear="showYear"
+            :positionRight="positionRight"
+            :singleDaySelection="singleDaySelection"
+            :lastDateAvailable="showLastDateAvailable ? lastDateAvailable : Infinity"
+            :minNights="showMinNights ? minNights : 0"
+            :periodDates="showPeriodDates ? periodDates : []"
+            :bookings="showBookings ? bookings : []"
+            :i18n="i18n"
+            @day-clicked="dayClicked"
+          >
             <!-- Insert content here -->
-            <div slot="content" style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem">
+            <div
+              slot="content"
+              style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem"
+              v-if="showContentSlot"
+            >
               Content Slot with style
             </div>
           </DatePicker>
-        </div>
-        <div v-if="boxShow == 6" class="box">
-          <h3>
-            Last date available <strong>lastDateAvailable</strong> props <br />
-            <small style="font-weight: normal">Stop pagination two years later</small>
-          </h3>
-          <DatePicker :lastDateAvailable="lastDateAvailable" :showYear="true" :i18n="i18n" />
-        </div>
-        <div v-if="boxShow == 7" class="box">
-          <h3>Show prices with <strong>periodDates</strong></h3>
-          <DatePicker
-            :showPrice="true"
-            :minNights="minNights"
-            :periodDates="periodDates"
-            :i18n="i18n"
-            @day-clicked="dayClicked"
-          />
         </div>
         <div v-if="boxShow == 8" class="box">
           <h3>
@@ -226,35 +213,32 @@
           <h3>Custom tooltip text</h3>
           <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 21" class="box">
-          <h3>Hide year</h3>
-          <DatePicker :showYear="false" :i18n="i18n" />
-        </div>
         <div v-if="boxShow == 22" class="box">
           <h3>Custom date format (MMMM D)</h3>
           <DatePicker format="MMMM D" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 23" class="box">
-          <h3>Change the first day of the week to Monday</h3>
-          <DatePicker :firstDayOfWeek="1" :i18n="i18n" />
-        </div>
         <div v-if="boxShow == 24" class="box">
-          <h3>Set checkIn value</h3>
-          <DatePicker :firstDayOfWeek="1" :checkInValue="new Date()" :i18n="i18n" />
+          <h3>Set startingDateValue value</h3>
+          <DatePicker
+            :firstDayOfWeek="firstDayOfWeek"
+            :alwaysVisible="alwaysVisible"
+            :startingDateValue="new Date()"
+            :i18n="i18n"
+          />
         </div>
         <div v-if="boxShow == 25" class="box">
-          <h3>Set checkOut value</h3>
+          <h3>Set endingDateValue value</h3>
           <DatePicker
-            :checkInValue="new Date()"
-            :checkOutValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
+            :startingDateValue="new Date()"
+            :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
             :i18n="i18n"
           />
         </div>
         <div v-if="boxShow == 26" class="box">
-          <h3>Event CheckIn / CheckOut</h3>
-          <DatePicker :i18n="i18n" @check-in-changed="console.log($event)" @check-out-changed="console.log($event)" />
-          <p>new Check In Date: {{ checkIn }}</p>
-          <p>new Check Out Date : {{ checkOut }}</p>
+          <h3>Event startingDateValue / endingDateValue</h3>
+          <DatePicker :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
+          <p>new startingDateValue Date: {{ checkIn }}</p>
+          <p>new endingDateValue Date : {{ checkOut }}</p>
         </div>
       </div>
     </div>
@@ -270,11 +254,12 @@ import en from './i18n/en'
 import es from './i18n/es'
 
 export default {
+  name: 'Examples',
   components: {
     DatePicker,
   },
   data() {
-    return {
+    window.vueHotelDatepicker = {
       periodDates: [
         {
           startAt: '2021-07-01',
@@ -384,7 +369,22 @@ export default {
       boxShow: 0,
       language: 'en',
       languages: { pt, fr, en, es },
+      alwaysVisible: false,
+      firstDayOfWeek: 0,
+      gridStyle: true,
+      showSingleMonth: false,
+      positionRight: false,
+      singleDaySelection: false,
+      showPrice: false,
+      showYear: true,
+      showMinNights: false,
+      showContentSlot: false,
+      showBookings: false,
+      showLastDateAvailable: false,
+      showPeriodDates: false,
     }
+
+    return window.vueHotelDatepicker
   },
   computed: {
     dateFormat() {
@@ -571,13 +571,17 @@ h1 {
   }
 
   .box-container {
-    flex-grow: 1;
     max-width: 100%;
+    width: 100%;
+    overflow: auto;
     @media (min-width: 1441px) {
       text-align: left;
     }
     .box {
-      width: 100%;
+      flex-grow: 1;
+    }
+    .box:first-child {
+      flex-grow: 0;
     }
   }
 

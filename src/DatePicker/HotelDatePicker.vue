@@ -99,23 +99,23 @@
           />
         </div>
         <div
+          v-if="screenSize === 'desktop' || alwaysVisible"
           class="vhd__datepicker__months"
           :class="{ 'vhd__datepicker__months--full': showSingleMonth }"
-          v-if="screenSize === 'desktop' || alwaysVisible"
         >
           <div
             ref="datepickerMonth"
             class="vhd__datepicker__month"
             v-for="(month, monthIndex) in paginateMonths"
-            :key="`${datepickerMonthKey}-${month}`"
+            :key="`${datepickerMonthKey}-${monthIndex}-desktop`"
           >
             <p class="vhd__datepicker__month-name">
-              {{ getMonth(months[activeMonthIndex + month].days[15].date) }}
+              {{ getMonth(month.days[15].date) }}
             </p>
             <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
               <div
                 class="vhd__datepicker__week-name"
-                v-for="(dayName, datePickerWeekIndexDesktop) in i18n['day-names']"
+                v-for="(dayName, datePickerWeekIndexDesktop) in dayNames"
                 :key="`${datepickerWeekKey}-${datePickerWeekIndexDesktop}`"
               >
                 {{ dayName }}
@@ -123,9 +123,9 @@
             </div>
             <div
               class="vhd__square"
-              v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month].days"
+              v-for="(day, dayIndex) in month.days"
+              :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}`"
               @mouseenter="mouseEnterDay(day)"
-              :key="`${datepickerDayKey}-${monthIndex}-${dayIndexDesktop}`"
             >
               <Day
                 :activeMonthIndex="activeMonthIndex"
@@ -172,16 +172,16 @@
             <div
               ref="datepickerMonth"
               class="vhd__datepicker__month"
-              v-for="(a, n) in paginateMonths"
-              :key="`${datepickerMonthKey}-${n}`"
+              v-for="(month, monthIndex) in paginateMonths"
+              :key="`${datepickerMonthKey}-${monthIndex}-mobile`"
             >
               <p class="vhd__datepicker__month-name">
-                {{ getMonth(months[activeMonthIndex + n].days[15].date) }}
+                {{ getMonth(month.days[15].date) }}
               </p>
               <div class="vhd__datepicker__week-row">
                 <div
                   class="vhd__datepicker__week-name"
-                  v-for="(dayName, datePickerIndex) in i18n['day-names']"
+                  v-for="(dayName, datePickerIndex) in dayNames"
                   :key="`datepicker__month-name-datepicker__week-name-${datePickerIndex}`"
                 >
                   {{ dayName }}
@@ -189,8 +189,8 @@
               </div>
               <div
                 class="vhd__square"
-                v-for="(day, dayIndexMobile) in months[activeMonthIndex + n].days"
-                :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
+                v-for="(day, dayIndex) in month.days"
+                :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}-mobile`"
                 @mouseenter="mouseEnterDay(day)"
               >
                 <Day
@@ -471,11 +471,13 @@ export default {
       return this.disabledDates
     },
     paginateMonths() {
-      if (this.showSingleMonth || (this.alwaysVisible && this.screenSize !== 'desktop')) {
-        return [0]
+      const months = [this.months[this.activeMonthIndex]]
+
+      if (!(this.showSingleMonth || (this.alwaysVisible && this.screenSize !== 'desktop'))) {
+        months.push(this.months[this.activeMonthIndex + 1])
       }
 
-      return [0, 1]
+      return months
     },
     customTooltipMessage() {
       let tooltip = ''
@@ -569,6 +571,15 @@ export default {
     dayOptions() {
       return { ...this.$props, disabledWeekDaysObject: this.disabledWeekDaysObject }
     },
+    dayNames() {
+      return [
+        ...this.i18n['day-names'].slice(this.firstDayOfWeek),
+        ...this.i18n['day-names'].slice(0, this.firstDayOfWeek),
+      ]
+    },
+    numberOfMonths() {
+      return this.showSingleMonth ? 1 : 2
+    },
   },
   watch: {
     bookings() {
@@ -589,6 +600,16 @@ export default {
 
       this.$emit('check-out-changed', newDate)
     },
+    firstDayOfWeek() {
+      const startDate = new Date(this.startDate)
+      const offset = this.numberOfMonths + this.activeMonthIndex
+
+      this.generateInitialMonths()
+
+      for (let i = this.numberOfMonths; i < offset; i++) {
+        this.createMonth(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1))
+      }
+    },
   },
   created() {
     fecha.i18n = {
@@ -602,33 +623,7 @@ export default {
         return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
       },
     }
-
-    if (
-      this.checkIn &&
-      (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 ||
-        this.getMonthDiff(this.startDate, this.checkIn) > 0)
-    ) {
-      this.createMonth(new Date(this.startDate))
-      const count = this.getMonthDiff(this.startDate, this.checkIn)
-      let nextMonth = new Date(this.startDate)
-
-      for (let i = 0; i <= count; i++) {
-        const tempNextMonth = this.getNextMonth(nextMonth)
-
-        this.createMonth(tempNextMonth)
-        nextMonth = tempNextMonth
-      }
-
-      if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
-        this.createMonth(this.getNextMonth(nextMonth))
-        this.activeMonthIndex = 1
-      }
-
-      this.activeMonthIndex += count
-    } else {
-      this.createMonth(new Date(this.startDate))
-      this.createMonth(this.getNextMonth(new Date(this.startDate)))
-    }
+    this.generateInitialMonths()
   },
   mounted() {
     this.handleWindowResize()
@@ -647,7 +642,6 @@ export default {
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent()
     })
-
     this.createHalfDayDates(this.baseHalfDayDates)
   },
   destroyed() {
@@ -665,6 +659,36 @@ export default {
   methods: {
     ...Helpers,
     transformDisabledWeekDays() {},
+    generateInitialMonths() {
+      this.months = []
+
+      if (
+        this.checkIn &&
+        (this.getMonthDiff(this.getNextMonth(new Date(this.startDate)), this.checkIn) > 0 ||
+          this.getMonthDiff(this.startDate, this.checkIn) > 0)
+      ) {
+        this.createMonth(new Date(this.startDate))
+        const count = this.getMonthDiff(this.startDate, this.checkIn)
+        let nextMonth = new Date(this.startDate)
+
+        for (let i = 0; i <= count; i++) {
+          const tempNextMonth = this.getNextMonth(nextMonth)
+
+          this.createMonth(tempNextMonth)
+          nextMonth = tempNextMonth
+        }
+
+        if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
+          this.createMonth(this.getNextMonth(nextMonth))
+          this.activeMonthIndex = 1
+        }
+
+        this.activeMonthIndex += count
+      } else {
+        this.createMonth(new Date(this.startDate))
+        this.createMonth(this.getNextMonth(new Date(this.startDate)))
+      }
+    },
     handleBookingClicked(event, date, currentBooking) {
       this.$emit('booking-clicked', event, date, currentBooking)
       /**
@@ -724,9 +748,13 @@ export default {
         .filter((disableDate) => !halfDays.includes(disableDate))
         .includes(formatDate)
 
+      console.info({ mouseEnterDay: day.date })
+
       if (!this.dayIsDisabled(day.date) && day.belongsToThisMonth && !disableDays) {
         this.setCustomTooltipOnHover(day)
       }
+
+      this.hoveringDate = day.date
     },
     setCurrentPeriod(date, eventType) {
       let currentPeriod = {}
