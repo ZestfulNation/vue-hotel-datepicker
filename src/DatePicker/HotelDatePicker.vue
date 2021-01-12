@@ -766,8 +766,6 @@ export default {
         .filter((disableDate) => !halfDays.includes(disableDate))
         .includes(formatDate)
 
-      console.info({ mouseEnterDay: day.date })
-
       if (!this.dayIsDisabled(day.date) && day.belongsToThisMonth && !disableDays) {
         this.setCustomTooltipOnHover(day)
       }
