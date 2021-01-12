@@ -867,7 +867,7 @@ export default {
       let nextDisabledDate =
         (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
         this.getNextDate(this.sortedDisabledDates, date) ||
-        this.nextDateByDayOfWeekArray(this.disabledWeekDaysArray, date) ||
+        this.nextDateByDayOfWeekArray(this.disabledWeekDaysArray, date, this.i18n) ||
         this.nextBookingDate(date) ||
         Infinity
 
