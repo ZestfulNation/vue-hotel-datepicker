@@ -620,6 +620,14 @@ export default {
     endingDateValue(date) {
       this.setCheckOut(date)
     },
+    singleDaySelection(single) {
+      if (single) {
+        this.setCheckOut(this.checkIn)
+      } else {
+        this.setCheckIn(this.checkIn)
+        this.setCheckOut(null)
+      }
+    },
   },
   created() {
     fecha.i18n = {
@@ -764,7 +772,7 @@ export default {
         this.setCustomTooltipOnHover(day)
       }
 
-      this.hoveringDate = day.date
+      this.hoveringDate = this.singleDaySelection ? null : day.date
     },
     setCurrentPeriod(date, eventType) {
       let currentPeriod = {}
@@ -871,10 +879,10 @@ export default {
         nextDisabledDate = Infinity
       }
 
-      if (this.checkIn == null && this.singleDaySelection === false) {
+      if (this.checkIn == null && !this.singleDaySelection) {
         this.checkIn = date
         this.setMinimumDuration(date)
-      } else if (this.singleDaySelection === true) {
+      } else if (this.singleDaySelection) {
         this.checkIn = date
         this.checkOut = date
       } else if (this.checkIn !== null && this.checkOut == null && this.isDateLessOrEquals(date, this.checkIn)) {
