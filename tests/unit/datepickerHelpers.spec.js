@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import DatepickerHelpers from '~/helpers'
+import DatepickerHelpers from '../../src/helpers'
 
 describe('Datepicker Helpers', () => {
   describe('nextDateByDayOfWeek', () => {

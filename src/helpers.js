@@ -23,8 +23,8 @@ export default {
   nextDateByDayOfWeek(weekDay, referenceDate) {
     const newReferenceDate = new Date(referenceDate)
     let newWeekDay = weekDay.toLowerCase()
-    // const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-    const days = this.i18n['day-names']
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+    // const days = this.i18n['day-names']
     const referenceDateDay = newReferenceDate.getDay()
 
     for (let i = 7; ; i--) {
