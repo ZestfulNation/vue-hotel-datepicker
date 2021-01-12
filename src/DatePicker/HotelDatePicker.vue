@@ -587,8 +587,11 @@ export default {
     },
     checkIn(newDate) {
       this.$emit('check-in-changed', newDate)
+      this.$emit('starting-date-changed', newDate)
     },
     checkOut(newDate) {
+      this.$emit('ending-date-changed', newDate)
+
       if (this.checkOut !== null) {
         this.hoveringDate = null
         this.nextDisabledDate = null
@@ -600,7 +603,8 @@ export default {
 
       this.$emit('check-out-changed', newDate)
     },
-    firstDayOfWeek() {
+    firstDayOfWeek(newDay) {
+      this.$emit('first-day-of-week-changed', newDay)
       const startDate = new Date(this.startDate)
       const offset = this.numberOfMonths + this.activeMonthIndex
 
@@ -1130,17 +1134,13 @@ export default {
       this.hideDatepicker()
     },
     hideDatepicker() {
-      this.clearCheckIn()
-
       this.isOpen = false
     },
     showDatepicker() {
       this.isOpen = true
     },
     toggleDatepicker() {
-      this.clearCheckIn()
-
-      this.isOpen = !this.isOpen
+      this[this.isOpen ? 'hideDatepicker' : 'showDatepicker']()
     },
     clearCheckIn() {
       if (this.checkIn && !this.checkOut) {

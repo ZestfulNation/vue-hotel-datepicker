@@ -65,7 +65,9 @@
           </div>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue:
-            <input type="text" v-model="startingDate" /><br />
+            <input type="text" v-model="startingDate" /> <br />
+            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue:
+            <input type="text" v-model="endingDate" /><br />
             <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
             <input type="checkbox" v-model="showPrice" /> showPrice<br />
             <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
@@ -390,6 +392,8 @@ export default {
       showPeriodDates: false,
       showStartingDate: false,
       startingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
+      showEndingDate: false,
+      endingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
     }
 
     return window.vueHotelDatepicker
@@ -418,6 +422,22 @@ export default {
       },
       set(show) {
         this.showStartingDate = show
+      },
+    },
+    endingDateValue: {
+      get() {
+        return this.showEndingDate ? `${this.endingDate} 00:00:00.00000` : null
+      },
+      set(date) {
+        this.endingDate = date
+      },
+    },
+    showEndingDateValue: {
+      get() {
+        return this.showEndingDate
+      },
+      set(show) {
+        this.showEndingDate = show
       },
     },
   },
