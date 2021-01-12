@@ -610,6 +610,12 @@ export default {
         this.createMonth(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1))
       }
     },
+    startingDateValue(date) {
+      this.setCheckIn(date)
+    },
+    endingDateValue(date) {
+      this.setCheckOut(date)
+    },
   },
   created() {
     fecha.i18n = {
