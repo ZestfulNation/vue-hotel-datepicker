@@ -1,6 +1,8 @@
 export default {
   night: 'Night',
   nights: 'Nights',
+  week: 'Week',
+  weeks: 'Weeks',
   'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
   'check-in': 'Check-in',
   'check-out': 'Check-out',
@@ -16,6 +18,13 @@ export default {
     'September',
     'October',
     'November',
-    'December'
-  ]
-};
+    'December',
+  ],
+  tooltip: {
+    halfDayCheckIn: 'Available CheckIn',
+    halfDayCheckOut: 'Available CheckOut',
+    saturdayToSaturday: 'Only Saturday to Saturday',
+    sundayToSunday: 'Only Sunday to Sunday',
+    minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum.',
+  },
+}

@@ -1,602 +1,649 @@
-<template lang='pug'>
-  .datepicker__wrapper(v-if='show' v-on-click-outside='clickOutside' @blur="clickOutside")
-    .datepicker__close-button.-hide-on-desktop(v-if='isOpen' @click='hideDatepicker') ＋
-    .datepicker__dummy-wrapper(  :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` ")
-      date-input(
-        :i18n="i18n"
-        :input-date="formatDate(checkIn)"
-        input-date-type="check-in"
-        :is-open="isOpen"
-        :show-datepicker="showDatepicker"
-        :hide-datepicker="hideDatepicker"
-        :toggle-datepicker="toggleDatepicker"
-        :single-day-selection="singleDaySelection"
-      )
-      date-input(
-        v-if="!singleDaySelection"
-        :i18n="i18n"
-        :input-date="formatDate(checkOut)"
-        input-date-type="check-out"
-        :is-open="isOpen"
-        :showDatepicker="showDatepicker"
-        :hide-datepicker="hideDatepicker"
-        :toggle-datepicker="toggleDatepicker"
-        :single-day-selection="singleDaySelection"
-      )
-    .datepicker__clear-button(tabindex="0" @click='clearSelection' v-if="showClearSelectionButton")
-      svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 68 68")
-        path(d='M6.5 6.5l55 55M61.5 6.5l-55 55')
-
-    .datepicker( :class='`${ isOpen ? "datepicker--open" : "datepicker--closed" }`')
-      .-hide-on-desktop
-        .datepicker__dummy-wrapper.datepicker__dummy-wrapper--no-border(
-          @click='toggleDatepicker' :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
-          v-if='isOpen'
-        )
-          .datepicker__input(
-            tabindex="0"
-            :class="`${isOpen && checkIn == null ? 'datepicker__dummy-input--is-active' : ''}`"
-            v-text="`${checkIn ? formatDate(checkIn) : i18n['check-in']}`"
-            type="button"
-          )
-          .datepicker__input(
-            tabindex="0"
-            :class="`${isOpen && checkOut == null && checkIn !== null ? 'datepicker__dummy-input--is-active' : ''}`"
-            v-text="`${checkOut ? formatDate(checkOut) : i18n['check-out']}`"
-            type="button"
-          )
-      .datepicker__inner
-        .datepicker__header
-          span.datepicker__month-button.datepicker__month-button--prev.-hide-up-to-tablet(
-            @click='renderPreviousMonth'
-            @keyup.enter.stop.prevent='renderPreviousMonth'
-            :tabindex='isOpen ? 0 : -1'
-          )
-          span.datepicker__month-button.datepicker__month-button--next.-hide-up-to-tablet(
-            @click='renderNextMonth'
-            @keyup.enter.stop.prevent='renderNextMonth'
-            :tabindex='isOpen ? 0 : -1'
-          )
-        .datepicker__months(v-if='screenSize === "desktop"')
-          div.datepicker__month(v-for='n in [0,1]'  v-bind:key='n')
-            p.datepicker__month-name(v-text='getMonth(months[activeMonthIndex+n].days[15].date)')
-            .datepicker__week-row.-hide-up-to-tablet
-              .datepicker__week-name(v-for='dayName in i18n["day-names"]' v-text='dayName')
-            .square(v-for='day in months[activeMonthIndex+n].days'
-              @mouseover='hoveringDate = day.date'
-              )
-              Day(
-                :is-open="isOpen"
-                :options="$props"
-                @day-clicked='handleDayClick($event)'
-                :date='day.date'
-                :sortedDisabledDates='sortedDisabledDates'
-                :nextDisabledDate='nextDisabledDate'
-                :activeMonthIndex='activeMonthIndex'
-                :hoveringDate='hoveringDate'
-                :tooltipMessage='tooltipMessage'
-                :dayNumber='getDay(day.date)'
-                :belongsToThisMonth='day.belongsToThisMonth'
-                :checkIn='checkIn'
-                :checkOut='checkOut'
-                :currentDateStyle='currentDateStyle'
-                :price='getPrice(day)'
-              )
-        div(v-if='screenSize !== "desktop" && isOpen')
-          .datepicker__week-row
-            .datepicker__week-name(
-              v-for='dayName in this.i18n["day-names"]'
-              v-text='dayName'
-            )
-          .datepicker__months#swiperWrapper
-            div.datepicker__month(
-              v-for='(a, n) in months'
-              v-bind:key='n'
-            )
-              p.datepicker__month-name(
-                v-text='getMonth(months[n].days[15].date)'
-              )
-              .datepicker__week-row.-hide-up-to-tablet
-                .datepicker__week-name(
-                  v-for='dayName in i18n["day-names"]'
-                  v-text='dayName'
-                )
-              .square(v-for='(day, index) in months[n].days'
-                @mouseover='hoveringDate = day.date'
-                @focus='hoveringDate = day.date'
-                v-bind:key='index'
-              )
-                Day(
-                  :is-open="isOpen"
-                  :options="$props"
-                  @day-clicked='handleDayClick($event)'
-                  :date='day.date'
-                  :sortedDisabledDates='sortedDisabledDates'
-                  :nextDisabledDate='nextDisabledDate'
-                  :activeMonthIndex='activeMonthIndex'
-                  :hoveringDate='hoveringDate'
-                  :tooltipMessage='tooltipMessage'
-                  :dayNumber='getDay(day.date)'
-                  :belongsToThisMonth='day.belongsToThisMonth'
-                  :checkIn='checkIn'
-                  :checkOut='checkOut'
-                  :currentDateStyle='currentDateStyle'
-                  :price='getPrice(day)'
-                )
-            .next--mobile(
-              @click='renderNextMonth' type="button"
-            )
-
+<template>
+  <div id="app">
+    <h1 style="flex-grow: 0">Vue Hotel Datepicker v4</h1>
+    <div style="flex-grow: 0; padding: 1em 0">
+      Language Selection:
+      <select v-model="language">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+    <div class="container">
+      <div class="toggle-menu" @click="toggleMenu">
+        <img src="@/assets/images/menu.svg" alt="..." />
+      </div>
+      <div :class="['menu', { hidden: !menu }]">
+        <h3>Examples</h3>
+        <ul>
+          <li @click="selectBox(0)" :class="{ selected: boxShow == 0 }">Sandbox</li>
+          <li @click="selectBox(8)" :class="{ selected: boxShow == 8 }">
+            Blocked different day when clicked on with <strong>periodDates</strong>
+          </li>
+          <li @click="selectBox(9)" :class="{ selected: boxShow == 9 }">
+            Half day, If you have check in at noon and checkout before noon
+          </li>
+          <li @click="selectBox(10)" :class="{ selected: boxShow == 10 }">
+            Disable check-in and check-out on the same day
+          </li>
+          <li @click="selectBox(11)" :class="{ selected: boxShow == 11 }">Allow selection of single day</li>
+          <li @click="selectBox(12)" :class="{ selected: boxShow == 12 }">
+            Check in only on saturday and minimum stay of 10 nights
+          </li>
+          <li @click="selectBox(13)" :class="{ selected: boxShow == 13 }">
+            Block all dates after December 31st of {{ new Date().getUTCFullYear() }}
+          </li>
+          <li @click="selectBox(14)" :class="{ selected: boxShow == 14 }">Block all dates after 15th of next month</li>
+          <li @click="selectBox(15)" :class="{ selected: boxShow == 15 }">
+            Block all date ranges of more than 30 days
+          </li>
+          <li @click="selectBox(16)" :class="{ selected: boxShow == 16 }">Minimum stay of 3 days</li>
+          <li @click="selectBox(17)" :class="{ selected: boxShow == 17 }">Certain dates blocked</li>
+          <li @click="selectBox(18)" :class="{ selected: boxShow == 18 }">Allow setting a default date range</li>
+          <li @click="selectBox(19)" :class="{ selected: boxShow == 19 }">Checkin only on saturdays</li>
+          <li @click="selectBox(20)" :class="{ selected: boxShow == 20 }">Custom tooltip text</li>
+          <li @click="selectBox(22)" :class="{ selected: boxShow == 22 }">Custom date format (MMMM D)</li>
+          <li @click="selectBox(24)" :class="{ selected: boxShow == 24 }">Set startingDateValue value</li>
+          <li @click="selectBox(25)" :class="{ selected: boxShow == 25 }">Set endingDateValue value</li>
+          <li @click="selectBox(26)" :class="{ selected: boxShow == 26 }">
+            Event startingDateValue (check-in-changed) / endingDateValue (check-out-changed)
+          </li>
+        </ul>
+      </div>
+      <div v-show="!menu || currentWidth > 1184" class="box-container">
+        <div v-if="boxShow == 0" class="box">
+          <h3>Sandbox</h3>
+          <div style="width: 48%; display: inline-block">
+            <input type="checkbox" v-model="firstDayOfWeek" :true-value="1" :false-value="0" /> First day Monday<br />
+            <input type="checkbox" v-model="alwaysVisible" /> alwaysVisible<br />
+            <input type="checkbox" v-model="gridStyle" /> gridStyle<br />
+            <input type="checkbox" v-model="showSingleMonth" /> showSingleMonth<br />
+            <input type="checkbox" v-model="positionRight" /> positionRight<br />
+            <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
+            <input type="checkbox" v-model="showYear" /> showYear<br />
+          </div>
+          <div style="width: 48%; display: inline-block">
+            <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue:
+            <input type="text" v-model="startingDate" /> <br />
+            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue:
+            <input type="text" v-model="endingDate" /><br />
+            <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
+            <input type="checkbox" v-model="showPrice" /> showPrice<br />
+            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
+            <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
+            <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
+            <input type="checkbox" v-model="showBookings" /> showBookings<br />
+            <input type="checkbox" v-model="showLastDateAvailable" />Stop pagination two years later
+            (lastDateAvailable)<br />
+          </div>
+          <hr />
+          <DatePicker
+            :startingDateValue="showStartingDateValue ? new Date(startingDateValue) || null : null"
+            :firstDayOfWeek="firstDayOfWeek"
+            :alwaysVisible="alwaysVisible"
+            :gridStyle="gridStyle"
+            :showSingleMonth="showSingleMonth"
+            :showYear="showYear"
+            :positionRight="positionRight"
+            :singleDaySelection="singleDaySelection"
+            :lastDateAvailable="showLastDateAvailable ? lastDateAvailable : Infinity"
+            :minNights="showMinNights ? minNights : 0"
+            :periodDates="showPeriodDates ? periodDates : []"
+            :bookings="showBookings ? bookings : []"
+            :i18n="i18n"
+            @day-clicked="dayClicked"
+          >
+            <!-- Insert content here -->
+            <div
+              slot="content"
+              style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem"
+              v-if="showContentSlot"
+            >
+              Content Slot with style
+            </div>
+          </DatePicker>
+        </div>
+        <div v-if="boxShow == 8" class="box">
+          <h3>
+            Blocked different day when clicked on with <strong>periodDates</strong>&nbsp;
+            <span style="font-weight: 400">Emit day-clicked</span>
+          </h3>
+          <DatePicker
+            :disabledDates="[
+              '2021-10-15',
+              '2021-10-16',
+              '2021-10-17',
+              '2021-10-18',
+              '2021-10-19',
+              '2021-10-20',
+              '2021-10-21',
+              '2021-10-01',
+              '2021-10-02',
+              '2021-10-03',
+              '2021-10-04',
+              '2021-10-05',
+              '2021-10-06',
+              '2021-10-07',
+            ]"
+            :disableCheckoutOnCheckin="true"
+            :minNights="minNights"
+            :i18n="i18n"
+            @day-clicked="dayClicked"
+          />
+        </div>
+        <div v-if="boxShow == 9" class="box">
+          <h3>Half day, If you have check in at noon and checkout before noon</h3>
+          <DatePicker
+            :i18n="i18n"
+            :disabledDates="[
+              '2021-05-01',
+              '2021-05-02',
+              '2021-05-03',
+              '2021-05-04',
+              '2021-05-06',
+              '2021-05-07',
+              '2021-05-08',
+            ]"
+          />
+        </div>
+        <div v-if="boxShow == 10" class="box">
+          <h3>Disable check-in and check-out on the same day</h3>
+          <DatePicker :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 11" class="box">
+          <h3>Allow selection of single day</h3>
+          <DatePicker :singleDaySelection="true" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 12" class="box">
+          <h3>Check in only on saturday and minimum stay of 10 nights</h3>
+          <DatePicker
+            :disabledWeekDays="{
+              sunday: true,
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: false,
+            }"
+            :enableCheckout="true"
+          />
+        </div>
+        <div v-if="boxShow == 13" class="box">
+          <h3>Block all dates after December 31st of the current year</h3>
+          <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 14" class="box">
+          <h3>Block all dates after 15th of next month</h3>
+          <DatePicker :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 15" class="box">
+          <h3>Block all date ranges of more than 30 days</h3>
+          <DatePicker :maxNights="30" :selectForward="false" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 16" class="box">
+          <h3>Minimum stay of 3 days</h3>
+          <DatePicker :minNights="3" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 17" class="box">
+          <h3>Certain dates blocked</h3>
+          <DatePicker :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 18" class="box">
+          <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
+          <DatePicker
+            :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
+            :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)"
+            :i18n="i18n"
+          />
+        </div>
+        <div v-if="boxShow == 19" class="box">
+          <h3>Checkin only on saturdays</h3>
+          <DatePicker
+            :disabledWeekDays="{
+              sunday: true,
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: false,
+            }"
+            :enableCheckout="true"
+            :i18n="i18n"
+          />
+        </div>
+        <div v-if="boxShow == 20" class="box">
+          <h3>Custom tooltip text</h3>
+          <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 22" class="box">
+          <h3>Custom date format (MMMM D)</h3>
+          <DatePicker format="MMMM D" :i18n="i18n" />
+        </div>
+        <div v-if="boxShow == 24" class="box">
+          <h3>Set startingDateValue value</h3>
+          <DatePicker
+            :firstDayOfWeek="firstDayOfWeek"
+            :alwaysVisible="alwaysVisible"
+            :startingDateValue="new Date()"
+            :i18n="i18n"
+          />
+        </div>
+        <div v-if="boxShow == 25" class="box">
+          <h3>Set endingDateValue value</h3>
+          <DatePicker
+            :startingDateValue="new Date()"
+            :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
+            :i18n="i18n"
+          />
+        </div>
+        <div v-if="boxShow == 26" class="box">
+          <h3>Event startingDateValue / endingDateValue</h3>
+          <DatePicker :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
+          <p>new startingDateValue Date: {{ checkIn }}</p>
+          <p>new endingDateValue Date : {{ checkOut }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import throttle from 'lodash.throttle';
-import { directive as onClickOutside } from 'vue-on-click-outside';
-import fecha from 'fecha';
-import defaulti18n from './i18n.js';
-
-import Day from './components/Day.vue';
-import DateInput from './components/DateInput.vue';
-import Helpers from './helpers.js';
-import './assets/scss/main.scss';
+import './assets/scss/index.scss'
+import DatePicker from './DatePicker/HotelDatePicker.vue'
+import pt from './i18n/pt'
+import fr from './i18n/fr'
+import en from './i18n/en'
+import es from './i18n/es'
 
 export default {
-  name: 'VueHotelDatePicker',
-
-  directives: {
-    'on-click-outside': onClickOutside
-  },
-
+  name: 'Examples',
   components: {
-    Day,
-    DateInput
+    DatePicker,
   },
+  data() {
+    const today = new Date()
+    const month = (today.getMonth() + 1 <= 9 ? '0' : '') + String(today.getMonth() + 1)
 
-  props: {
-    currentDateStyle: {
-      type: [Object, null, String],
-      default: () => ({ border: '1px solid #00c690' })
+    window.vueHotelDatepicker = {
+      periodDates: [
+        {
+          startAt: '2021-07-01',
+          endAt: '2021-08-01',
+          minimumDuration: 4,
+          periodType: 'nightly',
+        },
+        {
+          startAt: '2021-08-01',
+          endAt: '2021-09-05',
+          minimumDuration: 2,
+          periodType: 'weekly_by_saturday',
+        },
+        {
+          startAt: '2021-09-05',
+          endAt: '2021-10-04',
+          minimumDuration: 4,
+          periodType: 'nightly',
+        },
+        {
+          startAt: '2021-10-04',
+          endAt: '2021-11-29',
+          minimumDuration: 1,
+          periodType: 'weekly_by_sunday',
+          price: 4000.0,
+        },
+      ],
+      bookings: [
+        {
+          id: '1726359',
+          checkInDate: '2021-08-22',
+          checkOutDate: '2021-08-29',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '1726360',
+          checkInDate: '2021-08-15',
+          checkOutDate: '2021-08-22',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '1726358',
+          checkInDate: '2021-08-01',
+          checkOutDate: '2021-08-15',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '1726357',
+          checkInDate: '2021-09-01',
+          checkOutDate: '2021-09-23',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '1726356',
+          checkInDate: '2021-06-01',
+          checkOutDate: '2021-06-18',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '181412',
+          checkInDate: '2022-09-15',
+          checkOutDate: '2022-10-15',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '181491',
+          checkInDate: '2022-07-01',
+          checkOutDate: '2022-08-31',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '178234',
+          checkInDate: '2023-08-04',
+          checkOutDate: '2023-08-25',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+        {
+          id: '178235',
+          checkInDate: '2023-07-01',
+          checkOutDate: '2023-07-31',
+          style: {
+            backgroundColor: '#9DC1C9',
+          },
+        },
+      ],
+      checkIn: null,
+      checkOut: null,
+      minNights: 3,
+      menu: false,
+      currentWidth: window.innerWidth,
+      boxShow: 0,
+      language: 'en',
+      languages: { pt, fr, en, es },
+      alwaysVisible: false,
+      firstDayOfWeek: 0,
+      gridStyle: true,
+      showSingleMonth: false,
+      positionRight: false,
+      singleDaySelection: false,
+      showPrice: false,
+      showYear: true,
+      showMinNights: false,
+      showContentSlot: false,
+      showBookings: false,
+      showLastDateAvailable: false,
+      showPeriodDates: false,
+      showStartingDate: false,
+      startingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
+      showEndingDate: false,
+      endingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
+    }
+
+    return window.vueHotelDatepicker
+  },
+  computed: {
+    dateFormat() {
+      return 'DD/MM/YYYY'
     },
-    value: {
-      type: String
+    lastDateAvailable() {
+      return this.addYears(new Date(), 2)
+    },
+    i18n() {
+      return this.languages[this.language] ? this.languages[this.language] : this.languages.en
     },
     startingDateValue: {
-      default: null,
-      type: Date
+      get() {
+        return this.showStartingDate ? `${this.startingDate} 00:00:00.00000` : null
+      },
+      set(date) {
+        this.startingDate = date
+      },
+    },
+    showStartingDateValue: {
+      get() {
+        return this.showStartingDate
+      },
+      set(show) {
+        this.showStartingDate = show
+      },
     },
     endingDateValue: {
-      default: null,
-      type: Date
-    },
-    format: {
-      default: 'YYYY-MM-DD',
-      type: String
-    },
-    startDate: {
-      default: function() {
-        return new Date();
+      get() {
+        return this.showEndingDate ? `${this.endingDate} 00:00:00.00000` : null
       },
-      type: [Date, String]
-    },
-    endDate: {
-      default: Infinity,
-      type: [Date, String, Number]
-    },
-    firstDayOfWeek: {
-      default: 0,
-      type: Number
-    },
-    minNights: {
-      default: 1,
-      type: Number
-    },
-    maxNights: {
-      default: null,
-      type: Number
-    },
-    disabledDates: {
-      default: function() {
-        return [];
+      set(date) {
+        this.endingDate = date
       },
-      type: Array
     },
-    disabledDaysOfWeek: {
-      default: function() {
-        return [];
+    showEndingDateValue: {
+      get() {
+        return this.showEndingDate
       },
-      type: Array
-    },
-    allowedRanges: {
-      default: function() {
-        return [];
+      set(show) {
+        this.showEndingDate = show
       },
-      type: Array
     },
-    hoveringTooltip: {
-      default: true,
-      type: [Boolean, Function]
-    },
-    tooltipMessage: {
-      default: null,
-      type: String
-    },
-    i18n: {
-      default: () => defaulti18n,
-      type: Object
-    },
-    enableCheckout: {
-      default: false,
-      type: Boolean
-    },
-    singleDaySelection: {
-      default: false,
-      type: Boolean
-    },
-    showYear: {
-      default: false,
-      type: Boolean
-    },
-    closeDatepickerOnClickOutside: {
-      default: true,
-      type: Boolean
-    },
-    displayClearButton: {
-      default: true,
-      type: Boolean
-    },
-    priceDefault: {
-      default: '',
-      type: [Number, String, null]
-    },
-    priceByDate: {
-      default: function() {
-        return [];
-      },
-      type: [Array, null]
-    }
   },
-
-  data() {
-    return {
-      hoveringDate: null,
-      checkIn: this.startingDateValue,
-      checkOut: this.endingDateValue,
-      months: [],
-      activeMonthIndex: 0,
-      nextDisabledDate: null,
-      show: true,
-      isOpen: false,
-      xDown: null,
-      yDown: null,
-      xUp: null,
-      yUp: null,
-      sortedDisabledDates: null,
-      screenSize: this.handleWindowResize()
-    };
-  },
-
-  computed: {
-    showClearSelectionButton() {
-      return Boolean(
-        (this.checkIn || this.checkOut) && this.displayClearButton
-      );
-    }
-  },
-
-  watch: {
-    isOpen(value) {
-      if (!value) {
-        this.$emit('closed', this);
-      }
-
-      if (this.screenSize !== 'desktop') {
-        const bodyClassList = document.querySelector('body').classList;
-
-        if (value) {
-          bodyClassList.add('-overflow-hidden');
-          setTimeout(() => {
-            const swiperWrapper = document.getElementById('swiperWrapper');
-            let monthEl = document.querySelector('.datepicker__month')
-            let monthHeight = 1
-
-            if (monthEl) monthHeight = monthEl.offsetHeight;
-
-            swiperWrapper.scrollTop = this.activeMonthIndex * monthHeight;
-          }, 100);
-        } else {
-          bodyClassList.remove('-overflow-hidden');
-        }
-      }
-    },
-    checkIn(newDate) {
-      this.$emit('check-in-changed', newDate);
-    },
-    checkOut(newDate) {
-      if (this.checkOut !== null && this.checkOut !== null) {
-        this.hoveringDate = null;
-        this.nextDisabledDate = null;
-        this.show = true;
-        this.parseDisabledDates();
-        this.reRender();
-        this.isOpen = false;
-      }
-
-      this.$emit('check-out-changed', newDate);
-    }
-  },
-
-  beforeMount() {
-    fecha.i18n = {
-      dayNames: this.i18n['day-names'],
-      dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
-      monthNames: this.i18n['month-names'],
-      monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
-      amPm: ['am', 'pm'],
-      // D is the day of the month, function returns something like...  3rd or 11th
-      DoFn: function(D) {
-        return (
-          D +
-          ['th', 'st', 'nd', 'rd'][
-            D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10
-          ]
-        );
-      }
-    };
-    if (
-      this.checkIn &&
-      (this.getMonthDiff(
-        this.getNextMonth(new Date(this.startDate)),
-        this.checkIn
-      ) > 0 ||
-        this.getMonthDiff(this.startDate, this.checkIn) > 0)
-    ) {
-      this.createMonth(new Date(this.startDate));
-      const count = this.getMonthDiff(this.startDate, this.checkIn);
-      let nextMonth = new Date(this.startDate);
-      for (let i = 0; i <= count; i++) {
-        let tempNextMonth = this.getNextMonth(nextMonth);
-        this.createMonth(tempNextMonth);
-        nextMonth = tempNextMonth;
-      }
-      if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
-        this.createMonth(this.getNextMonth(nextMonth));
-        this.activeMonthIndex = 1;
-      }
-      this.activeMonthIndex += count;
-    } else {
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
-    }
-    this.parseDisabledDates();
-  },
-
   mounted() {
-    document.addEventListener('touchstart', this.handleTouchStart, false);
-    document.addEventListener('touchmove', this.handleTouchMove, false);
-    window.addEventListener('resize', this.handleWindowResize);
-
-    this.onElementHeightChange(document.body, () => {
-      this.emitHeighChangeEvent();
-    });
-  },
-
-  destroyed() {
-    window.removeEventListener('touchstart', this.handleTouchStart);
-    window.removeEventListener('touchmove', this.handleTouchMove);
-    window.removeEventListener('resize', this.handleWindowResize);
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize)
+    })
   },
   methods: {
-    ...Helpers,
-
-    formatDate(date) {
-      if (date) {
-        return fecha.format(date, this.format);
-      }
-      return '';
+    newData() {
+      return {}
     },
-
-    handleWindowResize() {
-      if (window.innerWidth < 480) {
-        this.screenSize = 'smartphone';
-      } else if (window.innerWidth >= 480 && window.innerWidth < 768) {
-        this.screenSize = 'tablet';
-      } else if (window.innerWidth >= 768) {
-        this.screenSize = 'desktop';
-      }
-
-      return this.screenSize;
+    selectBox(box) {
+      this.boxShow = -1
+      this.checkIn = null
+      this.checkOut = null
+      this.boxShow = box
+      this.toggleMenu()
     },
-
-    onElementHeightChange(el, callback) {
-      let lastHeight = el.clientHeight;
-      let newHeight = lastHeight;
-
-      (function run() {
-        newHeight = el.clientHeight;
-
-        if (lastHeight !== newHeight) {
-          callback();
-        }
-
-        lastHeight = newHeight;
-
-        if (el.onElementHeightChangeTimer) {
-          clearTimeout(el.onElementHeightChangeTimer);
-        }
-
-        el.onElementHeightChangeTimer = setTimeout(run, 1000);
-      })();
+    toggleMenu() {
+      this.menu = !this.menu
     },
-
-    emitHeighChangeEvent() {
-      this.$emit('height-changed');
+    onResize() {
+      this.currentWidth = window.innerWidth
     },
-
-    reRender() {
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+    bookingClicked(event, date, currentBooking) {
+      /* eslint-disable-next-line */
+      console.log('bookingClicked', event, date, currentBooking)
     },
-
-    clearSelection() {
-      (this.hoveringDate = null), (this.checkIn = null);
-      this.checkOut = null;
-      this.nextDisabledDate = null;
-      this.show = true;
-      this.parseDisabledDates();
-      this.reRender();
+    periodSelected(event, checkIn, checkOut) {
+      /* eslint-disable-next-line */
+      console.log('periodSelected', event, checkIn, checkOut)
     },
-
-    hideDatepicker() {
-      this.isOpen = false;
+    handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
+      /* eslint-disable-next-line */
+      console.log('handleCheckIncheckOutHalfDay', checkIncheckOutHalfDay)
     },
-
-    showDatepicker() {
-      this.isOpen = true;
+    addYears(dt, n) {
+      return new Date(dt.setFullYear(dt.getFullYear() + n))
     },
-
-    toggleDatepicker() {
-      this.isOpen = !this.isOpen;
-    },
-
-    clickOutside() {
-      if (this.closeDatepickerOnClickOutside) {
-        this.hideDatepicker();
-      }
-    },
-
-    handleDayClick(event) {
-      if (this.checkIn == null && this.singleDaySelection == false) {
-        this.checkIn = event.date;
-      } else if (this.singleDaySelection == true) {
-        this.checkIn = event.date;
-        this.checkOut = event.date;
-      } else if (
-        this.checkIn !== null && this.checkOut == null &&
-        this.isDateLessOrEquals(event.date, this.checkIn)
-      ) {
-        this.checkIn = event.date;
-      } else if (this.checkIn !== null && this.checkOut == null) {
-        this.checkOut = event.date;
-      } else {
-        this.checkOut = null;
-        this.checkIn = event.date;
+    validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
+      const getvalidDate = (d) => {
+        return new Date(d)
       }
 
-      this.nextDisabledDate = event.nextDisabledDate;
-      this.hoveringDate = null;
-      this.hoveringDate = event.date;
+      return getvalidDate(givenDate) <= getvalidDate(toDate) && getvalidDate(givenDate) >= getvalidDate(fromDate)
     },
-
-    renderPreviousMonth() {
-      if (this.activeMonthIndex >= 1) {
-        this.activeMonthIndex--;
-      } else return;
+    dayClicked(date, formatDate, nextDisabledDate) {
+      /* eslint-disable-next-line */
+      console.log(date, formatDate, nextDisabledDate)
     },
-
-    renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
-        this.activeMonthIndex++;
-        return;
-      }
-
-      let firstDayOfLastMonth;
-
-      if (this.screenSize !== 'desktop') {
-        firstDayOfLastMonth = this.months[this.months.length - 1].days.filter(
-          day => day.belongsToThisMonth === true
-        );
-      } else {
-        firstDayOfLastMonth = this.months[
-          this.activeMonthIndex + 1
-        ].days.filter(day => day.belongsToThisMonth === true);
-      }
-
-      if (this.endDate !== Infinity) {
-        if (
-          fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') ==
-          fecha.format(new Date(this.endDate), 'YYYYMM')
-        ) {
-          return;
-        }
-      }
-
-      this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
-
-      this.activeMonthIndex++;
-    }, 200),
-
-    setCheckIn(date) {
-      this.checkIn = date;
+    checkInChanged(newDate) {
+      this.checkIn = newDate
     },
-
-    setCheckOut(date) {
-      this.checkOut = date;
+    checkOutChanged(newDate) {
+      this.checkOut = newDate
     },
-
-    getDay(date) {
-      return fecha.format(date, 'D');
-    },
-
-    getMonth(date) {
-      return (
-        this.i18n['month-names'][fecha.format(date, 'M') - 1] +
-        (this.showYear ? fecha.format(date, ' YYYY') : '')
-      );
-    },
-
-    createMonth(date) {
-      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
-      let month = {
-        days: []
-      };
-
-      for (let i = 0; i < 42; i++) {
-        month.days.push({
-          date: this.addDays(firstDay, i),
-          belongsToThisMonth:
-            this.addDays(firstDay, i).getMonth() === date.getMonth(),
-          isInRange: false
-        });
-      }
-      this.months.push(month);
-    },
-
-    parseDisabledDates() {
-      const sortedDates = [];
-
-      for (let i = 0; i < this.disabledDates.length; i++) {
-        sortedDates[i] = new Date(this.disabledDates[i]);
-      }
-
-      sortedDates.sort((a, b) => a - b);
-
-      this.sortedDisabledDates = sortedDates;
-    },
-    getPrice(day) {
-      const ranges = Array.isArray(this.priceByDate) ? this.priceByDate : [];
-      const range = ranges.find(range => {
-        const hasPrice = range.price ? true : false;
-        const hasStartDate = range.start ? true : false;
-        const hasEndDate = range.end ? true : false;
-        const dateIsGreaterOrEqualThatStart =
-          hasStartDate && day.date >= range.start ? true : false;
-        const dateIsLessThatEnd =
-          hasEndDate && day.date < range.end ? true : false;
-
-        return (
-          (hasStartDate || hasEndDate) &&
-          (!hasStartDate || dateIsGreaterOrEqualThatStart) &&
-          (!hasEndDate || dateIsLessThatEnd)
-        );
-      });
-
-      return String(
-        typeof range === 'object' ? range.price : this.priceDefault || ''
-      );
-    }
   },
-
-};
+}
 </script>
+
+<style lang="scss">
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+body {
+  display: block;
+  font-family: Roboto, 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+}
+h1 {
+  background-color: #28ca9c;
+  color: white;
+  padding: 1em 0;
+  margin: 0;
+}
+#app {
+  text-align: center;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden;
+  /*
+  @media (min-width: 1441px) {
+    margin: 0 auto;
+    max-width: 1180px;
+    width: 1180px;
+  }
+  */
+
+  .toggle-menu {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    flex: none;
+    color: white;
+    padding: 1em 0.5em 1em;
+    img {
+      width: 1.5em;
+    }
+  }
+  @media (min-width: 1441px) {
+    .toggle-menu {
+      display: none;
+    }
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    flex-grow: 1;
+    max-width: 300px;
+    text-align: left;
+    max-height: 100%;
+    overflow-y: hidden;
+    @media (max-width: 1440px) {
+      max-width: 100%;
+
+      &.hidden {
+        width: 0;
+        max-width: 0;
+        overflow: hidden;
+        flex-shrink: 1;
+      }
+    }
+
+    ul {
+      padding: 0 0 2em 0;
+      margin: 0 1em 0 0;
+      font-size: 1.17rem;
+      overflow: auto;
+      @media (max-width: 1440px) {
+        margin-left: calc(24px + 1em);
+      }
+      li {
+        font-size: 1rem;
+        padding: 0.25em 0.75em;
+        margin: 0;
+        text-align: left;
+        cursor: pointer;
+        list-style-type: none;
+        border-bottom: 1px dashed rgba(128, 128, 128, 0.425);
+
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: gray;
+          color: white;
+        }
+        &.selected {
+          background-color: #28ca9c;
+          color: white;
+          position: sticky;
+          top: 0;
+          bottom: -2em;
+        }
+      }
+    }
+  }
+
+  .box-container {
+    max-width: 100%;
+    width: 100%;
+    overflow: auto;
+    @media (min-width: 1441px) {
+      text-align: left;
+    }
+    .box {
+      flex-grow: 1;
+    }
+    .box:first-child {
+      flex-grow: 0;
+    }
+  }
+
+  h3 {
+    background-color: gray;
+    color: white;
+    padding: 1em 0 1em calc(1em + 24px);
+    margin-top: 0;
+    text-align: left;
+  }
+}
+.vhd__datepicker__wrapper {
+  max-width: 300px;
+  &.vhd__datepicker__fullview {
+    max-width: 90%;
+  }
+}
+pre.code {
+  background: black;
+}
+</style>

@@ -2,25 +2,24 @@
  * VARIABLES
  * ============================================================*/
 
-$white: #fff;
-$black: #000;
-$gray: #424b53;
-$primary-text-color: #35343d;
-$lightest-gray: #f3f5f8;
-$primary-color: #00ca9d;
-$primary-color: $primary-color;
-$medium-gray: #999999;
-$light-gray: #d7d9e2;
-$dark-gray: #2d3047;
-$font-16: 16px;
-$font-14: 14px;
-$font-12: 12px;
+$vhd__white: #fff !default;
+$vhd__black: #000 !default;
+$vhd__gray: #424b53 !default;
+$vhd__primary-text-color: #35343d !default;
+$vhd__lightest-gray: #f3f5f8 !default;
+$vhd__primary-color: #00ca9d !default;
+$vhd__medium-gray: #999999 !default;
+$vhd__light-gray: #d7d9e2 !default;
+$vhd__dark-gray: #2d3047 !default;
+$vhd__font-base: 16px !default;
+$vhd__font-small: 14px !default;
+$vhd__font-smaller: 12px !default;
 /* =============================================================
   * RESPONSIVE LAYOUT HELPERS
   * ============================================================*/
 
-$tablet: "(min-width: 480px) and (max-width: 767px)";
-$phone: "(max-width: 479px)";
-$desktop: "(min-width: 768px)";
-$up-to-tablet: "(max-width: 767px)";
-$extra-small-screen: "(max-width: 23em)";
+$vhd__tablet: "(min-width: 480px) and (max-width: 767px)" !default;
+$vhd__phone: "(max-width: 479px)" !default;
+$vhd__desktop: "(min-width: 768px)" !default;
+$vhd__up-to-tablet: "(max-width: 767px)" !default;
+$extra-small-screen: "(max-width: 23em)" !default;
