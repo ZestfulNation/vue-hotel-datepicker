@@ -632,19 +632,12 @@ export default {
         this.setCheckOut(null)
       }
     },
+    i18n() {
+      this.configureI18n()
+    },
   },
   created() {
-    fecha.i18n = {
-      dayNames: this.i18n['day-names'],
-      dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
-      monthNames: this.i18n['month-names'],
-      monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
-      amPm: ['am', 'pm'],
-      // D is the day of the month, function returns something like...  3rd or 11th
-      DoFn(D) {
-        return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
-      },
-    }
+    this.configureI18n()
     this.generateInitialMonths()
   },
   mounted() {
@@ -681,6 +674,19 @@ export default {
   methods: {
     ...Helpers,
     transformDisabledWeekDays() {},
+    configureI18n() {
+      fecha.setGlobalDateI18n({
+        dayNames: this.i18n['day-names'],
+        dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
+        monthNames: this.i18n['month-names'],
+        monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
+        amPm: ['am', 'pm'],
+        // D is the day of the month, function returns something like...  3rd or 11th
+        DoFn(D) {
+          return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
+        },
+      })
+    },
     generateInitialMonths() {
       this.months = []
 
@@ -1247,10 +1253,16 @@ export default {
       this.checkOut = date
     },
     getMonth(date) {
-      const year = this.showYear ? fecha.format(date, ' YYYY') : ''
-      const month = this.i18n['month-names'][fecha.format(date, 'M') - 1]
-      const leyend = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
-      return leyend.trim()
+      const month = 'MMMM'
+      const year = 'YYYY'
+      let format = month
+      // const i18n = { monthNames: this.i18n['month-names'] }
+
+      if (this.showYear) {
+        format = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
+      }
+
+      return fecha.format(date, format).trim()
     },
     createMonth(date) {
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek)

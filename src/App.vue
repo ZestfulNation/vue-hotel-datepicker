@@ -6,8 +6,9 @@
       <select v-model="language">
         <option value="en">English</option>
         <option value="es">Español</option>
-        <option value="pt">Português</option>
         <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
       </select>
     </div>
     <div class="container">
@@ -259,6 +260,7 @@ import pt from './i18n/pt'
 import fr from './i18n/fr'
 import en from './i18n/en'
 import es from './i18n/es'
+import it from './i18n/it'
 
 export default {
   name: 'Examples',
@@ -378,7 +380,7 @@ export default {
       currentWidth: window.innerWidth,
       boxShow: 0,
       language: 'en',
-      languages: { pt, fr, en, es },
+      languages: { pt, fr, en, es, it },
       alwaysVisible: false,
       firstDayOfWeek: 0,
       gridStyle: true,
