@@ -84,6 +84,7 @@ export default {
 |**startingDateValue**|`Date`|`null`|The initial value of the start date.
 |**tooltipMessage**|`String`|`null`|If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
 |**value**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker.
+|**yearBeforeMonth**|`Boolean`|`false`| Show the year before the month, only when showYear is true.
 
 ## i18n Defaults:
 

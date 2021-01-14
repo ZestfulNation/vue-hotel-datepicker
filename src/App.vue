@@ -62,6 +62,7 @@
             <input type="checkbox" v-model="positionRight" /> positionRight<br />
             <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
             <input type="checkbox" v-model="showYear" /> showYear<br />
+            <input type="checkbox" v-model="yearBeforeMonth" /> yearBeforeMonth<br />
           </div>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue:
@@ -85,6 +86,7 @@
             :gridStyle="gridStyle"
             :showSingleMonth="showSingleMonth"
             :showYear="showYear"
+            :yearBeforeMonth="yearBeforeMonth"
             :positionRight="positionRight"
             :singleDaySelection="singleDaySelection"
             :lastDateAvailable="showLastDateAvailable ? lastDateAvailable : Infinity"
@@ -385,6 +387,7 @@ export default {
       singleDaySelection: false,
       showPrice: false,
       showYear: true,
+      yearBeforeMonth: false,
       showMinNights: false,
       showContentSlot: false,
       showBookings: false,

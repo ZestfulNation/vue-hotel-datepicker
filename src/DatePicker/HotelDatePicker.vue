@@ -379,6 +379,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    yearBeforeMonth: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -1243,7 +1247,10 @@ export default {
       this.checkOut = date
     },
     getMonth(date) {
-      return this.i18n['month-names'][fecha.format(date, 'M') - 1] + (this.showYear ? fecha.format(date, ' YYYY') : '')
+      const year = this.showYear ? fecha.format(date, ' YYYY') : ''
+      const month = this.i18n['month-names'][fecha.format(date, 'M') - 1]
+      const leyend = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
+      return leyend.trim()
     },
     createMonth(date) {
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek)
