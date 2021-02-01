@@ -1083,6 +1083,10 @@ export default {
       return newT
     },
     handleClickOutside(event) {
+      if (!this.closeDatepickerOnClickOutside) {
+        return
+      }
+
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`]
 
       if (ignoreClickOnMeElement) {
