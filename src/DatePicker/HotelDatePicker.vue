@@ -635,6 +635,11 @@ export default {
     i18n() {
       this.configureI18n()
     },
+    disabledDates() {
+      this.nextDisabledDate = null
+      this.createHalfDayDates(this.baseHalfDayDates)
+      this.reRender()
+    },
   },
   created() {
     this.configureI18n()
