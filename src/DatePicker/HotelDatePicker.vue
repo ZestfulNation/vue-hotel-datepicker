@@ -588,7 +588,12 @@ export default {
       }
 
       this.$emit('check-out-changed', newDate)
-    },
+		},
+    disabledDates() {
+      this.nextDisabledDate = null
+      this.createHalfDayDates(this.baseHalfDayDates)
+      this.reRender()
+    }
   },
   created() {
     fecha.i18n = {
