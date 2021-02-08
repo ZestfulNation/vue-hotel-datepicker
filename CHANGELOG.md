@@ -44,3 +44,8 @@
 - correct configuration in i18n `fecha` package
 - Italian added on demo (dev) page
 - new prop `yearBeforeMonth`
+
+# v4.2:
+Is a v4.1 bugfix and a :
+- Fixed #257: Disabled dates not updating when new dates are added
+- New [CHANGELOG.md](CHANGELOG.md) file
