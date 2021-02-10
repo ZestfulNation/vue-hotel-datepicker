@@ -1,7 +1,7 @@
 /* eslint-disable vars-on-top */
 import fecha from 'fecha'
 
-export default {
+const helpers = {
   getNextDate(datesArray, referenceDate) {
     const now = new Date(referenceDate)
     let closest = Infinity
@@ -225,3 +225,5 @@ export default {
     return null
   },
 }
+
+export default helpers

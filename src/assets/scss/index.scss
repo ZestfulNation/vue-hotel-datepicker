@@ -172,13 +172,16 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &--booking {
-      .#{$prefix}__month-day-wrapper span {
-        text-align: right;
-        padding-top: 0.75em;
-        padding-right: 0.75em;
-        right: 0;
-        top: 0;
-        transform: none;
+      .#{$prefix}__month-day-wrapper {
+        & .day {
+          display: inline;
+          text-align: right;
+          padding-top: 0.75em;
+          padding-right: 0.75em;
+          right: 0;
+          top: 0;
+          transform: none;
+        }
       }
       .#{$prefix}__month-day:before {
         display: none;
@@ -304,12 +307,21 @@ $extra-small-screen: '(max-width: 23em)';
   &__month-day-wrapper {
     height: 0;
     padding-top: calc(100% - 1px); //fix for safari
-    span {
+    span.day {
       z-index: 1;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    .price {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.75em;
     }
   }
 

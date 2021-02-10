@@ -33,9 +33,7 @@
       />
     </div>
     <div class="vhd__datepicker__clear-button" tabindex="0" @click="clearSelection" v-show="showClearSelectionButton">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68">
-        <path d="M6.5 6.5l55 55M61.5 6.5l-55 55"></path>
-      </svg>
+      <img src="@/assets/images/close.svg" alt="x" />
     </div>
     <div
       class="vhd__datepicker"
@@ -77,8 +75,8 @@
       <div v-if="isOpen || alwaysVisible" class="vhd__datepicker__inner">
         <div
           :class="{
-            vhd__datepicker__header: screenSize === 'desktop',
-            'vhd__datepicker__header-mobile': screenSize !== 'desktop',
+            vhd__datepicker__header: isDesktop,
+            'vhd__datepicker__header-mobile': !isDesktop,
           }"
         >
           <button
@@ -99,68 +97,50 @@
           />
         </div>
         <div
-          v-if="screenSize === 'desktop' || alwaysVisible"
+          v-if="isDesktop || alwaysVisible"
           class="vhd__datepicker__months"
           :class="{ 'vhd__datepicker__months--full': showSingleMonth }"
         >
-          <div
-            ref="datepickerMonth"
-            class="vhd__datepicker__month"
+          <Month
             v-for="(month, monthIndex) in paginateMonths"
             :key="`${datepickerMonthKey}-${monthIndex}-desktop`"
-          >
-            <p class="vhd__datepicker__month-name">
-              {{ getMonth(month.days[15].date) }}
-            </p>
-            <div class="vhd__datepicker__week-row vhd__hide-up-to-tablet">
-              <div
-                class="vhd__datepicker__week-name"
-                v-for="(dayName, datePickerWeekIndexDesktop) in dayNames"
-                :key="`${datepickerWeekKey}-${datePickerWeekIndexDesktop}`"
-              >
-                {{ dayName }}
-              </div>
-            </div>
-            <div
-              class="vhd__square"
-              v-for="(day, dayIndex) in month.days"
-              :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}`"
-              @mouseenter="mouseEnterDay(day)"
-            >
-              <Day
-                :activeMonthIndex="activeMonthIndex"
-                :belongsToThisMonth="day.belongsToThisMonth"
-                :bookings="sortBookings"
-                :checkIn="checkIn"
-                :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                :checkInPeriod="checkInPeriod"
-                :checkOut="checkOut"
-                :date="day.date"
-                :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
-                :duplicateBookingDates="duplicateBookingDates"
-                :hoveringDate="hoveringDate"
-                :hoveringPeriod="hoveringPeriod"
-                :i18n="i18n"
-                :isOpen="isOpen"
-                :minNightCount="minNightCount"
-                :nextDisabledDate="nextDisabledDate"
-                :nextPeriodDisableDates="nextPeriodDisableDates"
-                :options="dayOptions"
-                :screenSize="screenSize"
-                :showCustomTooltip="showCustomTooltip"
-                :showPrice="showPrice"
-                :sortedDisabledDates="sortedDisabledDates"
-                :sortedPeriodDates="sortedPeriodDates"
-                :tooltipMessage="customTooltipMessage"
-                @clear-selection="clearSelection"
-                @booking-clicked="handleBookingClicked"
-                @day-clicked="handleDayClick"
-              />
-            </div>
-          </div>
+            ref="datepickerMonth"
+            :month="month"
+            :dayKey="datepickerDayKey"
+            :weekKey="datepickerWeekKey"
+            :isDesktop="isDesktop"
+            :firstDayOfWeek="firstDayOfWeek"
+            :activeMonthIndex="activeMonthIndex"
+            :bookings="sortBookings"
+            :checkIn="checkIn"
+            :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
+            :checkInPeriod="checkInPeriod"
+            :checkOut="checkOut"
+            :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+            :duplicateBookingDates="duplicateBookingDates"
+            :hoveringDate="hoveringDate"
+            :hoveringPeriod="hoveringPeriod"
+            :i18n="i18n"
+            :isOpen="isOpen"
+            :minNightCount="minNightCount"
+            :nextDisabledDate="nextDisabledDate"
+            :nextPeriodDisableDates="nextPeriodDisableDates"
+            :options="dayOptions"
+            :screenSize="screenSize"
+            :showCustomTooltip="showCustomTooltip"
+            :showPrice="showPrice"
+            :sortedDisabledDates="sortedDisabledDates"
+            :sortedPeriodDates="sortedPeriodDates"
+            :tooltipMessage="customTooltipMessage"
+            @clear-selection="clearSelection"
+            @booking-clicked="handleBookingClicked"
+            @day-clicked="handleDayClick"
+            @enter-day="enterDay"
+            @enter-month="enterMonth"
+          />
         </div>
         <div
-          v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
+          v-if="!isDesktop && isOpen && !alwaysVisible"
           :class="['vhd__datepicker__months-wrapper', { 'vhd__show-tooltip': showCustomTooltip && hoveringTooltip }]"
         >
           <div class="vhd__datepicker__tooltip--mobile" v-if="hoveringTooltip">
@@ -169,60 +149,41 @@
             </template>
           </div>
           <div class="vhd__datepicker__months" ref="swiperWrapper">
-            <div
-              ref="datepickerMonth"
-              class="vhd__datepicker__month"
+            <Month
               v-for="(month, monthIndex) in paginateMonths"
-              :key="`${datepickerMonthKey}-${monthIndex}-mobile`"
-            >
-              <p class="vhd__datepicker__month-name">
-                {{ getMonth(month.days[15].date) }}
-              </p>
-              <div class="vhd__datepicker__week-row">
-                <div
-                  class="vhd__datepicker__week-name"
-                  v-for="(dayName, datePickerIndex) in dayNames"
-                  :key="`datepicker__month-name-datepicker__week-name-${datePickerIndex}`"
-                >
-                  {{ dayName }}
-                </div>
-              </div>
-              <div
-                class="vhd__square"
-                v-for="(day, dayIndex) in month.days"
-                :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}-mobile`"
-                @mouseenter="mouseEnterDay(day)"
-              >
-                <Day
-                  :activeMonthIndex="activeMonthIndex"
-                  :belongsToThisMonth="day.belongsToThisMonth"
-                  :bookings="sortBookings"
-                  :checkIn="checkIn"
-                  :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                  :checkInPeriod="checkInPeriod"
-                  :checkOut="checkOut"
-                  :date="day.date"
-                  :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
-                  :duplicateBookingDates="duplicateBookingDates"
-                  :hoveringDate="hoveringDate"
-                  :hoveringPeriod="hoveringPeriod"
-                  :i18n="i18n"
-                  :isOpen="isOpen"
-                  :minNightCount="minNightCount"
-                  :nextDisabledDate="nextDisabledDate"
-                  :nextPeriodDisableDates="nextPeriodDisableDates"
-                  :options="dayOptions"
-                  :screenSize="screenSize"
-                  :showPrice="showPrice"
-                  :sortedDisabledDates="sortedDisabledDates"
-                  :sortedPeriodDates="sortedPeriodDates"
-                  :tooltipMessage="customTooltipMessage"
-                  @clear-selection="clearSelection"
-                  @booking-clicked="handleBookingClicked"
-                  @day-clicked="handleDayClick"
-                />
-              </div>
-            </div>
+              :key="`${datepickerMonthKey}-${monthIndex}-desktop`"
+              ref="datepickerMonth"
+              :month="month"
+              :activeMonthIndex="activeMonthIndex"
+              :belongsToThisMonth="day.belongsToThisMonth"
+              :bookings="sortBookings"
+              :checkIn="checkIn"
+              :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
+              :checkInPeriod="checkInPeriod"
+              :checkOut="checkOut"
+              :date="day.date"
+              :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+              :duplicateBookingDates="duplicateBookingDates"
+              :hoveringDate="hoveringDate"
+              :hoveringPeriod="hoveringPeriod"
+              :i18n="i18n"
+              :isOpen="isOpen"
+              :minNightCount="minNightCount"
+              :nextDisabledDate="nextDisabledDate"
+              :nextPeriodDisableDates="nextPeriodDisableDates"
+              :options="dayOptions"
+              :screenSize="screenSize"
+              :showCustomTooltip="false"
+              :showPrice="showPrice"
+              :sortedDisabledDates="sortedDisabledDates"
+              :sortedPeriodDates="sortedPeriodDates"
+              :tooltipMessage="customTooltipMessage"
+              @clear-selection="clearSelection"
+              @booking-clicked="handleBookingClicked"
+              @day-clicked="handleDayClick"
+              @enter-day="enterDay"
+              @enter-month="enterMonth"
+            />
           </div>
         </div>
       </div>
@@ -235,7 +196,7 @@
 import throttle from 'lodash.throttle'
 import fecha from 'fecha'
 
-import Day from './components/Day.vue'
+import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
 import i18nDefaults from '../i18n/en'
@@ -243,7 +204,7 @@ import i18nDefaults from '../i18n/en'
 export default {
   name: 'HotelDatePicker',
   components: {
-    Day,
+    Month,
     DateInput,
   },
   props: {
@@ -422,7 +383,7 @@ export default {
       set(open) {
         this.open = open
 
-        if (this.screenSize !== 'desktop' && !this.alwaysVisible) {
+        if (!this.isDesktop && !this.alwaysVisible) {
           const body = document.querySelector('body')
 
           if (open) {
@@ -477,7 +438,7 @@ export default {
     paginateMonths() {
       const months = [this.months[this.activeMonthIndex]]
 
-      if (!(this.showSingleMonth || (this.alwaysVisible && this.screenSize !== 'desktop'))) {
+      if (!(this.showSingleMonth || (this.alwaysVisible && !this.isDesktop))) {
         months.push(this.months[this.activeMonthIndex + 1])
       }
 
@@ -575,14 +536,11 @@ export default {
     dayOptions() {
       return { ...this.$props, disabledWeekDaysObject: this.disabledWeekDaysObject }
     },
-    dayNames() {
-      return [
-        ...this.i18n['day-names'].slice(this.firstDayOfWeek),
-        ...this.i18n['day-names'].slice(0, this.firstDayOfWeek),
-      ]
-    },
     numberOfMonths() {
       return this.showSingleMonth ? 1 : 2
+    },
+    isDesktop() {
+      return this.screenSize === 'desktop'
     },
   },
   watch: {
@@ -650,7 +608,7 @@ export default {
 
     window.addEventListener('resize', this.handleWindowResize)
 
-    if (this.screenSize !== 'desktop') {
+    if (!this.isDesktop) {
       document.addEventListener('touchstart', this.handleTouchStart, false)
       document.addEventListener('touchmove', this.handleTouchMove, false)
       document.addEventListener('touchend', this.handleTouchEnd, false)
@@ -667,7 +625,7 @@ export default {
   destroyed() {
     window.removeEventListener('resize', this.handleWindowResize)
 
-    if (this.screenSize !== 'desktop') {
+    if (!this.isDesktop) {
       document.removeEventListener('touchstart', this.handleTouchStart)
       document.removeEventListener('touchmove', this.handleTouchMove)
       document.removeEventListener('touchend', this.handleTouchEnd)
@@ -774,7 +732,10 @@ export default {
 
       return false
     },
-    mouseEnterDay(day) {
+    enterMonth(event, month) {
+      this.$emit('enter-month', event, month)
+    },
+    enterDay(event, day) {
       const formatDate = this.dateFormater(day.date)
       const halfDays = Object.keys(this.checkIncheckOutHalfDay)
       const disableDays = this.disabledDates
@@ -786,6 +747,7 @@ export default {
       }
 
       this.hoveringDate = this.singleDaySelection ? null : day.date
+      this.$emit('enter-day', event, day)
     },
     setCurrentPeriod(date, eventType) {
       let currentPeriod = {}
@@ -1231,7 +1193,7 @@ export default {
 
       let firstDayOfLastMonth
 
-      if (this.screenSize !== 'desktop') {
+      if (!this.isDesktop) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter((day) => day.belongsToThisMonth === true)
       } else {
         firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days.filter(
@@ -1256,18 +1218,6 @@ export default {
     },
     setCheckOut(date) {
       this.checkOut = date
-    },
-    getMonth(date) {
-      const month = 'MMMM'
-      const year = 'YYYY'
-      let format = month
-      // const i18n = { monthNames: this.i18n['month-names'] }
-
-      if (this.showYear) {
-        format = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
-      }
-
-      return fecha.format(date, format).trim()
     },
     createMonth(date) {
       const firstDay = this.getFirstDay(date, this.firstDayOfWeek)
