@@ -37,11 +37,13 @@
 import fecha from 'fecha'
 import Helpers from '../../helpers'
 import BookingBullet from './BookingBullet.vue'
+import Price from './Price.vue'
 
 export default {
   name: 'Day',
   components: {
     BookingBullet,
+    Price,
   },
   props: {
     bookings: {
