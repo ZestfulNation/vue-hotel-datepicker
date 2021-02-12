@@ -608,9 +608,6 @@ export default {
     yearBeforeMonth() {
       this.reRender()
     },
-    yearBeforeMonth() {
-      this.reRender()
-    },
     i18n() {
       this.configureI18n()
     },
