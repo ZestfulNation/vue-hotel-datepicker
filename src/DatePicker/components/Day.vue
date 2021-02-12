@@ -20,9 +20,7 @@
     >
       <div class="vhd__datepicker__month-day-wrapper">
         <span class="day">{{ dayNumber }}</span>
-        <div v-if="showPrice && dayPrice" class="price">
-          {{ dayPrice }}
-        </div>
+        <Price :show="showPrice" :price="dayPrice.price" :symbol="dayPrice.symbol" />
       </div>
     </div>
     <BookingBullet
@@ -172,25 +170,19 @@ export default {
       return fecha.format(this.date, 'D')
     },
     dayPrice() {
-      let price = ''
-
-      console.log(this.sortedPeriodDates)
-
-      const currentDate = this.sortedPeriodDates.find((d) => {
-        const isInBetween = this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
-
-        console.log(d.startAt, d.endAt, this.formatDate, isInBetween)
-
-        return isInBetween
-      })
+      let result = { price: '', symbol: '' }
+      const currentDate = this.sortedPeriodDates
+        .revert()
+        .find((d) => this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate))
 
       if (currentDate) {
         const nightly = currentDate.periodType === 'nightly'
 
-        price = Math.round(currentDate.price / (nightly ? 1 : 7))
+        result.price = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
+        result.symbol = currentDate.symbol || ''
       }
 
-      return price
+      return result
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {

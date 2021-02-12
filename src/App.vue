@@ -87,12 +87,13 @@
             :gridStyle="gridStyle"
             :showSingleMonth="showSingleMonth"
             :showYear="showYear"
+            :showPrice="showPrice"
             :yearBeforeMonth="yearBeforeMonth"
             :positionRight="positionRight"
             :singleDaySelection="singleDaySelection"
             :lastDateAvailable="showLastDateAvailable ? lastDateAvailable : Infinity"
             :minNights="showMinNights ? minNights : 0"
-            :periodDates="showPeriodDates ? periodDates : []"
+            :periodDates="periodDates"
             :bookings="showBookings ? bookings : []"
             :i18n="i18n"
             @day-clicked="dayClicked"
@@ -270,8 +271,10 @@ export default {
   data() {
     const today = new Date()
     const month = (today.getMonth() + 1 <= 9 ? '0' : '') + String(today.getMonth() + 1)
+    const periodDatesPrices = []
 
     window.vueHotelDatepicker = {
+      priceSymbol: '',
       periodDates: [
         {
           startAt: '2021-07-01',
@@ -298,6 +301,7 @@ export default {
           periodType: 'weekly_by_sunday',
           price: 4000.0,
         },
+        ...periodDatesPrices,
       ],
       bookings: [
         {

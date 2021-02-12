@@ -131,6 +131,8 @@
             :screenSize="screenSize"
             :showCustomTooltip="showCustomTooltip"
             :showPrice="showPrice"
+            :disabledDates="disabledDates"
+            :periodDates="periodDates"
             :sortedDisabledDates="sortedDisabledDates"
             :sortedPeriodDates="sortedPeriodDates"
             :tooltipMessage="customTooltipMessage"
@@ -314,6 +316,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    priceSymbol: {
+      type: String,
+      default: '',
+    },
     showPrice: {
       type: Boolean,
       default: false,
@@ -470,19 +476,20 @@ export default {
       return this.tooltipMessage
     },
     sortedPeriodDates() {
-      if (this.periodDates) {
-        const periodDates = [...this.periodDates]
+      let periodDates = []
 
-        return periodDates.sort((a, b) => {
-          const aa = a.startAt.split('/').reverse().join()
-          const bb = b.startAt.split('/').reverse().join()
+      if (this.periodDates) {
+        const sortFunction = (fecha1, fecha2) => {
+          const v1 = fecha1.startAt.split('/').reverse().join() + fecha1.endAt.split('/').reverse().join()
+          const v2 = fecha2.startAt.split('/').reverse().join() + fecha2.endAt.split('/').reverse().join()
 
           // eslint-disable-next-line no-nested-ternary
-          return aa < bb ? -1 : aa > bb ? 1 : 0
-        })
+          return v1 < v2 ? -1 : v1 > v2 ? 1 : 0
+        }
+        periodDates = [...this.periodDates].sort(sortFunction)
       }
 
-      return this.periodDates
+      return periodDates
     },
     sliceMonthMobile() {
       const nbMonthRenderDom = 4

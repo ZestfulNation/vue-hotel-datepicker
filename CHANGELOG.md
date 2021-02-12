@@ -1,5 +1,18 @@
 # Changelog
-# v4 - 2021-01-14
+
+# v4.3:
+- Improved price styling (fixed #264)
+- Added price currency symbol string, for instance: '$', 'EUR'. The new prop is `priceSymbol`, default at empty string
+# v4.2:
+- Fixed #257: Disabled dates not updating when new dates are added
+- New [CHANGELOG.md](CHANGELOG.md) file
+
+# v4.1 - 2021-01-14
+- correct configuration in i18n `fecha` package
+- Italian added on demo (dev) page
+- new prop `yearBeforeMonth`
+
+# v4.0 - 2021-01-14
 
 ## Important Fixes!
 * Now is working properly in mobile.
@@ -39,13 +52,3 @@
 * fixed range highlight selection showing on "singleDaySelection"
 * fixed `startingDateValue` cleared when open the datepicker.
 * minor bug fixes
-
-# v4.1 - 2021-01-14
-- correct configuration in i18n `fecha` package
-- Italian added on demo (dev) page
-- new prop `yearBeforeMonth`
-
-# v4.2:
-Is a v4.1 bugfix and a :
-- Fixed #257: Disabled dates not updating when new dates are added
-- New [CHANGELOG.md](CHANGELOG.md) file
