@@ -19,10 +19,8 @@
       ref="day"
     >
       <div class="vhd__datepicker__month-day-wrapper">
-        <span>{{ dayNumber }}</span>
-        <strong v-if="showPrice && dayPrice" style="font-size: 10px">
-          {{ dayPrice }}
-        </strong>
+        <span class="day">{{ dayNumber }}</span>
+        <Price :show="showPrice" :price="dayPrice.price" :symbol="dayPrice.symbol" />
       </div>
     </div>
     <BookingBullet
@@ -39,11 +37,13 @@
 import fecha from 'fecha'
 import Helpers from '../../helpers'
 import BookingBullet from './BookingBullet.vue'
+import Price from './Price.vue'
 
 export default {
   name: 'Day',
   components: {
     BookingBullet,
+    Price,
   },
   props: {
     bookings: {
@@ -172,23 +172,19 @@ export default {
       return fecha.format(this.date, 'D')
     },
     dayPrice() {
-      let currentDate = null
-
-      this.sortedPeriodDates.forEach((d) => {
-        if (this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)) {
-          currentDate = d
-        }
-      })
+      let result = { price: '', symbol: '' }
+      const currentDate = this.sortedPeriodDates
+        .revert()
+        .find((d) => this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate))
 
       if (currentDate) {
-        if (currentDate.periodType === 'nightly') {
-          return currentDate.price
-        }
+        const nightly = currentDate.periodType === 'nightly'
 
-        return Math.round(currentDate.price / 7)
+        result.price = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
+        result.symbol = currentDate.symbol || ''
       }
 
-      return ''
+      return result
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
