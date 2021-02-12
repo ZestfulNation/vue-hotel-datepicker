@@ -110,6 +110,8 @@
             :weekKey="datepickerWeekKey"
             :isDesktop="isDesktop"
             :firstDayOfWeek="firstDayOfWeek"
+            :showYear="showYear"
+            :yearBeforeMonth="yearBeforeMonth"
             :activeMonthIndex="activeMonthIndex"
             :bookings="sortBookings"
             :checkIn="checkIn"
@@ -154,6 +156,12 @@
               :key="`${datepickerMonthKey}-${monthIndex}-desktop`"
               ref="datepickerMonth"
               :month="month"
+              :dayKey="datepickerDayKey"
+              :weekKey="datepickerWeekKey"
+              :isDesktop="isDesktop"
+              :firstDayOfWeek="firstDayOfWeek"
+              :showYear="showYear"
+              :yearBeforeMonth="yearBeforeMonth"
               :activeMonthIndex="activeMonthIndex"
               :belongsToThisMonth="day.belongsToThisMonth"
               :bookings="sortBookings"
@@ -546,10 +554,12 @@ export default {
   watch: {
     bookings() {
       this.createHalfDayDates(this.baseHalfDayDates)
+      this.reRender()
     },
     checkIn(newDate) {
       this.$emit('check-in-changed', newDate)
       this.$emit('starting-date-changed', newDate)
+      this.reRender()
     },
     checkOut(newDate) {
       this.$emit('ending-date-changed', newDate)
@@ -564,6 +574,7 @@ export default {
       }
 
       this.$emit('check-out-changed', newDate)
+      this.reRender()
     },
     firstDayOfWeek(newDay) {
       this.$emit('first-day-of-week-changed', newDay)
@@ -575,6 +586,8 @@ export default {
       for (let i = this.numberOfMonths; i < offset; i++) {
         this.createMonth(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1))
       }
+
+      this.reRender()
     },
     startingDateValue(date) {
       this.setCheckIn(date)
@@ -589,6 +602,14 @@ export default {
         this.setCheckIn(this.checkIn)
         this.setCheckOut(null)
       }
+
+      this.reRender()
+    },
+    yearBeforeMonth() {
+      this.reRender()
+    },
+    yearBeforeMonth() {
+      this.reRender()
     },
     i18n() {
       this.configureI18n()

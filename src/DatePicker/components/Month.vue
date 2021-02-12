@@ -50,6 +50,14 @@ export default {
       type: Boolean,
       required: true,
     },
+    showYear: {
+      type: Boolean,
+      required: true,
+    },
+    yearBeforeMonth: {
+      type: Boolean,
+      required: true,
+    },
     firstDayOfWeek: {
       type: Number,
       required: true,
