@@ -20,7 +20,7 @@
     >
       <div class="vhd__datepicker__month-day-wrapper">
         <span class="day">{{ dayNumber }}</span>
-        <Price :show="showPrice" :price="dayPrice.price" :symbol="dayPrice.symbol" />
+        <Price :show="showPrice" :price="dayPrice" :symbol="priceSymbol" />
       </div>
     </div>
     <BookingBullet
@@ -115,6 +115,10 @@ export default {
     options: {
       type: Object,
     },
+    priceSymbol: {
+      type: String,
+      required: true,
+    },
     screenSize: {
       type: String,
       default: '',
@@ -172,16 +176,15 @@ export default {
       return fecha.format(this.date, 'D')
     },
     dayPrice() {
-      let result = { price: '', symbol: '' }
-      const currentDate = this.sortedPeriodDates
-        .revert()
+      let result = ''
+      const currentDate = [...this.sortedPeriodDates]
+        .reverse()
         .find((d) => this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate))
 
-      if (currentDate) {
+      if (currentDate && currentDate.price) {
         const nightly = currentDate.periodType === 'nightly'
 
-        result.price = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
-        result.symbol = currentDate.symbol || ''
+        result = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
       }
 
       return result

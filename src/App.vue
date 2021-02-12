@@ -71,7 +71,9 @@
             <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue:
             <input type="text" v-model="endingDate" /><br />
             <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
-            <input type="checkbox" v-model="showPrice" /> showPrice<br />
+            <input type="checkbox" v-model="showPrice" /> showPrice
+            <span v-if="showPrice">- priceSymbol: <input type="text" v-model="priceSymbol" style="width: 3em" /></span>
+            <br />
             <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
             <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
             <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
@@ -88,6 +90,7 @@
             :showSingleMonth="showSingleMonth"
             :showYear="showYear"
             :showPrice="showPrice"
+            :priceSymbol="priceSymbol"
             :yearBeforeMonth="yearBeforeMonth"
             :positionRight="positionRight"
             :singleDaySelection="singleDaySelection"

@@ -128,6 +128,7 @@
             :nextDisabledDate="nextDisabledDate"
             :nextPeriodDisableDates="nextPeriodDisableDates"
             :options="dayOptions"
+            :priceSymbol="priceSymbol"
             :screenSize="screenSize"
             :showCustomTooltip="showCustomTooltip"
             :showPrice="showPrice"
@@ -182,6 +183,7 @@
               :nextDisabledDate="nextDisabledDate"
               :nextPeriodDisableDates="nextPeriodDisableDates"
               :options="dayOptions"
+              :priceSymbol="priceSymbol"
               :screenSize="screenSize"
               :showCustomTooltip="false"
               :showPrice="showPrice"
@@ -486,6 +488,7 @@ export default {
           // eslint-disable-next-line no-nested-ternary
           return v1 < v2 ? -1 : v1 > v2 ? 1 : 0
         }
+
         periodDates = [...this.periodDates].sort(sortFunction)
       }
 

@@ -124,6 +124,10 @@ export default {
     options: {
       type: Object,
     },
+    priceSymbol: {
+      type: String,
+      default: '',
+    },
     screenSize: {
       type: String,
       default: '',
