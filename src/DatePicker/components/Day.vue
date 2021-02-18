@@ -144,6 +144,7 @@ export default {
       type: String,
     },
   },
+  emits: ['booking-clicked', 'clear-selection', 'day-clicked'],
   data() {
     return {
       currentDate: new Date(),

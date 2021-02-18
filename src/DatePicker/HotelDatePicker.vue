@@ -361,6 +361,27 @@ export default {
       default: false,
     },
   },
+  emits: [
+    'input',
+    'check-in-changed',
+    'starting-date-changed',
+    'check-out-changed',
+    'first-day-of-week-changed',
+    'booking-clicked',
+    'bookingClicked',
+    'enter-month',
+    'enter-day',
+    'period-selected',
+    'periodSelected',
+    'day-clicked',
+    'dayClicked',
+    'height-changed',
+    'clear-selection',
+    'handle-checkin-checkout-half-day',
+    'handleCheckinCheckoutHalfDay',
+    'ending-date-changed',
+    'onEnding-date-changed',
+  ],
   data() {
     return {
       activeMonthIndex: 0,
@@ -650,7 +671,7 @@ export default {
     })
     this.createHalfDayDates(this.baseHalfDayDates)
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('resize', this.handleWindowResize)
 
     if (!this.isDesktop) {
@@ -1239,7 +1260,7 @@ export default {
 
       this.createMonth(nextMonth)
       this.activeMonthIndex++
-      this.$emit('next-month-rendered', nextMonth)
+      this.$emit('clear-selection', nextMonth)
     }, 350),
     setCheckIn(date) {
       this.checkIn = date

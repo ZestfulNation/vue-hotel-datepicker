@@ -157,6 +157,7 @@ export default {
       type: String,
     },
   },
+  emits: ['enter-day', 'enter-month', 'clear-selection', 'booking-clicked', 'day-clicked'],
   computed: {
     monthName() {
       return this.getMonth(this.month.days[15].date)

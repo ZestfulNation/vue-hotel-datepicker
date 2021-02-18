@@ -18,42 +18,42 @@
       <div :class="['menu', { hidden: !menu }]">
         <h3>Examples</h3>
         <ul>
-          <li @click="selectBox(0)" :class="{ selected: boxShow == 0 }">Sandbox</li>
-          <li @click="selectBox(8)" :class="{ selected: boxShow == 8 }">
+          <li @click="selectBox(0)" :class="{ selected: boxShow === 0 }">Sandbox</li>
+          <li @click="selectBox(8)" :class="{ selected: boxShow === 8 }">
             Blocked different day when clicked on with <strong>periodDates</strong>
           </li>
-          <li @click="selectBox(9)" :class="{ selected: boxShow == 9 }">
+          <li @click="selectBox(9)" :class="{ selected: boxShow === 9 }">
             Half day, If you have check in at noon and checkout before noon
           </li>
-          <li @click="selectBox(10)" :class="{ selected: boxShow == 10 }">
+          <li @click="selectBox(10)" :class="{ selected: boxShow === 10 }">
             Disable check-in and check-out on the same day
           </li>
-          <li @click="selectBox(11)" :class="{ selected: boxShow == 11 }">Allow selection of single day</li>
-          <li @click="selectBox(12)" :class="{ selected: boxShow == 12 }">
+          <li @click="selectBox(11)" :class="{ selected: boxShow === 11 }">Allow selection of single day</li>
+          <li @click="selectBox(12)" :class="{ selected: boxShow === 12 }">
             Check in only on saturday and minimum stay of 10 nights
           </li>
-          <li @click="selectBox(13)" :class="{ selected: boxShow == 13 }">
+          <li @click="selectBox(13)" :class="{ selected: boxShow === 13 }">
             Block all dates after December 31st of {{ new Date().getUTCFullYear() }}
           </li>
-          <li @click="selectBox(14)" :class="{ selected: boxShow == 14 }">Block all dates after 15th of next month</li>
-          <li @click="selectBox(15)" :class="{ selected: boxShow == 15 }">
+          <li @click="selectBox(14)" :class="{ selected: boxShow === 14 }">Block all dates after 15th of next month</li>
+          <li @click="selectBox(15)" :class="{ selected: boxShow === 15 }">
             Block all date ranges of more than 30 days
           </li>
-          <li @click="selectBox(16)" :class="{ selected: boxShow == 16 }">Minimum stay of 3 days</li>
-          <li @click="selectBox(17)" :class="{ selected: boxShow == 17 }">Certain dates blocked</li>
-          <li @click="selectBox(18)" :class="{ selected: boxShow == 18 }">Allow setting a default date range</li>
-          <li @click="selectBox(19)" :class="{ selected: boxShow == 19 }">Checkin only on saturdays</li>
-          <li @click="selectBox(20)" :class="{ selected: boxShow == 20 }">Custom tooltip text</li>
-          <li @click="selectBox(22)" :class="{ selected: boxShow == 22 }">Custom date format (MMMM D)</li>
-          <li @click="selectBox(24)" :class="{ selected: boxShow == 24 }">Set startingDateValue value</li>
-          <li @click="selectBox(25)" :class="{ selected: boxShow == 25 }">Set endingDateValue value</li>
-          <li @click="selectBox(26)" :class="{ selected: boxShow == 26 }">
+          <li @click="selectBox(16)" :class="{ selected: boxShow === 16 }">Minimum stay of 3 days</li>
+          <li @click="selectBox(17)" :class="{ selected: boxShow === 17 }">Certain dates blocked</li>
+          <li @click="selectBox(18)" :class="{ selected: boxShow === 18 }">Allow setting a default date range</li>
+          <li @click="selectBox(19)" :class="{ selected: boxShow === 19 }">Checkin only on saturdays</li>
+          <li @click="selectBox(20)" :class="{ selected: boxShow === 20 }">Custom tooltip text</li>
+          <li @click="selectBox(22)" :class="{ selected: boxShow === 22 }">Custom date format (MMMM D)</li>
+          <li @click="selectBox(24)" :class="{ selected: boxShow === 24 }">Set startingDateValue value</li>
+          <li @click="selectBox(25)" :class="{ selected: boxShow === 25 }">Set endingDateValue value</li>
+          <li @click="selectBox(26)" :class="{ selected: boxShow === 26 }">
             Event startingDateValue (check-in-changed) / endingDateValue (check-out-changed)
           </li>
         </ul>
       </div>
       <div v-show="!menu || currentWidth > 1184" class="box-container">
-        <div v-if="boxShow == 0" class="box">
+        <div v-if="boxShow === 0" class="box">
           <h3>Sandbox</h3>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="firstDayOfWeek" :true-value="1" :false-value="0" /> First day Monday<br />
@@ -111,7 +111,7 @@
             </div>
           </DatePicker>
         </div>
-        <div v-if="boxShow == 8" class="box">
+        <div v-if="boxShow === 8" class="box">
           <h3>
             Blocked different day when clicked on with <strong>periodDates</strong>&nbsp;
             <span style="font-weight: 400">Emit day-clicked</span>
@@ -154,15 +154,15 @@
             ]"
           />
         </div>
-        <div v-if="boxShow == 10" class="box">
+        <div v-if="boxShow === 10" class="box">
           <h3>Disable check-in and check-out on the same day</h3>
           <DatePicker :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 11" class="box">
+        <div v-if="boxShow === 11" class="box">
           <h3>Allow selection of single day</h3>
           <DatePicker :singleDaySelection="true" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 12" class="box">
+        <div v-if="boxShow === 12" class="box">
           <h3>Check in only on saturday and minimum stay of 10 nights</h3>
           <DatePicker
             :disabledWeekDays="{
@@ -177,19 +177,19 @@
             :enableCheckout="true"
           />
         </div>
-        <div v-if="boxShow == 13" class="box">
+        <div v-if="boxShow === 13" class="box">
           <h3>Block all dates after December 31st of the current year</h3>
           <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 14" class="box">
+        <div v-if="boxShow === 14" class="box">
           <h3>Block all dates after 15th of next month</h3>
           <DatePicker :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 15" class="box">
+        <div v-if="boxShow === 15" class="box">
           <h3>Block all date ranges of more than 30 days</h3>
           <DatePicker :maxNights="30" :selectForward="false" :i18n="i18n" />
         </div>
-        <div v-if="boxShow == 16" class="box">
+        <div v-if="boxShow === 16" class="box">
           <h3>Minimum stay of 3 days</h3>
           <DatePicker :minNights="3" :i18n="i18n" />
         </div>
@@ -246,7 +246,7 @@
             :i18n="i18n"
           />
         </div>
-        <div v-if="boxShow == 26" class="box">
+        <div v-if="boxShow === 26" class="box">
           <h3>Event startingDateValue / endingDateValue</h3>
           <DatePicker :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
           <p>new startingDateValue Date: {{ checkIn }}</p>
