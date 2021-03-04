@@ -166,13 +166,11 @@
               :showYear="showYear"
               :yearBeforeMonth="yearBeforeMonth"
               :activeMonthIndex="activeMonthIndex"
-              :belongsToThisMonth="day.belongsToThisMonth"
               :bookings="sortBookings"
               :checkIn="checkIn"
               :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
               :checkInPeriod="checkInPeriod"
               :checkOut="checkOut"
-              :date="day.date"
               :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
               :duplicateBookingDates="duplicateBookingDates"
               :hoveringDate="hoveringDate"
@@ -388,7 +386,7 @@ export default {
       xDown: null,
       xUp: null,
       yDown: null,
-      yUp: null,
+      yUp: null
     }
   },
   computed: {
