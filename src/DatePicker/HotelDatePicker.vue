@@ -386,7 +386,7 @@ export default {
       xDown: null,
       xUp: null,
       yDown: null,
-      yUp: null
+      yUp: null,
     }
   },
   computed: {
