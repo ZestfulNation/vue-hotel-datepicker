@@ -5053,7 +5053,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"78b1e22f-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=0dc339e1&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"78b1e22f-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DatePicker/index.vue?vue&type=template&id=48a063a7&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('div',{ref:("DatePicker-" + _vm.hash),staticClass:"datepicker__wrapper",class:{
     'datepicker__wrapper--grid': _vm.gridStyle,
     'datepicker__wrapper--booking': _vm.bookings.length > 0,
@@ -5076,7 +5076,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=0dc339e1&
+// CONCATENATED MODULE: ./src/components/DatePicker/index.vue?vue&type=template&id=48a063a7&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -7404,6 +7404,10 @@ var defaulti18n = {
     bookings: function bookings() {
       this.createHalfDayDates(this.baseHalfDayDates);
     },
+    disabledDates: function disabledDates(newVal) {
+      this.createHalfDayDates(newVal);
+      this.reRender();
+    },
     isOpen: function isOpen(value) {
       var _this = this;
 
@@ -7956,13 +7960,12 @@ var defaulti18n = {
       }
     },
     renderNextMonth: lodash_throttle_default()(function throttleRenderNextMonth() {
-      this.$emit("renderNextMonth");
-
       if (this.activeMonthIndex < this.months.length - 2) {
         this.activeMonthIndex++;
         return;
       }
 
+      this.$emit("renderNextMonth");
       var firstDayOfLastMonth;
 
       if (this.screenSize !== "desktop") {
@@ -7983,7 +7986,7 @@ var defaulti18n = {
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
       this.activeMonthIndex++;
-    }, 350),
+    }, 250),
     setCheckIn: function setCheckIn(date) {
       this.checkIn = date;
     },
@@ -8009,10 +8012,12 @@ var defaulti18n = {
       this.months.push(month);
     },
     createHalfDayDates: function createHalfDayDates(baseHalfDayDates) {
+      // Copy of baseHalfDayDates
       var sortedDates = [];
+      var newBaseHalfDayDates = JSON.parse(JSON.stringify(baseHalfDayDates));
       var checkIncheckOutHalfDay = {}; // Sorted disabledDates
 
-      baseHalfDayDates.sort(function (a, b) {
+      newBaseHalfDayDates.sort(function (a, b) {
         var aa = a.split("/").reverse().join();
         var bb = b.split("/").reverse().join(); // eslint-disable-next-line no-nested-ternary
 
@@ -8020,11 +8025,11 @@ var defaulti18n = {
       });
 
       if (this.sortBookings.length === 0) {
-        for (var i = 0; i < baseHalfDayDates.length; i++) {
-          var newDate = baseHalfDayDates[i];
+        for (var i = 0; i < newBaseHalfDayDates.length; i++) {
+          var newDate = newBaseHalfDayDates[i];
 
           if (this.halfDay) {
-            var newDateIncrementOne = baseHalfDayDates[i + 1];
+            var newDateIncrementOne = newBaseHalfDayDates[i + 1];
 
             if (i === 0) {
               checkIncheckOutHalfDay[newDate] = {
@@ -8032,7 +8037,7 @@ var defaulti18n = {
               };
             }
 
-            if (!checkIncheckOutHalfDay[newDate] && baseHalfDayDates[i + 1] && this.getDayDiff(newDate, newDateIncrementOne) > 1) {
+            if (!checkIncheckOutHalfDay[newDate] && newBaseHalfDayDates[i + 1] && this.getDayDiff(newDate, newDateIncrementOne) > 1) {
               checkIncheckOutHalfDay[newDate] = {
                 checkOut: true
               };
@@ -8041,14 +8046,14 @@ var defaulti18n = {
               };
             }
 
-            if (i === baseHalfDayDates.length - 1) {
-              checkIncheckOutHalfDay[baseHalfDayDates[baseHalfDayDates.length - 1]] = {
+            if (i === newBaseHalfDayDates.length - 1) {
+              checkIncheckOutHalfDay[newBaseHalfDayDates[newBaseHalfDayDates.length - 1]] = {
                 checkOut: true
               };
             }
           }
 
-          sortedDates[i] = baseHalfDayDates[i];
+          sortedDates[i] = newBaseHalfDayDates[i];
         }
       } else {
         this.sortBookings.forEach(function (booking) {
