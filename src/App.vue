@@ -4,6 +4,21 @@
     <div>
       <div class="box">
         <h3>
+          Render next month emit
+        </h3>
+        <DatePicker
+          ref="DatePicker"
+          clickOutsideElementId="clickOutsideElement"
+          :disabledDates="[]"
+          :format="dateFormat"
+          :lastDateAvailable="lastDateAvailable"
+          :minNights="minNights"
+          :i18n="frFR"
+          @renderNextMonth="renderNextMonth"
+        />
+      </div>
+      <div class="box">
+        <h3>
           Open DatePicker outside
           <button id="clickOutsideElement" @click="toggleDatePickerOutside">
             Open
@@ -683,6 +698,9 @@ export default {
     }
   },
   methods: {
+    renderNextMonth() {
+      console.log("renderNextMonth");
+    },
     toggleDatePickerOutside() {
       this.$refs.DatePicker.showDatepicker();
     },

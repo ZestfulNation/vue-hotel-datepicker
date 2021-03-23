@@ -1271,6 +1271,8 @@ export default {
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
+      this.$emit("renderNextMonth");
+
       if (this.activeMonthIndex < this.months.length - 2) {
         this.activeMonthIndex++;
 
