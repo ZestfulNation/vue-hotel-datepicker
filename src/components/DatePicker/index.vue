@@ -592,6 +592,10 @@ export default {
     bookings() {
       this.createHalfDayDates(this.baseHalfDayDates);
     },
+    disabledDates(newVal) {
+      this.createHalfDayDates(newVal);
+      this.reRender();
+    },
     isOpen(value) {
       if (this.screenSize !== "desktop" && !this.alwaysVisible) {
         const body = document.querySelector("body");
@@ -1271,13 +1275,13 @@ export default {
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
-      this.$emit("renderNextMonth");
-
       if (this.activeMonthIndex < this.months.length - 2) {
         this.activeMonthIndex++;
 
         return;
       }
+
+      this.$emit("renderNextMonth");
 
       let firstDayOfLastMonth;
 
@@ -1302,7 +1306,7 @@ export default {
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
       this.activeMonthIndex++;
-    }, 350),
+    }, 250),
     setCheckIn(date) {
       this.checkIn = date;
     },
@@ -1332,11 +1336,13 @@ export default {
       this.months.push(month);
     },
     createHalfDayDates(baseHalfDayDates) {
+      // Copy of baseHalfDayDates
       let sortedDates = [];
+      const newBaseHalfDayDates = JSON.parse(JSON.stringify(baseHalfDayDates));
       const checkIncheckOutHalfDay = {};
 
       // Sorted disabledDates
-      baseHalfDayDates.sort((a, b) => {
+      newBaseHalfDayDates.sort((a, b) => {
         const aa = a
           .split("/")
           .reverse()
@@ -1351,11 +1357,11 @@ export default {
       });
 
       if (this.sortBookings.length === 0) {
-        for (let i = 0; i < baseHalfDayDates.length; i++) {
-          const newDate = baseHalfDayDates[i];
+        for (let i = 0; i < newBaseHalfDayDates.length; i++) {
+          const newDate = newBaseHalfDayDates[i];
 
           if (this.halfDay) {
-            const newDateIncrementOne = baseHalfDayDates[i + 1];
+            const newDateIncrementOne = newBaseHalfDayDates[i + 1];
 
             if (i === 0) {
               checkIncheckOutHalfDay[newDate] = {
@@ -1365,7 +1371,7 @@ export default {
 
             if (
               !checkIncheckOutHalfDay[newDate] &&
-              baseHalfDayDates[i + 1] &&
+              newBaseHalfDayDates[i + 1] &&
               this.getDayDiff(newDate, newDateIncrementOne) > 1
             ) {
               checkIncheckOutHalfDay[newDate] = {
@@ -1376,16 +1382,16 @@ export default {
               };
             }
 
-            if (i === baseHalfDayDates.length - 1) {
+            if (i === newBaseHalfDayDates.length - 1) {
               checkIncheckOutHalfDay[
-                baseHalfDayDates[baseHalfDayDates.length - 1]
+                newBaseHalfDayDates[newBaseHalfDayDates.length - 1]
               ] = {
                 checkOut: true
               };
             }
           }
 
-          sortedDates[i] = baseHalfDayDates[i];
+          sortedDates[i] = newBaseHalfDayDates[i];
         }
       } else {
         this.sortBookings.forEach(booking => {
