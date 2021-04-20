@@ -8,6 +8,7 @@
       </h3>
       <DatePicker
         ref="DatePicker"
+        :showYear="true"
         clickOutsideElementId="clickOutsideElement"
         :disabledDates="dynamicDisabledDates"
         :format="dateFormat"
@@ -787,5 +788,8 @@ html {
 
 .box {
   width: 100%;
+}
+.datepicker__fullview .datepicker {
+  z-index: 1;
 }
 </style>
