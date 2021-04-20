@@ -109,7 +109,7 @@
         <div
           class="datepicker__months"
           :class="{ 'datepicker__months--full': showSingleMonth }"
-          v-if="screenSize === 'desktop' || alwaysVisible"
+          v-if="isDesktop || alwaysVisible"
         >
           <div
             ref="datepickerMonth"
@@ -171,7 +171,7 @@
           </div>
         </div>
         <div
-          v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
+          v-if="isMobile && isOpen && !alwaysVisible"
           :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
         >
           <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
@@ -192,8 +192,9 @@
           </div>
           <div
             class="datepicker__months"
-            id="swiperWrapper"
             ref="swiperWrapper"
+            v-touch:swipe.top="swipeTop"
+            v-touch:swipe.bottom="swipeBottom"
           >
             <div
               ref="datepickerMonth"
@@ -261,8 +262,9 @@
 </template>
 
 <script>
-import throttle from "lodash.throttle";
+import Vue from "vue";
 import fecha from "fecha";
+import Vue2TouchEvents from "vue2-touch-events";
 
 import Day from "../Day.vue";
 import DateInput from "../DateInput.vue";
@@ -298,6 +300,8 @@ const defaulti18n = {
   week: "week",
   weeks: "weeks"
 };
+
+Vue.use(Vue2TouchEvents);
 
 export default {
   name: "HotelDatePicker",
@@ -439,6 +443,7 @@ export default {
   data() {
     return {
       activeMonthIndex: 0,
+      countOfMonth: 4,
       checkIn: this.startingDateValue,
       checkIncheckOutHalfDay: {},
       checkInPeriod: {},
@@ -468,6 +473,12 @@ export default {
     };
   },
   computed: {
+    isMobile() {
+      return this.screenSize !== "desktop";
+    },
+    isDesktop() {
+      return this.screenSize === "desktop";
+    },
     sortBookings() {
       if (this.bookings.length > 0) {
         const bookings = [...this.bookings];
@@ -509,10 +520,7 @@ export default {
       return this.disabledDates;
     },
     paginateDesktop() {
-      if (
-        this.showSingleMonth ||
-        (this.alwaysVisible && this.screenSize !== "desktop")
-      ) {
+      if (this.showSingleMonth || (this.alwaysVisible && this.isMobile)) {
         return [0];
       }
 
@@ -559,18 +567,6 @@ export default {
 
       return this.periodDates;
     },
-    sliceMonthMobile() {
-      const nbMonthRenderDom = 4;
-
-      if (this.activeMonthIndex >= nbMonthRenderDom) {
-        return this.months.slice(
-          this.activeMonthIndex - 3,
-          this.activeMonthIndex + 1
-        );
-      }
-
-      return this.months.slice(0, nbMonthRenderDom);
-    },
     isPreventedMaxMonth() {
       const lastIndexMonthAvailable = this.getMonthDiff(
         this.startDate,
@@ -597,7 +593,7 @@ export default {
       this.reRender();
     },
     isOpen(value) {
-      if (this.screenSize !== "desktop" && !this.alwaysVisible) {
+      if (this.isMobile && !this.alwaysVisible) {
         const body = document.querySelector("body");
 
         if (value) {
@@ -679,8 +675,14 @@ export default {
 
       this.activeMonthIndex += count;
     } else {
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
+      let nextMonth = new Date(this.startDate);
+
+      for (let countMonth = 0; countMonth < this.countOfMonth; countMonth++) {
+        const tempNextMonth = this.getNextMonth(nextMonth);
+
+        this.createMonth(tempNextMonth);
+        nextMonth = tempNextMonth;
+      }
     }
   },
   mounted() {
@@ -688,11 +690,7 @@ export default {
 
     window.addEventListener("resize", this.handleWindowResize);
 
-    if (this.screenSize !== "desktop") {
-      document.addEventListener("touchstart", this.handleTouchStart, false);
-      document.addEventListener("touchmove", this.handleTouchMove, false);
-      document.addEventListener("touchend", this.handleTouchEnd, false);
-    } else {
+    if (this.isDesktop) {
       document.addEventListener("click", this.handleClickOutside, false);
       document.addEventListener("keyup", this.escFunction, false);
     }
@@ -706,11 +704,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleWindowResize);
 
-    if (this.screenSize !== "desktop") {
-      document.removeEventListener("touchstart", this.handleTouchStart);
-      document.removeEventListener("touchmove", this.handleTouchMove);
-      document.removeEventListener("touchend", this.handleTouchEnd);
-    } else {
+    if (this.isDesktop) {
       document.removeEventListener("keyup", this.escFunction, false);
       document.removeEventListener("click", this.handleClickOutside);
     }
@@ -1274,8 +1268,8 @@ export default {
         this.activeMonthIndex--;
       }
     },
-    renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
+    renderNextMonth() {
+      if (this.activeMonthIndex < this.months.length - this.countOfMonth) {
         this.activeMonthIndex++;
 
         return;
@@ -1285,7 +1279,7 @@ export default {
 
       let firstDayOfLastMonth;
 
-      if (this.screenSize !== "desktop") {
+      if (this.isMobile) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter(
           day => day.belongsToThisMonth === true
         );
@@ -1306,7 +1300,7 @@ export default {
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
       this.activeMonthIndex++;
-    }, 250),
+    },
     setCheckIn(date) {
       this.checkIn = date;
     },

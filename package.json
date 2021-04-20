@@ -33,7 +33,8 @@
     "core-js": "^3.6.4",
     "fecha": "^4.2.0",
     "lodash.throttle": "^4.1.1",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue2-touch-events": "^3.2.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
