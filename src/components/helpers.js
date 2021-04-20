@@ -104,50 +104,6 @@ export default {
 
     return nextMonth;
   },
-  handleTouchStart(evt) {
-    this.isTouchMove = false;
-
-    if (this.isOpen) {
-      this.xDown = evt.touches[0].clientX;
-      this.yDown = evt.touches[0].clientY;
-    }
-  },
-  handleTouchMove(evt) {
-    if (!this.xDown || !this.yDown) {
-      this.isTouchMove = false;
-
-      return;
-    }
-
-    this.isTouchMove = true;
-    this.xUp = evt.touches[0].clientX;
-    this.yUp = evt.touches[0].clientY;
-  },
-  handleTouchEnd() {
-    if (!this.isTouchMove) {
-      return;
-    }
-
-    if (!this.xDown || !this.yDown) {
-      return;
-    }
-
-    const xDiff = this.xDown - this.xUp;
-    const yDiff = this.yDown - this.yUp;
-
-    if (
-      Math.abs(xDiff) < Math.abs(yDiff) &&
-      yDiff > 0 &&
-      !this.isPreventedMaxMonth
-    ) {
-      this.renderNextMonth();
-    } else {
-      this.renderPreviousMonth();
-    }
-
-    this.xDown = null;
-    this.yDown = null;
-  },
   validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
     const getvalidDate = d => {
       const formatDateAt00 = new Date(d).setHours(0, 0, 0, 0);
