@@ -73,9 +73,9 @@ $extra-small-screen: '(max-width: 23em)';
   border: 0;
   height: 60px;
   line-height: 60px;
-  border: 1px solid #eaeaea;
+  border-top: 1px solid rgba(245, 247, 248, 100);
   background: white;
-  box-shadow: 0 5px 20px 5px rgb(0 0 0 / 8%);
+  margin-top: 2rem;
   position: relative;
 
   .arrow {
@@ -272,6 +272,10 @@ $extra-small-screen: '(max-width: 23em)';
     justify-content: space-between;
     width: 100%;
     height: 100%;
+
+    @include device($up-to-tablet) {
+      height: 50px
+    }
 
     &--no-border.datepicker__dummy-wrapper {
       border: 0;
@@ -533,12 +537,13 @@ $extra-small-screen: '(max-width: 23em)';
 
     @include device($up-to-tablet) {
       padding: 0;
+      height: 100%;
     }
   }
 
   .show-tooltip {
     .datepicker__months {
-      height: calc(100vh - 140px);
+      height: calc(100% - 140px);
     }
     .datepicker__tooltip--mobile {
       height: auto;
@@ -557,7 +562,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     @include device($up-to-tablet) {
-      height: calc(100vh - 90px);
+      height: calc(100% - 90px);
       overflow-y: scroll;
       transition: all ease .2s;
     }
@@ -646,7 +651,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 40px;
       align-items: center;
       margin: 0;
-      box-shadow: 0px 8px 12px 0px rgba($black, .1);
+      border-bottom: 1px solid rgba(245, 247, 248, 100);
     }
   }
 
@@ -823,4 +828,10 @@ $extra-small-screen: '(max-width: 23em)';
       width: calc(50% - 19px);
     }
   }
+}
+
+
+// Tailwind style
+.h-full {
+  height: 100%
 }

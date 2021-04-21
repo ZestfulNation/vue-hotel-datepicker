@@ -6,9 +6,9 @@
       v-if="showTooltip && options.hoveringTooltip"
     />
     <div
-      class="datepicker__month-day"
       @click.prevent.stop="dayClicked($event, date)"
       :class="[
+        'datepicker__month-day',
         dayClass,
         checkinCheckoutClass,
         bookingClass,
@@ -19,11 +19,12 @@
     >
       <div class="datepicker__month-day-wrapper">
         <span>{{ dayNumber }}</span>
-        <strong v-if="showPrice && dayPrice" style="font-size: 10px">
+        <strong v-if="showPrice && dayPrice">
           {{ dayPrice }}
         </strong>
       </div>
     </div>
+
     <BookingBullet
       v-if="currentBooking && belongsToThisMonth && !isDisabled"
       :currentBooking="currentBooking"

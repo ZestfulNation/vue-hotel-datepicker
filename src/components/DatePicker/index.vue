@@ -1,11 +1,13 @@
 <template>
   <div
-    class="datepicker__wrapper"
-    :class="{
-      'datepicker__wrapper--grid': gridStyle,
-      'datepicker__wrapper--booking': bookings.length > 0,
-      datepicker__fullview: alwaysVisible
-    }"
+    :class="[
+      'datepicker__wrapper',
+      {
+        'datepicker__wrapper--grid': gridStyle,
+        'datepicker__wrapper--booking': bookings.length > 0,
+        datepicker__fullview: alwaysVisible
+      }
+    ]"
     :ref="`DatePicker-${hash}`"
     v-if="show"
   >
@@ -17,8 +19,11 @@
       <i>+</i>
     </div>
     <div
-      class="datepicker__dummy-wrapper"
-      :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }"
+      v-if="!alwaysVisible"
+      :class="[
+        'datepicker__dummy-wrapper',
+        { 'datepicker__dummy-wrapper--is-active': isOpen }
+      ]"
     >
       <date-input
         :i18n="i18n"
@@ -50,44 +55,51 @@
       </svg>
     </div>
     <div
-      class="datepicker"
-      :class="{
-        'datepicker--open': isOpen && !alwaysVisible,
-        'datepicker--closed': !isOpen && !alwaysVisible,
-        'datepicker--right': positionRight
-      }"
+      :class="[
+        'datepicker',
+        {
+          'datepicker--open': isOpen && !alwaysVisible,
+          'datepicker--closed': !isOpen && !alwaysVisible,
+          'datepicker--right': positionRight
+        }
+      ]"
     >
-      <div v-if="isMobile">
+      <div
+        v-if="isOpen && isMobile"
+        :class="[
+          'datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border',
+          { 'datepicker__dummy-wrapper--is-active': isOpen }
+        ]"
+        @click="toggleDatepicker"
+      >
         <div
-          v-if="isOpen"
-          class="datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border"
-          :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }"
-          @click="toggleDatepicker"
-        >
-          <div
-            class="datepicker__input"
-            tabindex="0"
-            :class="{
+          tabindex="0"
+          :class="[
+            'datepicker__input',
+            {
               'datepicker__dummy-input--is-active': isOpen && checkIn == null
-            }"
-            type="button"
-          >
-            {{ `${checkIn ? dateFormater(checkIn) : i18n["check-in"]}` }}
-          </div>
+            }
+          ]"
+          type="button"
+        >
+          {{ `${checkIn ? dateFormater(checkIn) : i18n["check-in"]}` }}
+        </div>
 
-          <div
-            class="datepicker__input"
-            tabindex="0"
-            :class="{
+        <div
+          tabindex="0"
+          :class="[
+            'datepicker__input',
+            {
               'datepicker__dummy-input--is-active':
                 isOpen && checkOut == null && checkIn !== null
-            }"
-            type="button"
-          >
-            {{ `${checkOut ? dateFormater(checkOut) : i18n["check-out"]}` }}
-          </div>
+            }
+          ]"
+          type="button"
+        >
+          {{ `${checkOut ? dateFormater(checkOut) : i18n["check-out"]}` }}
         </div>
       </div>
+
       <div v-if="isOpen || alwaysVisible" class="datepicker__inner">
         <div class="datepicker__header" v-if="isDesktop">
           <button
@@ -107,9 +119,12 @@
             :tabindex="isOpen ? 0 : -1"
           />
         </div>
+
         <div
-          class="datepicker__months"
-          :class="{ 'datepicker__months--full': showSingleMonth }"
+          :class="[
+            'datepicker__months',
+            { 'datepicker__months--full': showSingleMonth }
+          ]"
           v-if="isDesktop || alwaysVisible"
         >
           <div
@@ -174,15 +189,20 @@
             </div>
           </div>
         </div>
+
         <div
           v-if="isMobile && isOpen && !alwaysVisible"
-          :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
+          :class="[
+            'h-full',
+            { 'show-tooltip': showCustomTooltip && hoveringTooltip }
+          ]"
         >
           <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
             <template v-if="customTooltipMessage">
               {{ cleanString(customTooltipMessage) }}
             </template>
           </div>
+
           <div class="datepicker__week-row">
             <div
               class="datepicker__week-name"
@@ -194,6 +214,7 @@
               {{ dayName }}
             </div>
           </div>
+
           <div class="datepicker__months" ref="swiperWrapper">
             <div
               ref="datepickerMonth"
@@ -204,17 +225,6 @@
               <p class="datepicker__month-name">
                 {{ getMonth(months[n].days[15].date) }}
               </p>
-              <div class="datepicker__week-row" v-if="isDesktop">
-                <div
-                  class="datepicker__week-name"
-                  v-for="(dayName, datePickerIndex) in i18n['day-names']"
-                  :key="
-                    `datepicker__month-name-datepicker__week-name-${datePickerIndex}`
-                  "
-                >
-                  {{ dayName }}
-                </div>
-              </div>
               <div class="container-square">
                 <div
                   class="square"
@@ -601,25 +611,23 @@ export default {
         if (value) {
           body.style.overflow = "hidden";
 
-          if (this.checkIn && this.checkOut) {
-            this.$nextTick(() => {
-              if (this.$refs) {
-                const { swiperWrapper } = this.$refs;
-                const currentSelectionIndex = this.checkOut
-                  ? this.getMonthDiff(new Date(), this.checkOut)
-                  : 0;
+          this.$nextTick(() => {
+            if (this.checkIn && this.checkOut) {
+              const { swiperWrapper } = this.$refs;
+              const currentSelectionIndex = this.checkOut
+                ? this.getMonthDiff(new Date(), this.checkOut)
+                : 0;
 
-                if (currentSelectionIndex > 1) {
-                  const heightOfCubeDate = 50;
-                  const currentMonthOffset =
-                    this.$refs.datepickerMonth[currentSelectionIndex - 1]
-                      .offsetTop - heightOfCubeDate;
+              if (currentSelectionIndex > 1) {
+                const heightOfCubeDate = 50;
+                const currentMonthOffset =
+                  this.$refs.datepickerMonth[currentSelectionIndex - 1]
+                    .offsetTop - heightOfCubeDate;
 
-                  swiperWrapper.scrollTop = currentMonthOffset;
-                }
+                swiperWrapper.scrollTop = currentMonthOffset;
               }
-            });
-          }
+            }
+          });
         } else {
           body.style.overflow = "";
         }
