@@ -19,7 +19,7 @@
       <i>+</i>
     </div>
     <div
-      v-if="!alwaysVisible"
+      v-if="!alwaysVisible || (!isOpen && isMobile)"
       :class="[
         'datepicker__dummy-wrapper',
         { 'datepicker__dummy-wrapper--is-active': isOpen }
@@ -157,8 +157,8 @@
                 :key="`${datepickerDayKey}-${monthIndex}-${dayIndexDesktop}`"
               >
                 <Day
+                  v-if="day.belongsToThisMonth"
                   :activeMonthIndex="activeMonthIndex"
-                  :belongsToThisMonth="day.belongsToThisMonth"
                   :bookings="sortBookings"
                   :checkIn="checkIn"
                   :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
@@ -233,8 +233,8 @@
                   @mouseenter="mouseEnterDay(day)"
                 >
                   <Day
+                    v-if="day.belongsToThisMonth"
                     :activeMonthIndex="activeMonthIndex"
-                    :belongsToThisMonth="day.belongsToThisMonth"
                     :bookings="sortBookings"
                     :checkIn="checkIn"
                     :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
@@ -727,6 +727,7 @@ export default {
     ...Helpers,
     renderMultipleMonth(date) {
       let nextMonth = new Date(date);
+      const dates = [];
 
       for (
         let countMonth = 0;
@@ -735,9 +736,35 @@ export default {
       ) {
         const tempNextMonth = this.getNextMonth(nextMonth);
 
-        this.createMonth(tempNextMonth);
+        dates.push(tempNextMonth);
         nextMonth = tempNextMonth;
       }
+
+      this.createMultipleMonth(dates);
+    },
+    createMultipleMonth(dates) {
+      const months = [];
+
+      for (let d = 0; d < dates.length; d++) {
+        const currentDate = dates[d];
+        const firstDay = this.getFirstDay(currentDate, this.firstDayOfWeek);
+        const month = {
+          days: []
+        };
+
+        for (let i = 0; i < 42; i++) {
+          const day = this.addDays(firstDay, i);
+
+          month.days.push({
+            date: day,
+            belongsToThisMonth: day.getMonth() === currentDate.getMonth()
+          });
+        }
+
+        months.push(month);
+      }
+
+      this.months.push(...months);
     },
     handleBookingClicked(event, date, currentBooking) {
       this.$emit("bookingClicked", event, date, currentBooking);
@@ -1303,8 +1330,6 @@ export default {
         return;
       }
 
-      this.$emit("renderNextMonth");
-
       let firstDayOfLastMonth;
 
       if (this.isMobile) {
@@ -1332,6 +1357,8 @@ export default {
         this.createMonth(this.getNextMonth(firstDayOfLastMonth.date));
         this.activeMonthIndex++;
       }
+
+      this.$emit("renderNextMonth");
     },
     setCheckIn(date) {
       this.checkIn = date;
@@ -1352,10 +1379,11 @@ export default {
       };
 
       for (let i = 0; i < 42; i++) {
+        const day = this.addDays(firstDay, i);
+
         month.days.push({
-          date: this.addDays(firstDay, i),
-          belongsToThisMonth:
-            this.addDays(firstDay, i).getMonth() === date.getMonth()
+          date: day,
+          belongsToThisMonth: day.getMonth() === date.getMonth()
         });
       }
 

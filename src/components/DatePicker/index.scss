@@ -562,8 +562,9 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     @include device($up-to-tablet) {
-      height: calc(100% - 90px);
+      height: calc(100% - 92px);
       overflow-y: scroll;
+      overflow-x: hidden;
       transition: all ease .2s;
     }
 
@@ -603,7 +604,7 @@ $extra-small-screen: '(max-width: 23em)';
 
     @include device($up-to-tablet) {
       width: 100%;
-      padding-right: 0;
+      padding: 0 1rem;
     }
 
     @include device($desktop) {
@@ -626,12 +627,12 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: center;
 
     @include device($up-to-tablet) {
-      margin: 0 auto 3rem;
+      padding: 0 0 3rem;
+      margin: 0 auto;
       width: 100%;
-      padding-right: 0;
 
       &:last-of-type {
-        margin: 2rem auto 2.5rem;
+        padding: 2rem 0 2.5rem;
       }
     }
   }
