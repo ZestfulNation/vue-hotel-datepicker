@@ -78,7 +78,12 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Review the tooltips when there is periods array #50
 * Display the calendar in full size without input #61
 * Add a range of bookings #65
-
+* Review the pagination on mobile side:
+-- remove pagination with scroll add a button for more smooth
+-- use the same logique on desktop side increment an index and create month only when the index is superior to countOfMobileMonth / countOfDesktopMonth
+* Review some style of mobile calendar
+* Add v-if on when day.belongsToThisMonth === false to avoid 10 day per month load for nothing at all
+* Increase the performance on mobile side
 ------------
 
 ## What I will improve
@@ -328,26 +333,12 @@ periodDates: [
 
 #### `MinimumDuration` with a periodType `weekly-~` equals to a week
 
-### showPrice
-
-- Type: `Boolean`
-- Default: `false`
-
-If set to true, displays a price contains on your periodDates
-
 ### showSingleMonth
 
 - Type: `Boolean`
 - Default: `false`
 
 If set to true, display one month only
-
-### gridStyle
-
-- Type: `Boolean`
-- Default: `true`
-
-**Show** or **hide** a grid around the days
 
 ### positionRight
 
@@ -430,6 +421,19 @@ Example:
 
 ```
 
+### countOfMobileMonth
+
+- Type: `Number`
+- Default: `10`
+
+Number of month you want to show on mobile
+
+### countOfDesktopMonth
+
+- Type: `Number`
+- Default: `2`
+
+Number of month you want to show on desktop
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false

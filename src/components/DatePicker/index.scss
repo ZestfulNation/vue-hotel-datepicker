@@ -59,6 +59,10 @@ $extra-small-screen: '(max-width: 23em)';
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2.5rem;
+
+  @include device($up-to-tablet) {
+    padding: 1rem;
+  }
 }
 .container-square {
   display: grid;
@@ -71,16 +75,21 @@ $extra-small-screen: '(max-width: 23em)';
 .datepicker__button-paginate--mobile {
   width: 100%;
   border: 0;
-  height: 60px;
-  line-height: 60px;
-  border: 1px solid #eaeaea;
+  height: 50px;
+  line-height: 50px;
+  border-top: 1px solid rgba(245, 247, 248, 100);
   background: white;
-  box-shadow: 0 5px 20px 5px rgb(0 0 0 / 8%);
+  margin-top: 2rem;
   position: relative;
 
+  &--top {
+    margin: 0;
+    transform: rotate(180deg);
+  }
+
   .arrow {
-    width: 6vmin;
-    height: 6vmin;
+    width: 4vmin;
+    height: 4vmin;
     box-sizing: border-box;
     position: absolute;
     left: 50%;
@@ -93,7 +102,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 100%;
       border-width: .8vmin .8vmin 0 0;
       border-style: solid;
-      border-color: $black;
+      border-color: $primary-color;
       transition: .2s ease;
       display: block;
       transform-origin: 100% 0;
@@ -107,7 +116,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 100%;
       border-width: 0 .8vmin 0 0;
       border-style: solid;
-      border-color: $black;
+      border-color: $primary-color;
       transform-origin: 100% 0;
       transition:.2s ease;
     }
@@ -272,6 +281,10 @@ $extra-small-screen: '(max-width: 23em)';
     justify-content: space-between;
     width: 100%;
     height: 100%;
+
+    @include device($up-to-tablet) {
+      height: 50px
+    }
 
     &--no-border.datepicker__dummy-wrapper {
       border: 0;
@@ -533,12 +546,13 @@ $extra-small-screen: '(max-width: 23em)';
 
     @include device($up-to-tablet) {
       padding: 0;
+      height: 100%;
     }
   }
 
   .show-tooltip {
     .datepicker__months {
-      height: calc(100vh - 140px);
+      height: calc(100% - 140px);
     }
     .datepicker__tooltip--mobile {
       height: auto;
@@ -557,8 +571,9 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     @include device($up-to-tablet) {
-      height: calc(100vh - 90px);
+      height: calc(100% - 92px);
       overflow-y: scroll;
+      overflow-x: hidden;
       transition: all ease .2s;
     }
 
@@ -598,7 +613,7 @@ $extra-small-screen: '(max-width: 23em)';
 
     @include device($up-to-tablet) {
       width: 100%;
-      padding-right: 0;
+      padding: 0 1rem;
     }
 
     @include device($desktop) {
@@ -621,12 +636,12 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: center;
 
     @include device($up-to-tablet) {
-      margin: 0 auto 3rem;
+      padding: 0 0 3rem;
+      margin: 0 auto;
       width: 100%;
-      padding-right: 0;
 
       &:last-of-type {
-        margin: 2rem auto 2.5rem;
+        padding: 2rem 0 2.5rem;
       }
     }
   }
@@ -646,7 +661,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 40px;
       align-items: center;
       margin: 0;
-      box-shadow: 0px 8px 12px 0px rgba($black, .1);
+      border-bottom: 1px solid rgba(245, 247, 248, 100);
     }
   }
 
@@ -730,8 +745,9 @@ $extra-small-screen: '(max-width: 23em)';
       height: 0;
       opacity: 0;
       visibility: hidden;
-      padding: 0 15px;
-      border: 1px solid #d7d9e2;
+      padding: 0 1rem;
+      border-bottom: 1px solid #d7d9e2;
+      border-top: 1px solid #d7d9e2;
       font-size: 14px;
       line-height: 1.4;
       transition: all ease .2s;
@@ -823,4 +839,10 @@ $extra-small-screen: '(max-width: 23em)';
       width: calc(50% - 19px);
     }
   }
+}
+
+
+// Tailwind style
+.h-full {
+  height: 100%
 }

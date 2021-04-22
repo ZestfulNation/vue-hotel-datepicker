@@ -32,6 +32,8 @@
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
+          :disableCheckoutOnCheckin="true"
+          :periodDates="periodDates"
           @renderNextMonth="renderNextMonth"
         />
       </div>
@@ -143,44 +145,6 @@
       </div>
       <div class="box">
         <h3>
-          Hide grid style
-        </h3>
-        <DatePicker
-          :disabledDates="[
-            '2021-06-15',
-            '2021-06-16',
-            '2021-06-17',
-            '2021-06-18',
-            '2021-06-19',
-            '2021-06-20',
-            '2021-06-21',
-            '2021-07-01',
-            '2021-07-02',
-            '2021-07-03',
-            '2021-07-04',
-            '2021-07-11',
-            '2021-07-12',
-            '2021-07-13',
-            '2021-07-14',
-            '2021-07-15',
-            '2021-07-16',
-            '2021-07-17',
-            '2021-07-18'
-          ]"
-          :format="dateFormat"
-          :lastDateAvailable="lastDateAvailable"
-          :minNights="minNights"
-          :i18n="frFR"
-          :gridStyle="false"
-          :showYear="true"
-          :firstDayOfWeek="1"
-          :disableCheckoutOnCheckin="true"
-          :periodDates="periodDates"
-          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
-        />
-      </div>
-      <div class="box">
-        <h3>
           Display one month only
         </h3>
         <DatePicker
@@ -235,15 +199,6 @@
         </h3>
         <p>Stop pagination two years later</p>
         <DatePicker :lastDateAvailable="lastDateAvailable" />
-      </div>
-      <div class="box">
-        <h3>Show prices with <strong>periodDates</strong></h3>
-        <DatePicker
-          :showPrice="true"
-          :minNights="minNights"
-          :periodDates="periodDates"
-          @dayClicked="dayClicked"
-        />
       </div>
       <div class="box">
         <h3>
