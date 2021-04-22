@@ -1336,7 +1336,6 @@ export default {
       }
 
       if (this.isMobile) {
-        console.log("IFIFIFIFIFIFI");
         this.activeMonthIndex++;
 
         return;
