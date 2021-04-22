@@ -351,95 +351,22 @@
 
       <div class="box">
         <h3>Custom date format with i18n (e.g.: pt-PT)</h3>
-        <DatePicker
-          :minNights="0"
-          :singleDateSelection="true"
-          format="MMMM D"
-          :i18n="ptPT"
-        />
+        <DatePicker format="MMMM D" :i18n="ptPT" />
       </div>
 
       <div class="box">
         <h3>Change the first day of the week to Monday</h3>
-        <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
-          :firstDayOfWeek="1"
-        />
+        <DatePicker :firstDayOfWeek="1" />
       </div>
 
       <div class="box">
         <h3>Set checkIn value</h3>
-        <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
-          :firstDayOfWeek="1"
-          :checkInValue="new Date()"
-        />
+        <DatePicker :firstDayOfWeek="1" :checkInValue="new Date()" />
       </div>
 
       <div class="box">
         <h3>Set checkOut value</h3>
         <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
           :firstDayOfWeek="1"
           :checkInValue="new Date()"
           :checkOutValue="
@@ -455,27 +382,6 @@
       <div class="box">
         <h3>Event CheckIn</h3>
         <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
           @check-in-changed="checkInChanged($event)"
           @check-out-changed="checkOutChanged($event)"
         />
@@ -501,8 +407,8 @@ export default {
         night: "Noite",
         nights: "Noites",
         "day-names": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
-        "check-in": "Chegada",
-        "check-out": "Partida",
+        "check-in": "Partida",
+        "check-out": "Chegada",
         "month-names": [
           "Janeiro",
           "Fevereiro",
@@ -528,8 +434,8 @@ export default {
         weeks: "semanas"
       },
       frFR: {
-        "check-in": "Départ",
-        "check-out": "Arrivée",
+        "check-in": "Arrivée",
+        "check-out": "Départ",
         "day-names": ["lu", "ma", "me", "je", "ve", "sa", "di"],
         "month-names": [
           "Janvier",
@@ -673,8 +579,6 @@ export default {
   },
   methods: {
     renderNextMonth() {
-      console.log("render next month");
-
       this.dynamicDisabledDates = [
         "2021-04-15",
         "2021-04-16",

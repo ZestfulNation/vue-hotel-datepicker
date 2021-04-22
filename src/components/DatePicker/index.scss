@@ -141,7 +141,7 @@ $extra-small-screen: '(max-width: 23em)';
   font-size: 16px;
   line-height: 14px;
   overflow: hidden;
-  top: 48px;
+  top: 50px;
   position: absolute;
   z-index: 999;
 
@@ -200,14 +200,14 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
+  &__dummy-wrapper {
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+  }
+
   &__wrapper {
     position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 48px;
-    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
 
-    &--grid .square .datepicker__month-day {
+    .square .datepicker__month-day {
       border: 1px solid $light-gray;
       margin: -1px 0 0 -1px;
     }
@@ -243,7 +243,6 @@ $extra-small-screen: '(max-width: 23em)';
     .datepicker__months {
       position: static;
       margin: 0;
-      width: auto;
 
       &::before {
         display: none;
@@ -255,13 +254,24 @@ $extra-small-screen: '(max-width: 23em)';
   &__input {
     background: transparent;
     height: 48px;
+    display: flex;
+    align-items: center;
     color: $primary-text-color;
     font-size: 12px;
     outline: none;
-    padding: 4px 30px 2px;
-    width: 100%;
     word-spacing: 5px;
     border: 0;
+
+    &--first {
+      padding-left: 50px;
+      &:after {
+        position: relative;
+        content: "→";
+        font-family: arial;
+        font-size: 1.2rem;
+        padding: 0 .75rem;
+      }
+    }
 
     @include focusStyle();
 
@@ -278,7 +288,7 @@ $extra-small-screen: '(max-width: 23em)';
     cursor: pointer;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    align-items: center;
     width: 100%;
     height: 100%;
 
@@ -288,6 +298,7 @@ $extra-small-screen: '(max-width: 23em)';
 
     &--no-border.datepicker__dummy-wrapper {
       border: 0;
+      border-bottom: 1px solid #f5f7f8;
     }
 
     &--is-active {
@@ -297,23 +308,10 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__input {
     color: $primary-text-color;
-    padding-top: 0;
     font-size: $font-small;
-    height: 48px;
-    line-height: 48px;
-    text-align: left;
-    text-indent: 5px;
-    width: calc(50% + 4px);
 
     @include device($phone) {
-      text-indent: 0;
       text-align: center;
-    }
-
-    &:first-child {
-      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
-      width: calc(50% - 4px);
-      text-indent: 20px;
     }
 
     &--is-active {
@@ -571,7 +569,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     @include device($up-to-tablet) {
-      height: calc(100% - 92px);
+      height: calc(100% - 90px);
       overflow-y: scroll;
       overflow-x: hidden;
       transition: all ease .2s;
@@ -595,9 +593,14 @@ $extra-small-screen: '(max-width: 23em)';
     &--full {
       width: 100%;
 
-      .datepicker__month {
-        width: 470px;
-        padding: 0
+      .datepicker__months {
+        width: 100%;
+      }
+
+      @include device($up-to-tablet) {
+        .datepicker__month {
+          width: 100%;
+        }
       }
 
       &::before {
@@ -662,6 +665,12 @@ $extra-small-screen: '(max-width: 23em)';
       align-items: center;
       margin: 0;
       border-bottom: 1px solid rgba(245, 247, 248, 100);
+    }
+
+    &--always-visible {
+      @include device($up-to-tablet) {
+        border: 0;
+      }
     }
   }
 
@@ -839,10 +848,4 @@ $extra-small-screen: '(max-width: 23em)';
       width: calc(50% - 19px);
     }
   }
-}
-
-
-// Tailwind style
-.h-full {
-  height: 100%
 }

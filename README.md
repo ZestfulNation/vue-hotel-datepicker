@@ -80,10 +80,15 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Add a range of bookings #65
 * Review the pagination on mobile side:
 -- remove pagination with scroll add a button for more smooth
--- use the same logique on desktop side increment an index and create month only when the index is superior to countOfMobileMonth / countOfDesktopMonth
+-- use the same logique on desktop side increment an index and create month only when the index is superior to `countOfMobileMonth` / `countOfDesktopMonth`
 * Review some style of mobile calendar
 * Add v-if on when day.belongsToThisMonth === false to avoid 10 day per month load for nothing at all
 * Increase the performance on mobile side
+* Remove duplicate `<Day />` unify pagination for desktop and mobile
+* Create a `<DatePickerWeekRow/> component for not duplicate content
+* Add a `countOfMonthAlreadyCreate`props for generate x month on a created
+* Remove duplicate useless `<baseInput />`
+* Refacto the style of `<baseInput />`
 ------------
 
 ## What I will improve
@@ -426,14 +431,20 @@ Example:
 - Type: `Number`
 - Default: `10`
 
-Number of month you want to show on mobile
+Number of month you want to display on mobile
 
 ### countOfDesktopMonth
 
 - Type: `Number`
 - Default: `2`
 
-Number of month you want to show on desktop
+Number of month you want to display on desktop
+
+### countOfMonthAlreadyCreate
+- Type: `Number`
+- Default: `12`
+
+Number of month you want to have already created, the next month `countOfMonthAlreadyCreate` + 1 will be created directly after you click on pagination button
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
