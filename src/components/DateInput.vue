@@ -17,6 +17,10 @@ export default {
       type: Boolean,
       required: true
     },
+    i18n: {
+      type: Object,
+      required: true
+    },
     inputDate: {
       type: String,
       default: null
@@ -31,10 +35,6 @@ export default {
     },
     toggleDatepicker: {
       type: Function,
-      required: true
-    },
-    i18n: {
-      type: Object,
       required: true
     }
   },

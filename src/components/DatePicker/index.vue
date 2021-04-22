@@ -1,9 +1,8 @@
 <template>
   <div
     :class="[
-      'datepicker__wrapper',
+      'datepicker__wrapper datepicker__wrapper--grid',
       {
-        'datepicker__wrapper--grid': gridStyle,
         'datepicker__wrapper--booking': bookings.length > 0,
         datepicker__fullview: alwaysVisible
       }
@@ -19,7 +18,7 @@
       <i>+</i>
     </div>
     <div
-      v-if="!alwaysVisible || (!isOpen && isMobile)"
+      v-if="!alwaysVisible"
       :class="[
         'datepicker__dummy-wrapper',
         { 'datepicker__dummy-wrapper--is-active': isOpen }
@@ -101,12 +100,11 @@
       </div>
 
       <div v-if="isOpen || alwaysVisible" class="datepicker__inner">
-        <div class="datepicker__header" v-if="isDesktop">
+        <div class="datepicker__header" v-if="isDesktop || alwaysVisible">
           <button
             type="button"
             class="datepicker__month-button datepicker__month-button--prev "
             @click="renderPreviousMonth"
-            @keyup.enter.stop.prevent="renderPreviousMonth"
             :tabindex="isOpen ? 0 : -1"
             :disabled="activeMonthIndex === 0"
           />
@@ -114,7 +112,6 @@
             type="button"
             class="datepicker__month-button datepicker__month-button--next "
             @click="renderNextMonth"
-            @keyup.enter.stop.prevent="renderNextMonth"
             :disabled="isPreventedMaxMonth"
             :tabindex="isOpen ? 0 : -1"
           />
@@ -170,6 +167,7 @@
                   :hoveringDate="hoveringDate"
                   :hoveringPeriod="hoveringPeriod"
                   :i18n="i18n"
+                  :isDesktop="isDesktop"
                   :isOpen="isOpen"
                   :minNightCount="minNightCount"
                   :nextDisabledDate="nextDisabledDate"
@@ -177,7 +175,6 @@
                   :options="$props"
                   :screenSize="screenSize"
                   :showCustomTooltip="showCustomTooltip"
-                  :showPrice="showPrice"
                   :sortedDisabledDates="sortedDisabledDates"
                   :sortedPeriodDates="sortedPeriodDates"
                   :tooltipMessage="customTooltipMessage"
@@ -216,21 +213,32 @@
           </div>
 
           <div class="datepicker__months" ref="swiperWrapper">
+            <button
+              v-if="activeMonthIndex > 0"
+              class="datepicker__button-paginate--mobile datepicker__button-paginate--mobile--top"
+              @click="renderPreviousMonth"
+            >
+              <i class="arrow"></i>
+            </button>
+            <!-- v-for="(a, n) in months" -->
             <div
               ref="datepickerMonth"
               class="datepicker__month"
-              v-for="(a, n) in months"
+              v-for="(a, n) in paginateMobile"
               :key="`${datepickerMonthKey}-${n}`"
             >
               <p class="datepicker__month-name">
-                {{ getMonth(months[n].days[15].date) }}
+                <!-- {{ getMonth(months[n].days[15].date) }} -->
+                {{ getMonth(months[activeMonthIndex + a].days[15].date) }}
               </p>
               <div class="container-square">
+                <!-- v-for="(day, dayIndexMobile) in months[n].days" -->
                 <div
                   class="square"
-                  v-for="(day, dayIndexMobile) in months[n].days"
+                  v-for="(day, dayIndexMobile) in months[activeMonthIndex + a]
+                    .days"
                   :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
-                  @mouseenter="mouseEnterDay(day)"
+                  @click="mouseEnterDay(day)"
                 >
                   <Day
                     v-if="day.belongsToThisMonth"
@@ -252,7 +260,6 @@
                     :nextPeriodDisableDates="nextPeriodDisableDates"
                     :options="$props"
                     :screenSize="screenSize"
-                    :showPrice="showPrice"
                     :sortedDisabledDates="sortedDisabledDates"
                     :sortedPeriodDates="sortedPeriodDates"
                     :tooltipMessage="customTooltipMessage"
@@ -263,6 +270,7 @@
                 </div>
               </div>
             </div>
+
             <button
               class="datepicker__button-paginate--mobile"
               @click="renderNextMonth"
@@ -322,82 +330,31 @@ export default {
     DateInput
   },
   props: {
+    alwaysVisible: {
+      type: Boolean,
+      default: false
+    },
     bookings: {
       type: Array,
       default() {
         return [];
       }
     },
-    alwaysVisible: {
-      type: Boolean,
-      default: false
-    },
-    disableCheckoutOnCheckin: {
-      type: Boolean,
-      default: false
-    },
-    lastDateAvailable: {
-      type: [Number, Date],
-      default: Infinity
-    },
-    showPrice: {
-      type: Boolean,
-      default: false
-    },
-    periodDates: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
-    gridStyle: {
-      type: Boolean,
-      default: true
-    },
-    positionRight: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: String
-    },
-    startingDateValue: {
-      type: Date,
-      default: null
-    },
-    endingDateValue: {
-      type: Date,
-      default: null
-    },
-    format: {
+    clickOutsideElementId: {
       type: String,
-      default: "YYYY-MM-DD"
+      default: ""
     },
-    startDate: {
-      type: [Date, String],
-      default() {
-        return new Date();
-      }
-    },
-    endDate: {
-      type: [Date, String, Number],
-      default: Infinity
-    },
-    firstDayOfWeek: {
-      type: Number,
-      default: 0
-    },
-    minNights: {
-      type: Number,
-      default: 1
-    },
-    maxNights: {
-      type: Number,
-      default: null
-    },
-    halfDay: {
+    closeDatepickerOnClickOutside: {
       type: Boolean,
       default: true
+    },
+    countOfDesktopMonth: {
+      type: Number,
+      default: 2
+    },
+    countOfMobileMonth: {
+      type: Number,
+      default: 8
     },
     disabledDates: {
       type: Array,
@@ -411,19 +368,65 @@ export default {
         return [];
       }
     },
+    displayClearButton: {
+      type: Boolean,
+      default: true
+    },
+    disableCheckoutOnCheckin: {
+      type: Boolean,
+      default: false
+    },
+    enableCheckout: {
+      type: Boolean,
+      default: false
+    },
+    endDate: {
+      type: [Date, String, Number],
+      default: Infinity
+    },
+    endingDateValue: {
+      type: Date,
+      default: null
+    },
+    firstDayOfWeek: {
+      type: Number,
+      default: 0
+    },
+    format: {
+      type: String,
+      default: "YYYY-MM-DD"
+    },
+    halfDay: {
+      type: Boolean,
+      default: true
+    },
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
-    },
-    tooltipMessage: {
-      type: String,
-      default: null
     },
     i18n: {
       type: Object,
       default: () => defaulti18n
     },
-    enableCheckout: {
+    lastDateAvailable: {
+      type: [Number, Date],
+      default: Infinity
+    },
+    maxNights: {
+      type: Number,
+      default: null
+    },
+    minNights: {
+      type: Number,
+      default: 1
+    },
+    periodDates: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    positionRight: {
       type: Boolean,
       default: false
     },
@@ -431,25 +434,30 @@ export default {
       type: Boolean,
       default: false
     },
-    singleDaySelection: {
-      type: Boolean,
-      default: false
-    },
     showYear: {
       type: Boolean,
       default: false
     },
-    closeDatepickerOnClickOutside: {
+    singleDaySelection: {
       type: Boolean,
-      default: true
+      default: false
     },
-    displayClearButton: {
-      type: Boolean,
-      default: true
+    startDate: {
+      type: [Date, String],
+      default() {
+        return new Date();
+      }
     },
-    clickOutsideElementId: {
+    startingDateValue: {
+      type: Date,
+      default: null
+    },
+    tooltipMessage: {
       type: String,
-      default: ""
+      default: null
+    },
+    value: {
+      type: String
     }
   },
   data() {
@@ -459,7 +467,6 @@ export default {
       checkIncheckOutHalfDay: {},
       checkInPeriod: {},
       checkOut: this.endingDateValue,
-      countOfMobileMonth: 4,
       customTooltip: "",
       customTooltipHalfday: "",
       datepickerDayKey: 0,
@@ -470,18 +477,13 @@ export default {
       hoveringDate: null,
       hoveringPeriod: {},
       isOpen: false,
-      isTouchMove: false,
       months: [],
       nextDisabledDate: null,
       nextPeriodDisableDates: [],
       screenSize: null,
       show: true,
       showCustomTooltip: false,
-      sortedDisabledDates: null,
-      xDown: null,
-      xUp: null,
-      yDown: null,
-      yUp: null
+      sortedDisabledDates: null
     };
   },
   computed: {
@@ -533,18 +535,19 @@ export default {
     },
     paginateDesktop() {
       if (this.showSingleMonth || (this.alwaysVisible && this.isMobile)) {
-        return [0];
+        return 1;
       }
 
-      return [0, 1];
+      return this.countOfDesktopMonth;
+    },
+    paginateMobile() {
+      return this.countOfMobileMonth;
     },
     customTooltipMessage() {
       let tooltip = "";
+      const currentDate = this.isDesktop ? this.hoveringDate : this.checkIn;
 
-      if (
-        this.hoveringDate &&
-        (this.customTooltip || this.customTooltipHalfday)
-      ) {
+      if (currentDate && (this.customTooltip || this.customTooltipHalfday)) {
         if (this.customTooltip && this.customTooltipHalfday) {
           tooltip = `${this.customTooltipHalfday}. <br/> ${this.customTooltip}`;
         } else if (this.customTooltipHalfday && !this.customTooltip) {
@@ -729,11 +732,7 @@ export default {
       let nextMonth = new Date(date);
       const dates = [];
 
-      for (
-        let countMonth = 0;
-        countMonth < this.countOfMobileMonth;
-        countMonth++
-      ) {
+      for (let countMonth = 0; countMonth < 24; countMonth++) {
         const tempNextMonth = this.getNextMonth(nextMonth);
 
         dates.push(tempNextMonth);
@@ -827,6 +826,7 @@ export default {
         .includes(formatDate);
 
       if (
+        this.isDesktop &&
         !this.dayIsDisabled(day.date) &&
         day.belongsToThisMonth &&
         !disableDays
@@ -1324,7 +1324,19 @@ export default {
       }
     },
     renderNextMonth() {
-      if (this.isDesktop && this.activeMonthIndex < this.months.length - 2) {
+      this.$emit("renderNextMonth");
+
+      if (
+        (this.isDesktop || this.alwaysVisible) &&
+        this.activeMonthIndex < this.months.length - 2
+      ) {
+        this.activeMonthIndex++;
+
+        return;
+      }
+
+      if (this.isMobile) {
+        console.log("IFIFIFIFIFIFI");
         this.activeMonthIndex++;
 
         return;
@@ -1332,7 +1344,7 @@ export default {
 
       let firstDayOfLastMonth;
 
-      if (this.isMobile) {
+      if (this.isMobile && !this.alwaysVisible) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.find(
           day => day.belongsToThisMonth === true
         );
@@ -1357,8 +1369,6 @@ export default {
         this.createMonth(this.getNextMonth(firstDayOfLastMonth.date));
         this.activeMonthIndex++;
       }
-
-      this.$emit("renderNextMonth");
     },
     setCheckIn(date) {
       this.checkIn = date;

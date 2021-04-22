@@ -19,9 +19,6 @@
     >
       <div class="datepicker__month-day-wrapper">
         <span>{{ dayNumber }}</span>
-        <strong v-if="showPrice && dayPrice">
-          {{ dayPrice }}
-        </strong>
       </div>
     </div>
 
@@ -46,15 +43,17 @@ export default {
     BookingBullet
   },
   props: {
+    activeMonthIndex: {
+      type: Number,
+      default: 0
+    },
     bookings: {
       type: Array,
       default: () => []
     },
-    activeMonthIndex: {
-      type: Number
-    },
     checkIn: {
-      type: Date
+      type: Date,
+      default: new Date()
     },
     checkIncheckOutHalfDay: {
       type: Object,
@@ -65,10 +64,12 @@ export default {
       default: () => ({})
     },
     checkOut: {
-      type: Date
+      type: Date,
+      default: new Date()
     },
     date: {
-      type: Date
+      type: Date,
+      default: new Date()
     },
     disableCheckoutOnCheckin: {
       type: Boolean,
@@ -93,6 +94,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    isDesktop: {
+      type: Boolean,
+      required: false
+    },
     isOpen: {
       type: Boolean,
       required: true
@@ -102,7 +107,8 @@ export default {
       default: 0
     },
     nextDisabledDate: {
-      type: [Date, Number, String]
+      type: [Date, Number, String],
+      default: new Date()
     },
     nextPeriodDisableDates: {
       type: Array,
@@ -118,10 +124,6 @@ export default {
     showCustomTooltip: {
       default: false,
       type: Boolean
-    },
-    showPrice: {
-      type: Boolean,
-      default: false
     },
     sortedDisabledDates: {
       type: Array,
@@ -175,27 +177,6 @@ export default {
     },
     dayNumber() {
       return fecha.format(this.date, "D");
-    },
-    dayPrice() {
-      let currentDate = null;
-
-      this.sortedPeriodDates.forEach(d => {
-        if (
-          this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate)
-        ) {
-          currentDate = d;
-        }
-      });
-
-      if (currentDate) {
-        if (currentDate.periodType === "nightly") {
-          return currentDate.price;
-        }
-
-        return Math.round(currentDate.price / 7);
-      }
-
-      return "";
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
@@ -299,6 +280,7 @@ export default {
 
       // Current Day
       if (
+        this.isDesktop &&
         !this.isDisabled &&
         this.date === this.hoveringDate &&
         this.checkIn !== null &&
@@ -343,6 +325,7 @@ export default {
         }
 
         if (
+          this.isDesktop &&
           Object.keys(this.checkInPeriod).length > 0 &&
           this.checkInPeriod.periodType.includes("weekly") &&
           this.hoveringDate &&
@@ -367,6 +350,7 @@ export default {
             return "datepicker__month-day--selected afterMinimumDurationValidDay";
           }
         } else if (
+          this.isDesktop &&
           Object.keys(this.checkInPeriod).length > 0 &&
           this.checkInPeriod.periodType === "nightly" &&
           this.hoveringDate &&
@@ -381,6 +365,7 @@ export default {
         }
 
         if (
+          this.isDesktop &&
           this.hoveringPeriod.periodType === "nightly" &&
           this.isDateLessOrEquals(this.date, this.hoveringDate)
         ) {

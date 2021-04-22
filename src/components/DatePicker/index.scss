@@ -59,6 +59,10 @@ $extra-small-screen: '(max-width: 23em)';
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2.5rem;
+
+  @include device($up-to-tablet) {
+    padding: 1rem;
+  }
 }
 .container-square {
   display: grid;
@@ -71,16 +75,21 @@ $extra-small-screen: '(max-width: 23em)';
 .datepicker__button-paginate--mobile {
   width: 100%;
   border: 0;
-  height: 60px;
-  line-height: 60px;
+  height: 50px;
+  line-height: 50px;
   border-top: 1px solid rgba(245, 247, 248, 100);
   background: white;
   margin-top: 2rem;
   position: relative;
 
+  &--top {
+    margin: 0;
+    transform: rotate(180deg);
+  }
+
   .arrow {
-    width: 6vmin;
-    height: 6vmin;
+    width: 4vmin;
+    height: 4vmin;
     box-sizing: border-box;
     position: absolute;
     left: 50%;
@@ -93,7 +102,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 100%;
       border-width: .8vmin .8vmin 0 0;
       border-style: solid;
-      border-color: $black;
+      border-color: $primary-color;
       transition: .2s ease;
       display: block;
       transform-origin: 100% 0;
@@ -107,7 +116,7 @@ $extra-small-screen: '(max-width: 23em)';
       height: 100%;
       border-width: 0 .8vmin 0 0;
       border-style: solid;
-      border-color: $black;
+      border-color: $primary-color;
       transform-origin: 100% 0;
       transition:.2s ease;
     }
@@ -736,8 +745,9 @@ $extra-small-screen: '(max-width: 23em)';
       height: 0;
       opacity: 0;
       visibility: hidden;
-      padding: 0 15px;
-      border: 1px solid #d7d9e2;
+      padding: 0 1rem;
+      border-bottom: 1px solid #d7d9e2;
+      border-top: 1px solid #d7d9e2;
       font-size: 14px;
       line-height: 1.4;
       transition: all ease .2s;
