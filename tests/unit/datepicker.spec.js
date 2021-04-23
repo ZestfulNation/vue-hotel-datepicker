@@ -49,14 +49,4 @@ describe("Datepicker Component", () => {
     wrapper.vm.renderPreviousMonth();
     expect(wrapper.vm.activeMonthIndex).to.equal(activeMonthIndex);
   });
-
-  it("should correctly parse and sort the disabled dates", () => {
-    wrapper.vm.parseDisabledDates();
-    expect(wrapper.vm.sortedDisabledDates).to.eql([
-      new Date("2020-05-01"),
-      new Date("2020-05-10"),
-      new Date("2020-05-22"),
-      new Date("2020-05-28")
-    ]);
-  });
 });

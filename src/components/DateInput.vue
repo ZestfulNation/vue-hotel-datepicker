@@ -1,10 +1,7 @@
 <template>
   <div
-    class="datepicker__input"
-    @click="toggleDatepicker"
-    @keyup.enter.stop.prevent="toggleDatepicker"
+    :class="['datepicker__input', inputClass]"
     data-qa="datepickerInput"
-    :class="inputClass"
     :tabindex="tabIndex"
   >
     {{ inputDate ? inputDate : i18n[inputDateType] }}
@@ -18,6 +15,10 @@ export default {
       type: Boolean,
       required: true
     },
+    i18n: {
+      type: Object,
+      required: true
+    },
     inputDate: {
       type: String,
       default: null
@@ -29,14 +30,6 @@ export default {
     singleDaySelection: {
       type: Boolean,
       default: false
-    },
-    toggleDatepicker: {
-      type: Function,
-      required: true
-    },
-    i18n: {
-      type: Object,
-      required: true
     }
   },
   computed: {

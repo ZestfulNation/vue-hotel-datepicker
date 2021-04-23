@@ -1,31 +1,36 @@
 <template>
   <div
-    class="datepicker__wrapper"
-    :class="{
-      'datepicker__wrapper--grid': gridStyle,
-      'datepicker__wrapper--booking': bookings.length > 0,
-      datepicker__fullview: alwaysVisible
-    }"
+    :class="[
+      'datepicker__wrapper datepicker__wrapper',
+      {
+        'datepicker__wrapper--booking': bookings.length > 0,
+        datepicker__fullview: alwaysVisible
+      }
+    ]"
     :ref="`DatePicker-${hash}`"
     v-if="show"
   >
     <div
-      class="datepicker__close-button -hide-on-desktop"
-      v-if="isOpen"
+      v-if="isOpen && isMobile"
       @click="closeMobileDatepicker"
+      class="datepicker__close-button"
     >
       <i>+</i>
     </div>
     <div
-      class="datepicker__dummy-wrapper"
-      :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }"
+      @click="toggleDatepicker"
+      v-if="!alwaysVisible"
+      :class="[
+        'datepicker__dummy-wrapper',
+        { 'datepicker__dummy-wrapper--is-active': isOpen }
+      ]"
     >
       <date-input
+        class="datepicker__input--first"
         :i18n="i18n"
         :input-date="formatDate(checkIn)"
         input-date-type="check-in"
         :is-open="isOpen"
-        :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       />
 
@@ -35,7 +40,6 @@
         :input-date="formatDate(checkOut)"
         input-date-type="check-out"
         :is-open="isOpen"
-        :toggle-datepicker="toggleDatepicker"
         :single-day-selection="singleDaySelection"
       />
     </div>
@@ -43,215 +47,178 @@
       class="datepicker__clear-button"
       tabindex="0"
       @click="clearSelection"
-      v-show="showClearSelectionButton"
+      v-if="showClearSelectionButton"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68">
         <path d="M6.5 6.5l55 55M61.5 6.5l-55 55"></path>
       </svg>
     </div>
     <div
-      class="datepicker"
-      :class="{
-        'datepicker--open': isOpen && !alwaysVisible,
-        'datepicker--closed': !isOpen && !alwaysVisible,
-        'datepicker--right': positionRight
-      }"
+      :class="[
+        'datepicker',
+        {
+          'datepicker--open': isOpen && !alwaysVisible,
+          'datepicker--closed': !isOpen && !alwaysVisible,
+          'datepicker--right': positionRight
+        }
+      ]"
     >
-      <div class="-hide-on-desktop">
+      <div v-if="isOpen && isMobile">
         <div
-          v-if="isOpen"
-          class="datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border"
-          :class="{ 'datepicker__dummy-wrapper--is-active': isOpen }"
           @click="toggleDatepicker"
+          :class="[
+            'datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border',
+            { 'datepicker__dummy-wrapper--is-active': isOpen }
+          ]"
         >
-          <div
-            class="datepicker__input"
-            tabindex="0"
-            :class="{
-              'datepicker__dummy-input--is-active': isOpen && checkIn == null
-            }"
-            type="button"
-          >
-            {{ `${checkIn ? dateFormater(checkIn) : i18n["check-in"]}` }}
-          </div>
-          <div
-            class="datepicker__input"
-            tabindex="0"
-            :class="{
-              'datepicker__dummy-input--is-active':
-                isOpen && checkOut == null && checkIn !== null
-            }"
-            type="button"
-          >
-            {{ `${checkOut ? dateFormater(checkOut) : i18n["check-out"]}` }}
-          </div>
+          <date-input
+            class="datepicker__input--first"
+            :i18n="i18n"
+            :input-date="formatDate(checkIn)"
+            input-date-type="check-in"
+            :is-open="isOpen"
+            :single-day-selection="singleDaySelection"
+          />
+
+          <date-input
+            v-if="!singleDaySelection"
+            :i18n="i18n"
+            :input-date="formatDate(checkOut)"
+            input-date-type="check-out"
+            :is-open="isOpen"
+            :single-day-selection="singleDaySelection"
+          />
         </div>
+
+        <DatePickerWeekRow
+          v-if="!alwaysVisible"
+          :dayNames="i18n['day-names']"
+        />
       </div>
+
       <div v-if="isOpen || alwaysVisible" class="datepicker__inner">
-        <div class="datepicker__header">
+        <div class="datepicker__header" v-if="isDesktop || alwaysVisible">
           <button
             type="button"
-            class="datepicker__month-button datepicker__month-button--prev -hide-up-to-tablet"
+            class="datepicker__month-button datepicker__month-button--prev "
             @click="renderPreviousMonth"
-            @keyup.enter.stop.prevent="renderPreviousMonth"
             :tabindex="isOpen ? 0 : -1"
             :disabled="activeMonthIndex === 0"
           />
           <button
             type="button"
-            class="datepicker__month-button datepicker__month-button--next -hide-up-to-tablet"
+            class="datepicker__month-button datepicker__month-button--next "
             @click="renderNextMonth"
-            @keyup.enter.stop.prevent="renderNextMonth"
             :disabled="isPreventedMaxMonth"
             :tabindex="isOpen ? 0 : -1"
           />
         </div>
+
         <div
-          class="datepicker__months"
-          :class="{ 'datepicker__months--full': showSingleMonth }"
-          v-if="screenSize === 'desktop' || alwaysVisible"
+          ref="swiperWrapper"
+          :class="[
+            'datepicker__months',
+            { 'datepicker__months--full': showSingleMonth || alwaysVisible },
+            {
+              'show-tooltip': isMobile && showCustomTooltip && hoveringTooltip
+            }
+          ]"
+          v-if="
+            isDesktop || alwaysVisible || (isMobile && isOpen && !alwaysVisible)
+          "
         >
-          <div
-            ref="datepickerMonth"
-            class="datepicker__month"
-            v-for="(month, monthIndex) in paginateDesktop"
-            :key="`${datepickerMonthKey}-${month}`"
-          >
-            <p class="datepicker__month-name">
-              {{ getMonth(months[activeMonthIndex + month].days[15].date) }}
-            </p>
-            <div class="datepicker__week-row -hide-up-to-tablet">
-              <div
-                class="datepicker__week-name"
-                v-for="(dayName, datePickerWeekIndexDesktop) in i18n[
-                  'day-names'
-                ]"
-                :key="`${datepickerWeekKey}-${datePickerWeekIndexDesktop}`"
-              >
-                {{ dayName }}
-              </div>
+          <template v-if="isMobile">
+            <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
+              <template v-if="customTooltipMessage">
+                {{ cleanString(customTooltipMessage) }}
+              </template>
             </div>
-            <div
-              class="square"
-              v-for="(day, dayIndexDesktop) in months[activeMonthIndex + month]
-                .days"
-              @mouseenter="mouseEnterDay(day)"
-              :key="`${datepickerDayKey}-${monthIndex}-${dayIndexDesktop}`"
+
+            <button
+              v-if="!alwaysVisible && activeMonthIndex > 0"
+              class="datepicker__button-paginate--mobile datepicker__button-paginate--mobile--top"
+              @click="renderPreviousMonth"
             >
-              <Day
-                :activeMonthIndex="activeMonthIndex"
-                :belongsToThisMonth="day.belongsToThisMonth"
-                :bookings="sortBookings"
-                :checkIn="checkIn"
-                :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                :checkInPeriod="checkInPeriod"
-                :checkOut="checkOut"
-                :date="day.date"
-                :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
-                :duplicateBookingDates="duplicateBookingDates"
-                :hoveringDate="hoveringDate"
-                :hoveringPeriod="hoveringPeriod"
-                :i18n="i18n"
-                :isOpen="isOpen"
-                :minNightCount="minNightCount"
-                :nextDisabledDate="nextDisabledDate"
-                :nextPeriodDisableDates="nextPeriodDisableDates"
-                :options="$props"
-                :screenSize="screenSize"
-                :showCustomTooltip="showCustomTooltip"
-                :showPrice="showPrice"
-                :sortedDisabledDates="sortedDisabledDates"
-                :sortedPeriodDates="sortedPeriodDates"
-                :tooltipMessage="customTooltipMessage"
-                @clearSelection="clearSelection"
-                @bookingClicked="handleBookingClicked"
-                @dayClicked="handleDayClick"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="screenSize !== 'desktop' && isOpen && !alwaysVisible"
-          :class="{ 'show-tooltip': showCustomTooltip && hoveringTooltip }"
-        >
-          <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
-            <template v-if="customTooltipMessage">
-              {{ cleanString(customTooltipMessage) }}
-            </template>
-          </div>
-          <div class="datepicker__week-row">
-            <div
-              class="datepicker__week-name"
-              v-for="(dayName, datePickerWeekIndexMobile) in this.i18n[
-                'day-names'
-              ]"
-              :key="datepickerWeekKey + datePickerWeekIndexMobile"
-            >
-              {{ dayName }}
-            </div>
-          </div>
-          <div
-            class="datepicker__months"
-            id="swiperWrapper"
-            ref="swiperWrapper"
-          >
+              <i class="arrow"></i>
+            </button>
+          </template>
+
+          <!-- Wait for create months -->
+          <template v-if="months.length > 0">
             <div
               ref="datepickerMonth"
               class="datepicker__month"
-              v-for="(a, n) in months"
-              :key="`${datepickerMonthKey}-${n}`"
+              v-for="(month, monthIndex) in paginate"
+              :data-key="activeMonthIndex + month"
+              :key="`${datepickerMonthKey}-${month}`"
             >
-              <p class="datepicker__month-name">
-                {{ getMonth(months[n].days[15].date) }}
-              </p>
-              <div class="datepicker__week-row -hide-up-to-tablet">
-                <div
-                  class="datepicker__week-name"
-                  v-for="(dayName, datePickerIndex) in i18n['day-names']"
-                  :key="
-                    `datepicker__month-name-datepicker__week-name-${datePickerIndex}`
-                  "
-                >
-                  {{ dayName }}
-                </div>
-              </div>
-              <div
-                class="square"
-                v-for="(day, dayIndexMobile) in months[n].days"
-                :key="`${datepickerDayKey}-${n}-${dayIndexMobile}`"
-                @mouseenter="mouseEnterDay(day)"
-              >
-                <Day
-                  :activeMonthIndex="activeMonthIndex"
-                  :belongsToThisMonth="day.belongsToThisMonth"
-                  :bookings="sortBookings"
-                  :checkIn="checkIn"
-                  :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
-                  :checkInPeriod="checkInPeriod"
-                  :checkOut="checkOut"
-                  :date="day.date"
-                  :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
-                  :duplicateBookingDates="duplicateBookingDates"
-                  :hoveringDate="hoveringDate"
-                  :hoveringPeriod="hoveringPeriod"
-                  :i18n="i18n"
-                  :isOpen="isOpen"
-                  :minNightCount="minNightCount"
-                  :nextDisabledDate="nextDisabledDate"
-                  :nextPeriodDisableDates="nextPeriodDisableDates"
-                  :options="$props"
-                  :screenSize="screenSize"
-                  :showPrice="showPrice"
-                  :sortedDisabledDates="sortedDisabledDates"
-                  :sortedPeriodDates="sortedPeriodDates"
-                  :tooltipMessage="customTooltipMessage"
-                  @clearSelection="clearSelection"
-                  @bookingClicked="handleBookingClicked"
-                  @dayClicked="handleDayClick"
+              <template v-if="months[activeMonthIndex + month]">
+                <p class="datepicker__month-name">
+                  {{ months[activeMonthIndex + month].monthName }}
+                </p>
+
+                <DatePickerWeekRow
+                  v-if="isDesktop || alwaysVisible"
+                  :class="{
+                    'datepicker__week-row--always-visible': alwaysVisible
+                  }"
+                  :dayNames="i18n['day-names']"
                 />
-              </div>
+
+                <div class="container-square">
+                  <div
+                    :class="[
+                      'square',
+                      { 'not-in-the-month': !day.belongsToThisMonth }
+                    ]"
+                    v-for="(day, dayIndex) in months[activeMonthIndex + month]
+                      .days"
+                    @mouseenter="mouseEnterDay(day)"
+                    :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}`"
+                  >
+                    <Day
+                      v-if="day.belongsToThisMonth"
+                      :activeMonthIndex="activeMonthIndex"
+                      :bookings="sortBookings"
+                      :checkIn="checkIn"
+                      :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
+                      :checkInPeriod="checkInPeriod"
+                      :checkOut="checkOut"
+                      :date="day.date"
+                      :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+                      :duplicateBookingDates="duplicateBookingDates"
+                      :hoveringDate="hoveringDate"
+                      :hoveringPeriod="hoveringPeriod"
+                      :i18n="i18n"
+                      :isDesktop="isDesktop"
+                      :isOpen="isOpen"
+                      :minNightCount="minNightCount"
+                      :nextDisabledDate="nextDisabledDate"
+                      :nextPeriodDisableDates="nextPeriodDisableDates"
+                      :options="$props"
+                      :screenSize="screenSize"
+                      :showCustomTooltip="showCustomTooltip"
+                      :sortedDisabledDates="sortedDisabledDates"
+                      :sortedPeriodDates="sortedPeriodDates"
+                      :tooltipMessage="customTooltipMessage"
+                      @clearSelection="clearSelection"
+                      @bookingClicked="handleBookingClicked"
+                      @dayClicked="handleDayClick"
+                    />
+                  </div>
+                </div>
+              </template>
             </div>
-          </div>
+          </template>
+
+          <button
+            v-if="!alwaysVisible && isMobile"
+            class="datepicker__button-paginate--mobile"
+            :disabled="isPreventedMaxMonth"
+            @click="renderNextMonth"
+          >
+            <i class="arrow"></i>
+          </button>
         </div>
 
         <slot name="content" />
@@ -261,11 +228,10 @@
 </template>
 
 <script>
-import throttle from "lodash.throttle";
 import fecha from "fecha";
-
 import Day from "../Day.vue";
 import DateInput from "../DateInput.vue";
+import DatePickerWeekRow from "../DatePickerWeekRow.vue";
 import Helpers from "../helpers";
 
 const defaulti18n = {
@@ -302,86 +268,40 @@ const defaulti18n = {
 export default {
   name: "HotelDatePicker",
   components: {
-    Day,
-    DateInput
+    DateInput,
+    DatePickerWeekRow,
+    Day
   },
   props: {
+    alwaysVisible: {
+      type: Boolean,
+      default: false
+    },
     bookings: {
       type: Array,
       default() {
         return [];
       }
     },
-    alwaysVisible: {
-      type: Boolean,
-      default: false
-    },
-    disableCheckoutOnCheckin: {
-      type: Boolean,
-      default: false
-    },
-    lastDateAvailable: {
-      type: [Number, Date],
-      default: Infinity
-    },
-    showPrice: {
-      type: Boolean,
-      default: false
-    },
-    periodDates: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
-    gridStyle: {
-      type: Boolean,
-      default: true
-    },
-    positionRight: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: String
-    },
-    startingDateValue: {
-      type: Date,
-      default: null
-    },
-    endingDateValue: {
-      type: Date,
-      default: null
-    },
-    format: {
+    clickOutsideElementId: {
       type: String,
-      default: "YYYY-MM-DD"
+      default: ""
     },
-    startDate: {
-      type: [Date, String],
-      default() {
-        return new Date();
-      }
-    },
-    endDate: {
-      type: [Date, String, Number],
-      default: Infinity
-    },
-    firstDayOfWeek: {
-      type: Number,
-      default: 0
-    },
-    minNights: {
-      type: Number,
-      default: 1
-    },
-    maxNights: {
-      type: Number,
-      default: null
-    },
-    halfDay: {
+    closeDatepickerOnClickOutside: {
       type: Boolean,
       default: true
+    },
+    countOfDesktopMonth: {
+      type: Number,
+      default: 2
+    },
+    countOfMobileMonth: {
+      type: Number,
+      default: 8
+    },
+    countOfTotalMonthByDefault: {
+      type: Number,
+      default: 12
     },
     disabledDates: {
       type: Array,
@@ -395,19 +315,65 @@ export default {
         return [];
       }
     },
+    displayClearButton: {
+      type: Boolean,
+      default: true
+    },
+    disableCheckoutOnCheckin: {
+      type: Boolean,
+      default: false
+    },
+    enableCheckout: {
+      type: Boolean,
+      default: false
+    },
+    endDate: {
+      type: [Date, String, Number],
+      default: Infinity
+    },
+    endingDateValue: {
+      type: Date,
+      default: null
+    },
+    firstDayOfWeek: {
+      type: Number,
+      default: 0
+    },
+    format: {
+      type: String,
+      default: "YYYY-MM-DD"
+    },
+    halfDay: {
+      type: Boolean,
+      default: true
+    },
     hoveringTooltip: {
       default: true,
       type: [Boolean, Function]
-    },
-    tooltipMessage: {
-      type: String,
-      default: null
     },
     i18n: {
       type: Object,
       default: () => defaulti18n
     },
-    enableCheckout: {
+    lastDateAvailable: {
+      type: [Number, Date],
+      default: Infinity
+    },
+    maxNights: {
+      type: Number,
+      default: null
+    },
+    minNights: {
+      type: Number,
+      default: 1
+    },
+    periodDates: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    positionRight: {
       type: Boolean,
       default: false
     },
@@ -415,25 +381,30 @@ export default {
       type: Boolean,
       default: false
     },
-    singleDaySelection: {
-      type: Boolean,
-      default: false
-    },
     showYear: {
       type: Boolean,
       default: false
     },
-    closeDatepickerOnClickOutside: {
+    singleDaySelection: {
       type: Boolean,
-      default: true
+      default: false
     },
-    displayClearButton: {
-      type: Boolean,
-      default: true
+    startDate: {
+      type: [Date, String],
+      default() {
+        return new Date();
+      }
     },
-    clickOutsideElementId: {
+    startingDateValue: {
+      type: Date,
+      default: null
+    },
+    tooltipMessage: {
       type: String,
-      default: ""
+      default: null
+    },
+    value: {
+      type: String
     }
   },
   data() {
@@ -447,27 +418,27 @@ export default {
       customTooltipHalfday: "",
       datepickerDayKey: 0,
       datepickerMonthKey: 0,
-      datepickerWeekKey: 0,
       dynamicNightCounts: null,
       hash: Date.now(),
       hoveringDate: null,
       hoveringPeriod: {},
       isOpen: false,
-      isTouchMove: false,
       months: [],
       nextDisabledDate: null,
       nextPeriodDisableDates: [],
       screenSize: null,
       show: true,
       showCustomTooltip: false,
-      sortedDisabledDates: null,
-      xDown: null,
-      xUp: null,
-      yDown: null,
-      yUp: null
+      sortedDisabledDates: null
     };
   },
   computed: {
+    isMobile() {
+      return this.screenSize !== "desktop";
+    },
+    isDesktop() {
+      return this.screenSize === "desktop";
+    },
     sortBookings() {
       if (this.bookings.length > 0) {
         const bookings = [...this.bookings];
@@ -508,23 +479,32 @@ export default {
 
       return this.disabledDates;
     },
+    paginate() {
+      if (this.isDesktop) {
+        return this.paginateDesktop;
+      }
+
+      return this.paginateMobile;
+    },
     paginateDesktop() {
-      if (
-        this.showSingleMonth ||
-        (this.alwaysVisible && this.screenSize !== "desktop")
-      ) {
+      if (this.showSingleMonth) {
         return [0];
       }
 
-      return [0, 1];
+      return this.numberToArr(this.countOfDesktopMonth);
+    },
+    paginateMobile() {
+      if (this.showSingleMonth || this.alwaysVisible) {
+        return [0];
+      }
+
+      return this.numberToArr(this.countOfMobileMonth);
     },
     customTooltipMessage() {
       let tooltip = "";
+      const currentDate = this.isDesktop ? this.hoveringDate : this.checkIn;
 
-      if (
-        this.hoveringDate &&
-        (this.customTooltip || this.customTooltipHalfday)
-      ) {
+      if (currentDate && (this.customTooltip || this.customTooltipHalfday)) {
         if (this.customTooltip && this.customTooltipHalfday) {
           tooltip = `${this.customTooltipHalfday}. <br/> ${this.customTooltip}`;
         } else if (this.customTooltipHalfday && !this.customTooltip) {
@@ -559,25 +539,20 @@ export default {
 
       return this.periodDates;
     },
-    sliceMonthMobile() {
-      const nbMonthRenderDom = 4;
-
-      if (this.activeMonthIndex >= nbMonthRenderDom) {
-        return this.months.slice(
-          this.activeMonthIndex - 3,
-          this.activeMonthIndex + 1
-        );
-      }
-
-      return this.months.slice(0, nbMonthRenderDom);
-    },
     isPreventedMaxMonth() {
       const lastIndexMonthAvailable = this.getMonthDiff(
         this.startDate,
         this.lastDateAvailable
       );
 
-      return this.activeMonthIndex >= lastIndexMonthAvailable - 1;
+      if (this.isDesktop) {
+        return this.activeMonthIndex >= lastIndexMonthAvailable - 1;
+      }
+
+      return (
+        this.activeMonthIndex + this.countOfMobileMonth >=
+        lastIndexMonthAvailable + 1
+      );
     },
     minNightCount() {
       return this.dynamicNightCounts || this.minNights;
@@ -597,21 +572,27 @@ export default {
       this.reRender();
     },
     isOpen(value) {
-      if (this.screenSize !== "desktop" && !this.alwaysVisible) {
+      if (this.isMobile && !this.alwaysVisible) {
         const body = document.querySelector("body");
 
         if (value) {
           body.style.overflow = "hidden";
 
           this.$nextTick(() => {
-            if (this.$refs) {
+            if (this.checkIn && this.checkOut) {
               const { swiperWrapper } = this.$refs;
-              const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight;
               const currentSelectionIndex = this.checkOut
                 ? this.getMonthDiff(new Date(), this.checkOut)
                 : 0;
 
-              swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt;
+              if (currentSelectionIndex > 1) {
+                const currentMonth = document.querySelectorAll(
+                  `div[data-key="${currentSelectionIndex}"]`
+                )[0];
+
+                if (currentMonth)
+                  swiperWrapper.scrollTop = currentMonth.offsetTop;
+              }
             }
           });
         } else {
@@ -636,6 +617,11 @@ export default {
     }
   },
   created() {
+    if (this.isDateBefore(this.checkIn, this.startDate)) {
+      this.checkIn = null;
+      this.checkOut = null;
+    }
+
     fecha.i18n = {
       dayNames: this.i18n["day-names"],
       dayNamesShort: this.shortenString(this.i18n["day-names"], 3),
@@ -652,47 +638,14 @@ export default {
         );
       }
     };
-
-    if (
-      this.checkIn &&
-      (this.getMonthDiff(
-        this.getNextMonth(new Date(this.startDate)),
-        this.checkIn
-      ) > 0 ||
-        this.getMonthDiff(this.startDate, this.checkIn) > 0)
-    ) {
-      this.createMonth(new Date(this.startDate));
-      const count = this.getMonthDiff(this.startDate, this.checkIn);
-      let nextMonth = new Date(this.startDate);
-
-      for (let i = 0; i <= count; i++) {
-        const tempNextMonth = this.getNextMonth(nextMonth);
-
-        this.createMonth(tempNextMonth);
-        nextMonth = tempNextMonth;
-      }
-
-      if (this.checkOut && this.getMonthDiff(this.checkIn, this.checkOut) > 0) {
-        this.createMonth(this.getNextMonth(nextMonth));
-        this.activeMonthIndex = 1;
-      }
-
-      this.activeMonthIndex += count;
-    } else {
-      this.createMonth(new Date(this.startDate));
-      this.createMonth(this.getNextMonth(new Date(this.startDate)));
-    }
   },
   mounted() {
     this.handleWindowResize();
+    this.constructMonth();
 
     window.addEventListener("resize", this.handleWindowResize);
 
-    if (this.screenSize !== "desktop") {
-      document.addEventListener("touchstart", this.handleTouchStart, false);
-      document.addEventListener("touchmove", this.handleTouchMove, false);
-      document.addEventListener("touchend", this.handleTouchEnd, false);
-    } else {
+    if (this.isDesktop) {
       document.addEventListener("click", this.handleClickOutside, false);
       document.addEventListener("keyup", this.escFunction, false);
     }
@@ -706,17 +659,127 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleWindowResize);
 
-    if (this.screenSize !== "desktop") {
-      document.removeEventListener("touchstart", this.handleTouchStart);
-      document.removeEventListener("touchmove", this.handleTouchMove);
-      document.removeEventListener("touchend", this.handleTouchEnd);
-    } else {
+    if (this.isDesktop) {
       document.removeEventListener("keyup", this.escFunction, false);
       document.removeEventListener("click", this.handleClickOutside);
     }
   },
   methods: {
     ...Helpers,
+    currentMonth(month) {
+      return this.months[this.activeMonthIndex + month]?.days;
+    },
+    constructMonth() {
+      const startDate = new Date(this.startDate);
+      const diffMonthBetweenStarDateAndCheckOut = this.getMonthDiff(
+        this.startDate,
+        this.checkOut
+      );
+      const countOfMonth = this.isDesktop
+        ? this.countOfDesktopMonth
+        : this.countOfMobileMonth;
+
+      // Create StartDate month
+      this.createMonth(startDate);
+
+      // If checkIn && checkOut && difference between startDate and checkOut
+      if (
+        this.checkIn &&
+        this.checkOut &&
+        diffMonthBetweenStarDateAndCheckOut > countOfMonth
+      ) {
+        // Create each month to nextMonthStartDate to checkOut date
+        this.renderMultipleMonth(
+          this.startDate,
+          diffMonthBetweenStarDateAndCheckOut
+        );
+        const activeIndex = this.isDesktop ? 1 : this.countOfMobileMonth - 1;
+
+        // Set the activeMonthIndex depend to device
+        this.activeMonthIndex = Math.abs(
+          diffMonthBetweenStarDateAndCheckOut - activeIndex
+        );
+      } else {
+        // Create each month depending to countOfTotalMonthByDefault
+        this.renderMultipleMonth(
+          this.startDate,
+          this.countOfTotalMonthByDefault - 1
+        );
+      }
+    },
+    numberToArr(number) {
+      const arr = [];
+
+      for (let i = 0; i <= number - 1; i++) {
+        arr.push(i);
+      }
+
+      return arr;
+    },
+    renderMultipleMonth(date, max) {
+      let nextMonth = new Date(date);
+      const dates = [];
+
+      for (let countMonth = 0; countMonth < max; countMonth++) {
+        const tempNextMonth = this.getNextMonth(nextMonth);
+
+        dates.push(tempNextMonth);
+        nextMonth = tempNextMonth;
+      }
+
+      this.createMultipleMonth(dates);
+    },
+    getMonthName(day) {
+      const currentMonth = this.i18n["month-names"][fecha.format(day, "M") - 1];
+      const currentYear = this.showYear ? fecha.format(day, " YYYY") : "";
+
+      return `${currentMonth} ${currentYear}`;
+    },
+    createMonth(date) {
+      const firstDayOfMonth = this.getFirstDayOfMonth(date);
+      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
+      const month = {
+        monthName: this.getMonthName(firstDayOfMonth),
+        days: []
+      };
+
+      for (let i = 0; i < 42; i++) {
+        const day = this.addDays(firstDay, i);
+
+        month.days.push({
+          date: day,
+          belongsToThisMonth: day.getMonth() === date.getMonth()
+        });
+      }
+
+      this.months.push(month);
+    },
+    createMultipleMonth(dates) {
+      const months = [];
+
+      for (let d = 0; d < dates.length; d++) {
+        const currentDate = dates[d];
+        const firstDayOfMonth = this.getFirstDayOfMonth(currentDate);
+        const firstDay = this.getFirstDay(currentDate, this.firstDayOfWeek);
+        const month = {
+          monthName: this.getMonthName(firstDayOfMonth),
+          days: []
+        };
+
+        for (let i = 0; i < 42; i++) {
+          const day = this.addDays(firstDay, i);
+
+          month.days.push({
+            date: day,
+            belongsToThisMonth: day.getMonth() === currentDate.getMonth()
+          });
+        }
+
+        months.push(month);
+      }
+
+      this.months.push(...months);
+    },
     handleBookingClicked(event, date, currentBooking) {
       this.$emit("bookingClicked", event, date, currentBooking);
     },
@@ -754,7 +817,7 @@ export default {
       if (
         this.checkIn &&
         !this.checkOut &&
-        !this.isDateLessOrEquals(date, this.nextDisabledDate) &&
+        !this.isDateBefore(date, this.nextDisabledDate) &&
         this.nextDisabledDate !== Infinity
       ) {
         return true;
@@ -763,7 +826,7 @@ export default {
       if (
         this.checkIn &&
         !this.checkOut &&
-        this.isDateLessOrEquals(date, this.checkIn)
+        this.isDateBefore(date, this.checkIn)
       ) {
         return true;
       }
@@ -1134,12 +1197,10 @@ export default {
       }
     },
     handleWindowResize() {
-      if (window.innerWidth < 480) {
-        this.screenSize = "smartphone";
-      } else if (window.innerWidth >= 480 && window.innerWidth < 768) {
-        this.screenSize = "tablet";
-      } else if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 768) {
         this.screenSize = "desktop";
+      } else {
+        this.screenSize = "not-desktop";
       }
 
       return this.screenSize;
@@ -1171,7 +1232,6 @@ export default {
     reRender() {
       this.datepickerDayKey += 1;
       this.datepickerMonthKey += 1;
-      this.datepickerWeekKey += 1;
     },
     clearSelection() {
       this.hoveringDate = null;
@@ -1274,25 +1334,28 @@ export default {
         this.activeMonthIndex--;
       }
     },
-    renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
+    renderNextMonth() {
+      this.$emit("renderNextMonth");
+      const countOfDesktopMonth = this.isDesktop
+        ? this.countOfDesktopMonth
+        : this.countOfMobileMonth;
+
+      if (this.activeMonthIndex < this.months.length - countOfDesktopMonth) {
         this.activeMonthIndex++;
 
         return;
       }
 
-      this.$emit("renderNextMonth");
-
       let firstDayOfLastMonth;
 
-      if (this.screenSize !== "desktop") {
-        firstDayOfLastMonth = this.months[this.months.length - 1].days.filter(
+      if (this.isMobile && !this.alwaysVisible) {
+        firstDayOfLastMonth = this.months[this.months.length - 1].days.find(
           day => day.belongsToThisMonth === true
         );
       } else {
-        firstDayOfLastMonth = this.months[
-          this.activeMonthIndex + 1
-        ].days.filter(day => day.belongsToThisMonth === true);
+        firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days.find(
+          day => day.belongsToThisMonth === true
+        );
       }
 
       if (this.endDate !== Infinity) {
@@ -1304,36 +1367,14 @@ export default {
         }
       }
 
-      this.createMonth(this.getNextMonth(firstDayOfLastMonth[0].date));
+      this.createMonth(this.getNextMonth(firstDayOfLastMonth.date));
       this.activeMonthIndex++;
-    }, 250),
+    },
     setCheckIn(date) {
       this.checkIn = date;
     },
     setCheckOut(date) {
       this.checkOut = date;
-    },
-    getMonth(date) {
-      return (
-        this.i18n["month-names"][fecha.format(date, "M") - 1] +
-        (this.showYear ? fecha.format(date, " YYYY") : "")
-      );
-    },
-    createMonth(date) {
-      const firstDay = this.getFirstDay(date, this.firstDayOfWeek);
-      const month = {
-        days: []
-      };
-
-      for (let i = 0; i < 42; i++) {
-        month.days.push({
-          date: this.addDays(firstDay, i),
-          belongsToThisMonth:
-            this.addDays(firstDay, i).getMonth() === date.getMonth()
-        });
-      }
-
-      this.months.push(month);
     },
     createHalfDayDates(baseHalfDayDates) {
       // Copy of baseHalfDayDates

@@ -8,6 +8,7 @@
       </h3>
       <DatePicker
         ref="DatePicker"
+        :showYear="true"
         clickOutsideElementId="clickOutsideElement"
         :disabledDates="dynamicDisabledDates"
         :format="dateFormat"
@@ -23,14 +24,28 @@
         <h3>
           Render next month emit
         </h3>
+
         <DatePicker
           ref="DatePicker"
           clickOutsideElementId="clickOutsideElement"
           :disabledDates="[]"
+          :startingDateValue="
+            new Date(
+              'Wed May 03 2023 00:00:00 GMT+0200 (heure d’été d’Europe centrale)'
+            )
+          "
+          :endingDateValue="
+            new Date(
+              'Wed May 10 2023 00:00:00 GMT+0200 (heure d’été d’Europe centrale)'
+            )
+          "
+          :showYear="true"
           :format="dateFormat"
           :lastDateAvailable="lastDateAvailable"
           :minNights="minNights"
           :i18n="frFR"
+          :disableCheckoutOnCheckin="true"
+          :periodDates="periodDates"
           @renderNextMonth="renderNextMonth"
         />
       </div>
@@ -142,44 +157,6 @@
       </div>
       <div class="box">
         <h3>
-          Hide grid style
-        </h3>
-        <DatePicker
-          :disabledDates="[
-            '2021-06-15',
-            '2021-06-16',
-            '2021-06-17',
-            '2021-06-18',
-            '2021-06-19',
-            '2021-06-20',
-            '2021-06-21',
-            '2021-07-01',
-            '2021-07-02',
-            '2021-07-03',
-            '2021-07-04',
-            '2021-07-11',
-            '2021-07-12',
-            '2021-07-13',
-            '2021-07-14',
-            '2021-07-15',
-            '2021-07-16',
-            '2021-07-17',
-            '2021-07-18'
-          ]"
-          :format="dateFormat"
-          :lastDateAvailable="lastDateAvailable"
-          :minNights="minNights"
-          :i18n="frFR"
-          :gridStyle="false"
-          :showYear="true"
-          :firstDayOfWeek="1"
-          :disableCheckoutOnCheckin="true"
-          :periodDates="periodDates"
-          @handleCheckIncheckOutHalfDay="handleCheckIncheckOutHalfDay"
-        />
-      </div>
-      <div class="box">
-        <h3>
           Display one month only
         </h3>
         <DatePicker
@@ -234,15 +211,6 @@
         </h3>
         <p>Stop pagination two years later</p>
         <DatePicker :lastDateAvailable="lastDateAvailable" />
-      </div>
-      <div class="box">
-        <h3>Show prices with <strong>periodDates</strong></h3>
-        <DatePicker
-          :showPrice="true"
-          :minNights="minNights"
-          :periodDates="periodDates"
-          @dayClicked="dayClicked"
-        />
       </div>
       <div class="box">
         <h3>
@@ -309,17 +277,14 @@
           :enableCheckout="true"
         />
       </div>
-
       <div class="box">
         <h3>Block all dates after December 31st of the current year</h3>
         <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" />
       </div>
-
       <div class="box">
         <h3>Block all dates after September 15th</h3>
         <DatePicker :endDate="new Date(new Date().getFullYear(), 8, 15)" />
       </div>
-
       <div class="box">
         <h3>Block all date ranges of more than 30 days</h3>
         <DatePicker
@@ -328,12 +293,10 @@
           :selectForward="false"
         />
       </div>
-
       <div class="box">
         <h3>Minimum stay of 3 days</h3>
         <DatePicker :minNights="3" :showBottomBar="true" />
       </div>
-
       <div class="box">
         <h3>Certain dates blocked</h3>
         <DatePicker
@@ -341,7 +304,6 @@
           :showCloseButton="true"
         />
       </div>
-
       <div class="box">
         <h3>
           Allow setting a default date range ( can be used to set a range from a
@@ -364,7 +326,6 @@
           "
         />
       </div>
-
       <div class="box">
         <h3>Checkin only on saturdays</h3>
         <DatePicker
@@ -380,110 +341,31 @@
           :minNights="7"
         />
       </div>
-
       <div class="box">
         <h3>Custom tooltip text</h3>
         <DatePicker
           tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!"
         />
       </div>
-
       <div class="box">
         <h3>Show year</h3>
         <DatePicker :showYear="true" />
       </div>
-
       <div class="box">
         <h3>Custom date format with i18n (e.g.: pt-PT)</h3>
-        <DatePicker
-          :minNights="0"
-          :singleDateSelection="true"
-          format="MMMM D"
-          :i18n="ptPT"
-        />
+        <DatePicker format="MMMM D" :i18n="ptPT" />
       </div>
-
       <div class="box">
         <h3>Change the first day of the week to Monday</h3>
-        <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
-          :firstDayOfWeek="1"
-        />
+        <DatePicker :firstDayOfWeek="1" />
       </div>
-
       <div class="box">
         <h3>Set checkIn value</h3>
-        <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
-          :firstDayOfWeek="1"
-          :checkInValue="new Date()"
-        />
+        <DatePicker :firstDayOfWeek="1" :checkInValue="new Date()" />
       </div>
-
       <div class="box">
         <h3>Set checkOut value</h3>
         <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
           :firstDayOfWeek="1"
           :checkInValue="new Date()"
           :checkOutValue="
@@ -495,31 +377,9 @@
           "
         />
       </div>
-
       <div class="box">
         <h3>Event CheckIn</h3>
         <DatePicker
-          :i18n="{
-            night: 'Night',
-            nights: 'Nights',
-            'day-names': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-            'check-in': 'Check-in',
-            'check-out': 'Check-Out',
-            'month-names': [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December'
-            ]
-          }"
           @check-in-changed="checkInChanged($event)"
           @check-out-changed="checkOutChanged($event)"
         />
@@ -545,8 +405,8 @@ export default {
         night: "Noite",
         nights: "Noites",
         "day-names": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
-        "check-in": "Chegada",
-        "check-out": "Partida",
+        "check-in": "Partida",
+        "check-out": "Chegada",
         "month-names": [
           "Janeiro",
           "Fevereiro",
@@ -572,8 +432,8 @@ export default {
         weeks: "semanas"
       },
       frFR: {
-        "check-in": "Départ",
-        "check-out": "Arrivée",
+        "check-in": "Arrivée",
+        "check-out": "Départ",
         "day-names": ["lu", "ma", "me", "je", "ve", "sa", "di"],
         "month-names": [
           "Janvier",
@@ -717,8 +577,6 @@ export default {
   },
   methods: {
     renderNextMonth() {
-      console.log("render next month");
-
       this.dynamicDisabledDates = [
         "2021-04-15",
         "2021-04-16",
@@ -787,5 +645,8 @@ html {
 
 .box {
   width: 100%;
+}
+.datepicker__fullview .datepicker {
+  z-index: 1;
 }
 </style>

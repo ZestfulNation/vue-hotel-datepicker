@@ -2,9 +2,9 @@
   <i class="parent-bullet">
     <i
       v-if="previousBooking && duplicateBookingDates.includes(formatDate)"
-      class="bullet"
       :style="previousBooking.style"
       :class="[
+        'bullet',
         {
           checkInCheckOut: duplicateBookingDates.includes(formatDate)
         }
@@ -21,9 +21,9 @@
           (currentBooking.checkInDate === formatDate ||
             currentBooking.checkOutDate === formatDate)
       "
-      class="bullet"
       :style="currentBooking.style"
       :class="[
+        'bullet',
         {
           checkIn: currentBooking.checkInDate === formatDate,
           checkOut: currentBooking.checkOutDate === formatDate
@@ -32,8 +32,8 @@
     />
     <i
       v-if="currentBooking"
-      class="pipe"
       :class="[
+        'pipe',
         {
           checkIn: currentBooking.checkInDate === formatDate,
           checkOut: currentBooking.checkOutDate === formatDate

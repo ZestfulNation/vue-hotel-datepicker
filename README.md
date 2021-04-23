@@ -1,5 +1,5 @@
-# Release 0.9.6
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/0.5.7
+# Release 1.0.5
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.5
 
 # vue-hotel-datepicker@2
 
@@ -78,7 +78,19 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 * Review the tooltips when there is periods array #50
 * Display the calendar in full size without input #61
 * Add a range of bookings #65
-
+* Review the pagination on mobile side:
+-- remove pagination with scroll add a button for more smooth
+-- use the same logique on desktop side increment an index and create month only when the index is superior to `countOfMobileMonth` / `countOfDesktopMonth`
+* Review some style of mobile calendar
+* Add v-if on when day.belongsToThisMonth === false to avoid 10 day per month load for nothing at all
+* Increase the performance on mobile side
+* Remove duplicate `<Day />` unify pagination for desktop and mobile
+* Create a `<DatePickerWeekRow/> component for not duplicate content
+* Add a `countOfTotalMonthByDefault`props for generate x month on a created
+* Remove duplicate useless `<baseInput />`
+* Refacto the style of `<baseInput />`
+* Create / refacto the function for create month and put on a mounted part not created for get the correct device
+* Add a v-if="months.length" around the v-for
 ------------
 
 ## What I will improve
@@ -92,12 +104,12 @@ project: https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fulls
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localisation support and more.
 
 
-![demo gif](https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/demo.gif?raw=true)
+# Sandbox example
 
+*Open this link on a new tab*
 
+[![Edit vuejs-spreadsheet](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/embed/amazing-leavitt-owmm4?fontsize=14&hidenavigation=1&theme=dark&view=preview)
 
-## Demo
-[https://krystalcampioni.github.io/vue-hotel-datepicker/](https://krystalcampioni.github.io/vue-hotel-datepicker/)
 
 ## Installation
 
@@ -328,26 +340,12 @@ periodDates: [
 
 #### `MinimumDuration` with a periodType `weekly-~` equals to a week
 
-### showPrice
-
-- Type: `Boolean`
-- Default: `false`
-
-If set to true, displays a price contains on your periodDates
-
 ### showSingleMonth
 
 - Type: `Boolean`
 - Default: `false`
 
 If set to true, display one month only
-
-### gridStyle
-
-- Type: `Boolean`
-- Default: `true`
-
-**Show** or **hide** a grid around the days
 
 ### positionRight
 
@@ -430,6 +428,25 @@ Example:
 
 ```
 
+### countOfMobileMonth
+
+- Type: `Number`
+- Default: `10`
+
+Number of month you want to display on mobile
+
+### countOfDesktopMonth
+
+- Type: `Number`
+- Default: `2`
+
+Number of month you want to display on desktop
+
+### countOfTotalMonthByDefault
+- Type: `Number`
+- Default: `12`
+
+Number of month you want to have already created, the next month `countOfTotalMonthByDefault` + 1 will be created directly after you click on pagination button
 
 ## API
 ⚠️ In order to open/close the datepicker from an external element, such as a button make sure to set `closeDatepickerOnClickOutside` to false
