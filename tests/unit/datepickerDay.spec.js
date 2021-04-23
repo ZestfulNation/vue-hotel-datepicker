@@ -34,19 +34,13 @@ describe("Datepicker Day", () => {
     });
   });
 
-  describe("isDateLessOrEquals", () => {
+  describe("isDateBefore", () => {
     it("should return a boolean when comparing two dates", () => {
       expect(
-        wrapper.vm.isDateLessOrEquals(
-          new Date("12-10-2017"),
-          new Date("10-10-2017")
-        )
+        wrapper.vm.isDateBefore(new Date("12-10-2017"), new Date("10-10-2017"))
       ).to.equal(false);
       expect(
-        wrapper.vm.isDateLessOrEquals(
-          new Date("12-10-2017"),
-          new Date("12-15-2017")
-        )
+        wrapper.vm.isDateBefore(new Date("12-10-2017"), new Date("12-15-2017"))
       ).to.equal(true);
     });
   });

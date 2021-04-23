@@ -50,15 +50,84 @@ $extra-small-screen: '(max-width: 23em)';
   }
 }
 
+.datepicker__header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+
+  @include device($up-to-tablet) {
+    padding: 1rem;
+  }
+}
+.container-square {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
 .square {
   position: relative;
-  width: calc(100% / 7);
-  float: left;
   font-family: $font-family;
+}
+.datepicker__button-paginate--mobile {
+  width: 100%;
+  border: 0;
+  height: 50px;
+  line-height: 50px;
+  border-top: 1px solid rgba(245, 247, 248, 100);
+  background: white;
+  margin-top: 2rem;
+  position: relative;
+
+  &[disabled="disabled"] {
+    opacity: .5;
+  }
+
+  &--top {
+    margin: 0;
+    transform: rotate(180deg);
+  }
+
+  .arrow {
+    width: 4vmin;
+    height: 4vmin;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: rotate(135deg) translateY(100%);
+
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      border-width: .8vmin .8vmin 0 0;
+      border-style: solid;
+      border-color: $primary-color;
+      transition: .2s ease;
+      display: block;
+      transform-origin: 100% 0;
+    }
+    &:after {
+      content: '';
+      float: left;
+      position: relative;
+      top: -100%;
+      width: 100%;
+      height: 100%;
+      border-width: 0 .8vmin 0 0;
+      border-style: solid;
+      border-color: $primary-color;
+      transform-origin: 100% 0;
+      transition:.2s ease;
+    }
+  }
 }
 
 .datepicker__wrapper {
-
   *,
   *::before,
   *::after {
@@ -76,7 +145,7 @@ $extra-small-screen: '(max-width: 23em)';
   font-size: 16px;
   line-height: 14px;
   overflow: hidden;
-  top: 48px;
+  top: 50px;
   position: absolute;
   z-index: 999;
 
@@ -135,14 +204,14 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
+  &__dummy-wrapper {
+    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
+  }
+
   &__wrapper {
     position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 48px;
-    background: $white url('calendar_icon.regular.svg') no-repeat 17px center / 16px;
 
-    &--grid .square .datepicker__month-day {
+    .square .datepicker__month-day {
       border: 1px solid $light-gray;
       margin: -1px 0 0 -1px;
     }
@@ -166,16 +235,14 @@ $extra-small-screen: '(max-width: 23em)';
     background: none;
     height: auto;
 
-    .datepicker__close-button, .datepicker__dummy-wrapper, .datepicker__clear-button, .-hide-on-desktop{
-      display: none;
-    }
     .datepicker {
       position: relative;
       top: 0;
     }
 
-    .-hide-up-to-tablet {
-      display: block;
+    .square.not-in-the-month {
+      height: 0;
+      padding-bottom: 100%;
     }
 
     .datepicker__month-button {
@@ -185,7 +252,6 @@ $extra-small-screen: '(max-width: 23em)';
     .datepicker__months {
       position: static;
       margin: 0;
-      width: auto;
 
       &::before {
         display: none;
@@ -197,13 +263,24 @@ $extra-small-screen: '(max-width: 23em)';
   &__input {
     background: transparent;
     height: 48px;
+    display: flex;
+    align-items: center;
     color: $primary-text-color;
     font-size: 12px;
     outline: none;
-    padding: 4px 30px 2px;
-    width: 100%;
     word-spacing: 5px;
     border: 0;
+
+    &--first {
+      padding-left: 50px;
+      &:after {
+        position: relative;
+        content: "→";
+        font-family: arial;
+        font-size: 1.2rem;
+        padding: 0 .75rem;
+      }
+    }
 
     @include focusStyle();
 
@@ -220,12 +297,17 @@ $extra-small-screen: '(max-width: 23em)';
     cursor: pointer;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    align-items: center;
     width: 100%;
     height: 100%;
 
+    @include device($up-to-tablet) {
+      height: 50px
+    }
+
     &--no-border.datepicker__dummy-wrapper {
       border: 0;
+      border-bottom: 1px solid #f5f7f8;
     }
 
     &--is-active {
@@ -235,23 +317,10 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__input {
     color: $primary-text-color;
-    padding-top: 0;
     font-size: $font-small;
-    height: 48px;
-    line-height: 48px;
-    text-align: left;
-    text-indent: 5px;
-    width: calc(50% + 4px);
 
     @include device($phone) {
-      text-indent: 0;
       text-align: center;
-    }
-
-    &:first-child {
-      background: transparent url('ic-arrow-right-datepicker.regular.svg') no-repeat right center / 8px;
-      width: calc(50% - 4px);
-      text-indent: 20px;
     }
 
     &--is-active {
@@ -473,10 +542,6 @@ $extra-small-screen: '(max-width: 23em)';
       transform: rotateY(180deg);
     }
 
-    &--next {
-      float: right;
-    }
-
     &[disabled] {
       opacity: .2;
       cursor: not-allowed;
@@ -488,13 +553,13 @@ $extra-small-screen: '(max-width: 23em)';
 
     @include device($up-to-tablet) {
       padding: 0;
+      height: 100%;
     }
   }
 
   .show-tooltip {
     .datepicker__months {
-      margin-top: 160px;
-      height: calc(100% - 160px);
+      height: calc(100% - 140px);
     }
     .datepicker__tooltip--mobile {
       height: auto;
@@ -510,18 +575,12 @@ $extra-small-screen: '(max-width: 23em)';
       flex-wrap: wrap;
       width: 650px;
       justify-content: space-between;
-
     }
 
     @include device($up-to-tablet) {
-      margin-top: 90px;
       height: calc(100% - 90px);
-      position: absolute;
-      left: 0;
-      top: 0;
       overflow-y: scroll;
-      right: 0;
-      bottom: 0;
+      overflow-x: hidden;
       transition: all ease .2s;
     }
 
@@ -543,9 +602,14 @@ $extra-small-screen: '(max-width: 23em)';
     &--full {
       width: 100%;
 
-      .datepicker__month {
-        width: 470px;
-        padding: 0
+      .datepicker__months {
+        width: 100%;
+      }
+
+      @include device($up-to-tablet) {
+        .datepicker__month {
+          width: 100%;
+        }
       }
 
       &::before {
@@ -557,23 +621,17 @@ $extra-small-screen: '(max-width: 23em)';
   &__month {
     font-size: 12px;
     width: 50%;
-    padding-right: 10px;
+    padding-right: 1rem;
 
     @include device($up-to-tablet) {
       width: 100%;
-      padding-right: 0;
-      padding-top: 60px;
-      height: 360px;
-
-      &:last-of-type {
-        margin-bottom: 65px;
-      }
+      padding: 0 1rem;
     }
 
     @include device($desktop) {
       &:last-of-type {
         padding-right: 0;
-        padding-left: 10px;
+        padding-left: 1rem;
       }
     }
   }
@@ -586,16 +644,17 @@ $extra-small-screen: '(max-width: 23em)';
   &__month-name {
     font-size: 16px;
     font-weight: $font-bold;
-    margin-top: -40px;
-    padding: 13px 0 26px;
     pointer-events: none;
     text-align: center;
 
     @include device($up-to-tablet) {
-      margin-top: -50px;
-      margin-bottom: 0;
-      position: absolute;
+      padding: 0 0 3rem;
+      margin: 0 auto;
       width: 100%;
+
+      &:last-of-type {
+        padding: 2rem 0 2.5rem;
+      }
     }
   }
 
@@ -605,17 +664,26 @@ $extra-small-screen: '(max-width: 23em)';
   }
 
   &__week-row {
-    height: 40px;
-    line-height: 40px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    margin: 2rem auto 1.5rem;
 
     @include device($up-to-tablet) {
-      box-shadow: 0px 8px 12px 0px rgba($black, .1);
+      height: 40px;
+      align-items: center;
+      margin: 0;
+      border-bottom: 1px solid rgba(245, 247, 248, 100);
+    }
+
+    &--always-visible {
+      @include device($up-to-tablet) {
+        border: 0;
+      }
     }
   }
 
   &__week-name {
-    width: calc(100% / 7);
-    float: left;
     font-size: 12px;
     font-weight: 400;
     color: $medium-gray;
@@ -695,8 +763,9 @@ $extra-small-screen: '(max-width: 23em)';
       height: 0;
       opacity: 0;
       visibility: hidden;
-      padding: 0 15px;
-      border: 1px solid #d7d9e2;
+      padding: 0 1rem;
+      border-bottom: 1px solid #d7d9e2;
+      border-top: 1px solid #d7d9e2;
       font-size: 14px;
       line-height: 1.4;
       transition: all ease .2s;
@@ -718,19 +787,6 @@ $extra-small-screen: '(max-width: 23em)';
 .-is-hidden {
   display: none;
 }
-
-.-hide-up-to-tablet {
-  @include device($up-to-tablet) {
-    display: none;
-  }
-}
-
-.-hide-on-desktop {
-  @include device($desktop) {
-    display: none;
-  }
-}
-
 .parent-bullet {
   position: absolute;
   top: 50%;
