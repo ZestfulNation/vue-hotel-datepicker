@@ -57,6 +57,7 @@
       :class="[
         'datepicker',
         {
+          'show-tooltip': isMobile && showCustomTooltip && hoveringTooltip,
           'datepicker--open': isOpen && !alwaysVisible,
           'datepicker--closed': !isOpen && !alwaysVisible,
           'datepicker--right': positionRight
@@ -90,6 +91,12 @@
           />
         </div>
 
+        <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
+          <template v-if="customTooltipMessage">
+            {{ cleanString(customTooltipMessage) }}
+          </template>
+        </div>
+
         <DatePickerWeekRow
           v-if="!alwaysVisible"
           :dayNames="i18n['day-names']"
@@ -118,22 +125,13 @@
           ref="swiperWrapper"
           :class="[
             'datepicker__months',
-            { 'datepicker__months--full': showSingleMonth || alwaysVisible },
-            {
-              'show-tooltip': isMobile && showCustomTooltip && hoveringTooltip
-            }
+            { 'datepicker__months--full': showSingleMonth || alwaysVisible }
           ]"
           v-if="
             isDesktop || alwaysVisible || (isMobile && isOpen && !alwaysVisible)
           "
         >
           <template v-if="isMobile">
-            <div class="datepicker__tooltip--mobile" v-if="hoveringTooltip">
-              <template v-if="customTooltipMessage">
-                {{ cleanString(customTooltipMessage) }}
-              </template>
-            </div>
-
             <button
               v-if="!alwaysVisible && activeMonthIndex > 0"
               class="datepicker__button-paginate--mobile datepicker__button-paginate--mobile--top"
@@ -502,7 +500,7 @@ export default {
     },
     customTooltipMessage() {
       let tooltip = "";
-      const currentDate = this.isDesktop ? this.hoveringDate : this.checkIn;
+      const currentDate = this.hoveringDate;
 
       if (currentDate && (this.customTooltip || this.customTooltipHalfday)) {
         if (this.customTooltip && this.customTooltipHalfday) {

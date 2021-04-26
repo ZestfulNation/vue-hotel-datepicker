@@ -1,5 +1,5 @@
-# Release 1.0.5
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.5
+# Release 1.0.6
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.6
 
 # vue-hotel-datepicker@2
 
