@@ -557,7 +557,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
   }
 
-  .show-tooltip {
+  &.show-tooltip {
     .datepicker__months {
       height: calc(100% - 140px);
     }
