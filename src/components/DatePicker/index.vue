@@ -175,7 +175,7 @@
                     :key="`${datepickerDayKey}-${monthIndex}-${dayIndex}`"
                   >
                     <Day
-                      v-if="day.belongsToThisMonth"
+                      v-show="day.belongsToThisMonth"
                       :activeMonthIndex="activeMonthIndex"
                       :bookings="sortBookings"
                       :checkIn="checkIn"
@@ -567,7 +567,6 @@ export default {
     },
     disabledDates(newVal) {
       this.createHalfDayDates(newVal);
-      this.reRender();
     },
     isOpen(value) {
       if (this.isMobile && !this.alwaysVisible) {
@@ -1334,6 +1333,7 @@ export default {
     },
     renderNextMonth() {
       this.$emit("renderNextMonth");
+
       const countOfDesktopMonth = this.isDesktop
         ? this.countOfDesktopMonth
         : this.countOfMobileMonth;

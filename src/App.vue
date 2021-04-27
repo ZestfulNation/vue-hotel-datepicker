@@ -400,7 +400,7 @@ export default {
   },
   data() {
     return {
-      dynamicDisabledDates: [],
+      dynamicDisabledDates: ["2021-04-30", "2021-05-01", "2021-05-02"],
       ptPT: {
         night: "Noite",
         nights: "Noites",
@@ -577,18 +577,7 @@ export default {
   },
   methods: {
     renderNextMonth() {
-      this.dynamicDisabledDates = [
-        "2021-04-15",
-        "2021-04-16",
-        "2021-04-17",
-        "2021-04-18",
-        "2021-04-19",
-        "2021-04-20",
-        "2021-04-21",
-        "2021-05-01",
-        "2021-05-02",
-        "2021-05-03",
-        "2021-05-04",
+      this.dynamicDisabledDates.push(
         "2021-05-11",
         "2021-05-12",
         "2021-05-13",
@@ -597,7 +586,7 @@ export default {
         "2021-05-16",
         "2021-05-17",
         "2021-05-18"
-      ];
+      );
     },
     toggleDatePickerOutside() {
       this.$refs.DatePicker.showDatepicker();

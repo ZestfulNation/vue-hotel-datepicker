@@ -1,6 +1,6 @@
 {
   "name": "vue-hotel-datepicker2",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Joffrey Berrier - Origin created by krystalcampioni",
   "description": "Vue date range picker component fork of vue-hotel-datepicker create by krystalcampioni",
   "main": "dist/vueHotelDatepicker2.common.js",
