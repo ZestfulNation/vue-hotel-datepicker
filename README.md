@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 # Release 1.0.7
 https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.7
+=======
+# Release 1.0.9
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.9
+>>>>>>> 51bcfc8 (upgrade package)
 
 # vue-hotel-datepicker@2
 

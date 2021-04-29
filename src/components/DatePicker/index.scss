@@ -149,6 +149,9 @@ $extra-small-screen: '(max-width: 23em)';
   position: absolute;
   z-index: 999;
 
+  ::-moz-selection { background: transparent; }
+  ::selection { background: transparent; }
+
   &--right {
     right: 0;
   }
@@ -393,8 +396,10 @@ $extra-small-screen: '(max-width: 23em)';
 
     &--valid:hover,
     &--allowed-checkout:hover {
-      background-color: $primary-color;
-      color: $colorValidHoverDate;
+      @include device($desktop) {
+        background-color: $primary-color;
+        color: $colorValidHoverDate;
+      }
     }
 
     &--disabled {

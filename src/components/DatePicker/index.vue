@@ -831,18 +831,16 @@ export default {
       return false;
     },
     mouseEnterDay(day) {
-      const formatDate = this.dateFormater(day.date);
-      const halfDays = Object.keys(this.checkIncheckOutHalfDay);
-      const disableDays = this.disabledDates
-        .filter(disableDate => !halfDays.includes(disableDate))
-        .includes(formatDate);
+      if (day.belongsToThisMonth) {
+        const formatDate = this.dateFormater(day.date);
+        const halfDays = Object.keys(this.checkIncheckOutHalfDay);
+        const disableDays = this.disabledDates
+          .filter(disableDate => !halfDays.includes(disableDate))
+          .includes(formatDate);
 
-      if (
-        !this.dayIsDisabled(day.date) &&
-        day.belongsToThisMonth &&
-        !disableDays
-      ) {
-        this.setCustomTooltipOnHover(day);
+        if (!this.dayIsDisabled(day.date) && !disableDays) {
+          this.setCustomTooltipOnHover(day);
+        }
       }
     },
     setCurrentPeriod(date, eventType) {
@@ -1332,8 +1330,6 @@ export default {
       }
     },
     renderNextMonth() {
-      this.$emit("renderNextMonth");
-
       const countOfDesktopMonth = this.isDesktop
         ? this.countOfDesktopMonth
         : this.countOfMobileMonth;
@@ -1367,6 +1363,8 @@ export default {
 
       this.createMonth(this.getNextMonth(firstDayOfLastMonth.date));
       this.activeMonthIndex++;
+
+      this.$emit("renderNextMonth");
     },
     setCheckIn(date) {
       this.checkIn = date;
