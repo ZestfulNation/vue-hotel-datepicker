@@ -615,8 +615,7 @@ export default {
   },
   created() {
     if (this.isDateBefore(this.checkIn, this.startDate)) {
-      this.checkIn = null;
-      this.checkOut = null;
+      this.clearSelection();
     }
 
     fecha.i18n = {
