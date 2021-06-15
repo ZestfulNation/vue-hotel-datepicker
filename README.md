@@ -122,11 +122,11 @@ A responsive date range picker for Vue.js that displays the number of nights sel
   * Hotfix branches? [hotfix/id-of-issue]
     * **Example** : `feat/84-naming-your-development`
 * Naming your commit with this convention:
-  * feat/chore/hix(scope): [#id-of-issue] your developement
+  * feat/chore/fix(scope): [#id-of-issue] your developement
     * **Example** : `feat(BookingBullet): [#84] your developement` 
-* Finally, open a pull request on this repo associate your issue to the pull-request
+* Finally, open a pull request on this repo and associate your issue to the pull-request
 
-### If you have right to merged 
+### If you have rights to merge
 * Once the pr is merged, go to the master branch
 * Launch this command :
 
