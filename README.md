@@ -111,14 +111,51 @@ A responsive date range picker for Vue.js that displays the number of nights sel
 [![Edit vuejs-spreadsheet](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/embed/amazing-leavitt-owmm4?fontsize=14&hidenavigation=1&theme=dark&view=preview)
 
 
+# Contributing to development
+
+* Create issue with your fix / features / chore
+* Clone repo and run: yarn or npm i
+* Then, make your changes on any branch you want and push it.
+* Naming your branch with this convention:
+  * Feature branches? [feature/id-of-issue]
+  * Chore branches? [chore/id-of-issue]
+  * Hotfix branches? [hotfix/id-of-issue]
+    * **Example** : `feat/84-naming-your-development`
+* Naming your commit with this convention:
+  * feat/chore/hix(scope): [#id-of-issue] your developement
+    * **Example** : `feat(BookingBullet): [#84] your developement` 
+* Finally, open a pull request on this repo associate your issue to the pull-request
+
+### If you have right to merged 
+* Once the pr is merged, go to the master branch
+* Launch this command :
+
+**Pull master**
+```bash
+git pull origin master
+```
+
+**Build source files for npm package**
+```bash
+yarn add build-package
+```
+
+**Push to npm**
+```bash
+npm publish // push to npm
+```
+
+________
+
 ## Installation
 
-#### NPM
+#### NPM / YARN
 
 Install the package:
 
 ```
 npm install vue-hotel-datepicker2 --save
+yarn add vue-hotel-datepicker2
 ```
 
 ```javascript
@@ -522,7 +559,6 @@ name                | Type       | Description
   checkIn           | Date       | checkIn
   checkIn           | Date       | checkOut
 
-
-
 ## Credits
 This component was originally built as a Vue wrapper component for the [Hotel Datepicker](https://github.com/benitolopez/hotel-datepicker) by @benitolopez. Version 2.0.0 was completely rewritten with Vue, removing the original library, removing some features and introducing others.
+
