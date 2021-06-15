@@ -325,6 +325,25 @@
             )
           "
         />
+        <h4>
+          If starting date is before start of calendar, dates will be cleared
+        </h4>
+        <DatePicker
+          :startingDateValue="
+            new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              new Date().getDate() - 1
+            )
+          "
+          :endingDateValue="
+            new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              new Date().getDate() + 5
+            )
+          "
+        />
       </div>
       <div class="box">
         <h3>Checkin only on saturdays</h3>

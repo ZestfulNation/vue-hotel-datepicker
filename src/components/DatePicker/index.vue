@@ -614,7 +614,14 @@ export default {
     }
   },
   created() {
-    if (this.isDateBefore(this.checkIn, this.startDate)) {
+    if (
+      this.checkIn &&
+      this.startDate &&
+      this.isDateBefore(
+        this.formatDate(this.checkIn),
+        this.formatDate(this.startDate)
+      )
+    ) {
       this.clearSelection();
     }
 
