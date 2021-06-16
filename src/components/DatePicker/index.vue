@@ -618,8 +618,8 @@ export default {
       this.checkIn &&
       this.startDate &&
       this.isDateBefore(
-        this.formatDate(this.checkIn),
-        this.formatDate(this.startDate)
+        this.dateFormater(this.checkIn),
+        this.dateFormater(this.startDate)
       )
     ) {
       this.clearSelection();
