@@ -310,6 +310,7 @@
           url param )
         </h3>
         <DatePicker
+          format="DD/MM/YYYY"
           :startingDateValue="
             new Date(
               new Date().getFullYear(),
@@ -329,6 +330,7 @@
           If starting date is before start of calendar, dates will be cleared
         </h4>
         <DatePicker
+          format="DD/MM/YYYY"
           :startingDateValue="
             new Date(
               new Date().getFullYear(),
