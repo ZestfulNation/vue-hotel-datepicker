@@ -119,6 +119,10 @@ export default {
       type: String,
       required: true,
     },
+    priceDecimals: {
+      type: [Number, null],
+      default: 0,
+    },
     screenSize: {
       type: String,
       default: '',
@@ -182,12 +186,22 @@ export default {
         .find((d) => this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate))
 
       if (currentDate && currentDate.price) {
-        const nightly = currentDate.periodType === 'nightly'
+        const priceIsNumeric = typeof currentDate.price === 'number' || !Number.isNaN(parseFloat(currentDate.price))
+        const weeklyPeriod = currentDate.periodType !== 'nightly'
 
-        result = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
+        if (priceIsNumeric && weeklyPeriod) {
+          // Convert the price when weekly and is not a float/int type
+          const price = parseFloat(currentDate.price)
+          const divisor = 7
+          const decimals = Number.isNaN(parseFloat(this.priceDecimals)) ? 0 : parseFloat(this.priceDecimals)
+
+          result = (price / divisor).toFixed(decimals)
+        } else {
+          result = currentDate.price
+        }
       }
 
-      return result
+      return String(result)
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {

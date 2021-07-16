@@ -436,7 +436,12 @@ export default {
       return []
     },
     duplicateBookingDates() {
-      return this.baseHalfDayDates.filter(((newArr) => (date) => newArr.has(date) || !newArr.add(date))(new Set()))
+      return this.baseHalfDayDates.filter(
+        (
+          (newArr) => (date) =>
+            newArr.has(date) || !newArr.add(date)
+        )(new Set()),
+      )
     },
     baseHalfDayDates() {
       if (this.sortBookings.length > 0) {
