@@ -209,7 +209,7 @@ import fecha from 'fecha'
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
-import i18nDefaults from '../i18n/en'
+import i18nDefaults from '../../public/i18n/en'
 
 export default {
   name: 'HotelDatePicker',

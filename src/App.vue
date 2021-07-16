@@ -260,11 +260,11 @@
 <script>
 import './assets/scss/index.scss'
 import DatePicker from './DatePicker/HotelDatePicker.vue'
-import pt from './i18n/pt'
-import fr from './i18n/fr'
-import en from './i18n/en'
-import es from './i18n/es'
-import it from './i18n/it'
+import pt from '../public/i18n/pt'
+import fr from '../public/i18n/fr'
+import en from '../public/i18n/en'
+import es from '../public/i18n/es'
+import it from '../public/i18n/it'
 
 export default {
   name: 'Examples',
