@@ -33,7 +33,10 @@
       />
     </div>
     <div class="vhd__datepicker__clear-button" tabindex="0" @click="clearSelection" v-show="showClearSelectionButton">
-      <img src="@/assets/images/close.svg" alt="x" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" role="img" aria-label="x">
+        <title>x</title>
+        <path d="M6.5 6.5l55 55m0-55l-55 55" stroke="#000" fill="none" stroke-linecap="square" />
+      </svg>
     </div>
     <div
       class="vhd__datepicker"
