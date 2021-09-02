@@ -1219,7 +1219,7 @@ export default {
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
+      if ((!this.showSingleMonth && this.activeMonthIndex < this.months.length - 2) || (this.showSingleMonth && this.activeMonthIndex < this.months.length - 1)) {
         this.activeMonthIndex++
 
         return
@@ -1227,7 +1227,7 @@ export default {
 
       let firstDayOfLastMonth
 
-      if (!this.isDesktop) {
+      if (!this.isDesktop || this.showSingleMonth) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter((day) => day.belongsToThisMonth === true)
       } else {
         firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days.filter(
