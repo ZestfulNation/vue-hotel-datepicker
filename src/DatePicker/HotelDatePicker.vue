@@ -893,12 +893,15 @@ export default {
 
       if (this.checkIn == null && !this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       } else if (this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.checkOut = date
       } else if (this.checkIn !== null && this.checkOut == null && this.isDateLessOrEquals(date, this.checkIn)) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
       } else if (this.checkIn !== null && this.checkOut == null) {
         this.checkOut = date
         this.$emit('period-selected', event, this.checkIn, this.checkOut)
@@ -909,6 +912,7 @@ export default {
       } else {
         this.checkOut = null
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       }
 
