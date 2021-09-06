@@ -99,6 +99,17 @@ const helpers = {
 
     return nextMonth
   },
+  getPreviousMonth(date) {
+    let prevMonth
+
+    if (date.getMonth() === 0) {
+      prevMonth = new Date(date.getFullYear() - 1, 11, 1)
+    } else {
+      prevMonth = new Date(date.getFullYear(), date.getMonth() - 1, 1)
+    }
+
+    return prevMonth
+  },
   handleTouchStart(evt) {
     this.isTouchMove = false
 
