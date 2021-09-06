@@ -1222,7 +1222,15 @@ export default {
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
-        this.activeMonthIndex--
+
+      const firstDayOfLastMonth = this.months[this.activeMonthIndex].days.filter(
+          (day) => day.belongsToThisMonth === true,
+      )
+      const previousMonth = this.getPreviousMonth(firstDayOfLastMonth[0].date)
+
+      this.activeMonthIndex--
+
+      this.$emit('previous-month-rendered', previousMonth)
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
