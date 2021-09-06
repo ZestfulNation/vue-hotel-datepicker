@@ -711,7 +711,10 @@ export default {
         this.activeMonthIndex += count
       } else {
         this.createMonth(new Date(this.startDate))
-        this.createMonth(this.getNextMonth(new Date(this.startDate)))
+
+        if (!this.showSingleMonth) {
+          this.createMonth(this.getNextMonth(new Date(this.startDate)))
+        }
       }
     },
     handleBookingClicked(event, date, currentBooking) {
