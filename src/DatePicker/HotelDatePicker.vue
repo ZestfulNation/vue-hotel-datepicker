@@ -711,7 +711,10 @@ export default {
         this.activeMonthIndex += count
       } else {
         this.createMonth(new Date(this.startDate))
-        this.createMonth(this.getNextMonth(new Date(this.startDate)))
+
+        if (!this.showSingleMonth) {
+          this.createMonth(this.getNextMonth(new Date(this.startDate)))
+        }
       }
     },
     handleBookingClicked(event, date, currentBooking) {
@@ -890,12 +893,15 @@ export default {
 
       if (this.checkIn == null && !this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       } else if (this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.checkOut = date
       } else if (this.checkIn !== null && this.checkOut == null && this.isDateLessOrEquals(date, this.checkIn)) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
       } else if (this.checkIn !== null && this.checkOut == null) {
         this.checkOut = date
         this.$emit('period-selected', event, this.checkIn, this.checkOut)
@@ -906,6 +912,7 @@ export default {
       } else {
         this.checkOut = null
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       }
 
@@ -1215,11 +1222,19 @@ export default {
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
-        this.activeMonthIndex--
+
+      const firstDayOfLastMonth = this.months[this.activeMonthIndex].days.filter(
+          (day) => day.belongsToThisMonth === true,
+      )
+      const previousMonth = this.getPreviousMonth(firstDayOfLastMonth[0].date)
+
+      this.activeMonthIndex--
+
+      this.$emit('previous-month-rendered', previousMonth)
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
+      if ((!this.showSingleMonth && this.activeMonthIndex < this.months.length - 2) || (this.showSingleMonth && this.activeMonthIndex < this.months.length - 1)) {
         this.activeMonthIndex++
 
         return
@@ -1227,7 +1242,7 @@ export default {
 
       let firstDayOfLastMonth
 
-      if (!this.isDesktop) {
+      if (!this.isDesktop || this.showSingleMonth) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter((day) => day.belongsToThisMonth === true)
       } else {
         firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days.filter(
