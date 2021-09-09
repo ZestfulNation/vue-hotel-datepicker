@@ -1222,19 +1222,21 @@ export default {
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
-
-      const firstDayOfLastMonth = this.months[this.activeMonthIndex].days.filter(
+        const firstDayOfLastMonth = this.months[this.activeMonthIndex].days.filter(
           (day) => day.belongsToThisMonth === true,
-      )
-      const previousMonth = this.getPreviousMonth(firstDayOfLastMonth[0].date)
+        )
+        const previousMonth = this.getPreviousMonth(firstDayOfLastMonth[0].date)
 
-      this.activeMonthIndex--
+        this.activeMonthIndex--
 
-      this.$emit('previous-month-rendered', previousMonth)
+        this.$emit('previous-month-rendered', previousMonth)
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if ((!this.showSingleMonth && this.activeMonthIndex < this.months.length - 2) || (this.showSingleMonth && this.activeMonthIndex < this.months.length - 1)) {
+      if (
+        (!this.showSingleMonth && this.activeMonthIndex < this.months.length - 2) ||
+        (this.showSingleMonth && this.activeMonthIndex < this.months.length - 1)
+      ) {
         this.activeMonthIndex++
 
         return
