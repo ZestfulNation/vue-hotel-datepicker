@@ -651,7 +651,9 @@ export default {
         // Or is after the end date
         this.compareEndDay() ||
         // Or is in one of the disabled days of the week
-        this.isADisabledDay
+        this.isADisabledDay ||
+        // Or is after max Nights
+        (this.date >= this.nextDisabledDate && this.nextDisabledDate !== null)
 
       // Handle checkout enabled
       if (this.options.enableCheckout) {
