@@ -61,7 +61,7 @@
             }"
             type="button"
           >
-            {{ `${checkIn ? dateFormater(checkIn) : i18n['check-in']}` }}
+            {{ `${checkIn ? formatDate(checkIn) : i18n['check-in']}` }}
           </div>
           <div
             class="vhd__datepicker__input"
@@ -71,7 +71,7 @@
             }"
             type="button"
           >
-            {{ `${checkOut ? dateFormater(checkOut) : i18n['check-out']}` }}
+            {{ `${checkOut ? formatDate(checkOut) : i18n['check-out']}` }}
           </div>
         </div>
       </div>
