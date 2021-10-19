@@ -20,7 +20,7 @@
     >
       <div class="vhd__datepicker__month-day-wrapper">
         <span class="day">{{ dayNumber }}</span>
-        <Price :show="showPrice" :price="dayPrice.price" :symbol="dayPrice.symbol" />
+        <Price :show="showPrice" :price="dayPrice" :symbol="priceSymbol" />
       </div>
     </div>
     <BookingBullet
@@ -115,6 +115,14 @@ export default {
     options: {
       type: Object,
     },
+    priceSymbol: {
+      type: String,
+      required: true,
+    },
+    priceDecimals: {
+      type: [Number, null],
+      default: 0,
+    },
     screenSize: {
       type: String,
       default: '',
@@ -172,19 +180,28 @@ export default {
       return fecha.format(this.date, 'D')
     },
     dayPrice() {
-      let result = { price: '', symbol: '' }
-      const currentDate = this.sortedPeriodDates
-        .revert()
+      let result = ''
+      const currentDate = [...this.sortedPeriodDates]
+        .reverse()
         .find((d) => this.validateDateBetweenTwoDates(d.startAt, d.endAt, this.formatDate))
 
-      if (currentDate) {
-        const nightly = currentDate.periodType === 'nightly'
+      if (currentDate && currentDate.price) {
+        const priceIsNumeric = typeof currentDate.price === 'number' || !Number.isNaN(parseFloat(currentDate.price))
+        const weeklyPeriod = currentDate.periodType !== 'nightly'
 
-        result.price = (currentDate.price / (nightly ? 1 : 7)).toFixed(2)
-        result.symbol = currentDate.symbol || ''
+        if (priceIsNumeric && weeklyPeriod) {
+          // Convert the price when weekly and is not a float/int type
+          const price = parseFloat(currentDate.price)
+          const divisor = 7
+          const decimals = Number.isNaN(parseFloat(this.priceDecimals)) ? 0 : parseFloat(this.priceDecimals)
+
+          result = (price / divisor).toFixed(decimals)
+        } else {
+          result = currentDate.price
+        }
       }
 
-      return result
+      return String(result)
     },
     halfDayClass() {
       if (Object.keys(this.checkIncheckOutHalfDay).length > 0) {
@@ -634,7 +651,9 @@ export default {
         // Or is after the end date
         this.compareEndDay() ||
         // Or is in one of the disabled days of the week
-        this.isADisabledDay
+        this.isADisabledDay ||
+        // Or is after max Nights
+        (this.date >= this.nextDisabledDate && this.nextDisabledDate !== null)
 
       // Handle checkout enabled
       if (this.options.enableCheckout) {

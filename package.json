@@ -1,6 +1,6 @@
 {
   "name": "vue-hotel-datepicker",
-  "version": "4.3.0",
+  "version": "4.5.0",
   "description": "A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more",
   "author": "krystalcampioni <hello@krystalcampioni.com>",
   "main": "dist/vueHotelDatepicker.common.js",
@@ -37,27 +37,29 @@
     "*.json"
   ],
   "dependencies": {
-    "fecha": "^4.2.0",
+    "fecha": "^4.2.1",
     "lodash.throttle": "^4.1.1",
-    "vue": "^2.6.12"
+    "vue": "^2.6.14"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.10",
-    "@vue/cli-plugin-eslint": "~4.5.10",
-    "@vue/cli-plugin-unit-jest": "~4.5.10",
-    "@vue/cli-service": "~4.5.10",
+    "@babel/core": "^7.14.6",
+    "@babel/eslint-parser": "^7.14.7",
+    "@vue/cli-plugin-babel": "~4.5.13",
+    "@vue/cli-plugin-eslint": "~4.5.13",
+    "@vue/cli-plugin-unit-jest": "~4.5.13",
+    "@vue/cli-service": "~4.5.13",
     "@vue/eslint-config-airbnb": "^5.3.0",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^1.1.2",
-    "babel-eslint": "^10.1.0",
-    "chai": "^4.2.0",
-    "core-js": "^3.8.2",
-    "eslint": "^6.8.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "prettier": "^2.2.1",
-    "sass": "^1.32.4",
+    "@vue/test-utils": "^1.2.1",
+    "chai": "^4.3.4",
+    "copy-webpack-plugin": "^9.0.1",
+    "core-js": "^3.15.2",
+    "eslint": "^7.30.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-vue": "^7.13.0",
+    "prettier": "^2.3.2",
+    "sass": "^1.35.2",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.14"
   }
 }

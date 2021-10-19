@@ -76,6 +76,7 @@ export default {
 |**minNights**|`Number`|`1`|Minimum nights required to select a range of dates.
 |**periodDates**|`Array`| `[]` | If you want to have specific startAt and endAt period with different duration or price or type of period. See below for more information
 |**positionRight**|`Boolean`|`false`|If true shows the calendar on the **right** of the input.
+|**priceDecimals**|`Number`|`0`|The price decimals for weekly periods (see `periodDates`).
 |**priceSymbol**|`String`|`''`|The price symbol added before the price when `showPrice` is true and a `price` has been set in one of the `periodDates` array items (period).
 |**showPrice**|`Boolean`|`false`|If set to true, displays a price contains on your `periodDates`.
 |**showSingleMonth**|`Boolean`|`false`|If set to true, display one month only

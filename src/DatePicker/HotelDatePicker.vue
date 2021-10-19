@@ -33,7 +33,10 @@
       />
     </div>
     <div class="vhd__datepicker__clear-button" tabindex="0" @click="clearSelection" v-show="showClearSelectionButton">
-      <img src="@/assets/images/close.svg" alt="x" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" role="img" aria-label="x">
+        <title>x</title>
+        <path d="M6.5 6.5l55 55m0-55l-55 55" stroke="#000" fill="none" stroke-linecap="square" />
+      </svg>
     </div>
     <div
       class="vhd__datepicker"
@@ -128,6 +131,7 @@
             :nextDisabledDate="nextDisabledDate"
             :nextPeriodDisableDates="nextPeriodDisableDates"
             :options="dayOptions"
+            :priceSymbol="priceSymbol"
             :screenSize="screenSize"
             :showCustomTooltip="showCustomTooltip"
             :showPrice="showPrice"
@@ -165,13 +169,11 @@
               :showYear="showYear"
               :yearBeforeMonth="yearBeforeMonth"
               :activeMonthIndex="activeMonthIndex"
-              :belongsToThisMonth="day.belongsToThisMonth"
               :bookings="sortBookings"
               :checkIn="checkIn"
               :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
               :checkInPeriod="checkInPeriod"
               :checkOut="checkOut"
-              :date="day.date"
               :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
               :duplicateBookingDates="duplicateBookingDates"
               :hoveringDate="hoveringDate"
@@ -182,6 +184,7 @@
               :nextDisabledDate="nextDisabledDate"
               :nextPeriodDisableDates="nextPeriodDisableDates"
               :options="dayOptions"
+              :priceSymbol="priceSymbol"
               :screenSize="screenSize"
               :showCustomTooltip="false"
               :showPrice="showPrice"
@@ -209,7 +212,7 @@ import fecha from 'fecha'
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
-import i18nDefaults from '../i18n/en'
+import i18nDefaults from '../../public/i18n/en'
 
 export default {
   name: 'HotelDatePicker',
@@ -436,7 +439,12 @@ export default {
       return []
     },
     duplicateBookingDates() {
-      return this.baseHalfDayDates.filter(((newArr) => (date) => newArr.has(date) || !newArr.add(date))(new Set()))
+      return this.baseHalfDayDates.filter(
+        (
+          (newArr) => (date) =>
+            newArr.has(date) || !newArr.add(date)
+        )(new Set()),
+      )
     },
     baseHalfDayDates() {
       if (this.sortBookings.length > 0) {
@@ -486,6 +494,7 @@ export default {
           // eslint-disable-next-line no-nested-ternary
           return v1 < v2 ? -1 : v1 > v2 ? 1 : 0
         }
+
         periodDates = [...this.periodDates].sort(sortFunction)
       }
 
@@ -702,7 +711,10 @@ export default {
         this.activeMonthIndex += count
       } else {
         this.createMonth(new Date(this.startDate))
-        this.createMonth(this.getNextMonth(new Date(this.startDate)))
+
+        if (!this.showSingleMonth) {
+          this.createMonth(this.getNextMonth(new Date(this.startDate)))
+        }
       }
     },
     handleBookingClicked(event, date, currentBooking) {
@@ -867,7 +879,7 @@ export default {
       }
 
       let nextDisabledDate =
-        (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
+        (this.maxNights ? this.addDays(date, this.maxNights + 1) : null) ||
         this.getNextDate(this.sortedDisabledDates, date) ||
         this.nextDateByDayOfWeekArray(this.disabledWeekDaysArray, date, this.i18n) ||
         this.nextBookingDate(date) ||
@@ -881,12 +893,15 @@ export default {
 
       if (this.checkIn == null && !this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       } else if (this.singleDaySelection) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.checkOut = date
       } else if (this.checkIn !== null && this.checkOut == null && this.isDateLessOrEquals(date, this.checkIn)) {
         this.checkIn = date
+        this.$emit('check-in-selected', date)
       } else if (this.checkIn !== null && this.checkOut == null) {
         this.checkOut = date
         this.$emit('period-selected', event, this.checkIn, this.checkOut)
@@ -897,6 +912,7 @@ export default {
       } else {
         this.checkOut = null
         this.checkIn = date
+        this.$emit('check-in-selected', date)
         this.setMinimumDuration(date)
       }
 
@@ -1210,11 +1226,21 @@ export default {
     },
     renderPreviousMonth() {
       if (this.activeMonthIndex >= 1) {
+        const firstDayOfLastMonth = this.months[this.activeMonthIndex].days.filter(
+          (day) => day.belongsToThisMonth === true,
+        )
+        const previousMonth = this.getPreviousMonth(firstDayOfLastMonth[0].date)
+
         this.activeMonthIndex--
+
+        this.$emit('previous-month-rendered', previousMonth)
       }
     },
     renderNextMonth: throttle(function throttleRenderNextMonth() {
-      if (this.activeMonthIndex < this.months.length - 2) {
+      if (
+        (!this.showSingleMonth && this.activeMonthIndex < this.months.length - 2) ||
+        (this.showSingleMonth && this.activeMonthIndex < this.months.length - 1)
+      ) {
         this.activeMonthIndex++
 
         return
@@ -1222,7 +1248,7 @@ export default {
 
       let firstDayOfLastMonth
 
-      if (!this.isDesktop) {
+      if (!this.isDesktop || this.showSingleMonth) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.filter((day) => day.belongsToThisMonth === true)
       } else {
         firstDayOfLastMonth = this.months[this.activeMonthIndex + 1].days.filter(
