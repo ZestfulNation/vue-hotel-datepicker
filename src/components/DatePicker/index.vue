@@ -1348,7 +1348,7 @@ export default {
 
       let firstDayOfLastMonth;
 
-      if (this.isMobile && !this.alwaysVisible) {
+      if (this.isMobile) {
         firstDayOfLastMonth = this.months[this.months.length - 1].days.find(
           day => day.belongsToThisMonth === true
         );
