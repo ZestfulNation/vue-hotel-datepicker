@@ -137,7 +137,7 @@ git pull origin master
 
 **Build source files for npm package**
 ```bash
-yarn add build-package
+yarn run build-package
 ```
 
 **Push to npm**
