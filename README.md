@@ -7,6 +7,8 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.0.9
 
 ------------
 
+**Vue3 version** => https://github.com/joffreyBerrier/vue-datepicker
+
 ## What I did:
 https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=true
 
