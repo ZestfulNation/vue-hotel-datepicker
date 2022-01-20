@@ -1156,8 +1156,19 @@ export default {
     createHalfDayTooltip(date) {
       this.customTooltipHalfday = "";
       const formatedHoveringDate = this.dateFormater(date);
+      let nextBookableDate = null;
 
-      if (this.checkIncheckOutHalfDay[formatedHoveringDate]) {
+      if (this.checkIn) {
+        nextBookableDate = this.addDays(
+          this.checkIn,
+          this.checkInPeriod.minimumDuration
+        );
+      }
+
+      if (
+        this.checkIncheckOutHalfDay[formatedHoveringDate] &&
+        !this.isDateBefore(date, nextBookableDate)
+      ) {
         this.showCustomTooltip = true;
 
         if (this.checkIncheckOutHalfDay[formatedHoveringDate].checkIn) {
