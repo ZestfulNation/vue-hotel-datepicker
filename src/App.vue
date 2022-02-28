@@ -484,29 +484,42 @@ export default {
       },
       periodDates: [
         {
-          startAt: "2021-07-01",
-          endAt: "2021-08-01",
-          minimumDuration: 4,
+          startAt: "2022-07-02",
+          endAt: "2022-07-23",
+          minimumDuration: 7,
           periodType: "nightly"
         },
         {
-          startAt: "2021-08-01",
-          endAt: "2021-09-05",
+          startAt: "2022-07-23",
+          endAt: "2022-07-30",
+          minimumDuration: 7,
+          periodType: "nightly"
+        },
+        // Saturday
+        {
+          startAt: "2022-08-06",
+          endAt: "2022-09-10",
           minimumDuration: 2,
           periodType: "weekly_by_saturday"
         },
         {
-          startAt: "2021-09-05",
-          endAt: "2021-10-04",
-          minimumDuration: 4,
-          periodType: "nightly"
+          startAt: "2022-09-10",
+          endAt: "2022-10-01",
+          minimumDuration: 2,
+          periodType: "weekly_by_saturday"
+        },
+        // after period more than current period
+        {
+          startAt: "2022-10-08",
+          endAt: "2022-10-22",
+          minimumDuration: 2,
+          periodType: "weekly_by_saturday"
         },
         {
-          startAt: "2021-10-04",
-          endAt: "2021-11-29",
-          minimumDuration: 1,
-          periodType: "weekly_by_sunday",
-          price: 4000.0
+          startAt: "2022-10-22",
+          endAt: "2022-11-26",
+          minimumDuration: 3,
+          periodType: "weekly_by_saturday"
         }
       ],
       bookings: [

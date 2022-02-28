@@ -271,10 +271,6 @@ export default {
     Day
   },
   props: {
-    addMinimumDuration: {
-      type: Boolean,
-      default: true
-    },
     alwaysVisible: {
       type: Boolean,
       default: false
@@ -977,7 +973,7 @@ export default {
 
       if (this.checkIn && !this.checkOut) {
         this.setCurrentPeriod(date, "click");
-        this.checkInPeriod = this.hoveringPeriod;
+        this.checkInPeriod = { ...this.hoveringPeriod };
         this.setCustomTooltipOnClick();
       }
 
@@ -1012,7 +1008,10 @@ export default {
         Object.keys(this.checkInPeriod).length > 0 &&
         this.checkInPeriod.periodType.includes("weekly")
       ) {
-        const nextValidDate = this.addDays(this.checkIn, this.minNightCount);
+        const nextValidDate = this.addDays(
+          this.checkIn,
+          this.minNightCount - 1
+        );
 
         this.checkInPeriod.nextValidDate = nextValidDate;
         this.showTooltipWeeklyOnClick();
@@ -1311,22 +1310,35 @@ export default {
             }
           });
 
-          const addMinimumDurationCount =
-            this.addMinimumDuration ||
-            nextPeriod.minimumDuration > currentPeriod.minimumDuration;
+          if (
+            this.checkIn &&
+            !this.checkOut &&
+            nextPeriod?.minimumDuration > currentPeriod.minimumDuration
+          ) {
+            const weekly = nextPeriod.periodType.includes("weekly");
 
-          if (this.checkIn && !this.checkOut && addMinimumDurationCount) {
-            const endNextPeriod = this.addDays(
-              nextPeriod.startAt,
-              nextPeriod.minimumDuration - 1
+            this.dynamicNightCounts = weekly
+              ? nextPeriod.minimumDuration * 7
+              : nextPeriod.minimumDuration;
+
+            const enableNextDate = this.addDays(
+              this.checkIn,
+              this.dynamicNightCounts - 1
             );
-            const startNextPeriodPlusOne = this.addDays(nextPeriod.startAt, 1);
+            const startDateCheckin = this.addDays(this.checkIn, 1);
             const newDisablesDates = this.getDaysArray(
-              startNextPeriodPlusOne,
-              endNextPeriod
+              startDateCheckin,
+              enableNextDate
             );
 
             this.nextPeriodDisableDates = newDisablesDates;
+          } else if (
+            currentPeriod.periodType === "weekly_by_saturday" ||
+            currentPeriod.periodType === "weekly_by_sunday"
+          ) {
+            const minimumDuration = currentPeriod.minimumDuration * 7;
+
+            this.dynamicNightCounts = minimumDuration;
           }
 
           if (
@@ -1334,15 +1346,6 @@ export default {
             currentPeriod.endAt !== date
           ) {
             this.dynamicNightCounts = currentPeriod.minimumDuration;
-          }
-
-          if (
-            currentPeriod.periodType === "weekly_by_saturday" ||
-            currentPeriod.periodType === "weekly_by_sunday"
-          ) {
-            const minimumDuration = currentPeriod.minimumDuration * 7;
-
-            this.dynamicNightCounts = minimumDuration;
           }
         } else {
           this.dynamicNightCounts = 0;
