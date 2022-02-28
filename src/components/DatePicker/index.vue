@@ -271,6 +271,10 @@ export default {
     Day
   },
   props: {
+    addMinimumDuration: {
+      type: Boolean,
+      default: true
+    },
     alwaysVisible: {
       type: Boolean,
       default: false
@@ -1307,7 +1311,11 @@ export default {
             }
           });
 
-          if (this.checkIn && !this.checkOut && nextPeriod) {
+          const addMinimumDurationCount =
+            this.addMinimumDuration ||
+            nextPeriod.minimumDuration > currentPeriod.minimumDuration;
+
+          if (this.checkIn && !this.checkOut && addMinimumDurationCount) {
             const endNextPeriod = this.addDays(
               nextPeriod.startAt,
               nextPeriod.minimumDuration - 1
