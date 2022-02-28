@@ -320,7 +320,7 @@ export default {
             i => i === fecha.format(this.date, "dddd")
           )
         ) {
-          return "datepicker__month-day--selected datepicker__month-day--disabled afterMinimumDurationValidDay";
+          return "datepicker__month-day--selected datepicker__month-day--disabled afterMinimumDurationValidDay 1";
         }
 
         if (
@@ -335,7 +335,7 @@ export default {
         ) {
           // If currentPeriod has a minimumDuration 1
           if (this.checkInPeriod.minimumDuration === 1) {
-            return "datepicker__month-day--selected afterMinimumDurationValidDay";
+            return "datepicker__month-day--selected afterMinimumDurationValidDay 2";
           }
 
           // If currentPeriod has a minimumDuration superior to 1
@@ -345,7 +345,7 @@ export default {
               this.checkInPeriod.nextValidDate
             ) <= 0
           ) {
-            return "datepicker__month-day--selected afterMinimumDurationValidDay";
+            return "datepicker__month-day--selected afterMinimumDurationValidDay 3";
           }
         } else if (
           Object.keys(this.checkInPeriod).length > 0 &&
@@ -358,14 +358,14 @@ export default {
               this.hoveringDate.getDay() === 0 &&
               this.isDateBefore(this.date, this.hoveringDate)))
         ) {
-          return "datepicker__month-day--selected afterMinimumDurationValidDay";
+          return "datepicker__month-day--selected afterMinimumDurationValidDay 4";
         }
 
         if (
           this.hoveringPeriod.periodType === "nightly" &&
           this.isDateBefore(this.date, this.hoveringDate)
         ) {
-          return "datepicker__month-day--selected afterMinimumDurationValidDay";
+          return "datepicker__month-day--selected afterMinimumDurationValidDay 5";
         }
 
         if (this.checkIn && this.checkOut) {
@@ -436,12 +436,12 @@ export default {
           currentPeriod.endAt !== this.formatDate &&
           this.date.getDay() !== 6
         ) {
-          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday test-1";
         }
 
         // Disable date between checkIn and nextDate, if minimumDuration is superior to 1
         if (this.notAllowDaysBetweenCheckInAndNextValidDate(6)) {
-          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday";
+          return "datepicker__month-day--disabled datepicker__month-day--not-allowed weekly_by_saturday test-2";
         }
 
         // date.getDay() === 0 => sunday

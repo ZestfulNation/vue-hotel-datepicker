@@ -182,13 +182,6 @@ export default {
 
 ## Props/Options
 
-### addMinimumDuration
-
-- Type: `Boolean`
-- Default: `true`
-
-Allows to add minimum Duration of current and next period
-
 ### lastDateAvailable
 
 - Type: `Date`
