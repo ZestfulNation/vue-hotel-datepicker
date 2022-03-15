@@ -421,8 +421,10 @@ export default {
       hoveringDate: null,
       hoveringPeriod: {},
       isOpen: false,
+      lastEnableDaysOfPeriod: null,
       months: [],
       nextDisabledDate: null,
+      nextPeriod: null,
       nextPeriodDisableDates: [],
       screenSize: null,
       show: true,
@@ -520,19 +522,30 @@ export default {
       if (this.periodDates) {
         const periodDates = [...this.periodDates];
 
-        return periodDates.sort((a, b) => {
-          const aa = a.startAt
-            .split("/")
-            .reverse()
-            .join();
-          const bb = b.startAt
-            .split("/")
-            .reverse()
-            .join();
+        return periodDates
+          .sort((a, b) => {
+            const aa = a.startAt
+              .split("/")
+              .reverse()
+              .join();
+            const bb = b.startAt
+              .split("/")
+              .reverse()
+              .join();
 
-          // eslint-disable-next-line no-nested-ternary
-          return aa < bb ? -1 : aa > bb ? 1 : 0;
-        });
+            // eslint-disable-next-line no-nested-ternary
+            return aa < bb ? -1 : aa > bb ? 1 : 0;
+          })
+          .map(period => {
+            const minimumDurationNights = period.periodType.includes("weekly")
+              ? period.minimumDuration * 7
+              : period.minimumDuration;
+
+            return {
+              ...period,
+              minimumDurationNights
+            };
+          });
       }
 
       return this.periodDates;
@@ -1015,7 +1028,21 @@ export default {
 
         this.checkInPeriod.nextValidDate = nextValidDate;
         this.showTooltipWeeklyOnClick();
-      } else if (this.checkInPeriod.periodType === "nightly") {
+      } else if (
+        this.checkInPeriod.periodType === "nightly" &&
+        this.isDateBefore(this.checkIn, this.lastEnableDaysOfPeriod)
+      ) {
+        this.showTooltipNightlyOnClick();
+      } else if (
+        this.checkInPeriod.periodType === "nightly" &&
+        !this.isDateBefore(this.checkIn, this.lastEnableDaysOfPeriod)
+      ) {
+        const nextValidDate = this.addDays(
+          this.checkIn,
+          this.minNightCount - 1
+        );
+
+        this.checkInPeriod.nextValidDate = nextValidDate;
         this.showTooltipNightlyOnClick();
       }
     },
@@ -1288,8 +1315,10 @@ export default {
       }
     },
     setMinimumDuration(date) {
+      this.nextPeriod = null;
+      this.lastEnableDaysOfPeriod = null;
+
       if (this.sortedPeriodDates) {
-        let nextPeriod = null;
         let currentPeriod = null;
         const compareDate = this.dateFormater(date);
 
@@ -1304,22 +1333,27 @@ export default {
         });
 
         if (currentPeriod) {
+          this.lastEnableDaysOfPeriod = this.substractDays(
+            currentPeriod.endAt,
+            currentPeriod.minimumDurationNights
+          );
+
           this.sortedPeriodDates.forEach(period => {
             if (period.startAt === currentPeriod.endAt) {
-              nextPeriod = period;
+              this.nextPeriod = period;
             }
           });
 
+          // Calculate dynamic minimum nights with nextPeriod
           if (
+            !this.isDateBefore(this.checkIn, this.lastEnableDaysOfPeriod) &&
             this.checkIn &&
             !this.checkOut &&
-            nextPeriod?.minimumDuration > currentPeriod.minimumDuration
+            this.nextPeriod &&
+            this.nextPeriod.minimumDurationNights >
+              currentPeriod.minimumDuration
           ) {
-            const weekly = nextPeriod.periodType.includes("weekly");
-
-            this.dynamicNightCounts = weekly
-              ? nextPeriod.minimumDuration * 7
-              : nextPeriod.minimumDuration;
+            this.dynamicNightCounts = this.nextPeriod.minimumDurationNights;
 
             const enableNextDate = this.addDays(
               this.checkIn,
@@ -1336,16 +1370,12 @@ export default {
             currentPeriod.periodType === "weekly_by_saturday" ||
             currentPeriod.periodType === "weekly_by_sunday"
           ) {
-            const minimumDuration = currentPeriod.minimumDuration * 7;
-
-            this.dynamicNightCounts = minimumDuration;
-          }
-
-          if (
+            this.dynamicNightCounts = currentPeriod.minimumDurationNights;
+          } else if (
             currentPeriod.periodType === "nightly" &&
             currentPeriod.endAt !== date
           ) {
-            this.dynamicNightCounts = currentPeriod.minimumDuration;
+            this.dynamicNightCounts = currentPeriod.minimumDurationNights;
           }
         } else {
           this.dynamicNightCounts = 0;
