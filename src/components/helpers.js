@@ -65,6 +65,13 @@ export default {
       Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay)
     );
   },
+  substractDays(date, quantity) {
+    const result = new Date(date);
+
+    result.setDate(result.getDate() - quantity);
+
+    return result;
+  },
   addDays(date, quantity) {
     const result = new Date(date);
 

@@ -491,8 +491,8 @@ export default {
         },
         {
           startAt: "2022-07-23",
-          endAt: "2022-07-30",
-          minimumDuration: 7,
+          endAt: "2022-08-06",
+          minimumDuration: 2,
           periodType: "nightly"
         },
         // Saturday
@@ -520,6 +520,12 @@ export default {
           endAt: "2022-11-26",
           minimumDuration: 3,
           periodType: "weekly_by_saturday"
+        },
+        {
+          startAt: "2022-11-26",
+          endAt: "2022-12-30",
+          minimumDuration: 2,
+          periodType: "nightly"
         }
       ],
       bookings: [
