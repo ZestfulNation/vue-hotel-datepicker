@@ -20,3 +20,5 @@ yarn-error.log*
 *.sw?
 
 dist/
+
+coverage/

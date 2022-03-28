@@ -1,6 +1,6 @@
 {
   "name": "vue-hotel-datepicker2",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Joffrey Berrier - Origin created by krystalcampioni",
   "description": "Vue date range picker component fork of vue-hotel-datepicker create by krystalcampioni",
   "main": "dist/vueHotelDatepicker2.common.js",
@@ -18,7 +18,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "test:unit": "jest --watch --verbose",
+    "test:prod": "node ./node_modules/.bin/jest --max-workers=2",
     "build-package": "vue-cli-service build --target lib --name vueHotelDatepicker2 ./src/index.js",
     "lint": "vue-cli-service lint"
   },
@@ -29,16 +30,19 @@
   ],
   "dependencies": {
     "@vue/eslint-config-airbnb": "^5.0.2",
-    "chai": "^4.2.0",
+    "babel-jest": "^27.5.1",
     "core-js": "^3.6.4",
     "fecha": "^4.2.0",
-    "vue": "^2.6.11"
+    "flush-promises": "^1.0.2",
+    "jest": "^27.5.1",
+    "vue": "^2.6.11",
+    "vue-jest": "^3.0.7"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.3.0",
-    "@vue/cli-plugin-eslint": "~4.3.0",
-    "@vue/cli-plugin-unit-jest": "~4.3.0",
-    "@vue/cli-service": "~4.3.0",
+    "@vue/cli-plugin-babel": "~4.5.9",
+    "@vue/cli-plugin-eslint": "~4.5.9",
+    "@vue/cli-plugin-unit-jest": "4.5.9",
+    "@vue/cli-service": "~4.5.9",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "1.0.0-beta.31",
     "babel-eslint": "^10.1.0",

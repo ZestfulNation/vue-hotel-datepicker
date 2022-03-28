@@ -1,6 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import { expect } from "chai";
-
 import Day from "@/components/Day.vue";
 
 describe("Datepicker Day", () => {
@@ -38,22 +36,22 @@ describe("Datepicker Day", () => {
     it("should return a boolean when comparing two dates", () => {
       expect(
         wrapper.vm.isDateBefore(new Date("12-10-2017"), new Date("10-10-2017"))
-      ).to.equal(false);
+      ).toBe(false);
       expect(
         wrapper.vm.isDateBefore(new Date("12-10-2017"), new Date("12-15-2017"))
-      ).to.equal(true);
+      ).toBe(true);
     });
   });
 
   describe("compareDay", () => {
     it("should return return -1 if the first day is before the second day", () => {
-      expect(wrapper.vm.compareDay("10-10-2017", "10-12-2017")).to.equal(-1);
+      expect(wrapper.vm.compareDay("10-10-2017", "10-12-2017")).toBe(-1);
     });
     it("should return return 1 if the first day is after the second day", () => {
-      expect(wrapper.vm.compareDay("10-12-2017", "10-10-2017")).to.equal(1);
+      expect(wrapper.vm.compareDay("10-12-2017", "10-10-2017")).toBe(1);
     });
     it("should return return 0 if the days are the same", () => {
-      expect(wrapper.vm.compareDay("10-12-2017", "10-12-2017")).to.equal(0);
+      expect(wrapper.vm.compareDay("10-12-2017", "10-12-2017")).toBe(0);
     });
   });
 });

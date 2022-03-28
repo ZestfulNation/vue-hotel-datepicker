@@ -85,6 +85,17 @@ export default {
 
     return parseInt((t2 - t1) / (24 * 3600 * 1000), 10);
   },
+  getNextDay(date, dayIndex) {
+    const currentDate = date;
+
+    currentDate.setDate(
+      currentDate.getDate() +
+        ((dayIndex - 1 - currentDate.getDay() + 7) % 7) +
+        1
+    );
+
+    return currentDate;
+  },
   getFirstDay(date, firstDayOfWeek) {
     const firstDay = this.getFirstDayOfMonth(date);
     let offset = 0;

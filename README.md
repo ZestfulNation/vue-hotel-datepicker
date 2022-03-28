@@ -1,4 +1,4 @@
-# Release 1.1.0
+# Release 1.1.1
 
 ### Breacking change on latest version
 
@@ -97,6 +97,7 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 - Refacto the style of `<baseInput />`
 - Create / refacto the function for create month and put on a mounted part not created for get the correct device
 - Add a v-if="months.length" around the v-for
+- Review periods management
 
 ---
 
