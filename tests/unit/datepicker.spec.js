@@ -326,7 +326,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2023-02-01"),
             minNights: 3,
@@ -392,11 +392,86 @@ describe("Datepicker Component", () => {
       });
     });
 
+    describe("case 2 (min duration: 10 nights min > only Saturday to Saturday) > I must be able to select from 03/02 to 11/02 Saturday to Saturday takes priority over the 10 night minimum", () => {
+      beforeEach(async () => {
+        wrapper = await mount(Datepicker, {
+          propsData: {
+            countOfDesktopMonth: 2,
+            alwaysVisible: true,
+            startDate: new Date("2023-02-01"),
+            minNights: 3,
+            periodDates: [
+              {
+                startAt: "2023-01-21",
+                endAt: "2023-02-04",
+                periodType: "nightly",
+                minimumDuration: 10
+              },
+              {
+                startAt: "2023-02-04",
+                endAt: "2023-02-11",
+                periodType: "weekly_by_saturday",
+                minimumDuration: 1
+              }
+            ]
+          }
+        });
+
+        const checkInDay = wrapper.get('[data-testid="day-2023-02-03"]');
+
+        await checkInDay.trigger("click");
+      });
+
+      it("Should define checkInPeriod equal to nextPeriod.minimumDurationNights", () => {
+        expect(wrapper.vm.checkInPeriod.minimumDurationNights).toBe(7);
+      });
+
+      it("Should render correct text for tooltip", () => {
+        expect(wrapper.vm.customTooltip).toBe("1 week minimum.");
+      });
+
+      it("Should define dynamicNightCounts to 7", () => {
+        expect(wrapper.vm.dynamicNightCounts).toBe(7);
+      });
+
+      it("Should define nextPeriod.minimumDuration equal to 7", () => {
+        expect(wrapper.vm.dynamicNightCounts).toBe(7);
+      });
+
+      it("Should define nextPeriod.nextPeriodDisableDates length equal to 7", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(7);
+      });
+
+      it("Should define disabled and not-allowed class on day before possible checkout", () => {
+        const beforeDay = wrapper.get('[data-testid="day-2023-02-10"]');
+
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--disabled"
+        );
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--not-allowed"
+        );
+      });
+
+      it("Should define valid class on possible checkout day", () => {
+        const possibleCheckout = wrapper.get('[data-testid="day-2023-02-11"]');
+
+        expect(possibleCheckout.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+      });
+
+      it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
+        testingHoveringDate(4, 10, "2023-02", "2023-02-03");
+      });
+    });
+
     describe("case 3 (duration min night < duration Sunday to Sunday): Sunday to Sunday then 3 nights min > I can select from 25/12 to 02/01", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2022-12-01"),
             minNights: 3,
@@ -479,7 +554,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2023-01-01"),
             minNights: 3,
@@ -560,7 +635,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2022-09-01"),
             minNights: 3,
@@ -630,7 +705,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2022-10-01"),
             minNights: 3,
@@ -703,7 +778,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2023-03-01"),
             minNights: 3,
@@ -792,7 +867,7 @@ describe("Datepicker Component", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
-            countOfDesktopMonth: 4,
+            countOfDesktopMonth: 2,
             alwaysVisible: true,
             startDate: new Date("2023-03-01"),
             minNights: 3,

@@ -130,7 +130,7 @@
             '2021-08-15',
             '2021-08-16',
             '2021-08-17',
-            '2021-08-18',
+            '2021-08-18'
           ]"
           :alwaysVisible="true"
           :format="dateFormat"
@@ -161,7 +161,7 @@
             '2021-08-19',
             '2021-08-20',
             '2021-08-21',
-            '2021-08-22',
+            '2021-08-22'
           ]"
           :format="dateFormat"
           :lastDateAvailable="lastDateAvailable"
@@ -199,7 +199,7 @@
             '2021-07-15',
             '2021-07-16',
             '2021-07-17',
-            '2021-07-18',
+            '2021-07-18'
           ]"
           :format="dateFormat"
           :showSingleMonth="true"
@@ -253,7 +253,7 @@
             '2021-10-04',
             '2021-10-05',
             '2021-10-06',
-            '2021-10-07',
+            '2021-10-07'
           ]"
           :disableCheckoutOnCheckin="true"
           :minNights="minNights"
@@ -271,7 +271,7 @@
             '2021-05-04',
             '2021-05-06',
             '2021-05-07',
-            '2021-05-08',
+            '2021-05-08'
           ]"
         />
       </div>
@@ -292,7 +292,7 @@
             'Thursday',
             'Friday',
             'Saturday',
-            'Sunday',
+            'Sunday'
           ]"
           :enableCheckout="true"
         />
@@ -376,7 +376,7 @@
             'Wednesday',
             'Thursday',
             'Friday',
-            'Sunday',
+            'Sunday'
           ]"
           :enableCheckout="true"
           :minNights="7"
@@ -437,7 +437,7 @@ import DatePicker from "./components/DatePicker/index.vue";
 
 export default {
   components: {
-    DatePicker,
+    DatePicker
   },
   data() {
     return {
@@ -460,17 +460,17 @@ export default {
           "Setembro",
           "Outubro",
           "Novembro",
-          "Dezembro",
+          "Dezembro"
         ],
         tooltip: {
           halfDayCheckIn: "Reservas possíveis",
           halfDayCheckOut: "Reservas possíveis",
           saturdayToSaturday: "Sábado a Sábado<br/> apenas",
           sundayToSunday: "Domingo a domingo<br/> apenas",
-          minimumRequiredPeriod: "%{minNightInPeriod} %{night} mínimo.",
+          minimumRequiredPeriod: "%{minNightInPeriod} %{night} mínimo."
         },
         week: "semana",
-        weeks: "semanas",
+        weeks: "semanas"
       },
       frFR: {
         "check-in": "Arrivée",
@@ -488,7 +488,7 @@ export default {
           "Septembre",
           "Octobre",
           "Novembre",
-          "Décembre",
+          "Décembre"
         ],
         night: "nuit",
         nights: "nuits",
@@ -497,102 +497,114 @@ export default {
           halfDayCheckOut: "Réservation possible",
           saturdayToSaturday: "Du samedi au samedi<br/> uniquement",
           sundayToSunday: "Du dimanche au dimanche<br/> uniquement",
-          minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum",
+          minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum"
         },
         week: "semaine",
-        weeks: "semaines",
+        weeks: "semaines"
       },
       periodDates: [
+        // {
+        //   startAt: "2022-08-06",
+        //   endAt: "2022-09-10",
+        //   periodType: "weekly_by_saturday",
+        //   minimumDuration: 2,
+        // },
+        // {
+        //   startAt: "2022-09-10",
+        //   endAt: "2022-10-01",
+        //   periodType: "weekly_by_saturday",
+        //   minimumDuration: 2,
+        // },
+        // {
+        //   startAt: "2022-10-08",
+        //   endAt: "2022-10-22",
+        //   periodType: "weekly_by_saturday",
+        //   minimumDuration: 2,
+        // },
+        // {
+        //   startAt: "2022-10-22",
+        //   endAt: "2022-11-26",
+        //   periodType: "weekly_by_saturday",
+        //   minimumDuration: 3,
+        // },
+        // {
+        //   startAt: "2022-12-18",
+        //   endAt: "2023-01-01",
+        //   periodType: "weekly_by_sunday",
+        //   minimumDuration: 1,
+        // },
+        // {
+        //   startAt: "2023-01-01",
+        //   endAt: "2023-01-05",
+        //   periodType: "nightly",
+        //   minimumDuration: 3,
+        // },
+        // {
+        //   startAt: "2023-01-05",
+        //   endAt: "2023-01-15",
+        //   periodType: "nightly",
+        //   minimumDuration: 7,
+        // },
+        // {
+        //   startAt: "2023-01-15",
+        //   endAt: "2023-01-29",
+        //   periodType: "weekly_by_sunday",
+        //   minimumDuration: 1,
+        // },
+        // {
+        //   startAt: "2023-01-29",
+        //   endAt: "2023-02-26",
+        //   periodType: "nightly",
+        //   minimumDuration: 10,
+        // },
+        // {
+        //   startAt: "2023-02-26",
+        //   endAt: "2023-03-05",
+        //   periodType: "weekly_by_sunday",
+        //   minimumDuration: 1,
+        // },
+        // {
+        //   startAt: "2023-03-11",
+        //   endAt: "2023-04-15",
+        //   periodType: "weekly_by_saturday",
+        //   minimumDuration: 3,
+        // },
+        // {
+        //   startAt: "2023-04-16",
+        //   endAt: "2023-05-21",
+        //   periodType: "weekly_by_sunday",
+        //   minimumDuration: 1,
+        // },
+        // {
+        //   startAt: "2023-05-21",
+        //   endAt: "2023-05-25",
+        //   periodType: "nightly",
+        //   minimumDuration: 2,
+        // },
+        // {
+        //   startAt: "2023-05-25",
+        //   endAt: "2023-05-28",
+        //   periodType: "nightly",
+        //   minimumDuration: 3,
+        // },
+        // {
+        //   startAt: "2023-05-28",
+        //   endAt: "2023-06-04",
+        //   periodType: "nightly",
+        //   minimumDuration: 7,
+        // },
         {
-          startAt: "2022-08-06",
-          endAt: "2022-09-10",
+          startAt: "2023-01-21",
+          endAt: "2023-02-04",
+          periodType: "nightly",
+          minimumDuration: 10
+        },
+        {
+          startAt: "2023-02-04",
+          endAt: "2023-02-11",
           periodType: "weekly_by_saturday",
-          minimumDuration: 2,
-        },
-        {
-          startAt: "2022-09-10",
-          endAt: "2022-10-01",
-          periodType: "weekly_by_saturday",
-          minimumDuration: 2,
-        },
-        {
-          startAt: "2022-10-08",
-          endAt: "2022-10-22",
-          periodType: "weekly_by_saturday",
-          minimumDuration: 2,
-        },
-        {
-          startAt: "2022-10-22",
-          endAt: "2022-11-26",
-          periodType: "weekly_by_saturday",
-          minimumDuration: 3,
-        },
-        {
-          startAt: "2022-12-18",
-          endAt: "2023-01-01",
-          periodType: "weekly_by_sunday",
-          minimumDuration: 1,
-        },
-        {
-          startAt: "2023-01-01",
-          endAt: "2023-01-05",
-          periodType: "nightly",
-          minimumDuration: 3,
-        },
-        {
-          startAt: "2023-01-05",
-          endAt: "2023-01-15",
-          periodType: "nightly",
-          minimumDuration: 7,
-        },
-        {
-          startAt: "2023-01-15",
-          endAt: "2023-01-29",
-          periodType: "weekly_by_sunday",
-          minimumDuration: 1,
-        },
-        {
-          startAt: "2023-01-29",
-          endAt: "2023-02-26",
-          periodType: "nightly",
-          minimumDuration: 10,
-        },
-        {
-          startAt: "2023-02-26",
-          endAt: "2023-03-05",
-          periodType: "weekly_by_sunday",
-          minimumDuration: 1,
-        },
-        {
-          startAt: "2023-03-11",
-          endAt: "2023-04-15",
-          periodType: "weekly_by_saturday",
-          minimumDuration: 3,
-        },
-        {
-          startAt: "2023-04-16",
-          endAt: "2023-05-21",
-          periodType: "weekly_by_sunday",
-          minimumDuration: 1,
-        },
-        {
-          startAt: "2023-05-21",
-          endAt: "2023-05-25",
-          periodType: "nightly",
-          minimumDuration: 2,
-        },
-        {
-          startAt: "2023-05-25",
-          endAt: "2023-05-28",
-          periodType: "nightly",
-          minimumDuration: 3,
-        },
-        {
-          startAt: "2023-05-28",
-          endAt: "2023-06-04",
-          periodType: "nightly",
-          minimumDuration: 7,
-        },
+          minimumDuration: 1
+        }
       ],
       bookings: [
         {
@@ -600,77 +612,77 @@ export default {
           checkInDate: "2021-08-22",
           checkOutDate: "2021-08-29",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "1726360",
           checkInDate: "2021-08-15",
           checkOutDate: "2021-08-22",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "1726358",
           checkInDate: "2021-08-01",
           checkOutDate: "2021-08-15",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "1726357",
           checkInDate: "2021-09-01",
           checkOutDate: "2021-09-23",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "1726356",
           checkInDate: "2021-06-01",
           checkOutDate: "2021-06-18",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "181412",
           checkInDate: "2019-09-15",
           checkOutDate: "2019-10-15",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "181491",
           checkInDate: "2019-07-01",
           checkOutDate: "2019-08-31",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "178234",
           checkInDate: "2018-08-04",
           checkOutDate: "2018-08-25",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
+            backgroundColor: "#9DC1C9"
+          }
         },
         {
           id: "178235",
           checkInDate: "2018-07-01",
           checkOutDate: "2018-07-31",
           style: {
-            backgroundColor: "#9DC1C9",
-          },
-        },
+            backgroundColor: "#9DC1C9"
+          }
+        }
       ],
       newCheckInDate: null,
       newCheckOutDate: null,
-      minNights: 3,
+      minNights: 3
     };
   },
   computed: {
@@ -679,7 +691,7 @@ export default {
     },
     lastDateAvailable() {
       return this.addYears(new Date(), 2);
-    },
+    }
   },
   methods: {
     renderNextMonth() {
@@ -710,7 +722,7 @@ export default {
       return new Date(dt.setFullYear(dt.getFullYear() + n));
     },
     validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
-      const getvalidDate = (d) => {
+      const getvalidDate = d => {
         return new Date(d);
       };
 
@@ -727,8 +739,8 @@ export default {
     },
     checkOutChanged(newDate) {
       this.newCheckOutDate = newDate;
-    },
-  },
+    }
+  }
 };
 </script>
 

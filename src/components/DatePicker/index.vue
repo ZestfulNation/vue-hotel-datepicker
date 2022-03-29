@@ -1359,7 +1359,7 @@ export default {
             this.dynamicNightCounts - 1
           );
 
-          if (this.nextPeriod.periodType.includes("weekly")) {
+          if (this.nextPeriod?.periodType.includes("weekly")) {
             const constraintPeriod =
               this.nextPeriod.periodType === "weekly_by_sunday" ? 0 : 6;
 
