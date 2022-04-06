@@ -192,6 +192,9 @@ export default {
   isDateBefore(time1, time2) {
     return new Date(time1) < new Date(time2);
   },
+  isDateBeforeOrEqual(time1, time2) {
+    return new Date(time1) <= new Date(time2);
+  },
   compareDay(day1, day2) {
     const date1 = fecha.format(new Date(day1), "YYYYMMDD");
     const date2 = fecha.format(new Date(day2), "YYYYMMDD");
