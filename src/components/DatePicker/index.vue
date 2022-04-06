@@ -1016,16 +1016,14 @@ export default {
       return closest;
     },
     setCustomTooltipOnClick() {
+      const nextValidDate = this.addDays(this.checkIn, this.minNightCount);
+
+      this.$set(this.checkInPeriod, "nextValidDate", nextValidDate);
+
       if (
         Object.keys(this.checkInPeriod).length > 0 &&
         this.checkInPeriod.periodType.includes("weekly")
       ) {
-        const nextValidDate = this.addDays(
-          this.checkIn,
-          this.minNightCount - 1
-        );
-
-        this.$set(this.checkInPeriod, "nextValidDate", nextValidDate);
         this.showTooltipWeeklyOnClick();
       } else if (
         this.checkInPeriod.periodType === "nightly" &&
@@ -1036,17 +1034,8 @@ export default {
         this.checkInPeriod.periodType === "nightly" &&
         !this.isDateBefore(this.checkIn, this.lastEnableDaysOfPeriod)
       ) {
-        const nextValidDate = this.addDays(
-          this.checkIn,
-          this.minNightCount - 1
-        );
-
-        this.$set(this.checkInPeriod, "nextValidDate", nextValidDate);
         this.showTooltipNightlyOnClick();
       } else {
-        const nextValidDate = this.addDays(this.checkIn, this.minNightCount);
-
-        this.$set(this.checkInPeriod, "nextValidDate", nextValidDate);
         this.$set(this.checkInPeriod, "periodType", "nightly");
         this.$set(this.checkInPeriod, "minimumDuration", this.minNightCount);
         this.$set(
@@ -1417,13 +1406,19 @@ export default {
             p => p.startAt === currentPeriod.startAt
           );
 
-          if (this.sortedPeriodDates.length > currentPeriodIndex) {
+          if (
+            this.sortedPeriodDates.length > currentPeriodIndex &&
+            !this.isDateBeforeOrEqual(this.checkIn, this.lastEnableDaysOfPeriod)
+          ) {
             this.nextPeriod = this.sortedPeriodDates[currentPeriodIndex + 1];
           }
 
           // Calculate dynamic minimum nights with nextPeriod
           if (
-            !this.isDateBefore(this.checkIn, this.lastEnableDaysOfPeriod) &&
+            !this.isDateBeforeOrEqual(
+              this.checkIn,
+              this.lastEnableDaysOfPeriod
+            ) &&
             nextPeriodIsPriority(
               currentPeriod,
               currentPeriod.minimumDurationNights
