@@ -223,7 +223,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.nextPeriod.minimumDuration).toBe(7);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 6", () => {
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(6);
       });
 
@@ -297,7 +297,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.nextPeriod.minimumDuration).toBe(1);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 8", () => {
+      it("Should define nextPeriodDisableDates length equal to 8", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(8);
       });
 
@@ -368,7 +368,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.nextPeriod.minimumDuration).toBe(1);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 8", () => {
+      it("Should define nextPeriodDisableDates length equal to 8", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(8);
       });
 
@@ -447,7 +447,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(7);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 7", () => {
+      it("Should define nextPeriodDisableDates length equal to 7", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(7);
       });
 
@@ -524,11 +524,11 @@ describe("Datepicker Component", () => {
         expect(new Date(wrapper.vm.nextPeriodDisableDates[5]).getDay()).toBe(6);
       });
 
-      it("Should not define nextPeriod", () => {
-        expect(wrapper.vm.nextPeriod).toBeNull();
+      it("Should define nextPeriod minimumDurationNights equal to 3", () => {
+        expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(3);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 6", () => {
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(6);
       });
 
@@ -633,11 +633,11 @@ describe("Datepicker Component", () => {
         expect(new Date(wrapper.vm.nextPeriodDisableDates[5]).getDay()).toBe(6);
       });
 
-      it("Should not define nextPeriod", () => {
-        expect(wrapper.vm.nextPeriod).toBeNull();
+      it("Should define nextPeriod minimumDurationNights equal to 10", () => {
+        expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(10);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 6", () => {
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(6);
       });
 
@@ -721,7 +721,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(14);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 6", () => {
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(13);
       });
 
@@ -748,6 +748,113 @@ describe("Datepicker Component", () => {
 
       it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
         testingHoveringDate(4, 17, "2022-09", "2022-09-03");
+      });
+    });
+
+    describe("case 4 minimumDuration 4, nextPeriod saturday to saturday (min 2 weeks each period) > I can't select december 17", () => {
+      beforeEach(async () => {
+        wrapper = await mount(Datepicker, {
+          propsData: {
+            alwaysVisible: true,
+            countOfDesktopMonth: 2,
+            firstDayOfWeek: 1,
+            minNights: 3,
+            periodDates: [
+              {
+                startAt: "2022-12-05",
+                endAt: "2022-12-10",
+                minimumDuration: 4,
+                periodType: "nightly"
+              },
+              {
+                startAt: "2022-12-10",
+                endAt: "2022-12-24",
+                minimumDuration: 2,
+                periodType: "weekly_by_saturday"
+              }
+            ],
+            startDate: new Date("2022-12-01")
+          }
+        });
+
+        const checkInDay = wrapper.get('[data-testid="day-2022-12-05"]');
+
+        await checkInDay.trigger("click");
+      });
+
+      it("Should define checkInPeriod equal to nextPeriod.minimumDurationNights", () => {
+        expect(wrapper.vm.checkInPeriod.minimumDurationNights).toBe(4);
+      });
+
+      it("Should render correct text for tooltip", () => {
+        expect(wrapper.vm.customTooltip).toBe("4 Nights minimum.");
+      });
+
+      it("Should define dynamicNightCounts to 14", () => {
+        expect(wrapper.vm.dynamicNightCounts).toBe(4);
+      });
+
+      it("Should define nextPeriod", () => {
+        expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(14);
+      });
+
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(16);
+      });
+
+      it("Should define last nextPeriodDisableDates equal to Thursday", () => {
+        // The last day disable must be a Thursday to be able to exit on Friday
+        expect(new Date(wrapper.vm.nextPeriodDisableDates[15]).getDay()).toBe(
+          5
+        );
+      });
+
+      it("Should define disabled and not-allowed class on day before possible checkout", () => {
+        const beforeDay = wrapper.get('[data-testid="day-2022-12-17"]');
+
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--disabled"
+        );
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--not-allowed"
+        );
+        expect(beforeDay.classes()).toContain("nightly");
+      });
+
+      it("Should define valid class on possible checkout day", () => {
+        const possibleCheckoutOne = wrapper.get(
+          '[data-testid="day-2022-12-09"]'
+        );
+        const possibleCheckoutTwo = wrapper.get(
+          '[data-testid="day-2022-12-10"]'
+        );
+        const possibleCheckoutThree = wrapper.get(
+          '[data-testid="day-2022-12-24"]'
+        );
+
+        expect(possibleCheckoutOne.classes()).toContain(
+          "datepicker__month-day"
+        );
+        expect(possibleCheckoutOne.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+        expect(possibleCheckoutTwo.classes()).toContain(
+          "datepicker__month-day"
+        );
+        expect(possibleCheckoutTwo.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+        expect(possibleCheckoutThree.classes()).toContain(
+          "datepicker__month-day"
+        );
+        expect(possibleCheckoutThree.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+      });
+
+      it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
+        testingHoveringDate(9, 10, "2022-12", "2022-12-05");
+        testingHoveringDate(24, 24, "2022-12", "2022-12-05");
       });
     });
 
@@ -792,7 +899,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(21);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 6", () => {
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(20);
       });
 
@@ -860,11 +967,11 @@ describe("Datepicker Component", () => {
         expect(new Date(wrapper.vm.nextPeriodDisableDates[6]).getDay()).toBe(6);
       });
 
-      it("Should define nextPeriod.minimumDuration equal to 21", () => {
-        expect(wrapper.vm.dynamicNightCounts).toBe(21);
+      it("Should define nextPeriod.minimumDurationNights to 7", () => {
+        expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(7);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 21", () => {
+      it("Should define nextPeriodDisableDates length equal to 21", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(21);
       });
 
@@ -958,8 +1065,8 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(7);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 7", () => {
-        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(6);
+      it("Should define nextPeriodDisableDates length equal to 12", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(12);
       });
 
       it("Should define last nextPeriodDisableDates equal to Saturday", () => {
@@ -967,8 +1074,8 @@ describe("Datepicker Component", () => {
         expect(new Date(wrapper.vm.nextPeriodDisableDates[5]).getDay()).toBe(5);
       });
 
-      it("Should not define nextPeriod", () => {
-        expect(wrapper.vm.nextPeriod).toBeNull();
+      it("Should define nextPeriod.minimumDurationNights to 14", () => {
+        expect(wrapper.vm.nextPeriod.minimumDurationNights).toBe(14);
       });
 
       it("Should define disabled and not-allowed class on day before possible checkout", () => {
@@ -1036,7 +1143,7 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(0);
       });
 
-      it("Should define nextPeriod.nextPeriodDisableDates length equal to 0", () => {
+      it("Should define nextPeriodDisableDates length equal to 0", () => {
         expect(wrapper.vm.nextPeriodDisableDates.length).toBe(0);
       });
 
