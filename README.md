@@ -385,6 +385,13 @@ periodDates: [
     minimumDuration: 2,
     periodType: "weekly_by_sunday",
     price: 4000.0
+  },
+  {
+    startAt: "2023-11-27",
+    endAt: "2023-12-25",
+    minimumDuration: 1,
+    periodType: "weekly_by_monday",
+    price: 4000.0
   }
 ],
 ```

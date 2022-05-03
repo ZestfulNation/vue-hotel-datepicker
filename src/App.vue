@@ -21,7 +21,6 @@
         @renderNextMonth="renderNextMonth"
       />
     </div>
-
     <div>
       <div class="box">
         <h3>
@@ -497,6 +496,7 @@ export default {
           halfDayCheckOut: "Réservation possible",
           saturdayToSaturday: "Du samedi au samedi<br/> uniquement",
           sundayToSunday: "Du dimanche au dimanche<br/> uniquement",
+          mondayToMonday: "Du lundi au lundi<br/> uniquement",
           minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum"
         },
         week: "semaine",
@@ -592,6 +592,12 @@ export default {
           endAt: "2023-06-04",
           periodType: "nightly",
           minimumDuration: 7
+        },
+        {
+          startAt: "2023-11-27",
+          endAt: "2023-12-25",
+          periodType: "weekly_by_monday",
+          minimumDuration: 1
         }
       ],
       bookings: [

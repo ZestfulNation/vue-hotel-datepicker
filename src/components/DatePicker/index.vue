@@ -258,6 +258,7 @@ const defaulti18n = {
     halfDayCheckOut: "Available CheckOut",
     saturdayToSaturday: "Only Saturday to Saturday",
     sundayToSunday: "Only Sunday to Sunday",
+    mondayToMonday: "Only Monday to Monday",
     minimumRequiredPeriod: "%{minNightInPeriod} %{night} minimum."
   },
   week: "week",
@@ -930,6 +931,11 @@ export default {
           const text = this.i18n.tooltip.sundayToSunday;
 
           this.showTooltipWeeklyOnHover(date, dayCode, text);
+        } else if (this.hoveringPeriod.periodType === "weekly_by_monday") {
+          const dayCode = 1;
+          const text = this.i18n.tooltip.mondayToMonday;
+
+          this.showTooltipWeeklyOnHover(date, dayCode, text);
         } else if (this.hoveringPeriod.periodType === "nightly") {
           this.showTooltipNightlyOnHover(date);
         } else {
@@ -1352,8 +1358,13 @@ export default {
             this.nextPeriod?.periodType.includes("weekly") &&
             !this.isDateBeforeOrEqual(this.checkIn, this.lastEnableDaysOfPeriod)
           ) {
-            const constraintPeriod =
-              this.nextPeriod.periodType === "weekly_by_sunday" ? 0 : 6;
+            // weekly by sunday
+            let constraintPeriod = 0;
+
+            if (this.nextPeriod.periodType === "weekly_by_saturday")
+              constraintPeriod = 6;
+            if (this.nextPeriod.periodType === "weekly_by_monday")
+              constraintPeriod = 1;
 
             enableNextDate = this.substractDays(
               this.getNextDay(enableNextDate, constraintPeriod),
@@ -1381,8 +1392,13 @@ export default {
               this.checkIn,
               this.nextPeriod.minimumDurationNights
             );
-            const constraintPeriod =
-              this.nextPeriod.periodType === "weekly_by_sunday" ? 0 : 6;
+            // weekly by sunday
+            let constraintPeriod = 0;
+
+            if (this.nextPeriod.periodType === "weekly_by_saturday")
+              constraintPeriod = 6;
+            if (this.nextPeriod.periodType === "weekly_by_monday")
+              constraintPeriod = 1;
 
             if (nextPeriodEnableDay.getDay() !== constraintPeriod) {
               nextPeriodEnableDay = this.getNextDay(
