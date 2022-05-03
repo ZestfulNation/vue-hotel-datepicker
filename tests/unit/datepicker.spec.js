@@ -94,6 +94,12 @@ const periodDates = [
     endAt: "2023-06-04",
     periodType: "nightly",
     minimumDuration: 7
+  },
+  {
+    startAt: "2023-11-27",
+    endAt: "2023-12-25",
+    periodType: "weekly_by_monday",
+    minimumDuration: 1
   }
 ];
 
@@ -1169,6 +1175,69 @@ describe("Datepicker Component", () => {
 
       it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
         testingHoveringDate(6, 7, "2023-03", "2023-03-05");
+      });
+    });
+
+    describe("case 7 (1 period then no period): Monday to Monday (min 1 weeks and default minimumDuration) > I can select from 04/12 to 11/12", () => {
+      beforeEach(async () => {
+        wrapper = await mount(Datepicker, {
+          propsData: {
+            alwaysVisible: true,
+            countOfDesktopMonth: 2,
+            firstDayOfWeek: 1,
+            minNights: 3,
+            periodDates,
+            startDate: new Date("2023-11-01")
+          }
+        });
+
+        const checkInDay = wrapper.get('[data-testid="day-2023-12-04"]');
+
+        await checkInDay.trigger("click");
+      });
+
+      it("Should define checkInPeriod equal to nextPeriod.minimumDurationNights", () => {
+        expect(wrapper.vm.checkInPeriod.minimumDurationNights).toBe(7);
+      });
+
+      it("Should render correct text for tooltip", () => {
+        expect(wrapper.vm.customTooltip).toBe("1 week minimum.");
+      });
+
+      it("Should define dynamicNightCounts to 7", () => {
+        expect(wrapper.vm.dynamicNightCounts).toBe(7);
+      });
+
+      it("Should define nextPeriod.minimumDuration equal to 7", () => {
+        expect(wrapper.vm.dynamicNightCounts).toBe(7);
+      });
+
+      it("Should define nextPeriodDisableDates length equal to 6", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(6);
+      });
+
+      it("Should define disabled and not-allowed class on day before possible checkout", () => {
+        const beforeDay = wrapper.get('[data-testid="day-2023-12-03"]');
+
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--disabled"
+        );
+        expect(beforeDay.classes()).toContain(
+          "datepicker__month-day--not-allowed"
+        );
+      });
+
+      it("Should define valid class on possible checkout day", () => {
+        const possibleCheckout = wrapper.get('[data-testid="day-2023-12-11"]');
+
+        expect(possibleCheckout.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+      });
+
+      it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
+        testingHoveringDate(6, 7, "2023-12", "2023-12-10");
       });
     });
   });
