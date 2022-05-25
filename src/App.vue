@@ -10,7 +10,7 @@
         ref="DatePicker"
         clickOutsideElementId="clickOutsideElement"
         :firstDayOfWeek="1"
-        :disabledDates="[]"
+        :disabledDates="['2022-06-01', '2022-06-02']"
         :showYear="true"
         :format="dateFormat"
         :lastDateAvailable="lastDateAvailable"
