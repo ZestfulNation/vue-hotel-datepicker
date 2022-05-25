@@ -951,6 +951,30 @@ export default {
         this.createHalfDayTooltip(day.date);
       }
     },
+    getNextCheckInCheckOutHalfDayDate(date) {
+      if (this.halfDay && Object.keys(this.checkIncheckOutHalfDay).length > 0) {
+        const checkIncheckOutHalfDayDates = Object.keys(
+          this.checkIncheckOutHalfDay
+        );
+        const nextDateDisabled = this.getNextDate(
+          checkIncheckOutHalfDayDates,
+          date
+        );
+        const nextDayOfDate = this.addDays(nextDateDisabled, 1);
+        const formatNextDayOfDate = this.dateFormater(nextDayOfDate);
+
+        if (
+          this.checkIncheckOutHalfDay[nextDateDisabled]?.checkIn &&
+          this.checkIncheckOutHalfDay[formatNextDayOfDate]?.checkOut
+        ) {
+          return nextDateDisabled;
+        }
+
+        return null;
+      }
+
+      return null;
+    },
     handleDayClick(event, date, formatDate, resetCheckin) {
       this.nextPeriodDisableDates = [];
 
@@ -965,6 +989,7 @@ export default {
 
       let nextDisabledDate =
         (this.maxNights ? this.addDays(date, this.maxNights) : null) ||
+        this.getNextCheckInCheckOutHalfDayDate(date) ||
         this.getNextDate(this.sortedDisabledDates, date) ||
         this.nextDateByDayOfWeekArray(this.disabledDaysOfWeek, date) ||
         this.nextBookingDate(date) ||
@@ -1628,6 +1653,7 @@ export default {
       }
 
       sortedDates = sortedDates.map(date => new Date(date));
+
       this.sortedDisabledDates = sortedDates.sort((a, b) => a - b);
       this.checkIncheckOutHalfDay = checkIncheckOutHalfDay;
       this.$emit("handleCheckIncheckOutHalfDay", this.checkIncheckOutHalfDay);
