@@ -189,15 +189,24 @@ export default {
 
     return countOfDays !== 1 ? this.i18n.nights : this.i18n.night;
   },
+  isDateAfter(time1, time2) {
+    return new Date(time1) < new Date(time2);
+  },
   isDateBefore(time1, time2) {
     return new Date(time1) < new Date(time2);
   },
   isDateBeforeOrEqual(time1, time2) {
     return new Date(time1) <= new Date(time2);
   },
+  test(day1, day2) {
+    const date1 = fecha.format(new Date(day1), "YYYY-MM-DD");
+    const date2 = fecha.format(new Date(day2), "YYYY-MM-DD");
+
+    return date1 === date2;
+  },
   compareDay(day1, day2) {
-    const date1 = fecha.format(new Date(day1), "YYYYMMDD");
-    const date2 = fecha.format(new Date(day2), "YYYYMMDD");
+    const date1 = fecha.format(new Date(day1), "YYYY-MM-DD");
+    const date2 = fecha.format(new Date(day2), "YYYY-MM-DD");
 
     if (date1 > date2) {
       return 1;
