@@ -1490,6 +1490,10 @@ export default {
           }
 
           // Calculate dynamic minimum nights with nextPeriod
+          const nextDisableDates = this.getDisableDaysOfTheNextedPeriod(
+            currentPeriod
+          );
+
           if (
             !this.isDateBeforeOrEqual(
               this.checkIn,
@@ -1507,13 +1511,21 @@ export default {
             this.checkInPeriod = { ...currentPeriod };
             this.dynamicNightCounts = currentPeriod.minimumDurationNights;
             setDisabledDays();
+
+            if (nextDisableDates) {
+              let copyNextPeriodDisableDates = this.nextPeriodDisableDates;
+
+              copyNextPeriodDisableDates.push(nextDisableDates);
+              copyNextPeriodDisableDates = copyNextPeriodDisableDates.flat();
+              this.nextPeriodDisableDates = copyNextPeriodDisableDates;
+            }
           }
 
           // Else !currentPeriod
         } else {
           const checkInWithMinimumDuration = this.addDays(
             this.checkIn,
-            this.minNightCount - 1
+            this.minNightCount > 1 ? this.minNightCount - 1 : this.minNightCount
           );
 
           this.nextPeriod = getPeriod(checkInWithMinimumDuration);
@@ -1524,9 +1536,68 @@ export default {
 
             setDisabledDays();
           } else {
+            // nextPeriod.startAt - (checkIn + nextPeriod.minimumDuration) == nextEnablePeriodDate
+            // Blocked the days between nextPeriod.startAt + 1 to nextEnablePeriodDate
+            this.checkNextPeriod();
             this.dynamicNightCounts = 0;
           }
         }
+      }
+    },
+    getDisableDaysOfTheNextedPeriod(currentPeriod) {
+      if (currentPeriod.periodType === "nightly") {
+        let nextPeriodIndex;
+
+        this.sortedPeriodDates.forEach((x, i) => {
+          if (currentPeriod.startAt === x.startAt) nextPeriodIndex = i + 1;
+        });
+
+        if (this.sortedPeriodDates[nextPeriodIndex]) {
+          const nextPeriod = {
+            ...this.sortedPeriodDates[nextPeriodIndex]
+          };
+          const nextDate = this.addDays(
+            this.checkIn,
+            nextPeriod.minimumDurationNights
+          );
+          const nextStartNextPeriod = this.addDays(nextPeriod.startAt, 1);
+
+          if (nextStartNextPeriod) {
+            return this.getDaysArray(nextStartNextPeriod, nextDate);
+          }
+
+          return null;
+        }
+      }
+
+      return null;
+    },
+    checkNextPeriod() {
+      let nextPeriodIndex;
+
+      this.sortedPeriodDates.forEach((x, i) => {
+        const nextPeriod = this.isDateAfter(x.startAt, this.checkIn);
+
+        if (nextPeriod) nextPeriodIndex = i + 1;
+      });
+
+      if (
+        this.sortedPeriodDates[nextPeriodIndex] &&
+        this.sortedPeriodDates[nextPeriodIndex].periodType === "nightly"
+      ) {
+        const nextPeriod = {
+          ...this.sortedPeriodDates[nextPeriodIndex]
+        };
+        const nextDate = this.addDays(
+          this.checkIn,
+          nextPeriod.minimumDurationNights
+        );
+        const nextStartNextPeriod = this.addDays(nextPeriod.startAt, 1);
+
+        this.nextPeriodDisableDates = this.getDaysArray(
+          nextStartNextPeriod,
+          nextDate
+        );
       }
     },
     renderPreviousMonth() {

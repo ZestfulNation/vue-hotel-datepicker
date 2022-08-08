@@ -1,8 +1,8 @@
-# Release 1.1.8
+# Release 1.2.0
 
 ### Breacking change on latest version
 
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.1.8
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.2.0
 
 # vue-hotel-datepicker@2
 
