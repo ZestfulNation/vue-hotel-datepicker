@@ -1,5 +1,18 @@
 /* eslint-disable vars-on-top */
 import fecha from "fecha";
+// eslint-disable-next-line import/no-named-default
+import { default as dayjs } from "dayjs";
+// eslint-disable-next-line import/no-named-default
+import { default as utc } from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
+const getDateDiff = (time1, time2, type) => {
+  const d1 = dayjs(time1).utc(true);
+  const d2 = dayjs(time2).utc(true);
+
+  return Math.abs(d1.diff(d2, type));
+};
 
 export default {
   getNextDate(datesArray, referenceDate) {
@@ -161,16 +174,17 @@ export default {
     return newArr;
   },
   getDaysArray(start, end) {
-    for (
-      // eslint-disable-next-line no-var
-      var arr = [], dt = new Date(start);
-      dt <= end;
-      dt.setDate(dt.getDate() + 1)
-    ) {
-      arr.push(new Date(dt));
+    const d1 = dayjs(start).utc(true);
+    const d2 = dayjs(end).utc(true);
+    const lenghDifference = getDateDiff(d1.toDate(), d2.toDate(), "day");
+    const arr = [];
+
+    for (let index = 0; index < lenghDifference + 1; index++) {
+      const day = d1.add(index, "day").toDate();
+
+      arr.push(day);
     }
 
-    // eslint-disable-next-line block-scoped-var
     return arr;
   },
   dateFormater(date, format) {
