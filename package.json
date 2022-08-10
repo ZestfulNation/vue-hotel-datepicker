@@ -32,6 +32,7 @@
     "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-jest": "^27.5.1",
     "core-js": "^3.6.4",
+    "dayjs": "^1.11.4",
     "fecha": "^4.2.0",
     "flush-promises": "^1.0.2",
     "jest": "^27.5.1",

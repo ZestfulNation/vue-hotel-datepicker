@@ -1446,9 +1446,6 @@ export default {
           this.nextPeriodDisableDates = [
             ...new Set(this.nextPeriodDisableDates)
           ];
-          this.nextPeriodDisableDates = this.nextPeriodDisableDates.map(
-            x => new Date(x)
-          );
         };
 
         const getPeriod = currentDate => {
@@ -1514,10 +1511,19 @@ export default {
 
             if (nextDisableDates) {
               let copyNextPeriodDisableDates = this.nextPeriodDisableDates;
+              let nextDisableDatesFormat = nextDisableDates.map(d =>
+                this.dateFormater(d, "YYYY-MM-DD")
+              );
 
-              copyNextPeriodDisableDates.push(nextDisableDates);
-              copyNextPeriodDisableDates = copyNextPeriodDisableDates.flat();
-              this.nextPeriodDisableDates = copyNextPeriodDisableDates;
+              nextDisableDatesFormat = nextDisableDatesFormat.filter(
+                d => !copyNextPeriodDisableDates.includes(d)
+              );
+
+              if (nextDisableDatesFormat.length > 0) {
+                copyNextPeriodDisableDates.push(nextDisableDatesFormat);
+                copyNextPeriodDisableDates = copyNextPeriodDisableDates.flat();
+                this.nextPeriodDisableDates = copyNextPeriodDisableDates;
+              }
             }
           }
 
@@ -1545,29 +1551,36 @@ export default {
       }
     },
     getDisableDaysOfTheNextedPeriod(currentPeriod) {
-      if (currentPeriod.periodType === "nightly") {
-        let nextPeriodIndex;
+      let nextPeriodIndex;
 
-        this.sortedPeriodDates.forEach((x, i) => {
-          if (currentPeriod.startAt === x.startAt) nextPeriodIndex = i + 1;
-        });
+      this.sortedPeriodDates.forEach((x, i) => {
+        if (currentPeriod.startAt === x.startAt) nextPeriodIndex = i + 1;
+      });
 
-        if (this.sortedPeriodDates[nextPeriodIndex]) {
-          const nextPeriod = {
-            ...this.sortedPeriodDates[nextPeriodIndex]
-          };
-          const nextDate = this.addDays(
-            this.checkIn,
-            nextPeriod.minimumDurationNights
-          );
-          const nextStartNextPeriod = this.addDays(nextPeriod.startAt, 1);
+      if (this.sortedPeriodDates[nextPeriodIndex]) {
+        const nextPeriod = {
+          ...this.sortedPeriodDates[nextPeriodIndex]
+        };
+        const isNightlyNextPeriod = nextPeriod.periodType === "nightly";
 
-          if (nextStartNextPeriod) {
-            return this.getDaysArray(nextStartNextPeriod, nextDate);
-          }
-
+        if (
+          currentPeriod.periodType.includes("weekly") &&
+          isNightlyNextPeriod
+        ) {
           return null;
         }
+
+        const nextDate = this.addDays(
+          this.checkIn,
+          nextPeriod.minimumDurationNights
+        );
+        const nextStartNextPeriod = this.addDays(nextPeriod.startAt, 1);
+
+        if (nextStartNextPeriod) {
+          return this.getDaysArray(nextStartNextPeriod, nextDate);
+        }
+
+        return null;
       }
 
       return null;
@@ -1597,7 +1610,7 @@ export default {
         this.nextPeriodDisableDates = this.getDaysArray(
           nextStartNextPeriod,
           nextDate
-        );
+        ).map(d => this.dateFormater(d, "YYYY-MM-DD"));
       }
     },
     renderPreviousMonth() {
