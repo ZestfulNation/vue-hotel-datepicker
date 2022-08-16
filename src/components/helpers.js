@@ -4,8 +4,19 @@ import fecha from "fecha";
 import { default as dayjs } from "dayjs";
 // eslint-disable-next-line import/no-named-default
 import { default as utc } from "dayjs/plugin/utc";
+// eslint-disable-next-line import/no-named-default
+import { default as isBetween } from "dayjs/plugin/isBetween";
 
+dayjs.extend(isBetween);
 dayjs.extend(utc);
+
+const isBetweenDate = (fromDate, toDate, givenDate) => {
+  const d1 = dayjs(fromDate).utc(true);
+  const d2 = dayjs(toDate).utc(true);
+  const d3 = dayjs(givenDate).utc(true);
+
+  return dayjs(d3).isBetween(d1, d2, "day");
+};
 
 const getDateDiff = (time1, time2, type) => {
   const d1 = dayjs(time1).utc(true);
@@ -136,16 +147,7 @@ export default {
     return nextMonth;
   },
   validateDateBetweenTwoDates(fromDate, toDate, givenDate) {
-    const getvalidDate = d => {
-      const formatDateAt00 = new Date(d).setHours(0, 0, 0, 0);
-
-      return new Date(formatDateAt00);
-    };
-
-    return (
-      getvalidDate(givenDate) <= getvalidDate(toDate) &&
-      getvalidDate(givenDate) >= getvalidDate(fromDate)
-    );
+    return isBetweenDate(fromDate, toDate, givenDate);
   },
   validateDateBetweenDate(fromDate, givenDate) {
     const getvalidDate = d => {
