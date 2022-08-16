@@ -1629,10 +1629,7 @@ export default {
         if (nextPeriod) nextPeriodIndex = i + 1;
       });
 
-      if (
-        this.sortedPeriodDates[nextPeriodIndex] &&
-        this.sortedPeriodDates[nextPeriodIndex].periodType === "nightly"
-      ) {
+      if (this.sortedPeriodDates[nextPeriodIndex]) {
         const nextPeriod = {
           ...this.sortedPeriodDates[nextPeriodIndex]
         };
@@ -1784,4 +1781,5 @@ export default {
 };
 </script>
 
+<!-- Using npm locale <style src="../../../dist/vueHotelDatepicker2.css"></style> -->
 <style lang="scss" src="./index.scss"></style>

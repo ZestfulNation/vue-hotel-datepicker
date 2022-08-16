@@ -129,7 +129,7 @@ const mountComponent = (
       alwaysVisible,
       countOfDesktopMonth: 2,
       firstDayOfWeek: 1,
-      minNights: 3,
+      minNights: 1,
       periodDates,
       startDate
     }
@@ -195,7 +195,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date(new Date("2023-01-01").setUTCHours(0, 0, 0, 0))
           }
@@ -275,7 +275,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date("2023-01-01")
           }
@@ -354,7 +354,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date("2023-02-01")
           }
@@ -431,7 +431,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             startDate: new Date("2023-02-01"),
             periodDates: [
               {
@@ -507,7 +507,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates: [
               {
                 startAt: "2022-12-18",
@@ -610,7 +610,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates: [
               {
                 startAt: "2023-01-01",
@@ -723,7 +723,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date(new Date("2022-09-01").setUTCHours(0, 0, 0, 0))
           }
@@ -798,7 +798,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates: [
               {
                 startAt: "2022-12-05",
@@ -909,7 +909,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date("2022-10-01")
           }
@@ -987,7 +987,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date("2023-04-01")
           }
@@ -1083,7 +1083,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             startDate: new Date("2022-12-01"),
             periodDates: [
               {
@@ -1165,7 +1165,7 @@ describe("Datepicker Component", () => {
       });
     });
 
-    describe("case 6 (1 period then no period): Saturday to Saturday (min 1 weeks and default minimumDuration) > I can select from 05/03 to 08/03", () => {
+    describe("case 6 (1 period then no period then one period weekly_by_saturday minimum 3 weeks): Saturday to Saturday (min 1 weeks and default minimumDuration) > I can select from 05/03 to 08,09,10,11/03 and 1/04/2023", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
@@ -1195,40 +1195,72 @@ describe("Datepicker Component", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(0);
       });
 
-      it("Should define nextPeriodDisableDates to []", () => {
-        expect(wrapper.vm.nextPeriodDisableDates).toEqual([]);
+      it("Should define nextPeriodDisableDates to 14", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toEqual(14);
       });
 
       it("Should define nextPeriod.minimumDuration equal to 0", () => {
         expect(wrapper.vm.dynamicNightCounts).toBe(0);
       });
 
-      it("Should define nextPeriodDisableDates length equal to 0", () => {
-        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(0);
+      it("Should define nextPeriodDisableDates length equal to 14", () => {
+        expect(wrapper.vm.nextPeriodDisableDates.length).toBe(14);
       });
 
       it("Should define disabled and not-allowed class on day before possible checkout", () => {
-        const beforeDay = wrapper.get('[data-testid="day-2023-03-07"]');
+        const beforeDay1 = wrapper.get('[data-testid="day-2023-03-06"]');
+        const beforeDay2 = wrapper.get('[data-testid="day-2023-03-07"]');
 
-        expect(beforeDay.classes()).toContain(
+        expect(beforeDay1.classes()).toContain(
           "datepicker__month-day--disabled"
         );
-        expect(beforeDay.classes()).toContain(
+        expect(beforeDay1.classes()).toContain(
+          "datepicker__month-day--not-allowed"
+        );
+        expect(beforeDay2.classes()).toContain(
+          "datepicker__month-day--disabled"
+        );
+        expect(beforeDay2.classes()).toContain(
           "datepicker__month-day--not-allowed"
         );
       });
 
       it("Should define valid class on possible checkout day", () => {
-        const possibleCheckout = wrapper.get('[data-testid="day-2023-03-08"]');
+        const possibleCheckout1 = wrapper.get('[data-testid="day-2023-03-08"]');
+        const possibleCheckout2 = wrapper.get('[data-testid="day-2023-03-09"]');
+        const possibleCheckout3 = wrapper.get('[data-testid="day-2023-03-10"]');
+        const possibleCheckout4 = wrapper.get('[data-testid="day-2023-03-11"]');
+        const possibleCheckout5 = wrapper.get('[data-testid="day-2023-04-01"]');
 
-        expect(possibleCheckout.classes()).toContain("datepicker__month-day");
-        expect(possibleCheckout.classes()).toContain(
+        expect(possibleCheckout1.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout1.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+
+        expect(possibleCheckout2.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout2.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+
+        expect(possibleCheckout3.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout3.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+
+        expect(possibleCheckout4.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout4.classes()).toContain(
+          "datepicker__month-day--valid"
+        );
+
+        expect(possibleCheckout5.classes()).toContain("datepicker__month-day");
+        expect(possibleCheckout5.classes()).toContain(
           "datepicker__month-day--valid"
         );
       });
 
       it("Should add afterMinimumDurationValidDay class on days that are between checkIn and possible checkOut day", () => {
-        testingHoveringDate(6, 7, "2023-03", "2023-03-05");
+        testingHoveringDate(6, 7, "2023-03", "2023-03-07");
+        testingHoveringDate(12, 31, "2023-03", "2023-03-31");
       });
     });
 
@@ -1239,7 +1271,7 @@ describe("Datepicker Component", () => {
             alwaysVisible: true,
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
-            minNights: 3,
+            minNights: 1,
             periodDates,
             startDate: new Date("2023-11-01")
           }

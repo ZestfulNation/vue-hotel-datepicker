@@ -10,17 +10,17 @@
         ref="DatePicker"
         clickOutsideElementId="clickOutsideElement"
         :firstDayOfWeek="1"
-        :disabledDates="['2022-06-01', '2022-06-02']"
         :showYear="true"
         :format="dateFormat"
         :lastDateAvailable="lastDateAvailable"
-        :minNights="minNights"
+        :minNights="3"
         :i18n="frFR"
         :disableCheckoutOnCheckin="true"
         :periodDates="periodDates"
         @renderNextMonth="renderNextMonth"
       />
     </div>
+
     <div>
       <div class="box">
         <h3>
