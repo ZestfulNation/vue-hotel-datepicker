@@ -1340,6 +1340,21 @@ export default {
         this.clearSelection();
       }
     },
+    sortedDates(dates) {
+      return dates.sort((a, b) => {
+        const aa = a
+          .split("/")
+          .reverse()
+          .join();
+        const bb = b
+          .split("/")
+          .reverse()
+          .join();
+
+        // eslint-disable-next-line no-nested-ternary
+        return aa < bb ? -1 : aa > bb ? 1 : 0;
+      });
+    },
     clickOutside() {
       if (this.show && this.closeDatepickerOnClickOutside) {
         this.hideDatepicker();
@@ -1446,6 +1461,9 @@ export default {
           this.nextPeriodDisableDates = [
             ...new Set(this.nextPeriodDisableDates)
           ];
+          this.nextPeriodDisableDates = this.sortedDates(
+            this.nextPeriodDisableDates
+          );
         };
 
         const getPeriod = currentDate => {
@@ -1473,11 +1491,6 @@ export default {
 
         // If currentPeriod
         if (currentPeriod) {
-          this.lastEnableDaysOfPeriod = this.substractDays(
-            currentPeriod.endAt,
-            currentPeriod.minimumDurationNights
-          );
-
           const currentPeriodIndex = this.sortedPeriodDates.findIndex(
             p => p.startAt === currentPeriod.startAt
           );
@@ -1485,6 +1498,25 @@ export default {
           if (this.sortedPeriodDates.length > currentPeriodIndex) {
             this.nextPeriod = this.sortedPeriodDates[currentPeriodIndex + 1];
           }
+
+          const setLastEnableDaysOfPeriod = () => {
+            if (
+              !this.nextPeriod ||
+              this.nextPeriod.startAt === currentPeriod.endAt
+            ) {
+              return this.substractDays(
+                currentPeriod.endAt,
+                currentPeriod.minimumDurationNights
+              );
+            }
+
+            return this.substractDays(
+              this.nextPeriod.startAt,
+              currentPeriod.minimumDurationNights
+            );
+          };
+
+          this.lastEnableDaysOfPeriod = setLastEnableDaysOfPeriod();
 
           // Calculate dynamic minimum nights with nextPeriod
           const nextDisableDates = this.getDisableDaysOfTheNextedPeriod(
@@ -1507,7 +1539,6 @@ export default {
           } else {
             this.checkInPeriod = { ...currentPeriod };
             this.dynamicNightCounts = currentPeriod.minimumDurationNights;
-            setDisabledDays();
 
             if (nextDisableDates) {
               let copyNextPeriodDisableDates = this.nextPeriodDisableDates;
@@ -1522,11 +1553,15 @@ export default {
               if (nextDisableDatesFormat.length > 0) {
                 copyNextPeriodDisableDates.push(nextDisableDatesFormat);
                 copyNextPeriodDisableDates = copyNextPeriodDisableDates.flat();
-                this.nextPeriodDisableDates = copyNextPeriodDisableDates;
+
+                this.nextPeriodDisableDates = this.sortedDates(
+                  copyNextPeriodDisableDates
+                );
               }
             }
-          }
 
+            setDisabledDays();
+          }
           // Else !currentPeriod
         } else {
           const checkInWithMinimumDuration = this.addDays(
@@ -1611,6 +1646,9 @@ export default {
           nextStartNextPeriod,
           nextDate
         ).map(d => this.dateFormater(d, "YYYY-MM-DD"));
+        this.nextPeriodDisableDates = this.sortedDates(
+          this.nextPeriodDisableDates
+        );
       }
     },
     renderPreviousMonth() {
