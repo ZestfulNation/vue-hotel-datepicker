@@ -1502,7 +1502,8 @@ export default {
           const setLastEnableDaysOfPeriod = () => {
             if (
               !this.nextPeriod ||
-              this.nextPeriod.startAt === currentPeriod.endAt
+              this.nextPeriod.startAt === currentPeriod.endAt ||
+              this.isDateBefore(currentPeriod.endAt, this.nextPeriod.startAt)
             ) {
               return this.substractDays(
                 currentPeriod.endAt,
@@ -1540,7 +1541,13 @@ export default {
             this.checkInPeriod = { ...currentPeriod };
             this.dynamicNightCounts = currentPeriod.minimumDurationNights;
 
-            if (nextDisableDates) {
+            if (
+              nextDisableDates &&
+              nextPeriodIsPriority(
+                currentPeriod,
+                currentPeriod.minimumDurationNights
+              )
+            ) {
               let copyNextPeriodDisableDates = this.nextPeriodDisableDates;
               let nextDisableDatesFormat = nextDisableDates.map(d =>
                 this.dateFormater(d, "YYYY-MM-DD")

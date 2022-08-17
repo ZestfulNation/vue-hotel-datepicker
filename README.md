@@ -1,8 +1,8 @@
-# Release 1.2.3
+# Release 1.2.32
 
 ### Breacking change on latest version
 
-https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.2.3
+https://github.com/joffreyBerrier/vue-hotel-datepicker/releases/tag/1.2.32
 
 # vue-hotel-datepicker@2
 
@@ -100,30 +100,6 @@ https://github.com/joffreyBerrier/vue-hotel-datepicker/projects/1?fullscreen=tru
 - Review periods management
 
 ---
-
-## Using npm link
-
-```
-# go into the dir of your main project
-cd ~/projects/poke
-# link the dir of your dependency
-npm link ../vue-hotel-datepicker
-```
-
-Uncomment the line on `index.vue`
-
-<!-- Using npm locale <style src="../../../dist/vueHotelDatepicker2.css"></style> -->
-
-And comment the line :
-`<style lang="scss" src="./index.scss"></style>`
-
-On your package of `projects/poke`
-
-```json
-"vue-hotel-datepicker2": "file:../vue-hotel-datepicker/dist/vueHotelDatepicker2.common.js",
-```
-
-That's it ! 🔥🧑🏻‍💻
 
 ## What I will improve
 

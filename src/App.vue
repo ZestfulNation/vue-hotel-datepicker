@@ -13,10 +13,10 @@
         :showYear="true"
         :format="dateFormat"
         :lastDateAvailable="lastDateAvailable"
-        :minNights="3"
+        :minNights="1"
         :i18n="frFR"
         :disableCheckoutOnCheckin="true"
-        :periodDates="periodDates"
+        :periodDates="periodDates2"
         @renderNextMonth="renderNextMonth"
       />
     </div>
@@ -502,6 +502,20 @@ export default {
         week: "semaine",
         weeks: "semaines"
       },
+      periodDates2: [
+        {
+          endAt: "2022-08-27",
+          minimumDuration: 5,
+          periodType: "nightly",
+          startAt: "2022-10-29"
+        },
+        {
+          endAt: "2022-10-29",
+          minimumDuration: 3,
+          periodType: "nightly",
+          startAt: "2022-12-17"
+        }
+      ],
       periodDates: [
         {
           startAt: "2022-08-06",
