@@ -1502,8 +1502,7 @@ export default {
           const setLastEnableDaysOfPeriod = () => {
             if (
               !this.nextPeriod ||
-              this.nextPeriod.startAt === currentPeriod.endAt ||
-              this.isDateBefore(currentPeriod.endAt, this.nextPeriod.startAt)
+              this.nextPeriod.startAt === currentPeriod.endAt
             ) {
               return this.substractDays(
                 currentPeriod.endAt,
@@ -1584,8 +1583,8 @@ export default {
 
             setDisabledDays();
           } else {
-            // nextPeriod.startAt - (checkIn + nextPeriod.minimumDuration) == nextEnablePeriodDate
-            // Blocked the days between nextPeriod.startAt + 1 to nextEnablePeriodDate
+            // nextPeriod.startAt - (checkIn + nextPeriod.minimumDuration) == possibleNextPeriodCheckOut
+            // Blocked the days between nextPeriod.startAt + 1 to possibleNextPeriodCheckOut
             this.checkNextPeriod();
             this.dynamicNightCounts = 0;
           }

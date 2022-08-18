@@ -196,7 +196,20 @@ describe("Datepicker Component", () => {
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
             minNights: 1,
-            periodDates,
+            periodDates: [
+              {
+                startAt: "2023-01-01",
+                endAt: "2023-01-05",
+                periodType: "nightly",
+                minimumDuration: 3
+              },
+              {
+                startAt: "2023-01-05",
+                endAt: "2023-01-15",
+                periodType: "nightly",
+                minimumDuration: 7
+              }
+            ],
             startDate: new Date(new Date("2023-01-01").setUTCHours(0, 0, 0, 0))
           }
         });
@@ -1173,7 +1186,20 @@ describe("Datepicker Component", () => {
             countOfDesktopMonth: 2,
             firstDayOfWeek: 1,
             minNights: 3,
-            periodDates,
+            periodDates: [
+              {
+                startAt: "2023-02-26",
+                endAt: "2023-03-05",
+                periodType: "weekly_by_sunday",
+                minimumDuration: 1
+              },
+              {
+                startAt: "2023-03-11",
+                endAt: "2023-04-15",
+                periodType: "weekly_by_saturday",
+                minimumDuration: 3
+              }
+            ],
             startDate: new Date("2023-03-01")
           }
         });
@@ -1327,7 +1353,7 @@ describe("Datepicker Component", () => {
       });
     });
 
-    describe("case 8 (no period then period of 8 minimym nights): No period and 8 night minumum > I can't select from 11/09 to 16,17,18/09", () => {
+    describe("case 8 (no period then period of 8 minimum nights): No period and 8 night minumum > I can't select from 11/09 to 16,17,18/09", () => {
       beforeEach(async () => {
         wrapper = await mount(Datepicker, {
           propsData: {
