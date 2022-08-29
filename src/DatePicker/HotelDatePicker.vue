@@ -135,6 +135,7 @@
             :screenSize="screenSize"
             :showCustomTooltip="showCustomTooltip"
             :showPrice="showPrice"
+            :showWeekNumbers="showWeekNumbers"
             :disabledDates="disabledDates"
             :periodDates="periodDates"
             :sortedDisabledDates="sortedDisabledDates"
@@ -334,6 +335,10 @@ export default {
     showYear: {
       type: Boolean,
       default: true,
+    },
+    showWeekNumbers: {
+      type: Boolean,
+      default: false,
     },
     singleDaySelection: {
       type: Boolean,
