@@ -5,7 +5,7 @@
   "author": "krystalcampioni <hello@krystalcampioni.com>",
   "main": "dist/vueHotelDatepicker.common.js",
   "repository": {
-    "url": "git@github.com:krystalcampioni/vue-hotel-datepicker.git",
+    "url": "git@github.com:ZestfulNation/vue-hotel-datepicker.git",
     "type": "git"
   },
   "keywords": [
