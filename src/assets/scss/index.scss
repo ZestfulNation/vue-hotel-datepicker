@@ -621,6 +621,46 @@ $extra-small-screen: '(max-width: 23em)';
         padding-left: 0.83334em;
       }
     }
+
+    &--with-week-numbers {
+      position: relative;
+
+      .#{$prefix}__weeknumbers {
+        position: absolute;
+        top: 4.5rem;
+        bottom: 0.875rem;
+        display: flex;
+        flex-direction: column;
+
+        &__number {
+          display: flex;
+          align-items: center;
+          width: 2rem;
+          height: calc(100% / 6);
+          margin: -0.5px 0 0;
+        }
+      }
+
+      &:first-child {
+        padding-left: 2rem;
+
+        .#{$prefix}__weeknumbers {
+          left: 0;
+        }
+      }
+
+      &:last-child {
+        padding-right: 2rem;
+
+        .#{$prefix}__weeknumbers {
+          right: 0;
+
+          &__number {
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
   }
 
   &__month-caption {
@@ -845,7 +885,7 @@ $extra-small-screen: '(max-width: 23em)';
     }
 
     &.vhd__checkInCheckOut {
-      width: calc(50% - 1.1875);
+      width: calc(50% - 1.1875em);
     }
   }
 }

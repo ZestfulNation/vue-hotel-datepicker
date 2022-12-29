@@ -77,7 +77,8 @@ export default {
 |**priceDecimals**|`Number`|`0`|The price decimals for weekly periods (see `periodDates`).
 |**priceSymbol**|`String`|`''`|The price symbol added before the price when `showPrice` is true and a `price` has been set in one of the `periodDates` array items (period).
 |**showPrice**|`Boolean`|`false`|If set to true, displays a price contains on your `periodDates`.
-|**showSingleMonth**|`Boolean`|`false`|If set to true, display one month only
+|**showSingleMonth**|`Boolean`|`false`|If set to true, display one month only.
+|**showWeekNumbers**|`Boolean`|`false`|If set to true, displays the week numbers.
 |**showYear**|`Boolean`|`true`|Shows the year next to the month.
 |**singleDaySelection**|`Boolean`|`false`|When true only one day can be selected instead of a range.
 |**startDate**|`[Date, String]`|`new Date()`|The start view date. All the dates before this date will be disabled.

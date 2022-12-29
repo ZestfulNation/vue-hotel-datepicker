@@ -1,9 +1,23 @@
 <template>
-  <div ref="datepickerMonth" class="vhd__datepicker__month" @mouseenter="enterMonth($event)">
+  <div
+    ref="datepickerMonth"
+    class="vhd__datepicker__month"
+    :class="{ 'vhd__datepicker__month--with-week-numbers': showWeekNumbers }"
+    @mouseenter="enterMonth($event)"
+  >
     <p class="vhd__datepicker__month-name">
       {{ monthName }}
     </p>
     <week-row v-bind="$props" />
+    <div v-if="showWeekNumbers" class="vhd__datepicker__weeknumbers">
+      <div
+        class="vhd__datepicker__weeknumbers__number"
+        v-for="(weekNumber, indexWN) in weekNumbers"
+        :key="`vhd__datepicker__weeknumber__${weekNumber}-${indexWN}`"
+      >
+        {{ weekNumber }}
+      </div>
+    </div>
     <div
       class="vhd__square"
       v-for="(day, dayIndex) in month.days"
@@ -26,6 +40,7 @@
 import fecha from 'fecha'
 import Day from './Day.vue'
 import WeekRow from './WeekRow.vue'
+import Helpers from '../../helpers'
 
 export default {
   name: 'Month',
@@ -144,6 +159,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showWeekNumbers: {
+      type: Boolean,
+      default: false,
+    },
     disabledDates: {
       type: Array,
       default: () => [],
@@ -165,8 +184,16 @@ export default {
     monthName() {
       return this.getMonth(this.month.days[15].date)
     },
+    weekNumbers() {
+      return this.month.days
+        .filter((day, index) => {
+          return index % 7 === 0 && (day.belongsToThisMonth || this.month.days[index + 6].belongsToThisMonth)
+        })
+        .map((day) => this.getIsoWeek(day.date))
+    },
   },
   methods: {
+    ...Helpers,
     getMonth(date) {
       const month = 'MMMM'
       const year = 'YYYY'

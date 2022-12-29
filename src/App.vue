@@ -64,6 +64,7 @@
             <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
             <input type="checkbox" v-model="showYear" /> showYear<br />
             <input type="checkbox" v-model="yearBeforeMonth" /> yearBeforeMonth<br />
+            <input type="checkbox" v-model="showWeekNumbers" /> showWeekNumbers<br />
           </div>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue:
@@ -90,6 +91,7 @@
             :showSingleMonth="showSingleMonth"
             :showYear="showYear"
             :showPrice="showPrice"
+            :showWeekNumbers="showWeekNumbers"
             :priceSymbol="priceSymbol"
             :yearBeforeMonth="yearBeforeMonth"
             :positionRight="positionRight"
@@ -403,6 +405,7 @@ export default {
       showLastDateAvailable: false,
       showPeriodDates: false,
       showStartingDate: false,
+      showWeekNumbers: false,
       startingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
       showEndingDate: false,
       endingDate: `${today.getFullYear()}-${month}-${today.getDate()}`,
