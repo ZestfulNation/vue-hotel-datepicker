@@ -2,7 +2,7 @@
   <div
     ref="datepickerMonth"
     class="vhd__datepicker__month"
-    :class="{ 'vhd__datepicker__month--with-week-numnbers': showWeekNumbers }"
+    :class="{ 'vhd__datepicker__month--with-week-numbers': showWeekNumbers }"
     @mouseenter="enterMonth($event)"
   >
     <p class="vhd__datepicker__month-name">

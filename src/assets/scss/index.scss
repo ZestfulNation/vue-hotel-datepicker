@@ -622,7 +622,7 @@ $extra-small-screen: '(max-width: 23em)';
       }
     }
 
-    &--with-week-numnbers {
+    &--with-week-numbers {
       position: relative;
 
       .#{$prefix}__weeknumbers {
@@ -643,7 +643,7 @@ $extra-small-screen: '(max-width: 23em)';
 
       &:first-child {
         padding-left: 2rem;
-        
+
         .#{$prefix}__weeknumbers {
           left: 0;
         }
