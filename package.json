@@ -37,6 +37,7 @@
     "*.json"
   ],
   "dependencies": {
+    "deasync": "^0.1.28",
     "fecha": "^4.2.1",
     "lodash.throttle": "^4.1.1",
     "vue": "^2.6.14"
