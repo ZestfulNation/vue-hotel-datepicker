@@ -89,6 +89,7 @@
             @keyup.enter.stop.prevent="renderPreviousMonth"
             :tabindex="isOpen ? 0 : -1"
             :disabled="activeMonthIndex === 0"
+            aria-label="Previous Month"
           />
           <button
             type="button"
@@ -97,6 +98,7 @@
             @keyup.enter.stop.prevent="renderNextMonth"
             :disabled="isPreventedMaxMonth"
             :tabindex="isOpen ? 0 : -1"
+            aria-label="Next Month"
           />
         </div>
         <div
