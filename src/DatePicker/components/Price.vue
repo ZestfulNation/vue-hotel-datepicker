@@ -18,7 +18,7 @@ export default {
       required: true,
     },
     symbol: {
-      type: [String, null, undefined],
+      type: String,
       default: '',
     },
   },

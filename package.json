@@ -1,9 +1,10 @@
 {
   "name": "vue-hotel-datepicker",
-  "version": "4.6.0",
+  "version": "5.0.0",
   "description": "A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more",
   "author": "krystalcampioni <hello@krystalcampioni.com>",
   "main": "dist/vueHotelDatepicker.common.js",
+  "module": "dist/vueHotelDatepicker.es.js",
   "repository": {
     "url": "git@github.com:ZestfulNation/vue-hotel-datepicker.git",
     "type": "git"
@@ -25,11 +26,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vueHotelDatepicker ./src/index.js",
-    "build-package": "vue-cli-service build --target lib --name vueHotelDatepicker ./src/index.js",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "serve": "vite",
+    "build": "vite build",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "lint": "eslint --ext .js,.vue src tests"
   },
   "files": [
     "dist/*",
@@ -37,30 +38,22 @@
     "*.json"
   ],
   "dependencies": {
-    "deasync": "^0.1.28",
     "fecha": "^4.2.1",
     "lodash.throttle": "^4.1.1",
-    "vue": "^2.6.14"
+    "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/eslint-parser": "^7.14.7",
-    "@vue/cli-plugin-babel": "~4.5.13",
-    "@vue/cli-plugin-eslint": "~4.5.13",
-    "@vue/cli-plugin-unit-jest": "~4.5.13",
-    "@vue/cli-service": "~4.5.13",
-    "@vue/eslint-config-airbnb": "^5.3.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^1.2.1",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/test-utils": "^2.4.5",
     "chai": "^4.3.4",
-    "copy-webpack-plugin": "^9.0.1",
-    "core-js": "^3.15.2",
-    "eslint": "^7.30.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^7.13.0",
-    "prettier": "^2.3.2",
-    "sass": "^1.35.2",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.14"
+    "eslint": "^8.57.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-vue": "^9.25.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.5",
+    "sass": "^1.72.0",
+    "vite": "^5.2.8",
+    "vitest": "^1.5.0"
   }
 }

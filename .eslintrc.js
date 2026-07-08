@@ -2,12 +2,9 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    browser: true,
   },
-  extends: ['plugin:vue/essential', '@vue/airbnb', '@vue/prettier'],
-  parserOptions: {
-    parser: '@babel/eslint-parser',
-  },
-  plugins: ['prettier'],
+  extends: ['plugin:vue/vue3-essential', 'plugin:prettier/recommended'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-plusplus': 'off',
@@ -53,9 +50,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
+      files: ['**/tests/unit/**/*.spec.{j,t}s?(x)'],
       env: {
-        jest: true,
+        vitest: true,
       },
     },
   ],

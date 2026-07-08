@@ -7,7 +7,7 @@
       vhd__datepicker__fullview: alwaysVisible,
     }"
     :ref="`DatePicker-${hash}`"
-    v-if="value"
+    v-if="modelValue"
   >
     <div class="vhd__datepicker__close-button vhd__hide-on-desktop" v-if="isOpen" @click="closeMobileDatepicker">
       <i>+</i>
@@ -360,7 +360,7 @@ export default {
       type: [String, null],
       default: null,
     },
-    value: {
+    modelValue: {
       type: Boolean,
       default: true,
     },
@@ -416,7 +416,7 @@ export default {
             this.$nextTick(() => {
               if (this.$refs) {
                 const { swiperWrapper } = this.$refs
-                const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
+                const monthHeihgt = this.$refs.datepickerMonth[0].$el.offsetHeight
                 const currentSelectionIndex = this.checkOut ? this.getMonthDiff(new Date(), this.checkOut) : 0
 
                 swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
@@ -427,7 +427,7 @@ export default {
           }
         }
 
-        this.$emit('input', this.open)
+        this.$emit('update:modelValue', this.open)
       },
     },
     sortBookings() {
@@ -663,7 +663,7 @@ export default {
     })
     this.createHalfDayDates(this.baseHalfDayDates)
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('resize', this.handleWindowResize)
 
     if (!this.isDesktop) {

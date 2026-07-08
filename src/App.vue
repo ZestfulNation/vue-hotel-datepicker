@@ -104,13 +104,11 @@
             @day-clicked="dayClicked"
           >
             <!-- Insert content here -->
-            <div
-              slot="content"
-              style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem"
-              v-if="showContentSlot"
-            >
-              Content Slot with style
-            </div>
+            <template v-if="showContentSlot" #content>
+              <div style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem">
+                Content Slot with style
+              </div>
+            </template>
           </DatePicker>
         </div>
         <div v-if="boxShow == 8" class="box">

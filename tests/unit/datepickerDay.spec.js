@@ -8,7 +8,7 @@ describe('Datepicker Day', () => {
 
   beforeEach(() => {
     wrapper = shallowMount(Day, {
-      propsData: {
+      props: {
         activeMonthIndex: 0,
         belongsToThisMonth: true,
         checkIn: null,
@@ -28,7 +28,7 @@ describe('Datepicker Day', () => {
           maxNights: null,
           minNights: 3,
           startDate: '2017-10-05T15:16:50.281Z',
-          value: undefined,
+          disabledWeekDaysObject: {},
         },
       },
     })
