@@ -2,7 +2,7 @@ import HotelDatePicker from './DatePicker/HotelDatePicker.vue'
 import './assets/scss/index.scss'
 
 HotelDatePicker.install = (app) => {
-  app.component(HotelDatePicker.name, HotelDatePicker)
+  app.component(HotelDatePicker.name ?? 'HotelDatePicker', HotelDatePicker)
 }
 
 export default HotelDatePicker

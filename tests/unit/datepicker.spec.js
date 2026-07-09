@@ -27,6 +27,10 @@ describe('Datepicker Component', () => {
     })
   })
 
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
   it('should toggle the calendar visibility on input click', async () => {
     expect(wrapper.vm.isOpen).to.equal(false)
 
