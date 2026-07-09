@@ -28,6 +28,13 @@ export default defineConfig({
     },
     cssCodeSplit: false,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern',
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
