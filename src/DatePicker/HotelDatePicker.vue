@@ -140,6 +140,7 @@
             :showWeekNumbers="showWeekNumbers"
             :disabledDates="disabledDates"
             :periodDates="periodDates"
+            :priceDecimals="priceDecimals"
             :sortedDisabledDates="sortedDisabledDates"
             :sortedPeriodDates="sortedPeriodDates"
             :tooltipMessage="customTooltipMessage"
@@ -188,6 +189,7 @@
               :nextPeriodDisableDates="nextPeriodDisableDates"
               :options="dayOptions"
               :priceSymbol="priceSymbol"
+              :priceDecimals="priceDecimals"
               :screenSize="screenSize"
               :showCustomTooltip="false"
               :showPrice="showPrice"
@@ -318,6 +320,10 @@ export default {
         return []
       },
     },
+    priceDecimals: {
+      type: [Number, null],
+      default: 0,
+    },
     positionRight: {
       type: Boolean,
       default: false,
@@ -362,7 +368,7 @@ export default {
     },
     modelValue: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     yearBeforeMonth: {
       type: Boolean,
@@ -1099,6 +1105,8 @@ export default {
       return newT
     },
     handleClickOutside(event) {
+      if (!this.closeDatepickerOnClickOutside) return
+
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`]
 
       if (ignoreClickOnMeElement) {
