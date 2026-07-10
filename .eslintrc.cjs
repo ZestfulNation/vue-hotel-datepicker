@@ -51,8 +51,12 @@ module.exports = {
   overrides: [
     {
       files: ['**/tests/unit/**/*.spec.{j,t}s?(x)'],
-      env: {
-        vitest: true,
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
       },
     },
   ],
