@@ -444,7 +444,6 @@ export default {
           const aa = a.checkInDate.split('/').reverse().join()
           const bb = b.checkOutDate.split('/').reverse().join()
 
-          // eslint-disable-next-line no-nested-ternary
           return aa < bb ? -1 : aa > bb ? 1 : 0
         })
       }
@@ -504,7 +503,6 @@ export default {
           const v1 = fecha1.startAt.split('/').reverse().join() + fecha1.endAt.split('/').reverse().join()
           const v2 = fecha2.startAt.split('/').reverse().join() + fecha2.endAt.split('/').reverse().join()
 
-          // eslint-disable-next-line no-nested-ternary
           return v1 < v2 ? -1 : v1 > v2 ? 1 : 0
         }
 
@@ -749,7 +747,6 @@ export default {
       return this.dateFormater(date, this.format)
     },
     cleanString(string) {
-      // eslint-disable-next-line no-useless-escape
       return string.replace(/\<br\/>/g, '')
     },
     dateIsInCheckInCheckOut(date) {
@@ -1311,7 +1308,6 @@ export default {
         const aa = a.split('/').reverse().join()
         const bb = b.split('/').reverse().join()
 
-        // eslint-disable-next-line no-nested-ternary
         return aa < bb ? -1 : aa > bb ? 1 : 0
       })
 

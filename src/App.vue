@@ -477,15 +477,12 @@ export default {
       this.currentWidth = window.innerWidth
     },
     bookingClicked(event, date, currentBooking) {
-      /* eslint-disable-next-line */
       console.log('bookingClicked', event, date, currentBooking)
     },
     periodSelected(event, checkIn, checkOut) {
-      /* eslint-disable-next-line */
       console.log('periodSelected', event, checkIn, checkOut)
     },
     handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
-      /* eslint-disable-next-line */
       console.log('handleCheckIncheckOutHalfDay', checkIncheckOutHalfDay)
     },
     addYears(dt, n) {
@@ -499,7 +496,6 @@ export default {
       return getvalidDate(givenDate) <= getvalidDate(toDate) && getvalidDate(givenDate) >= getvalidDate(fromDate)
     },
     dayClicked(date, formatDate, nextDisabledDate) {
-      /* eslint-disable-next-line */
       console.log(date, formatDate, nextDisabledDate)
     },
     checkInChanged(newDate) {

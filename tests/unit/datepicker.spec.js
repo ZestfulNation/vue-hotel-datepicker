@@ -285,7 +285,7 @@ describe('Datepicker Props', () => {
   describe('firstDayOfWeek', () => {
     it('reorders the week day names', () => {
       const wrapper = mount(Datepicker, { props: { modelValue: true, alwaysVisible: true, firstDayOfWeek: 1 } })
-      const weekRow = wrapper.findComponent({ name: 'WeekRow' })
+      const weekRow = wrapper.findComponent({ name: 'HotelDatePicker-WeekRow' })
 
       expect(weekRow.vm.dayNames[0]).to.equal('Mon')
       wrapper.unmount()
