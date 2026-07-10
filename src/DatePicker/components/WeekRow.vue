@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'WeekRow',
+  name: 'HotelDatePicker-WeekRow',
   props: {
     i18n: {
       type: Object,

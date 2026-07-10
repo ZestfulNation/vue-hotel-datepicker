@@ -40,7 +40,7 @@ import BookingBullet from './BookingBullet.vue'
 import Price from './Price.vue'
 
 export default {
-  name: 'Day',
+  name: 'HotelDatePicker-Day',
   components: {
     BookingBullet,
     Price,

@@ -44,7 +44,7 @@ import WeekRow from './WeekRow.vue'
 import Helpers from '../../helpers'
 
 export default {
-  name: 'Month',
+  name: 'HotelDatePicker-Month',
   components: {
     Day,
     WeekRow,

@@ -64,6 +64,7 @@ describe('Datepicker Props', () => {
   describe('alwaysVisible', () => {
     it('renders the calendar content without needing it to be opened', async () => {
       const wrapper = mount(Datepicker, { props: { modelValue: true, alwaysVisible: true } })
+
       await nextTick()
 
       expect(wrapper.find('.vhd__datepicker__wrapper').classes()).to.include('vhd__datepicker__fullview')
@@ -126,6 +127,7 @@ describe('Datepicker Props', () => {
         attachTo: document.body,
         props: { modelValue: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
       })
+
       wrapper.vm.isOpen = true
       await nextTick()
 
@@ -141,6 +143,7 @@ describe('Datepicker Props', () => {
         attachTo: document.body,
         props: { modelValue: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: false },
       })
+
       wrapper.vm.isOpen = true
       await nextTick()
 
@@ -161,6 +164,7 @@ describe('Datepicker Props', () => {
           closeDatepickerOnClickOutside: false,
         },
       })
+
       wrapper.vm.isOpen = true
       await nextTick()
 
@@ -176,6 +180,7 @@ describe('Datepicker Props', () => {
         attachTo: document.body,
         props: { modelValue: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
       })
+
       wrapper.vm.isOpen = true
       await nextTick()
 
@@ -308,9 +313,7 @@ describe('Datepicker Props', () => {
       const wrapperFalse = mount(Datepicker, { props: { modelValue: true, gridStyle: false } })
 
       expect(wrapperTrue.find('.vhd__datepicker__wrapper').classes()).to.include('vhd__datepicker__wrapper--grid')
-      expect(wrapperFalse.find('.vhd__datepicker__wrapper').classes()).to.not.include(
-        'vhd__datepicker__wrapper--grid',
-      )
+      expect(wrapperFalse.find('.vhd__datepicker__wrapper').classes()).to.not.include('vhd__datepicker__wrapper--grid')
       wrapperTrue.unmount()
       wrapperFalse.unmount()
     })
@@ -470,7 +473,13 @@ describe('Datepicker Props', () => {
           showPrice: true,
           priceDecimals: 2,
           periodDates: [
-            { startAt: '2020-09-01', endAt: '2020-09-30', minimumDuration: 1, periodType: 'weekly_by_saturday', price: 700 },
+            {
+              startAt: '2020-09-01',
+              endAt: '2020-09-30',
+              minimumDuration: 1,
+              periodType: 'weekly_by_saturday',
+              price: 700,
+            },
           ],
         },
       })
@@ -487,7 +496,13 @@ describe('Datepicker Props', () => {
           alwaysVisible: true,
           showPrice: true,
           periodDates: [
-            { startAt: '2020-09-01', endAt: '2020-09-30', minimumDuration: 1, periodType: 'weekly_by_saturday', price: 700 },
+            {
+              startAt: '2020-09-01',
+              endAt: '2020-09-30',
+              minimumDuration: 1,
+              periodType: 'weekly_by_saturday',
+              price: 700,
+            },
           ],
         },
       })
@@ -502,6 +517,7 @@ describe('Datepicker Props', () => {
       const wrapper = mount(Datepicker, {
         props: { modelValue: true, startDate: '2020-01-01', alwaysVisible: true, showSingleMonth: true },
       })
+
       await nextTick()
 
       expect(wrapper.findAll('.vhd__datepicker__month')).to.have.lengthOf(1)
@@ -510,6 +526,7 @@ describe('Datepicker Props', () => {
 
     it('renders two months by default', async () => {
       const wrapper = mount(Datepicker, { props: { modelValue: true, startDate: '2020-01-01', alwaysVisible: true } })
+
       await nextTick()
 
       expect(wrapper.findAll('.vhd__datepicker__month')).to.have.lengthOf(2)

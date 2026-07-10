@@ -267,7 +267,7 @@ import es from '../public/i18n/es'
 import it from '../public/i18n/it'
 
 export default {
-  name: 'Examples',
+  name: 'HotelDatePicker-Examples',
   components: {
     DatePicker,
   },

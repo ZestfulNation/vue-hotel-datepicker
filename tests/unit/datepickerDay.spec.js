@@ -74,7 +74,6 @@ const baseOptions = {
   },
   enableCheckout: false,
 }
-
 const mountDay = (props) =>
   shallowMount(Day, {
     props: {
@@ -105,9 +104,7 @@ describe('Datepicker Day price', () => {
       date: new Date('2020-09-10'),
       showPrice: true,
       priceDecimals: 2,
-      sortedPeriodDates: [
-        { startAt: '2020-09-01', endAt: '2020-09-30', periodType: 'weekly_by_saturday', price: 700 },
-      ],
+      sortedPeriodDates: [{ startAt: '2020-09-01', endAt: '2020-09-30', periodType: 'weekly_by_saturday', price: 700 }],
     })
 
     expect(wrapper.vm.dayPrice).to.equal('100.00')
