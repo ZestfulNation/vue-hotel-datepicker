@@ -18,7 +18,7 @@ export default defineConfig({
       name: 'vueHotelDatepicker',
       formats: ['cjs', 'es', 'umd'],
       fileName: (format) => {
-        if (format === 'cjs') return 'vueHotelDatepicker.common.js'
+        if (format === 'cjs') return 'vueHotelDatepicker.cjs'
         return `vueHotelDatepicker.${format}.js`
       },
     },

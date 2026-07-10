@@ -21,7 +21,7 @@ Use **pnpm** (not npm/yarn) — a `pnpm-workspace.yaml` and `pnpm-lock.yaml` are
 
 ## Architecture
 
-This is a **Vue 3** date range picker published as a library, built with **Vite** (`vite.config.js`, lib mode). It produces `dist/vueHotelDatepicker.common.js` (cjs), `.es.js`, and `.umd.js`. `src/index.js` is the library entry point and registers the component via a Vue plugin `install()`.
+This is a **Vue 3** date range picker published as a library, built with **Vite** (`vite.config.js`, lib mode). It produces `dist/vueHotelDatepicker.cjs` (cjs), `vueHotelDatepicker.es.js`, and `vueHotelDatepicker.umd.js`. `src/index.js` is the library entry point and registers the component via a Vue plugin `install()`.
 
 ### Component tree
 
