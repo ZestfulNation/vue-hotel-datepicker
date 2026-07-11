@@ -46,7 +46,7 @@ export default {
 ```
 
 ```html
-<HotelDatePicker />
+<HotelDatePicker :modelValue="true" />
 ```
 
 
@@ -54,6 +54,7 @@ export default {
 
 | Name | Type | Default | Description |
 |--|--|--|--|
+|**modelValue**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker. (This is a breaking change with v4)
 |**alwaysVisible**|`Boolean`|`false`|If true shows display calendar in the page without an input.
 |**bookings**|`Array`|`[]`|If you want to show bookings.
 |**closeDatepickerOnClickOutside**|`Boolean`|`true`|Closes the date picker when the user clicks outside the date picker.
@@ -86,7 +87,6 @@ export default {
 |**startDate**|`[Date, String]`|`new Date()`|The start view date. All the dates before this date will be disabled.
 |**startingDateValue**|`Date`|`null`|The initial value of the start date.
 |**tooltipMessage**|`String`|`null`|If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
-|**modelValue**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker.
 |**yearBeforeMonth**|`Boolean`|`false`| Show the year before the month, only when showYear is true.
 
 ## i18n Defaults:

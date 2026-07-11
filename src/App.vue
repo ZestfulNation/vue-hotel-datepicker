@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1 style="flex-grow: 0">Vue Hotel Datepicker v4</h1>
+    <h1 style="flex-grow: 0">Vue Hotel Datepicker v5</h1>
     <div style="flex-grow: 0; padding: 1em 0">
       Language Selection:
       <select v-model="language">
@@ -84,6 +84,7 @@
           </div>
           <hr />
           <DatePicker
+            :modelValue="true"
             :startingDateValue="showStartingDateValue ? new Date(startingDateValue) || null : null"
             :firstDayOfWeek="firstDayOfWeek"
             :alwaysVisible="alwaysVisible"
@@ -117,6 +118,7 @@
             <span style="font-weight: 400">Emit day-clicked</span>
           </h3>
           <DatePicker
+            :modelValue="true"
             :disabledDates="[
               '2021-10-15',
               '2021-10-16',
@@ -142,6 +144,7 @@
         <div v-if="boxShow == 9" class="box">
           <h3>Half day, If you have check in at noon and checkout before noon</h3>
           <DatePicker
+            :modelValue="true"
             :i18n="i18n"
             :disabledDates="[
               '2021-05-01',
@@ -156,15 +159,18 @@
         </div>
         <div v-if="boxShow == 10" class="box">
           <h3>Disable check-in and check-out on the same day</h3>
-          <DatePicker :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 11" class="box">
           <h3>Allow selection of single day</h3>
-          <DatePicker :singleDaySelection="true" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :singleDaySelection="true" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 12" class="box">
           <h3>Check in only on saturday and minimum stay of 10 nights</h3>
           <DatePicker
+            :modelValue="true"
             :disabledWeekDays="{
               sunday: true,
               monday: true,
@@ -179,27 +185,33 @@
         </div>
         <div v-if="boxShow == 13" class="box">
           <h3>Block all dates after December 31st of the current year</h3>
-          <DatePicker :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 14" class="box">
           <h3>Block all dates after 15th of next month</h3>
-          <DatePicker :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 15" class="box">
           <h3>Block all date ranges of more than 30 days</h3>
-          <DatePicker :maxNights="30" :selectForward="false" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :maxNights="30" :selectForward="false" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 16" class="box">
           <h3>Minimum stay of 3 days</h3>
-          <DatePicker :minNights="3" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :minNights="3" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 17" class="box">
           <h3>Certain dates blocked</h3>
-          <DatePicker :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 18" class="box">
           <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
           <DatePicker
+            :modelValue="true"
             :startingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
             :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)"
             :i18n="i18n"
@@ -208,6 +220,7 @@
         <div v-if="boxShow == 19" class="box">
           <h3>Checkin only on saturdays</h3>
           <DatePicker
+            :modelValue="true"
             :disabledWeekDays="{
               sunday: true,
               monday: true,
@@ -223,15 +236,18 @@
         </div>
         <div v-if="boxShow == 20" class="box">
           <h3>Custom tooltip text</h3>
-          <DatePicker tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 22" class="box">
           <h3>Custom date format (MMMM D)</h3>
-          <DatePicker format="MMMM D" :i18n="i18n" />
+          <DatePicker
+            :modelValue="true" format="MMMM D" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 24" class="box">
           <h3>Set startingDateValue value</h3>
           <DatePicker
+            :modelValue="true"
             :firstDayOfWeek="firstDayOfWeek"
             :alwaysVisible="alwaysVisible"
             :startingDateValue="new Date()"
@@ -241,6 +257,7 @@
         <div v-if="boxShow == 25" class="box">
           <h3>Set endingDateValue value</h3>
           <DatePicker
+            :modelValue="true"
             :startingDateValue="new Date()"
             :endingDateValue="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)"
             :i18n="i18n"
@@ -248,7 +265,8 @@
         </div>
         <div v-if="boxShow == 26" class="box">
           <h3>Event startingDateValue / endingDateValue</h3>
-          <DatePicker :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
+          <DatePicker
+            :modelValue="true" :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
           <p>new startingDateValue Date: {{ checkIn }}</p>
           <p>new endingDateValue Date : {{ checkOut }}</p>
         </div>
