@@ -13,6 +13,8 @@ A responsive date range picker for Vue.js that displays the number of nights sel
 
 ## Installation
 
+> **Note:** Since `v5.0.0` this component requires **Vue 3** (`vue: ^3.4.0`). If you're on Vue 2, use `vue-hotel-datepicker@4.x`.
+
 #### NPM
 
 ```bash
@@ -84,7 +86,7 @@ export default {
 |**startDate**|`[Date, String]`|`new Date()`|The start view date. All the dates before this date will be disabled.
 |**startingDateValue**|`Date`|`null`|The initial value of the start date.
 |**tooltipMessage**|`String`|`null`|If provided, it will override the default tooltip "X nights" with the text provided. You can use HTML in the string.
-|**value**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker.
+|**modelValue**|`Boolean`|`false`| The v-model prop, controls the visibility of the date picker.
 |**yearBeforeMonth**|`Boolean`|`false`| Show the year before the month, only when showYear is true.
 
 ## i18n Defaults:

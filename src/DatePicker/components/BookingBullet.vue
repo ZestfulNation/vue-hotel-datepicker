@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: 'BookingBullet',
+  name: 'HotelDatePicker-BookingBullet',
   props: {
     currentBooking: {
       type: Object,

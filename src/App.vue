@@ -104,13 +104,11 @@
             @day-clicked="dayClicked"
           >
             <!-- Insert content here -->
-            <div
-              slot="content"
-              style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem"
-              v-if="showContentSlot"
-            >
-              Content Slot with style
-            </div>
+            <template v-if="showContentSlot" #content>
+              <div style="background: #ff8000; color: white; padding: 1rem; font-size: 2rem">
+                Content Slot with style
+              </div>
+            </template>
           </DatePicker>
         </div>
         <div v-if="boxShow == 8" class="box">
@@ -269,7 +267,7 @@ import es from '../public/i18n/es'
 import it from '../public/i18n/it'
 
 export default {
-  name: 'Examples',
+  name: 'HotelDatePicker-Examples',
   components: {
     DatePicker,
   },
@@ -479,15 +477,12 @@ export default {
       this.currentWidth = window.innerWidth
     },
     bookingClicked(event, date, currentBooking) {
-      /* eslint-disable-next-line */
       console.log('bookingClicked', event, date, currentBooking)
     },
     periodSelected(event, checkIn, checkOut) {
-      /* eslint-disable-next-line */
       console.log('periodSelected', event, checkIn, checkOut)
     },
     handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
-      /* eslint-disable-next-line */
       console.log('handleCheckIncheckOutHalfDay', checkIncheckOutHalfDay)
     },
     addYears(dt, n) {
@@ -501,7 +496,6 @@ export default {
       return getvalidDate(givenDate) <= getvalidDate(toDate) && getvalidDate(givenDate) >= getvalidDate(fromDate)
     },
     dayClicked(date, formatDate, nextDisabledDate) {
-      /* eslint-disable-next-line */
       console.log(date, formatDate, nextDisabledDate)
     },
     checkInChanged(newDate) {

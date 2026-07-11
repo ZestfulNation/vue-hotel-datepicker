@@ -27,6 +27,7 @@
       <Day
         v-bind="$props"
         :belongsToThisMonth="day.belongsToThisMonth"
+        :priceDecimals="priceDecimals"
         :date="day.date"
         @clear-selection="clearSelection"
         @booking-clicked="handleBookingClicked"
@@ -43,7 +44,7 @@ import WeekRow from './WeekRow.vue'
 import Helpers from '../../helpers'
 
 export default {
-  name: 'Month',
+  name: 'HotelDatePicker-Month',
   components: {
     Day,
     WeekRow,

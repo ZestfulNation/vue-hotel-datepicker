@@ -1,4 +1,3 @@
-/* eslint-disable vars-on-top */
 import fecha from 'fecha'
 
 const helpers = {
@@ -186,16 +185,13 @@ const helpers = {
     return newArr
   },
   getDaysArray(start, end) {
-    for (
-      // eslint-disable-next-line no-var
-      var arr = [], dt = new Date(start);
-      dt <= end;
-      dt.setDate(dt.getDate() + 1)
-    ) {
+    const arr = []
+    let dt
+
+    for (dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
       arr.push(new Date(dt))
     }
 
-    // eslint-disable-next-line block-scoped-var
     return arr
   },
   dateFormater(date, format) {

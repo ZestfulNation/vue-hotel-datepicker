@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'Price',
+  name: 'HotelDatePicker-Price',
   props: {
     show: {
       type: Boolean,
@@ -18,7 +18,7 @@ export default {
       required: true,
     },
     symbol: {
-      type: [String, null, undefined],
+      type: String,
       default: '',
     },
   },

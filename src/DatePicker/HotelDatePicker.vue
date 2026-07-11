@@ -7,7 +7,7 @@
       vhd__datepicker__fullview: alwaysVisible,
     }"
     :ref="`DatePicker-${hash}`"
-    v-if="value"
+    v-if="modelValue"
   >
     <div class="vhd__datepicker__close-button vhd__hide-on-desktop" v-if="isOpen" @click="closeMobileDatepicker">
       <i>+</i>
@@ -140,6 +140,7 @@
             :showWeekNumbers="showWeekNumbers"
             :disabledDates="disabledDates"
             :periodDates="periodDates"
+            :priceDecimals="priceDecimals"
             :sortedDisabledDates="sortedDisabledDates"
             :sortedPeriodDates="sortedPeriodDates"
             :tooltipMessage="customTooltipMessage"
@@ -188,6 +189,7 @@
               :nextPeriodDisableDates="nextPeriodDisableDates"
               :options="dayOptions"
               :priceSymbol="priceSymbol"
+              :priceDecimals="priceDecimals"
               :screenSize="screenSize"
               :showCustomTooltip="false"
               :showPrice="showPrice"
@@ -318,6 +320,10 @@ export default {
         return []
       },
     },
+    priceDecimals: {
+      type: [Number, null],
+      default: 0,
+    },
     positionRight: {
       type: Boolean,
       default: false,
@@ -360,9 +366,9 @@ export default {
       type: [String, null],
       default: null,
     },
-    value: {
+    modelValue: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     yearBeforeMonth: {
       type: Boolean,
@@ -416,10 +422,10 @@ export default {
             this.$nextTick(() => {
               if (this.$refs) {
                 const { swiperWrapper } = this.$refs
-                const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
+                const monthHeight = this.$refs.datepickerMonth[0].$el.offsetHeight
                 const currentSelectionIndex = this.checkOut ? this.getMonthDiff(new Date(), this.checkOut) : 0
 
-                swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
+                swiperWrapper.scrollTop = currentSelectionIndex * monthHeight
               }
             })
           } else {
@@ -427,7 +433,7 @@ export default {
           }
         }
 
-        this.$emit('input', this.open)
+        this.$emit('update:modelValue', this.open)
       },
     },
     sortBookings() {
@@ -438,7 +444,6 @@ export default {
           const aa = a.checkInDate.split('/').reverse().join()
           const bb = b.checkOutDate.split('/').reverse().join()
 
-          // eslint-disable-next-line no-nested-ternary
           return aa < bb ? -1 : aa > bb ? 1 : 0
         })
       }
@@ -498,7 +503,6 @@ export default {
           const v1 = fecha1.startAt.split('/').reverse().join() + fecha1.endAt.split('/').reverse().join()
           const v2 = fecha2.startAt.split('/').reverse().join() + fecha2.endAt.split('/').reverse().join()
 
-          // eslint-disable-next-line no-nested-ternary
           return v1 < v2 ? -1 : v1 > v2 ? 1 : 0
         }
 
@@ -663,7 +667,7 @@ export default {
     })
     this.createHalfDayDates(this.baseHalfDayDates)
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('resize', this.handleWindowResize)
 
     if (!this.isDesktop) {
@@ -743,7 +747,6 @@ export default {
       return this.dateFormater(date, this.format)
     },
     cleanString(string) {
-      // eslint-disable-next-line no-useless-escape
       return string.replace(/\<br\/>/g, '')
     },
     dateIsInCheckInCheckOut(date) {
@@ -1099,6 +1102,8 @@ export default {
       return newT
     },
     handleClickOutside(event) {
+      if (!this.closeDatepickerOnClickOutside) return
+
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`]
 
       if (ignoreClickOnMeElement) {
@@ -1303,7 +1308,6 @@ export default {
         const aa = a.split('/').reverse().join()
         const bb = b.split('/').reverse().join()
 
-        // eslint-disable-next-line no-nested-ternary
         return aa < bb ? -1 : aa > bb ? 1 : 0
       })
 

@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  name: 'HotelDatePicker-DateInput',
   props: {
     isOpen: {
       type: Boolean,
