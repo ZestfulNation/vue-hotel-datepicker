@@ -580,7 +580,7 @@ export default {
   },
   watch: {
     bookings() {
-      this.createHalfDayDates(this.baseHalfDayDates)
+      this.createHalfDayDates()
       this.reRender()
     },
     checkIn(newDate) {
@@ -594,7 +594,7 @@ export default {
       if (this.checkOut !== null) {
         this.hoveringDate = null
         this.nextDisabledDate = null
-        this.createHalfDayDates(this.baseHalfDayDates)
+        this.createHalfDayDates()
         this.reRender()
         this.showCustomTooltip = false
         this.isOpen = false
@@ -640,7 +640,7 @@ export default {
     },
     disabledDates() {
       this.nextDisabledDate = null
-      this.createHalfDayDates(this.baseHalfDayDates)
+      this.createHalfDayDates()
       this.reRender()
     },
   },
@@ -665,7 +665,7 @@ export default {
     this.onElementHeightChange(document.body, () => {
       this.emitHeighChangeEvent()
     })
-    this.createHalfDayDates(this.baseHalfDayDates)
+    this.createHalfDayDates()
   },
   unmounted() {
     window.removeEventListener('resize', this.handleWindowResize)
@@ -1163,7 +1163,7 @@ export default {
       this.showCustomTooltip = false
       this.hoveringPeriod = {}
       this.checkInPeriod = {}
-      this.createHalfDayDates(this.baseHalfDayDates)
+      this.createHalfDayDates()
       this.reRender()
       this.$emit('clear-selection')
     },
@@ -1298,10 +1298,10 @@ export default {
 
       this.months.push(month)
     },
-    createHalfDayDates(_baseHalfDayDates) {
+    createHalfDayDates() {
       let sortedDates = []
       const checkIncheckOutHalfDay = {}
-      const baseHalfDayDates = [..._baseHalfDayDates]
+      const baseHalfDayDates = Array.isArray(this.disabledDates) ? [...this.disabledDates] : []
 
       // Sorted disabledDates
       baseHalfDayDates.sort((a, b) => {
@@ -1311,51 +1311,49 @@ export default {
         return aa < bb ? -1 : aa > bb ? 1 : 0
       })
 
-      if (this.sortBookings.length === 0) {
-        for (let i = 0; i < baseHalfDayDates.length; i++) {
-          const newDate = baseHalfDayDates[i]
+      for (let i = 0; i < baseHalfDayDates.length; i++) {
+        const newDate = baseHalfDayDates[i]
 
-          if (this.halfDay) {
-            const newDateIncrementOne = baseHalfDayDates[i + 1]
+        if (this.halfDay) {
+          const newDateIncrementOne = baseHalfDayDates[i + 1]
 
-            if (i === 0) {
-              checkIncheckOutHalfDay[newDate] = {
-                checkIn: true,
-              }
-            }
-
-            if (
-              !checkIncheckOutHalfDay[newDate] &&
-              baseHalfDayDates[i + 1] &&
-              this.getDayDiff(newDate, newDateIncrementOne) > 1
-            ) {
-              checkIncheckOutHalfDay[newDate] = {
-                checkOut: true,
-              }
-              checkIncheckOutHalfDay[newDateIncrementOne] = {
-                checkIn: true,
-              }
-            }
-
-            if (i === baseHalfDayDates.length - 1) {
-              checkIncheckOutHalfDay[baseHalfDayDates[baseHalfDayDates.length - 1]] = {
-                checkOut: true,
-              }
+          if (i === 0) {
+            checkIncheckOutHalfDay[newDate] = {
+              checkIn: true,
             }
           }
 
-          sortedDates[i] = baseHalfDayDates[i]
+          if (
+            !checkIncheckOutHalfDay[newDate] &&
+            baseHalfDayDates[i + 1] &&
+            this.getDayDiff(newDate, newDateIncrementOne) > 1
+          ) {
+            checkIncheckOutHalfDay[newDate] = {
+              checkOut: true,
+            }
+            checkIncheckOutHalfDay[newDateIncrementOne] = {
+              checkIn: true,
+            }
+          }
+
+          if (i === baseHalfDayDates.length - 1) {
+            checkIncheckOutHalfDay[baseHalfDayDates[baseHalfDayDates.length - 1]] = {
+              checkOut: true,
+            }
+          }
         }
-      } else {
-        this.sortBookings.forEach((booking) => {
-          checkIncheckOutHalfDay[booking.checkInDate] = {
-            checkIn: true,
-          }
-          checkIncheckOutHalfDay[booking.checkOutDate] = {
-            checkOut: true,
-          }
-        })
+
+        sortedDates[i] = baseHalfDayDates[i]
       }
+
+      this.sortBookings.forEach((booking) => {
+        checkIncheckOutHalfDay[booking.checkInDate] = {
+          checkIn: true,
+        }
+        checkIncheckOutHalfDay[booking.checkOutDate] = {
+          checkOut: true,
+        }
+      })
 
       if (this.halfDay) {
         const halfDays = Object.keys(checkIncheckOutHalfDay)
