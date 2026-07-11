@@ -36,6 +36,15 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Verify version match
+        run: |
+          TAG_VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\/v//')
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+
       - name: Publish to npm
         run: pnpm publish --access public --no-git-checks
         env:
