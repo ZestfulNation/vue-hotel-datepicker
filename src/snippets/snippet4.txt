@@ -1,5 +1,0 @@
-<HotelDatePicker
-  :disabledDaysOfWeek="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']"
-  :enableCheckout="true"
-  :allowedRanges="[7,10,14]"
-></HotelDatePicker>
