@@ -22,7 +22,7 @@ describe('Datepicker Component', () => {
   beforeEach(() => {
     wrapper = mount(Datepicker, {
       attachTo: document.body,
-      props: {
+      propsData: {
         value: true,
         minNights: 3,
         disabledDates: ['2020-05-28', '2020-05-10', '2020-05-01', '2020-05-22'],
@@ -75,7 +75,7 @@ describe('Datepicker Props', () => {
   describe('bookings', () => {
     it('sorts the bookings chronologically by check-in date', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           bookings: [
             { checkInDate: '2020-08-26', checkOutDate: '2020-08-29', style: {} },
             { checkInDate: '2020-07-01', checkOutDate: '2020-07-08', style: {} },
@@ -124,7 +124,7 @@ describe('Datepicker Props', () => {
     it('closes the datepicker on a real outside click when true (default)', async () => {
       const wrapper = mount(Datepicker, {
         attachTo: document.body,
-        props: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
+        propsData: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
       })
 
       wrapper.vm.isOpen = true
@@ -140,7 +140,7 @@ describe('Datepicker Props', () => {
     it('keeps the datepicker open on a real outside click when false', async () => {
       const wrapper = mount(Datepicker, {
         attachTo: document.body,
-        props: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: false },
+        propsData: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: false },
       })
 
       wrapper.vm.isOpen = true
@@ -156,7 +156,7 @@ describe('Datepicker Props', () => {
     it('keeps the datepicker open on a real outside click when false and alwaysVisible is true', async () => {
       const wrapper = mount(Datepicker, {
         attachTo: document.body,
-        props: {
+        propsData: {
           value: true,
           startDate: '2020-01-01',
           alwaysVisible: true,
@@ -177,7 +177,7 @@ describe('Datepicker Props', () => {
     it('does not close the datepicker when clicking inside it', async () => {
       const wrapper = mount(Datepicker, {
         attachTo: document.body,
-        props: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
+        propsData: { value: true, startDate: '2020-01-01', closeDatepickerOnClickOutside: true },
       })
 
       wrapper.vm.isOpen = true
@@ -193,7 +193,7 @@ describe('Datepicker Props', () => {
   describe('disabledDates', () => {
     it('sorts the disabled dates chronologically', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', halfDay: false, disabledDates: ['2020-01-20', '2020-01-05'] },
+        propsData: { startDate: '2020-01-01', halfDay: false, disabledDates: ['2020-01-20', '2020-01-05'] },
       })
 
       expect(wrapper.vm.sortedDisabledDates).to.eql([new Date('2020-01-05'), new Date('2020-01-20')])
@@ -215,7 +215,7 @@ describe('Datepicker Props', () => {
   describe('disabledWeekDays', () => {
     it('merges on top of the disabledDaysOfWeek object', () => {
       const wrapper = mount(Datepicker, {
-        props: { disabledDaysOfWeek: ['Monday'], disabledWeekDays: { sunday: true } },
+        propsData: { disabledDaysOfWeek: ['Monday'], disabledWeekDays: { sunday: true } },
       })
 
       expect(wrapper.vm.disabledWeekDaysObject.monday).to.equal(true)
@@ -248,7 +248,7 @@ describe('Datepicker Props', () => {
   describe('enableCheckout', () => {
     it('forces the next disabled date to Infinity so checkout is allowed on disabled dates', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', enableCheckout: true, disabledDates: ['2020-01-10'] },
+        propsData: { startDate: '2020-01-01', enableCheckout: true, disabledDates: ['2020-01-10'] },
       })
 
       wrapper.vm.handleDayClick({}, new Date('2020-01-05'), '2020-01-05', false)
@@ -284,7 +284,7 @@ describe('Datepicker Props', () => {
   describe('firstDayOfWeek', () => {
     it('reorders the week day names', () => {
       const wrapper = mount(Datepicker, { propsData: { value: true, alwaysVisible: true, firstDayOfWeek: 1 } })
-      const weekRow = wrapper.findComponent({ name: 'HotelDatePicker-WeekRow' })
+      const weekRow = wrapper.findComponent({ name: 'WeekRow' })
 
       expect(weekRow.vm.dayNames[0]).to.equal('Mon')
       wrapper.destroy()
@@ -295,7 +295,7 @@ describe('Datepicker Props', () => {
     it('formats the check-in input using the given format string', async () => {
       const wrapper = mount(Datepicker, {
         attachTo: document.body,
-        props: { value: true, startDate: '2020-01-01', format: 'DD/MM/YYYY' },
+        propsData: { value: true, startDate: '2020-01-01', format: 'DD/MM/YYYY' },
       })
 
       wrapper.vm.checkIn = new Date('2020-01-05')
@@ -313,15 +313,15 @@ describe('Datepicker Props', () => {
 
       expect(wrapperTrue.find('.vhd__datepicker__wrapper').classes()).to.include('vhd__datepicker__wrapper--grid')
       expect(wrapperFalse.find('.vhd__datepicker__wrapper').classes()).to.not.include('vhd__datepicker__wrapper--grid')
-      wrapperTrue.unmount()
-      wrapperFalse.unmount()
+      wrapperTrue.destroy()
+      wrapperFalse.destroy()
     })
   })
 
   describe('halfDay', () => {
     it('marks the first and last disabled dates as half-day check-in/check-out when true (default)', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', disabledDates: ['2020-01-05', '2020-01-10'] },
+        propsData: { startDate: '2020-01-01', disabledDates: ['2020-01-05', '2020-01-10'] },
       })
 
       expect(wrapper.vm.checkIncheckOutHalfDay['2020-01-05']).to.eql({ checkIn: true })
@@ -331,7 +331,7 @@ describe('Datepicker Props', () => {
 
     it('does not create half-day markers when false', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', halfDay: false, disabledDates: ['2020-01-05', '2020-01-10'] },
+        propsData: { startDate: '2020-01-01', halfDay: false, disabledDates: ['2020-01-05', '2020-01-10'] },
       })
 
       expect(wrapper.vm.checkIncheckOutHalfDay).to.eql({})
@@ -362,7 +362,7 @@ describe('Datepicker Props', () => {
   describe('lastDateAvailable', () => {
     it('prevents pagination once the last available month is reached', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', lastDateAvailable: new Date('2020-02-15') },
+        propsData: { startDate: '2020-01-01', lastDateAvailable: new Date('2020-02-15') },
       })
 
       expect(wrapper.vm.isPreventedMaxMonth).to.equal(true)
@@ -371,7 +371,7 @@ describe('Datepicker Props', () => {
 
     it('allows pagination when the last available date is far away', () => {
       const wrapper = mount(Datepicker, {
-        props: { startDate: '2020-01-01', lastDateAvailable: new Date('2021-01-01') },
+        propsData: { startDate: '2020-01-01', lastDateAvailable: new Date('2021-01-01') },
       })
 
       expect(wrapper.vm.isPreventedMaxMonth).to.equal(false)
@@ -402,7 +402,7 @@ describe('Datepicker Props', () => {
   describe('periodDates', () => {
     it('applies the nightly minimumDuration from a matching period on check-in', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           startDate: '2020-06-01',
           periodDates: [{ startAt: '2020-06-09', endAt: '2020-07-26', minimumDuration: 4, periodType: 'nightly' }],
         },
@@ -416,7 +416,7 @@ describe('Datepicker Props', () => {
 
     it('multiplies minimumDuration by 7 for weekly periods', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           startDate: '2020-09-01',
           periodDates: [
             { startAt: '2020-09-30', endAt: '2020-11-30', minimumDuration: 2, periodType: 'weekly_by_sunday' },
@@ -443,7 +443,7 @@ describe('Datepicker Props', () => {
   describe('showPrice / priceSymbol', () => {
     it('shows the price on days within a priced period', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           value: true,
           startDate: '2020-09-01',
           alwaysVisible: true,
@@ -465,7 +465,7 @@ describe('Datepicker Props', () => {
   describe('priceDecimals', () => {
     it('divides a weekly price by 7 and formats it with the given number of decimals', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           value: true,
           startDate: '2020-09-01',
           alwaysVisible: true,
@@ -489,7 +489,7 @@ describe('Datepicker Props', () => {
 
     it('defaults to 0 decimals when not set', () => {
       const wrapper = mount(Datepicker, {
-        props: {
+        propsData: {
           value: true,
           startDate: '2020-09-01',
           alwaysVisible: true,
@@ -514,7 +514,7 @@ describe('Datepicker Props', () => {
   describe('showSingleMonth', () => {
     it('renders only one month when true', async () => {
       const wrapper = mount(Datepicker, {
-        props: { value: true, startDate: '2020-01-01', alwaysVisible: true, showSingleMonth: true },
+        propsData: { value: true, startDate: '2020-01-01', alwaysVisible: true, showSingleMonth: true },
       })
 
       await nextTick()
@@ -536,7 +536,7 @@ describe('Datepicker Props', () => {
   describe('showWeekNumbers', () => {
     it('shows the week numbers when true', () => {
       const wrapper = mount(Datepicker, {
-        props: { value: true, startDate: '2020-01-01', alwaysVisible: true, showWeekNumbers: true },
+        propsData: { value: true, startDate: '2020-01-01', alwaysVisible: true, showWeekNumbers: true },
       })
 
       expect(wrapper.find('.vhd__datepicker__weeknumbers').exists()).to.equal(true)
@@ -561,7 +561,7 @@ describe('Datepicker Props', () => {
 
     it('omits the year from the month name when showYear is false', () => {
       const wrapper = mount(Datepicker, {
-        props: { value: true, startDate: '2020-01-01', alwaysVisible: true, showYear: false },
+        propsData: { value: true, startDate: '2020-01-01', alwaysVisible: true, showYear: false },
       })
 
       expect(wrapper.find('.vhd__datepicker__month-name').text()).to.not.include('2020')
@@ -570,7 +570,7 @@ describe('Datepicker Props', () => {
 
     it('places the year before the month name when yearBeforeMonth is true', () => {
       const wrapper = mount(Datepicker, {
-        props: { value: true, startDate: '2020-01-01', alwaysVisible: true, yearBeforeMonth: true },
+        propsData: { value: true, startDate: '2020-01-01', alwaysVisible: true, yearBeforeMonth: true },
       })
 
       expect(wrapper.find('.vhd__datepicker__month-name').text()).to.match(/^2020/)
@@ -717,7 +717,7 @@ describe('Datepicker Events', () => {
 
   it('emits handle-checkin-checkout-half-day on mount', () => {
     const wrapper = mount(Datepicker, {
-      props: { startDate: '2020-01-01', disabledDates: ['2020-01-05', '2020-01-10'] },
+      propsData: { startDate: '2020-01-01', disabledDates: ['2020-01-05', '2020-01-10'] },
     })
 
     expect(wrapper.emitted('handle-checkin-checkout-half-day')).to.not.equal(undefined)

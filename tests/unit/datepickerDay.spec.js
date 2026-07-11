@@ -8,7 +8,7 @@ describe('Datepicker Day', () => {
 
   beforeEach(() => {
     wrapper = shallowMount(Day, {
-      props: {
+      propsData: {
         activeMonthIndex: 0,
         belongsToThisMonth: true,
         checkIn: null,
@@ -63,8 +63,6 @@ const baseOptions = {
   maxNights: null,
   minNights: 1,
   startDate: new Date('2020-01-01'),
-  priceSymbol: '$',
-  priceDecimals: 0,
   disabledWeekDaysObject: {
     sunday: false,
     monday: false,
@@ -78,7 +76,7 @@ const baseOptions = {
 }
 const mountDay = (props) =>
   shallowMount(Day, {
-    props: {
+    propsData: {
       activeMonthIndex: 0,
       belongsToThisMonth: true,
       checkIn: null,
@@ -86,6 +84,8 @@ const mountDay = (props) =>
       hoveringDate: null,
       isOpen: true,
       options: baseOptions,
+      priceDecimals: 0,
+      priceSymbol: '$',
       ...props,
     },
   })

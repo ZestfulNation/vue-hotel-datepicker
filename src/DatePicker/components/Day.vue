@@ -117,7 +117,7 @@ export default {
     },
     priceSymbol: {
       type: String,
-      required: true,
+      default: '$',
     },
     priceDecimals: {
       type: [Number, null],
