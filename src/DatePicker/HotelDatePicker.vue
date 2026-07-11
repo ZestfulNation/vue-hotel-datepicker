@@ -420,10 +420,10 @@ export default {
             this.$nextTick(() => {
               if (this.$refs) {
                 const { swiperWrapper } = this.$refs
-                const monthHeihgt = this.$refs.datepickerMonth[0].offsetHeight
+                const monthHeight = this.$refs.datepickerMonth[0].offsetHeight
                 const currentSelectionIndex = this.checkOut ? this.getMonthDiff(new Date(), this.checkOut) : 0
 
-                swiperWrapper.scrollTop = currentSelectionIndex * monthHeihgt
+                swiperWrapper.scrollTop = currentSelectionIndex * monthHeight
               }
             })
           } else {
@@ -1103,6 +1103,8 @@ export default {
       return newT
     },
     handleClickOutside(event) {
+      if (!this.closeDatepickerOnClickOutside) return
+
       const ignoreClickOnMeElement = this.$refs[`DatePicker-${this.hash}`]
 
       if (ignoreClickOnMeElement) {
