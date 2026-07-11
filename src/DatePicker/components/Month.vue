@@ -27,6 +27,7 @@
       <Day
         v-bind="$props"
         :belongsToThisMonth="day.belongsToThisMonth"
+        :priceDecimals="priceDecimals"
         :date="day.date"
         @clear-selection="clearSelection"
         @booking-clicked="handleBookingClicked"

@@ -132,6 +132,7 @@
             :nextPeriodDisableDates="nextPeriodDisableDates"
             :options="dayOptions"
             :priceSymbol="priceSymbol"
+            :priceDecimals="priceDecimals"
             :screenSize="screenSize"
             :showCustomTooltip="showCustomTooltip"
             :showPrice="showPrice"
@@ -186,6 +187,7 @@
               :nextPeriodDisableDates="nextPeriodDisableDates"
               :options="dayOptions"
               :priceSymbol="priceSymbol"
+              :priceDecimals="priceDecimals"
               :screenSize="screenSize"
               :showCustomTooltip="false"
               :showPrice="showPrice"
@@ -323,6 +325,10 @@ export default {
     priceSymbol: {
       type: String,
       default: '',
+    },
+    priceDecimals: {
+      type: [Number, null],
+      default: 0,
     },
     showPrice: {
       type: Boolean,
