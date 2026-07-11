@@ -199,6 +199,20 @@ describe('Datepicker Props', () => {
       expect(wrapper.vm.sortedDisabledDates).to.eql([new Date('2020-01-05'), new Date('2020-01-20')])
       wrapper.destroy()
     })
+
+    it('still disables the given dates when bookings are also present', () => {
+      const wrapper = mount(Datepicker, {
+        propsData: {
+          startDate: '2020-01-01',
+          halfDay: false,
+          disabledDates: ['2020-01-20', '2020-01-05'],
+          bookings: [{ checkInDate: '2020-01-10', checkOutDate: '2020-01-12', style: {} }],
+        },
+      })
+
+      expect(wrapper.vm.sortedDisabledDates).to.eql([new Date('2020-01-05'), new Date('2020-01-20')])
+      wrapper.destroy()
+    })
   })
 
   describe('disabledDaysOfWeek (deprecated)', () => {
