@@ -1302,7 +1302,7 @@ export default {
     createHalfDayDates(_baseHalfDayDates) {
       let sortedDates = []
       const checkIncheckOutHalfDay = {}
-      const baseHalfDayDates = [..._baseHalfDayDates]
+      const baseHalfDayDates = Array.isArray(_baseHalfDayDates) ? [..._baseHalfDayDates] : []
 
       // Sorted disabledDates
       baseHalfDayDates.sort((a, b) => {

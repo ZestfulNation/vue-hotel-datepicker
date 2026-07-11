@@ -521,7 +521,7 @@ export default {
       const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
       const day = days[this.date.getUTCDay()]
 
-      return this.options.disabledWeekDaysObject[day]
+      return !!this.options?.disabledWeekDaysObject?.[day]
     },
   },
   watch: {
@@ -636,8 +636,8 @@ export default {
       }
     },
     compareEndDay() {
-      if (this.options.endDate !== Infinity) {
-        return this.compareDay(this.date, this.options.endDate) === 1
+      if (this.options && this.options?.endDate !== Infinity) {
+        return this.compareDay(this.date, this.options?.endDate) === 1
       }
 
       return false
@@ -647,7 +647,7 @@ export default {
         // If this day is equal any of the disabled dates
         (this.sortedDisabledDates ? this.sortedDisabledDates.some((i) => this.compareDay(i, this.date) === 0) : null) ||
         // Or is before the start date
-        this.compareDay(this.date, this.options.startDate) === -1 ||
+        (this.options?.startDate && this.compareDay(this.date, this.options.startDate) === -1) ||
         // Or is after the end date
         this.compareEndDay() ||
         // Or is in one of the disabled days of the week
@@ -656,7 +656,7 @@ export default {
         (this.date >= this.nextDisabledDate && this.nextDisabledDate !== null)
 
       // Handle checkout enabled
-      if (this.options.enableCheckout) {
+      if (this.options?.enableCheckout) {
         if (this.compareDay(this.date, this.checkIn) === 1 && this.compareDay(this.date, this.checkOut) === -1) {
           this.isDisabled = false
         }
@@ -678,7 +678,7 @@ export default {
         this.nextDisabledDate !== Infinity
       ) {
         this.isDisabled = true
-      } else if (this.isDateLessOrEquals(this.date, new Date().setDate(this.options.startDate.getDate() - 1))) {
+      } else if (this.options?.startDate && this.isDateLessOrEquals(this.date, new Date().setDate(this.options.startDate.getDate() - 1))) {
         this.isDisabled = true
       }
 
@@ -686,7 +686,7 @@ export default {
         this.isDisabled = false
       }
 
-      if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options.enableCheckout) {
+      if (this.isDateLessOrEquals(this.checkIn, this.date) && this.options?.enableCheckout) {
         this.isDisabled = false
       }
     },
