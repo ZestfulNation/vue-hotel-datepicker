@@ -1,0 +1,2 @@
+allowBuilds:
+  '@parcel/watcher': set this to true or false
