@@ -372,6 +372,65 @@ describe('Datepicker Props', () => {
       expect(wrapper.text()).to.include('Departure')
       wrapper.unmount()
     })
+
+    it('renders the custom day-names in the week row header', () => {
+      const customI18n = { ...i18nDefaults, 'day-names': ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'] }
+      const wrapper = mount(Datepicker, {
+        props: { modelValue: true, startDate: '2020-01-01', alwaysVisible: true, i18n: customI18n },
+      })
+
+      expect(wrapper.text()).to.include('Dim')
+      expect(wrapper.text()).to.include('Jeu')
+      wrapper.unmount()
+    })
+
+    it('renders the custom month-names in the calendar month header', () => {
+      const customI18n = {
+        ...i18nDefaults,
+        'month-names': [
+          'Enero',
+          'Febrero',
+          'Marzo',
+          'Abril',
+          'Mayo',
+          'Junio',
+          'Julio',
+          'Agosto',
+          'Septiembre',
+          'Octubre',
+          'Noviembre',
+          'Diciembre',
+        ],
+      }
+      const wrapper = mount(Datepicker, {
+        props: { modelValue: true, startDate: '2020-01-01', alwaysVisible: true, i18n: customI18n },
+      })
+
+      expect(wrapper.find('.vhd__datepicker__month-name').text()).to.include('Enero')
+      wrapper.unmount()
+    })
+
+    it('formats the ordinal day suffix using the locale when the format includes "Do"', () => {
+      const wrapper = mount(Datepicker, {
+        props: { modelValue: true, startDate: '2020-01-01', format: 'Do MMMM YYYY' },
+      })
+
+      expect(wrapper.vm.formatDate(new Date('2020-01-01'))).to.equal('1st January 2020')
+      expect(wrapper.vm.formatDate(new Date('2020-01-02'))).to.equal('2nd January 2020')
+      expect(wrapper.vm.formatDate(new Date('2020-01-03'))).to.equal('3rd January 2020')
+      expect(wrapper.vm.formatDate(new Date('2020-01-11'))).to.equal('11th January 2020')
+      wrapper.unmount()
+    })
+
+    it('renders the correct day-of-month number for each day cell', () => {
+      const wrapper = mount(Datepicker, {
+        props: { modelValue: true, startDate: '2020-01-01', alwaysVisible: true },
+      })
+      const firstVisibleDay = wrapper.find('.vhd__datepicker__month-day:not(.vhd__datepicker__month-day--hidden) .day')
+
+      expect(firstVisibleDay.text()).to.equal('1')
+      wrapper.unmount()
+    })
   })
 
   describe('lastDateAvailable', () => {
