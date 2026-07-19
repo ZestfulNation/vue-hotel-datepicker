@@ -1,4 +1,4 @@
-import fecha from 'fecha'
+import dayjs from './dayjs'
 
 const helpers = {
   getNextDate(datesArray, referenceDate) {
@@ -198,7 +198,7 @@ const helpers = {
     const f = format || 'YYYY-MM-DD'
 
     if (date) {
-      return fecha.format(date, f)
+      return dayjs(date).format(f)
     }
 
     return ''
@@ -214,8 +214,8 @@ const helpers = {
     return new Date(time1) < new Date(time2)
   },
   compareDay(day1, day2) {
-    const date1 = fecha.format(new Date(day1), 'YYYYMMDD')
-    const date2 = fecha.format(new Date(day2), 'YYYYMMDD')
+    const date1 = dayjs(new Date(day1)).format('YYYYMMDD')
+    const date2 = dayjs(new Date(day2)).format('YYYYMMDD')
 
     if (date1 > date2) {
       return 1
