@@ -45,7 +45,7 @@
     "*.json"
   ],
   "dependencies": {
-    "fecha": "^4.2.1",
+    "dayjs": "^1.11.21",
     "lodash.throttle": "^4.1.1",
     "vue": "^3.4.0"
   },

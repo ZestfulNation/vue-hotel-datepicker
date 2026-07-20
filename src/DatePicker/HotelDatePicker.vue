@@ -214,7 +214,7 @@
 
 <script>
 import throttle from 'lodash.throttle'
-import fecha from 'fecha'
+import dayjs from '../dayjs'
 
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
@@ -685,15 +685,15 @@ export default {
     ...Helpers,
     transformDisabledWeekDays() {},
     configureI18n() {
-      fecha.setGlobalDateI18n({
-        dayNames: this.i18n['day-names'],
-        dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
-        monthNames: this.i18n['month-names'],
-        monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
-        amPm: ['am', 'pm'],
-        // D is the day of the month, function returns something like...  3rd or 11th
-        DoFn(D) {
-          return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
+      dayjs.locale('vhd-i18n', {
+        name: 'vhd-i18n',
+        weekdays: this.i18n['day-names'],
+        weekdaysShort: this.shortenString(this.i18n['day-names'], 3),
+        months: this.i18n['month-names'],
+        monthsShort: this.shortenString(this.i18n['month-names'], 3),
+        // D is the day of the month, ordinal returns something like...  3rd or 11th
+        ordinal(D) {
+          return `${D}${['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]}`
         },
       })
     },
@@ -1268,7 +1268,7 @@ export default {
       }
 
       if (this.endDate !== Infinity) {
-        if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') === fecha.format(new Date(this.endDate), 'YYYYMM')) {
+        if (dayjs(firstDayOfLastMonth[0].date).format('YYYYMM') === dayjs(new Date(this.endDate)).format('YYYYMM')) {
           return
         }
       }
