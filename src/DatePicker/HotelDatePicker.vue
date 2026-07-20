@@ -691,7 +691,7 @@ export default {
         monthsShort: this.shortenString(this.i18n['month-names'], 3),
         // D is the day of the month, ordinal returns something like...  3rd or 11th
         ordinal(D) {
-          return `[${D}${['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]}]`
+          return `${D}${['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]}`
         },
       })
     },
