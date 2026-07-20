@@ -33,9 +33,11 @@
       />
     </div>
     <div class="vhd__datepicker__clear-button" tabindex="0" @click="clearSelection" v-show="showClearSelectionButton">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" role="img" aria-label="x">
-        <title>x</title>
-        <path d="M6.5 6.5l55 55m0-55l-55 55" stroke="#000" fill="none" stroke-linecap="square" />
+      <!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+        <path
+          d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+        />
       </svg>
     </div>
     <div
@@ -57,7 +59,7 @@
             class="vhd__datepicker__input"
             tabindex="0"
             :class="{
-              'vhd__datepicker__dummy-input--is-active': isOpen && checkIn == null,
+              'vhd__datepicker__dummy-input--is-active': isOpen && checkIn === null,
             }"
             type="button"
           >
@@ -67,7 +69,7 @@
             class="vhd__datepicker__input"
             tabindex="0"
             :class="{
-              'vhd__datepicker__dummy-input--is-active': isOpen && checkOut == null && checkIn !== null,
+              'vhd__datepicker__dummy-input--is-active': isOpen && checkOut === null && checkIn !== null,
             }"
             type="button"
           >
