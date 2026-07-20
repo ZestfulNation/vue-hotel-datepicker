@@ -197,11 +197,11 @@ export default {
     ...Helpers,
     getMonth(date) {
       const month = 'MMMM'
-      const year = 'YYYY'
       let format = month
-      // const i18n = { monthNames: this.i18n['month-names'] }
 
       if (this.showYear) {
+        const year = 'YYYY'
+
         format = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
       }
 

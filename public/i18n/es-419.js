@@ -1,13 +1,13 @@
 export default {
-  name: 'Español (España)',
+  name: 'Español (Latinoamericano)',
   format: 'DD/MM/YYYY',
   night: 'Noche',
   nights: 'Noches',
   week: 'Semana',
   weeks: 'Semanas',
   'day-names': ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-  'check-in': 'Arribo',
-  'check-out': 'Partida',
+  'check-in': 'Llegada',
+  'check-out': 'Salida',
   'month-names': [
     'Enero',
     'Febrero',
@@ -23,10 +23,10 @@ export default {
     'Diciembre',
   ],
   tooltip: {
-    halfDayCheckIn: 'Arribo Disponible',
-    halfDayCheckOut: 'Partida Disponible',
-    saturdayToSaturday: 'Sólo Sábados a Sábados',
+    halfDayCheckIn: 'Llegada Disponible',
+    halfDayCheckOut: 'Salida Disponible',
+    saturdayToSaturday: 'Sólo Sábado a Sábado',
     sundayToSunday: 'Sólo Domingo a Domingo',
-    minimumRequiredPeriod: '%{minNightInPeriod} %{night} mínimo.',
+    minimumRequiredPeriod: '%{minNightInPeriod} %{nights} mínimo.',
   },
 }
