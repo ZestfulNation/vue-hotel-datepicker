@@ -8,7 +8,7 @@
     <p class="vhd__datepicker__month-name">
       {{ monthName }}
     </p>
-    <week-row v-bind="$props" />
+    <week-row :i18n="i18n" :weekKey="weekKey" :firstDayOfWeek="firstDayOfWeek" />
     <div v-if="showWeekNumbers" class="vhd__datepicker__weeknumbers">
       <div
         class="vhd__datepicker__weeknumbers__number"
@@ -25,10 +25,33 @@
       @mouseenter="enterDay($event, day)"
     >
       <Day
-        v-bind="$props"
+        :bookings="bookings"
+        :activeMonthIndex="activeMonthIndex"
         :belongsToThisMonth="day.belongsToThisMonth"
-        :priceDecimals="priceDecimals"
+        :checkIn="checkIn"
+        :checkIncheckOutHalfDay="checkIncheckOutHalfDay"
+        :checkInPeriod="checkInPeriod"
+        :checkOut="checkOut"
         :date="day.date"
+        :disableCheckoutOnCheckin="disableCheckoutOnCheckin"
+        :duplicateBookingDates="duplicateBookingDates"
+        :hoveringDate="hoveringDate"
+        :hoveringPeriod="hoveringPeriod"
+        :hoveringTooltip="hoveringTooltip"
+        :i18n="i18n"
+        :isOpen="isOpen"
+        :minNightCount="minNightCount"
+        :nextDisabledDate="nextDisabledDate"
+        :nextPeriodDisableDates="nextPeriodDisableDates"
+        :options="options"
+        :priceSymbol="priceSymbol"
+        :priceDecimals="priceDecimals"
+        :screenSize="screenSize"
+        :showCustomTooltip="showCustomTooltip"
+        :showPrice="showPrice"
+        :sortedDisabledDates="sortedDisabledDates"
+        :sortedPeriodDates="sortedPeriodDates"
+        :tooltipMessage="tooltipMessage"
         @clear-selection="clearSelection"
         @booking-clicked="handleBookingClicked"
         @day-clicked="handleDayClick"
@@ -197,11 +220,11 @@ export default {
     ...Helpers,
     getMonth(date) {
       const month = 'MMMM'
-      const year = 'YYYY'
       let format = month
-      // const i18n = { monthNames: this.i18n['month-names'] }
 
       if (this.showYear) {
+        const year = 'YYYY'
+
         format = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
       }
 

@@ -83,6 +83,7 @@ $extra-small-screen: '(max-width: 23em)';
     position: relative;
     width: calc(100% / 7);
     float: left;
+
     &:last-child {
       margin-bottom: 1.5em;
     }
@@ -183,6 +184,7 @@ $extra-small-screen: '(max-width: 23em)';
           transform: none;
         }
       }
+
       .#{$prefix}__month-day:before {
         display: none;
       }
@@ -199,6 +201,7 @@ $extra-small-screen: '(max-width: 23em)';
     .vhd__hide-on-desktop {
       display: none;
     }
+
     .#{$prefix} {
       position: relative;
       top: 0;
@@ -277,24 +280,12 @@ $extra-small-screen: '(max-width: 23em)';
       width: 50%;
     }
 
-    &--is-active {
-      color: $primary-text-color;
-    }
-
-    &--is-active::placeholder {
-      color: $primary-text-color;
-    }
-
-    &--is-active::-moz-placeholder {
-      color: $primary-text-color;
-    }
-
-    &--is-active:-ms-input-placeholder {
-      color: $primary-text-color;
-    }
-
+    &--is-active,
+    &--is-active::placeholder,
+    &--is-active::-moz-placeholder,
+    &--is-active:-ms-input-placeholder,
     &--is-active:-moz-placeholder {
-      color: $primary-text-color;
+      color: $primary-color;
     }
 
     &--single-date:first-child {
@@ -307,6 +298,7 @@ $extra-small-screen: '(max-width: 23em)';
   &__month-day-wrapper {
     height: 0;
     padding-top: calc(100% - 1px); //fix for safari
+
     span.day {
       z-index: 1;
       position: absolute;
@@ -330,6 +322,8 @@ $extra-small-screen: '(max-width: 23em)';
     text-align: center;
     color: $primary-text-color;
     cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 
     @include focusStyle();
 
@@ -358,6 +352,9 @@ $extra-small-screen: '(max-width: 23em)';
     &--allowed-checkout:hover {
       background-color: $primary-color;
       color: $colorValidHoverDate;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 18px rgba($black, 0.18);
+      z-index: 2;
     }
 
     &--disabled {
@@ -367,6 +364,7 @@ $extra-small-screen: '(max-width: 23em)';
       cursor: not-allowed;
       pointer-events: none;
       font-weight: $font-regular;
+
       span {
         text-decoration: line-through;
       }
@@ -379,6 +377,7 @@ $extra-small-screen: '(max-width: 23em)';
       font-weight: $font-regular;
       cursor: default;
       background: transparent;
+
       span {
         text-decoration: none;
       }
@@ -392,6 +391,7 @@ $extra-small-screen: '(max-width: 23em)';
     &--halfCheckOut {
       position: relative;
       overflow: hidden;
+
       &:before {
         content: '';
         position: absolute;
@@ -420,22 +420,35 @@ $extra-small-screen: '(max-width: 23em)';
     &--selected {
       background-color: rgba($primary-color, 0.7);
       color: $primary-text-inverse-color;
+
       span {
         text-decoration: none;
       }
+
       &:hover {
         font-weight: $font-bold;
-        background-color: $bgRollActiveDage;
-        color: $colorRollActiveDage;
-        z-index: 1;
+        background-color: white;
+        color: $primary-color;
+
+        transform: scale(1.15);
+        box-shadow: 0 0 18px rgba($black, 0.7);
+        border: none;
+        z-index: 2;
+        cursor: pointer;
       }
     }
 
     &--hovering {
-      background-color: rgba($primary-color, 0.7);
-      color: $primary-text-inverse-color;
       font-weight: $font-bold;
+      background-color: white;
+      color: $primary-color;
+
+      transform: scale(1.15);
+      box-shadow: 0 0 18px rgba($black, 0.7);
+      border: none;
+      z-index: 2;
       cursor: pointer;
+
       span {
         text-decoration: none;
       }
@@ -448,6 +461,7 @@ $extra-small-screen: '(max-width: 23em)';
       cursor: pointer;
       font-weight: $font-bold;
       pointer-events: auto;
+
       span {
         text-decoration: none;
       }
@@ -463,6 +477,7 @@ $extra-small-screen: '(max-width: 23em)';
       font-weight: $font-regular;
       position: relative;
       pointer-events: none;
+
       span {
         text-decoration: none;
       }
@@ -514,6 +529,7 @@ $extra-small-screen: '(max-width: 23em)';
       pointer-events: none;
     }
   }
+
   &__inner {
     padding: 0 2.5rem;
     position: relative;
@@ -526,9 +542,11 @@ $extra-small-screen: '(max-width: 23em)';
 
   &__months-wrapper {
     height: 100%;
+
     .#{$prefix}__months {
       margin-top: 0;
       height: 100%;
+
       .#{$prefix}__month .#{$prefix}week-name {
         font-size: 1.25em;
       }
@@ -540,6 +558,7 @@ $extra-small-screen: '(max-width: 23em)';
       margin-top: 10em;
       height: calc(100% - 10em);
     }
+
     .#{$prefix}__tooltip--mobile {
       height: auto;
       opacity: 1;
@@ -739,7 +758,7 @@ $extra-small-screen: '(max-width: 23em)';
     background: transparent;
     border: 0;
     cursor: pointer;
-    font-size: 1.5625em;
+    font-size: 1.25em;
     font-weight: $font-bold;
     height: 100%;
     margin: 0;
@@ -748,12 +767,14 @@ $extra-small-screen: '(max-width: 23em)';
     right: 0;
     top: 0;
     width: 1.6em;
+    color: $primary-color;
 
     svg {
       fill: none;
       stroke-linecap: round;
       stroke-width: 0.32em;
-      stroke: $medium-gray;
+      stroke: $primary-color;
+      fill: $primary-color;
       width: 0.56em;
       position: absolute;
       top: 50%;
@@ -836,6 +857,7 @@ $extra-small-screen: '(max-width: 23em)';
     width: 100%;
     height: $bullet-size;
     transition: opacity ease 0.3s;
+
     @include device($desktop) {
       top: 50%;
     }
@@ -866,6 +888,7 @@ $extra-small-screen: '(max-width: 23em)';
     top: 60%;
     transform: translateY(-50%);
     transition: opacity ease 0.3s;
+
     @include device($desktop) {
       top: 50%;
     }

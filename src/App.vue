@@ -4,11 +4,9 @@
     <div style="flex-grow: 0; padding: 1em 0">
       Language Selection:
       <select v-model="language">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="it">Italiano</option>
-        <option value="pt">Português</option>
+        <option v-for="{ name, code } in sortedLanguages" :key="code" :value="code" :selected="code === language">
+          {{ name }}
+        </option>
       </select>
     </div>
     <div class="container">
@@ -67,10 +65,12 @@
             <input type="checkbox" v-model="showWeekNumbers" /> showWeekNumbers<br />
           </div>
           <div style="width: 48%; display: inline-block">
-            <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue:
-            <input type="text" v-model="startingDate" /> <br />
-            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue:
-            <input type="text" v-model="endingDate" /><br />
+            <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue{{
+              showStartingDateValue ? ':' : ''
+            }}
+            <input type="text" v-model="startingDate" v-if="showStartingDateValue" /> <br />
+            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue{{ showEndingDateValue ? ':' : '' }}
+            <input type="text" v-model="endingDate" v-if="showEndingDateValue" /><br />
             <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
             <input type="checkbox" v-model="showPrice" /> showPrice
             <span v-if="showPrice">- priceSymbol: <input type="text" v-model="priceSymbol" style="width: 3em" /></span>
@@ -79,8 +79,8 @@
             <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
             <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
             <input type="checkbox" v-model="showBookings" /> showBookings<br />
-            <input type="checkbox" v-model="showLastDateAvailable" />Stop pagination two years later
-            (lastDateAvailable)<br />
+            <input type="checkbox" v-model="showLastDateAvailable" />lastDateAvailable (e.g. stop pagination two years
+            later)<br />
           </div>
           <hr />
           <DatePicker
@@ -159,13 +159,11 @@
         </div>
         <div v-if="boxShow == 10" class="box">
           <h3>Disable check-in and check-out on the same day</h3>
-          <DatePicker
-            :modelValue="true" :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
+          <DatePicker :modelValue="true" :disableCheckoutOnCheckin="true" :minNights="1" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 11" class="box">
           <h3>Allow selection of single day</h3>
-          <DatePicker
-            :modelValue="true" :singleDaySelection="true" :i18n="i18n" />
+          <DatePicker :modelValue="true" :singleDaySelection="true" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 12" class="box">
           <h3>Check in only on saturday and minimum stay of 10 nights</h3>
@@ -185,28 +183,27 @@
         </div>
         <div v-if="boxShow == 13" class="box">
           <h3>Block all dates after December 31st of the current year</h3>
-          <DatePicker
-            :modelValue="true" :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
+          <DatePicker :modelValue="true" :endDate="new Date(new Date().getFullYear(), 11, 31)" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 14" class="box">
           <h3>Block all dates after 15th of next month</h3>
           <DatePicker
-            :modelValue="true" :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)" :i18n="i18n" />
+            :modelValue="true"
+            :endDate="new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)"
+            :i18n="i18n"
+          />
         </div>
         <div v-if="boxShow == 15" class="box">
           <h3>Block all date ranges of more than 30 days</h3>
-          <DatePicker
-            :modelValue="true" :maxNights="30" :selectForward="false" :i18n="i18n" />
+          <DatePicker :modelValue="true" :maxNights="30" :selectForward="false" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 16" class="box">
           <h3>Minimum stay of 3 days</h3>
-          <DatePicker
-            :modelValue="true" :minNights="3" :i18n="i18n" />
+          <DatePicker :modelValue="true" :minNights="3" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 17" class="box">
           <h3>Certain dates blocked</h3>
-          <DatePicker
-            :modelValue="true" :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
+          <DatePicker :modelValue="true" :disabledDates="['2017-09-14', '2017-09-26']" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 18" class="box">
           <h3>Allow setting a default date range ( can be used to set a range from a url param )</h3>
@@ -237,12 +234,14 @@
         <div v-if="boxShow == 20" class="box">
           <h3>Custom tooltip text</h3>
           <DatePicker
-            :modelValue="true" tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!" :i18n="i18n" />
+            :modelValue="true"
+            tooltipMessage="<strong style='color: red'>Enjoy</strong> your stay!"
+            :i18n="i18n"
+          />
         </div>
         <div v-if="boxShow == 22" class="box">
           <h3>Custom date format (MMMM D)</h3>
-          <DatePicker
-            :modelValue="true" format="MMMM D" :i18n="i18n" />
+          <DatePicker :modelValue="true" format="MMMM D" :i18n="i18n" />
         </div>
         <div v-if="boxShow == 24" class="box">
           <h3>Set startingDateValue value</h3>
@@ -266,7 +265,11 @@
         <div v-if="boxShow == 26" class="box">
           <h3>Event startingDateValue / endingDateValue</h3>
           <DatePicker
-            :modelValue="true" :i18n="i18n" @check-in-changed="checkIn = $event" @check-out-changed="checkOut = $event" />
+            :modelValue="true"
+            :i18n="i18n"
+            @check-in-changed="checkIn = $event"
+            @check-out-changed="checkOut = $event"
+          />
           <p>new startingDateValue Date: {{ checkIn }}</p>
           <p>new endingDateValue Date : {{ checkOut }}</p>
         </div>
@@ -282,6 +285,7 @@ import pt from '../public/i18n/pt'
 import fr from '../public/i18n/fr'
 import en from '../public/i18n/en'
 import es from '../public/i18n/es'
+import es_419 from '../public/i18n/es-419'
 import it from '../public/i18n/it'
 
 export default {
@@ -291,8 +295,12 @@ export default {
   },
   data() {
     const today = new Date()
-    const month = (today.getMonth() + 1 <= 9 ? '0' : '') + String(today.getMonth() + 1)
+    const currentMonth = today.getMonth() + 1
+    const month = (currentMonth <= 9 ? '0' : '') + String(currentMonth)
     const periodDatesPrices = []
+    const languages = { pt, fr, en, es, es_419, it }
+    const navLangs = navigator.languages.map((lang) => lang.replace('-', '_'))
+    const lang = navLangs.find((navLang) => Object.keys(languages).includes(navLang)) || 'en'
 
     window.vueHotelDatepicker = {
       priceSymbol: '',
@@ -404,8 +412,8 @@ export default {
       menu: false,
       currentWidth: window.innerWidth,
       boxShow: 0,
-      language: 'en',
-      languages: { pt, fr, en, es, it },
+      language: lang,
+      languages,
       alwaysVisible: false,
       firstDayOfWeek: 0,
       gridStyle: true,
@@ -430,6 +438,11 @@ export default {
     return window.vueHotelDatepicker
   },
   computed: {
+    sortedLanguages() {
+      return Object.entries(this.languages)
+        .sort(([, { name: name1 }], [, { name: name2 }]) => name1.localeCompare(name2))
+        .map(([code, { name }]) => ({ name, code }))
+    },
     dateFormat() {
       return 'DD/MM/YYYY'
     },
@@ -495,13 +508,16 @@ export default {
       this.currentWidth = window.innerWidth
     },
     bookingClicked(event, date, currentBooking) {
-      console.log('bookingClicked', event, date, currentBooking)
+      console.info('bookingClicked', event, date, currentBooking)
     },
     periodSelected(event, checkIn, checkOut) {
-      console.log('periodSelected', event, checkIn, checkOut)
+      console.info('periodSelected', event, checkIn, checkOut)
     },
     handleCheckIncheckOutHalfDay(checkIncheckOutHalfDay) {
-      console.log('handleCheckIncheckOutHalfDay', checkIncheckOutHalfDay)
+      console.info('handleCheckIncheckOutHalfDay', checkIncheckOutHalfDay)
+    },
+    dayClicked(date, formatDate, nextDisabledDate) {
+      console.info('dayClicked', date, formatDate, nextDisabledDate)
     },
     addYears(dt, n) {
       return new Date(dt.setFullYear(dt.getFullYear() + n))
@@ -512,9 +528,6 @@ export default {
       }
 
       return getvalidDate(givenDate) <= getvalidDate(toDate) && getvalidDate(givenDate) >= getvalidDate(fromDate)
-    },
-    dayClicked(date, formatDate, nextDisabledDate) {
-      console.log(date, formatDate, nextDisabledDate)
     },
     checkInChanged(newDate) {
       this.checkIn = newDate
@@ -532,6 +545,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 body {
   display: block;
   font-family: Roboto, 'Source Sans Pro', sans-serif;
@@ -542,12 +556,14 @@ body {
   max-height: 100vh;
   overflow: hidden;
 }
+
 h1 {
   background-color: #28ca9c;
   color: white;
   padding: 1em 0;
   margin: 0;
 }
+
 #app {
   text-align: center;
   max-height: 100%;
@@ -555,6 +571,7 @@ h1 {
   flex-direction: column;
   flex: 1 0 auto;
 }
+
 .container {
   position: relative;
   display: flex;
@@ -577,10 +594,12 @@ h1 {
     flex: none;
     color: white;
     padding: 1em 0.5em 1em;
+
     img {
       width: 1.5em;
     }
   }
+
   @media (min-width: 1441px) {
     .toggle-menu {
       display: none;
@@ -596,6 +615,7 @@ h1 {
     text-align: left;
     max-height: 100%;
     overflow-y: hidden;
+
     @media (max-width: 1440px) {
       max-width: 100%;
 
@@ -612,9 +632,11 @@ h1 {
       margin: 0 1em 0 0;
       font-size: 1.17rem;
       overflow: auto;
+
       @media (max-width: 1440px) {
         margin-left: calc(24px + 1em);
       }
+
       li {
         font-size: 1rem;
         padding: 0.25em 0.75em;
@@ -630,6 +652,7 @@ h1 {
           background-color: gray;
           color: white;
         }
+
         &.selected {
           background-color: #28ca9c;
           color: white;
@@ -645,12 +668,15 @@ h1 {
     max-width: 100%;
     width: 100%;
     overflow: auto;
+
     @media (min-width: 1441px) {
       text-align: left;
     }
+
     .box {
       flex-grow: 1;
     }
+
     .box:first-child {
       flex-grow: 0;
     }
@@ -664,12 +690,15 @@ h1 {
     text-align: left;
   }
 }
+
 .vhd__datepicker__wrapper {
   max-width: 300px;
+
   &.vhd__datepicker__fullview {
     max-width: 90%;
   }
 }
+
 pre.code {
   background: black;
 }

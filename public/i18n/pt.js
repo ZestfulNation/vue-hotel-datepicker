@@ -1,4 +1,6 @@
 export default {
+  name: 'Português',
+  format: 'DD/MM/YYYY',
   night: 'Noite',
   nights: 'Noites',
   week: 'Semana',

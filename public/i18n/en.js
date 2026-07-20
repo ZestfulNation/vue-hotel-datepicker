@@ -1,9 +1,11 @@
 export default {
+  name: 'English',
+  format: 'MM/DD/YYYY',
   night: 'Night',
   nights: 'Nights',
   week: 'Week',
   weeks: 'Weeks',
-  'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+  'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   'check-in': 'Check-in',
   'check-out': 'Check-out',
   'month-names': [
