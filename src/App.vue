@@ -55,31 +55,35 @@
           <h3>Sandbox</h3>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="firstDayOfWeek" :true-value="1" :false-value="0" /> First day Monday<br />
-            <input type="checkbox" v-model="alwaysVisible" /> alwaysVisible<br />
-            <input type="checkbox" v-model="gridStyle" /> gridStyle<br />
-            <input type="checkbox" v-model="showSingleMonth" /> showSingleMonth<br />
-            <input type="checkbox" v-model="positionRight" /> positionRight<br />
-            <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
-            <input type="checkbox" v-model="showYear" /> showYear<br />
-            <input type="checkbox" v-model="yearBeforeMonth" /> yearBeforeMonth<br />
-            <input type="checkbox" v-model="showWeekNumbers" /> showWeekNumbers<br />
+            <input type="checkbox" v-model="alwaysVisible" /> Always visible (alwaysVisible: true)<br />
+            <input type="checkbox" v-model="gridStyle" /> Grid Style (gridStyle: true)<br />
+            <input type="checkbox" v-model="showSingleMonth" /> Show single month (showSingleMonth: true)<br />
+            <input type="checkbox" v-model="positionRight" /> Position right (positionRight: true)<br />
+            <input type="checkbox" v-model="singleDaySelection" /> Single day selection (singleDaySelection: true)<br />
+            <input type="checkbox" v-model="showYear" /> Show year (showYear: true)<br />
+            <input type="checkbox" v-model="yearBeforeMonth" /> Year before month (yearBeforeMonth: true)<br />
+            <input type="checkbox" v-model="showWeekNumbers" /> Show week numbers (showWeekNumbers: true)<br />
           </div>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue{{
               showStartingDateValue ? ':' : ''
             }}
             <input type="text" v-model="startingDate" v-if="showStartingDateValue" /> <br />
-            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue{{ showEndingDateValue ? ':' : '' }}
+            <input type="checkbox" v-model="showEndingDateValue" /> Ending date value (endingDateValue)
+            {{ showEndingDateValue ? ':' : '' }}
             <input type="text" v-model="endingDate" v-if="showEndingDateValue" /><br />
-            <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
-            <input type="checkbox" v-model="showPrice" /> showPrice
-            <span v-if="showPrice">- priceSymbol: <input type="text" v-model="priceSymbol" style="width: 3em" /></span>
+            <input type="checkbox" v-model="showPeriodDates" /> Show period dates (showPeriodDates: true)<br />
+            <input type="checkbox" v-model="showPrice" /> Show price (showPrice: true)
+            <span v-if="showPrice"
+              >- symbol (priceSymbol): <input type="text" v-model="priceSymbol" style="width: 3em"
+            /></span>
             <br />
-            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
-            <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
-            <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
-            <input type="checkbox" v-model="showBookings" /> showBookings<br />
-            <input type="checkbox" v-model="showLastDateAvailable" />lastDateAvailable (e.g. stop pagination two years
+            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> Min. nights
+            (minNights: true){{ showMinNights ? ':' : ''
+            }}<input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
+            <input type="checkbox" v-model="showContentSlot" /> Show content slot (children)<br />
+            <input type="checkbox" v-model="showBookings" /> Bookings Example<br />
+            <input type="checkbox" v-model="showLastDateAvailable" /> lastDateAvailable (e.g. stop pagination two years
             later)<br />
           </div>
           <hr />
@@ -281,12 +285,12 @@
 <script>
 import './assets/scss/index.scss'
 import DatePicker from './DatePicker/HotelDatePicker.vue'
-import pt from '../public/i18n/pt'
-import fr from '../public/i18n/fr'
-import en from '../public/i18n/en'
-import es from '../public/i18n/es'
-import es_419 from '../public/i18n/es-419'
-import it from '../public/i18n/it'
+import pt from './assets/i18n/pt'
+import fr from './assets/i18n/fr'
+import en from './assets/i18n/en'
+import es from './assets/i18n/es'
+import es_419 from './assets/i18n/es-419'
+import it from './assets/i18n/it'
 
 export default {
   name: 'HotelDatePicker-Examples',
@@ -588,13 +592,11 @@ h1 {
   display: flex;
   flex-direction: row;
   overflow-y: hidden;
-  /*
   @media (min-width: 1441px) {
     margin: 0 auto;
     max-width: 1180px;
     width: 1180px;
   }
-  */
 
   .toggle-menu {
     display: inline-block;

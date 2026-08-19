@@ -219,7 +219,7 @@ import dayjs from '../dayjs'
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
-import i18nDefaults from '../../public/i18n/en'
+import i18nDefaults from '../assets/i18n/en'
 
 export default {
   name: 'HotelDatePicker',

@@ -4,7 +4,7 @@ import { nextTick } from 'vue'
 import { vi } from 'vitest'
 
 import Datepicker from '@/DatePicker/HotelDatePicker.vue'
-import i18nDefaults from '../../public/i18n/en'
+import i18nDefaults from '@/assets/i18n/en'
 
 describe('Datepicker Calendar', () => {
   const wrapper = mount(Datepicker, { props: { modelValue: true } })
