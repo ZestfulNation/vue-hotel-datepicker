@@ -301,6 +301,17 @@ export default {
     const languages = { pt, fr, en, es, es_419, it }
     const navLangs = navigator.languages.map((lang) => lang.replace('-', '_'))
     const lang = navLangs.find((navLang) => Object.keys(languages).includes(navLang)) || 'en'
+    const todayDate = today.getTime() + 24 * 60 * 60 * 1000
+
+    const bookingDate = (monthOffset, dayOffset = 0) => {
+      const nextDate = new Date(todayDate)
+
+      nextDate.setDate(1)
+      nextDate.setMonth(nextDate.getMonth() + monthOffset)
+      nextDate.setDate(nextDate.getDate() + dayOffset)
+
+      return nextDate.toISOString().split('T')[0]
+    }
 
     window.vueHotelDatepicker = {
       priceSymbol: '',
@@ -335,72 +346,72 @@ export default {
       bookings: [
         {
           id: '1726359',
-          checkInDate: '2021-08-22',
-          checkOutDate: '2021-08-29',
+          checkInDate: bookingDate(0, 6),
+          checkOutDate: bookingDate(0, 10),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '1726360',
-          checkInDate: '2021-08-15',
-          checkOutDate: '2021-08-22',
+          checkInDate: bookingDate(1, 2),
+          checkOutDate: bookingDate(1, 9),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '1726358',
-          checkInDate: '2021-08-01',
-          checkOutDate: '2021-08-15',
+          checkInDate: bookingDate(2, 3),
+          checkOutDate: bookingDate(2, 12),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '1726357',
-          checkInDate: '2021-09-01',
-          checkOutDate: '2021-09-23',
+          checkInDate: bookingDate(3, 5),
+          checkOutDate: bookingDate(3, 19),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '1726356',
-          checkInDate: '2021-06-01',
-          checkOutDate: '2021-06-18',
+          checkInDate: bookingDate(4, 1),
+          checkOutDate: bookingDate(4, 18),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '181412',
-          checkInDate: '2022-09-15',
-          checkOutDate: '2022-10-15',
+          checkInDate: bookingDate(5, 4),
+          checkOutDate: bookingDate(5, 21),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '181491',
-          checkInDate: '2022-07-01',
-          checkOutDate: '2022-08-31',
+          checkInDate: bookingDate(6, 7),
+          checkOutDate: bookingDate(6, 24),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '178234',
-          checkInDate: '2023-08-04',
-          checkOutDate: '2023-08-25',
+          checkInDate: bookingDate(7, 2),
+          checkOutDate: bookingDate(7, 13),
           style: {
             backgroundColor: '#9DC1C9',
           },
         },
         {
           id: '178235',
-          checkInDate: '2023-07-01',
-          checkOutDate: '2023-07-31',
+          checkInDate: bookingDate(8, 6),
+          checkOutDate: bookingDate(8, 22),
           style: {
             backgroundColor: '#9DC1C9',
           },
