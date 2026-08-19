@@ -6,6 +6,7 @@ export default {
   week: 'Settimana',
   weeks: 'Settimane',
   'day-names': ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+  ordinal: ['mo', 'do', 'zo', 'to', 'to', 'to', 'mo', 'vo', 'no'],
   'check-in': 'Check-in',
   'check-out': 'Check-out',
   'month-names': [

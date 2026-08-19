@@ -8,6 +8,7 @@ export default {
   'check-in': 'Départ',
   'check-out': 'Arrivée',
   'day-names': ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
+  ordinal: ['er', 'me', 'me', 'me', 'me', 'me', 'me', 'me', 'me'],
   'month-names': [
     'Janvier',
     'Février',
