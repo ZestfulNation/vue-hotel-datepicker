@@ -6,7 +6,7 @@ export default {
   week: 'Week',
   weeks: 'Weeks',
   'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  ordinal: ['st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'],
+  ordinal: ['st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th', 'th'],
   'check-in': 'Check-in',
   'check-out': 'Check-out',
   'month-names': [

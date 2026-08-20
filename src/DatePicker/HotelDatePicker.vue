@@ -2,6 +2,7 @@
   <div
     class="vhd__datepicker__wrapper"
     :class="{
+      'vhd__datepicker__wrapper--one-month': showSingleMonth,
       'vhd__datepicker__wrapper--grid': gridStyle,
       'vhd__datepicker__wrapper--booking': bookings.length > 0,
       vhd__datepicker__fullview: alwaysVisible,
@@ -215,11 +216,11 @@
 <script>
 import throttle from 'lodash.throttle'
 import dayjs from '../dayjs'
-
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
 import i18nDefaults from '../assets/i18n/en'
+import en from '../assets/i18n/en'
 
 export default {
   name: 'HotelDatePicker',
@@ -685,6 +686,8 @@ export default {
     ...Helpers,
     transformDisabledWeekDays() {},
     configureI18n() {
+      const ordinals = this.i18n.ordinal || en.ordinal
+
       dayjs.locale('vhd-i18n', {
         name: 'vhd-i18n',
         weekdays: this.i18n['day-names'],
@@ -692,9 +695,7 @@ export default {
         months: this.i18n['month-names'],
         monthsShort: this.shortenString(this.i18n['month-names'], 3),
         // D is the day of the month, ordinal returns something like...  3rd or 11th
-        ordinal(D) {
-          return `${D}${this.i18n.ordinal[D % 10] || this.i18n.ordinal[this.i18n.ordinal.length - 1]}`
-        },
+        ordinal: (D) => `D[${D < 10 ? ordinals[(D % 10) - 1] : ordinals[ordinals.length - 1]}]`,
       })
     },
     generateInitialMonths() {

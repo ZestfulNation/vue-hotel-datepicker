@@ -195,13 +195,13 @@ const helpers = {
     return arr
   },
   dateFormater(date, format) {
-    const f = format || 'YYYY-MM-DD'
-
-    if (date) {
-      return dayjs(date).format(f)
+    if (!date) {
+      return ''
     }
 
-    return ''
+    const f = format || 'YYYY-MM-DD'
+
+    return dayjs(date).format(f)
   },
   pluralize(countOfDays, periodType = 'night') {
     if (periodType === 'week') {

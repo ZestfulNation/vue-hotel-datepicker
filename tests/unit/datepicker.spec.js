@@ -411,14 +411,25 @@ describe('Datepicker Props', () => {
     })
 
     it('formats the ordinal day suffix using the locale when the format includes "Do"', () => {
+      const format = 'Do MMMM YYYY'
       const wrapper = mount(Datepicker, {
-        props: { modelValue: true, startDate: '2020-01-01', format: 'Do MMMM YYYY' },
+        props: { modelValue: true, startDate: '2020-01-01', format },
       })
 
-      expect(wrapper.vm.formatDate(new Date('2020-01-01'))).to.equal('1st January 2020')
-      expect(wrapper.vm.formatDate(new Date('2020-01-02'))).to.equal('2nd January 2020')
-      expect(wrapper.vm.formatDate(new Date('2020-01-03'))).to.equal('3rd January 2020')
-      expect(wrapper.vm.formatDate(new Date('2020-01-11'))).to.equal('11th January 2020')
+      wrapper.vm.configureI18n()
+
+      expect(wrapper.vm.format).to.equal(format)
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 1))).to.equal('1st January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 2))).to.equal('2nd January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 3))).to.equal('3rd January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 4))).to.equal('4th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 5))).to.equal('5th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 6))).to.equal('6th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 7))).to.equal('7th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 8))).to.equal('8th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 9))).to.equal('9th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 10))).to.equal('10th January 2020')
+      expect(wrapper.vm.formatDate(new Date(2020, 0, 11))).to.equal('11th January 2020')
       wrapper.unmount()
     })
 
