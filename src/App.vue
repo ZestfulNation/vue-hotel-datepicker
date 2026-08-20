@@ -55,32 +55,39 @@
           <h3>Sandbox</h3>
           <div style="width: 48%; display: inline-block">
             <input type="checkbox" v-model="firstDayOfWeek" :true-value="1" :false-value="0" /> First day Monday<br />
-            <input type="checkbox" v-model="alwaysVisible" /> alwaysVisible<br />
-            <input type="checkbox" v-model="gridStyle" /> gridStyle<br />
-            <input type="checkbox" v-model="showSingleMonth" /> showSingleMonth<br />
-            <input type="checkbox" v-model="positionRight" /> positionRight<br />
-            <input type="checkbox" v-model="singleDaySelection" /> singleDaySelection<br />
-            <input type="checkbox" v-model="showYear" /> showYear<br />
-            <input type="checkbox" v-model="yearBeforeMonth" /> yearBeforeMonth<br />
-            <input type="checkbox" v-model="showWeekNumbers" /> showWeekNumbers<br />
+            <input type="checkbox" v-model="alwaysVisible" /> Always visible (alwaysVisible)<br />
+            <input type="checkbox" v-model="gridStyle" /> Grid Style (gridStyle)<br />
+            <input type="checkbox" v-model="showSingleMonth" /> Single month (showSingleMonth)<br />
+            <input type="checkbox" v-model="positionRight" /> Position right (positionRight)<br />
+            <input type="checkbox" v-model="singleDaySelection" /> Single day selection (singleDaySelection)<br />
+            <input type="checkbox" v-model="showYear" /> Show year (showYear)<br />
+            <input type="checkbox" v-model="yearBeforeMonth" /> Year before month (yearBeforeMonth)<br />
+            <input type="checkbox" v-model="showWeekNumbers" /> Week numbers (showWeekNumbers)<br />
           </div>
           <div style="width: 48%; display: inline-block">
-            <input type="checkbox" v-model="showStartingDateValue" /> startingDateValue{{
+            <input type="checkbox" v-model="showStartingDateValue" /> Starting Date (showStartingDateValue){{
               showStartingDateValue ? ':' : ''
             }}
             <input type="text" v-model="startingDate" v-if="showStartingDateValue" /> <br />
-            <input type="checkbox" v-model="showEndingDateValue" /> endingDateValue{{ showEndingDateValue ? ':' : '' }}
+            <input type="checkbox" v-model="showEndingDateValue" /> Ending Date (showEndingDateValue)
+            {{ showEndingDateValue ? ':' : '' }}
             <input type="text" v-model="endingDate" v-if="showEndingDateValue" /><br />
-            <input type="checkbox" v-model="showPeriodDates" /> showPeriodDates<br />
-            <input type="checkbox" v-model="showPrice" /> showPrice
-            <span v-if="showPrice">- priceSymbol: <input type="text" v-model="priceSymbol" style="width: 3em" /></span>
+            <input type="checkbox" v-model="showPeriodDates" /> Period dates (showPeriodDates: true)<br />
+            <input type="checkbox" v-model="showPrice" /> Price (showPrice: true)
+            <span v-if="showPrice"
+              >- symbol (priceSymbol): <input type="text" v-model="priceSymbol" style="width: 3em"
+            /></span>
             <br />
-            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> minNights
-            <input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
-            <input type="checkbox" v-model="showContentSlot" /> showContentSlot<br />
-            <input type="checkbox" v-model="showBookings" /> showBookings<br />
-            <input type="checkbox" v-model="showLastDateAvailable" />lastDateAvailable (e.g. stop pagination two years
-            later)<br />
+            <input type="checkbox" v-model="showMinNights" :true-value="minNights" :false-value="false" /> Min. nights
+            (minNights){{ showMinNights ? ':' : ''
+            }}<input v-if="showMinNights !== false" type="number" v-model="minNights" min="0" /><br />
+            <input type="checkbox" v-model="showContentSlot" /> Content slot (#content)<br />
+            <input type="checkbox" v-model="showBookings" /> Bookings Example<br />
+            <br />
+            <input type="checkbox" v-model="showLastDateAvailable" /> Stop pagination after two years
+            (lastDateAvailable{{
+              showLastDateAvailable ? ': ' + lastDateAvailable.toISOString().split('T')[0] : ''
+            }})<br />
           </div>
           <hr />
           <DatePicker
@@ -119,22 +126,7 @@
           </h3>
           <DatePicker
             :modelValue="true"
-            :disabledDates="[
-              '2021-10-15',
-              '2021-10-16',
-              '2021-10-17',
-              '2021-10-18',
-              '2021-10-19',
-              '2021-10-20',
-              '2021-10-21',
-              '2021-10-01',
-              '2021-10-02',
-              '2021-10-03',
-              '2021-10-04',
-              '2021-10-05',
-              '2021-10-06',
-              '2021-10-07',
-            ]"
+            :disabledDates="disabledDates"
             :disableCheckoutOnCheckin="true"
             :minNights="minNights"
             :i18n="i18n"
@@ -281,12 +273,12 @@
 <script>
 import './assets/scss/index.scss'
 import DatePicker from './DatePicker/HotelDatePicker.vue'
-import pt from '../public/i18n/pt'
-import fr from '../public/i18n/fr'
-import en from '../public/i18n/en'
-import es from '../public/i18n/es'
-import es_419 from '../public/i18n/es-419'
-import it from '../public/i18n/it'
+import pt from './assets/i18n/pt'
+import fr from './assets/i18n/fr'
+import en from './assets/i18n/en'
+import es from './assets/i18n/es'
+import es_419 from './assets/i18n/es-419'
+import it from './assets/i18n/it'
 
 export default {
   name: 'HotelDatePicker-Examples',
@@ -301,17 +293,6 @@ export default {
     const languages = { pt, fr, en, es, es_419, it }
     const navLangs = navigator.languages.map((lang) => lang.replace('-', '_'))
     const lang = navLangs.find((navLang) => Object.keys(languages).includes(navLang)) || 'en'
-    const todayDate = today.getTime() + 24 * 60 * 60 * 1000
-
-    const bookingDate = (monthOffset, dayOffset = 0) => {
-      const nextDate = new Date(todayDate)
-
-      nextDate.setDate(1)
-      nextDate.setMonth(nextDate.getMonth() + monthOffset)
-      nextDate.setDate(nextDate.getDate() + dayOffset)
-
-      return nextDate.toISOString().split('T')[0]
-    }
 
     window.vueHotelDatepicker = {
       priceSymbol: '',
@@ -342,80 +323,6 @@ export default {
           price: 4000.0,
         },
         ...periodDatesPrices,
-      ],
-      bookings: [
-        {
-          id: '1726359',
-          checkInDate: bookingDate(0, 6),
-          checkOutDate: bookingDate(0, 10),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '1726360',
-          checkInDate: bookingDate(1, 2),
-          checkOutDate: bookingDate(1, 9),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '1726358',
-          checkInDate: bookingDate(2, 3),
-          checkOutDate: bookingDate(2, 12),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '1726357',
-          checkInDate: bookingDate(3, 5),
-          checkOutDate: bookingDate(3, 19),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '1726356',
-          checkInDate: bookingDate(4, 1),
-          checkOutDate: bookingDate(4, 18),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '181412',
-          checkInDate: bookingDate(5, 4),
-          checkOutDate: bookingDate(5, 21),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '181491',
-          checkInDate: bookingDate(6, 7),
-          checkOutDate: bookingDate(6, 24),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '178234',
-          checkInDate: bookingDate(7, 2),
-          checkOutDate: bookingDate(7, 13),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
-        {
-          id: '178235',
-          checkInDate: bookingDate(8, 6),
-          checkOutDate: bookingDate(8, 22),
-          style: {
-            backgroundColor: '#9DC1C9',
-          },
-        },
       ],
       checkIn: null,
       checkOut: null,
@@ -454,8 +361,25 @@ export default {
         .sort(([, { name: name1 }], [, { name: name2 }]) => name1.localeCompare(name2))
         .map(([code, { name }]) => ({ name, code }))
     },
+    disabledDates() {
+      return [
+        this.bookingDate(0, 6),
+        this.bookingDate(0, 7),
+        this.bookingDate(0, 8),
+        this.bookingDate(0, 9),
+        this.bookingDate(0, 10),
+        this.bookingDate(1, 2),
+        this.bookingDate(1, 3),
+        this.bookingDate(1, 4),
+        this.bookingDate(1, 5),
+        this.bookingDate(1, 6),
+        this.bookingDate(1, 7),
+        this.bookingDate(1, 8),
+        this.bookingDate(1, 9),
+      ]
+    },
     dateFormat() {
-      return 'DD/MM/YYYY'
+      return this.i18n.dateFormat || 'YYYY-MM-DD'
     },
     lastDateAvailable() {
       return this.addYears(new Date(), 2)
@@ -502,6 +426,16 @@ export default {
     })
   },
   methods: {
+    bookingDate(monthOffset, dayOffset = 0) {
+      const today = new Date()
+      const nextDate = new Date(today.getTime() + 24 * 60 * 60 * 1000)
+
+      nextDate.setDate(1)
+      nextDate.setMonth(nextDate.getMonth() + monthOffset)
+      nextDate.setDate(nextDate.getDate() + dayOffset)
+
+      return nextDate.toISOString().split('T')[0]
+    },
     newData() {
       return {}
     },
@@ -588,13 +522,11 @@ h1 {
   display: flex;
   flex-direction: row;
   overflow-y: hidden;
-  /*
   @media (min-width: 1441px) {
     margin: 0 auto;
     max-width: 1180px;
     width: 1180px;
   }
-  */
 
   .toggle-menu {
     display: inline-block;
@@ -678,7 +610,6 @@ h1 {
   .box-container {
     max-width: 100%;
     width: 100%;
-    overflow: auto;
 
     @media (min-width: 1441px) {
       text-align: left;
@@ -704,6 +635,7 @@ h1 {
 
 .vhd__datepicker__wrapper {
   max-width: 300px;
+  margin: 0 auto;
 
   &.vhd__datepicker__fullview {
     max-width: 90%;

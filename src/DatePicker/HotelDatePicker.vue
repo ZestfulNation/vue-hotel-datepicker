@@ -2,6 +2,7 @@
   <div
     class="vhd__datepicker__wrapper"
     :class="{
+      'vhd__datepicker__wrapper--one-month': showSingleMonth,
       'vhd__datepicker__wrapper--grid': gridStyle,
       'vhd__datepicker__wrapper--booking': bookings.length > 0,
       vhd__datepicker__fullview: alwaysVisible,
@@ -214,12 +215,12 @@
 
 <script>
 import throttle from 'lodash.throttle'
-import fecha from 'fecha'
-
+import dayjs from '../dayjs'
 import Month from './components/Month.vue'
 import DateInput from './components/DateInput.vue'
 import Helpers from '../helpers'
-import i18nDefaults from '../../public/i18n/en'
+import i18nDefaults from '../assets/i18n/en'
+import en from '../assets/i18n/en'
 
 export default {
   name: 'HotelDatePicker',
@@ -685,16 +686,16 @@ export default {
     ...Helpers,
     transformDisabledWeekDays() {},
     configureI18n() {
-      fecha.setGlobalDateI18n({
-        dayNames: this.i18n['day-names'],
-        dayNamesShort: this.shortenString(this.i18n['day-names'], 3),
-        monthNames: this.i18n['month-names'],
-        monthNamesShort: this.shortenString(this.i18n['month-names'], 3),
-        amPm: ['am', 'pm'],
-        // D is the day of the month, function returns something like...  3rd or 11th
-        DoFn(D) {
-          return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10]
-        },
+      const ordinals = this.i18n.ordinal || en.ordinal
+
+      dayjs.locale('vhd-i18n', {
+        name: 'vhd-i18n',
+        weekdays: this.i18n['day-names'],
+        weekdaysShort: this.shortenString(this.i18n['day-names'], 3),
+        months: this.i18n['month-names'],
+        monthsShort: this.shortenString(this.i18n['month-names'], 3),
+        // D is the day of the month, ordinal returns something like...  3rd or 11th
+        ordinal: (D) => `D[${D < 10 ? ordinals[(D % 10) - 1] : ordinals[ordinals.length - 1]}]`,
       })
     },
     generateInitialMonths() {
@@ -1268,7 +1269,7 @@ export default {
       }
 
       if (this.endDate !== Infinity) {
-        if (fecha.format(firstDayOfLastMonth[0].date, 'YYYYMM') === fecha.format(new Date(this.endDate), 'YYYYMM')) {
+        if (dayjs(firstDayOfLastMonth[0].date).format('YYYYMM') === dayjs(new Date(this.endDate)).format('YYYYMM')) {
           return
         }
       }

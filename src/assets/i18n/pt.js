@@ -6,6 +6,7 @@ export default {
   week: 'Semana',
   weeks: 'Semanas',
   'day-names': ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+  ordinal: ['ro', 'do', 'ro', 'to', 'to', 'to', 'mo', 'vo', 'no'],
   'check-in': 'Chegada',
   'check-out': 'Partida',
   'month-names': [

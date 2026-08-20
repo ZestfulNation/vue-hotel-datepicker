@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import fecha from 'fecha'
+import dayjs from '../../dayjs'
 import Helpers from '../../helpers'
 import BookingBullet from './BookingBullet.vue'
 import Price from './Price.vue'
@@ -177,7 +177,7 @@ export default {
       )
     },
     dayNumber() {
-      return fecha.format(this.date, 'D')
+      return dayjs(this.date).format('D')
     },
     dayPrice() {
       let result = ''

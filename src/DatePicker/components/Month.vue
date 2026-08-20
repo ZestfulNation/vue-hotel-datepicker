@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import fecha from 'fecha'
+import dayjs from '../../dayjs'
 import Day from './Day.vue'
 import WeekRow from './WeekRow.vue'
 import Helpers from '../../helpers'
@@ -228,7 +228,7 @@ export default {
         format = this.yearBeforeMonth ? `${year} ${month}` : `${month} ${year}`
       }
 
-      return fecha.format(date, format).trim()
+      return dayjs(date).format(format).trim()
     },
     enterDay(event, day) {
       this.$emit('enter-day', event, day)
