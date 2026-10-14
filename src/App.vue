@@ -25,7 +25,7 @@
     </header>
     <nav class="tabs" aria-label="Sections">
       <button type="button" :class="{ active: view === 'examples' }" @click="setView('examples')">Examples</button>
-      <a :href="docsUrl" :class="{ active: view === 'docs' }" @click.prevent="setView('docs')">Docs</a>
+      <a :href="docsUrl" :class="{ active: view === 'docs' }" @click.exact.prevent="setView('docs')">Docs</a>
     </nav>
 
     <div v-if="view === 'examples'" class="layout">
