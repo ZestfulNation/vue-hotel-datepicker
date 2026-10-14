@@ -6,6 +6,8 @@ A responsive date range picker for Vue.js that displays the number of nights sel
 ![demo gif](https://github.com/ZestfulNation/vue-hotel-datepicker/blob/main/demo.gif?raw=true)
 
 
+## Note:
+Since `v5.0.0` this component requires **Vue 3** (`vue: ^3.4.0`). If you're on Vue 2, use `vue-hotel-datepicker@4.x`.
 
 ## Documentation
 https://zestfulnation.github.io/vue-hotel-datepicker/#docs
