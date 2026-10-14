@@ -34,7 +34,7 @@
     "dev": "vite",
     "serve": "vite",
     "build": "vite build",
-    "build:demo": "vite build --config vite.demo.config.js",
+    "build:demo": "node scripts/build-demo.mjs",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "lint": "eslint \"src/**/*.{js,vue}\" \"tests/**/*.js\"",
