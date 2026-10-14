@@ -24,7 +24,9 @@
       </div>
     </header>
     <nav class="tabs" aria-label="Sections">
-      <button type="button" :class="{ active: view === 'examples' }" @click="setView('examples')">Examples</button>
+      <a :href="examplesUrl" :class="{ active: view === 'examples' }" @click.exact.prevent="setView('examples')">
+        Examples
+      </a>
       <a :href="docsUrl" :class="{ active: view === 'docs' }" @click.exact.prevent="setView('docs')">Docs</a>
     </nav>
 
@@ -530,6 +532,7 @@ export default {
       languages,
       language,
       ready: false,
+      examplesUrl: import.meta.env.BASE_URL,
       docsUrl: `${import.meta.env.BASE_URL}docs/`,
       scenarios,
       sandboxGroups,
