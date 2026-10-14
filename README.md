@@ -1,5 +1,4 @@
-![NPM Downloads](https://img.shields.io/npm/dw/vue-hotel-datepicker)
-
+![NPM Downloads](https://img.shields.io/npm/dw/vue-hotel-datepicker?label=NPM%20downloads)
 
 A responsive date range picker for Vue.js that displays the number of nights selected and allow several useful options like custom check-in/check-out rules, localization support and more.
 
