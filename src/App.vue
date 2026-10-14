@@ -23,8 +23,12 @@
         <a class="link" href="https://www.npmjs.com/package/vue-hotel-datepicker">npm</a>
       </div>
     </header>
+    <nav class="tabs" aria-label="Sections">
+      <button type="button" :class="{ active: view === 'examples' }" @click="setView('examples')">Examples</button>
+      <button type="button" :class="{ active: view === 'docs' }" @click="setView('docs')">Docs</button>
+    </nav>
 
-    <div class="layout">
+    <div v-if="view === 'examples'" class="layout">
       <nav class="index" :class="{ 'index--open': menuOpen }" aria-label="Examples">
         <button class="index__toggle" type="button" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">
           <span>{{ current.title }}</span>
@@ -135,6 +139,179 @@
         </section>
       </aside>
     </div>
+
+    <div v-else class="docs">
+      <nav class="docs__nav" aria-label="Documentation">
+        <ul>
+          <li v-for="sec in docSections" :key="sec.id">
+            <a :href="'#docs-' + sec.id" @click.prevent="goTo(sec.id)">{{ sec.title }}</a>
+          </li>
+        </ul>
+      </nav>
+
+      <article class="docs__body">
+        <section :id="'docs-install'">
+          <h2>Install</h2>
+          <p>Requires Vue 3. Vue 2 projects should stay on <code>vue-hotel-datepicker@4</code>.</p>
+          <pre class="code"><code>{{ docInstall }}</code></pre>
+          <pre class="code"><code>{{ docUsage }}</code></pre>
+          <pre class="code"><code>{{ docUsageTemplate }}</code></pre>
+        </section>
+
+        <section :id="'docs-props'">
+          <div class="docs__row">
+            <h2>Props</h2>
+            <label class="docs__filter">
+              <span>Filter</span>
+              <input type="search" v-model="propFilter" placeholder="minNights, price…" />
+            </label>
+          </div>
+          <p v-if="!filteredProps.length" class="docs__empty">No prop matches “{{ propFilter }}”.</p>
+          <dl class="props">
+            <div v-for="p in filteredProps" :key="p.name" class="props__item" :id="'prop-' + p.name">
+              <dt>
+                <code class="props__name">{{ p.name }}</code>
+                <span class="props__type">{{ p.type }}</span>
+                <span class="props__default"
+                  >default <code>{{ p.default }}</code></span
+                >
+                <span v-if="p.deprecated" class="props__flag"
+                  >Deprecated · Use <span>{{ p.deprecated }}</span> instead.</span
+                >
+              </dt>
+              <dd>
+                <template v-for="(seg, i) in segments(p.desc)" :key="i">
+                  <code v-if="seg.code">{{ seg.t }}</code>
+                  <template v-else>{{ seg.t }}</template>
+                </template>
+                <a v-if="p.example" class="props__try" :href="'#' + p.example" @click.prevent="openExample(p.example)">
+                  Try it
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <section :id="'docs-period-dates'">
+          <h2>Period dates</h2>
+          <p>
+            Give date ranges their own minimum stay, period type or price. Weekly periods only allow check-out on their
+            weekday, and their <code>minimumDuration</code> is counted in weeks.
+          </p>
+          <table class="keys">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="k in docPeriodKeys" :key="k.key">
+                <td>
+                  <code>{{ k.key }}</code>
+                </td>
+                <td>{{ k.type }}</td>
+                <td>
+                  <template v-for="(seg, i) in segments(k.desc)" :key="i">
+                    <code v-if="seg.code">{{ seg.t }}</code>
+                    <template v-else>{{ seg.t }}</template>
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="code"><code>{{ docPeriodExample }}</code></pre>
+          <p><a href="#sandbox" @click.prevent="openExample('sandbox')">Turn on “Period dates” in the sandbox</a></p>
+        </section>
+
+        <section :id="'docs-bookings'">
+          <h2>Bookings</h2>
+          <p>Draws existing bookings on the calendar. Clicking one emits <code>booking-clicked</code>.</p>
+          <table class="keys">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="k in docBookingKeys" :key="k.key">
+                <td>
+                  <code>{{ k.key }}</code>
+                </td>
+                <td>{{ k.type }}</td>
+                <td>
+                  <template v-for="(seg, i) in segments(k.desc)" :key="i">
+                    <code v-if="seg.code">{{ seg.t }}</code>
+                    <template v-else>{{ seg.t }}</template>
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="code"><code>{{ docBookingsExample }}</code></pre>
+        </section>
+
+        <section :id="'docs-events'">
+          <h2>Events</h2>
+          <table class="keys">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Payload</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="e in docEvents" :key="e.name">
+                <td>
+                  <code>{{ e.name }}</code>
+                </td>
+                <td>{{ e.params || '—' }}</td>
+                <td>{{ e.desc }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section :id="'docs-methods'">
+          <h2>Methods</h2>
+          <p>
+            <template v-for="(seg, i) in segments(docMethodsNote)" :key="i">
+              <code v-if="seg.code">{{ seg.t }}</code>
+              <template v-else>{{ seg.t }}</template>
+            </template>
+          </p>
+          <table class="keys">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="m in docMethods" :key="m.name">
+                <td>
+                  <code>{{ m.name }}</code>
+                </td>
+                <td>{{ m.desc }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section :id="'docs-translations'">
+          <h2>Translations</h2>
+          <p>
+            Pass an object to <code>i18n</code>. Bundled locales in this repo: Portuguese, French, English, Spanish
+            (Spain and Latin America) and Italian. These are the English defaults:
+          </p>
+          <pre class="code"><code>{{ docI18nExample }}</code></pre>
+        </section>
+      </article>
+    </div>
   </div>
 </template>
 
@@ -147,6 +324,21 @@ import en from './assets/i18n/en'
 import es from './assets/i18n/es'
 import es_419 from './assets/i18n/es-419'
 import it from './assets/i18n/it'
+import {
+  install as docInstall,
+  usage as docUsage,
+  usageTemplate as docUsageTemplate,
+  props as docProps,
+  periodKeys as docPeriodKeys,
+  periodExample as docPeriodExample,
+  bookingKeys as docBookingKeys,
+  bookingsExample as docBookingsExample,
+  events as docEvents,
+  methods as docMethods,
+  methodsNote as docMethodsNote,
+  i18nExample as docI18nExample,
+  sections as docSections,
+} from './docs'
 
 const DAY = 24 * 60 * 60 * 1000
 const iso = (d) =>
@@ -328,6 +520,7 @@ export default {
     const language = navLangs.find((l) => Object.keys(languages).includes(l)) || 'en'
     const hash = window.location.hash.slice(1)
     const activeId = scenarios.some((s) => s.id === hash) ? hash : 'sandbox'
+    const view = hash.startsWith('docs') ? 'docs' : 'examples'
 
     return {
       languages,
@@ -335,6 +528,20 @@ export default {
       scenarios,
       sandboxGroups,
       activeId,
+      view,
+      propFilter: '',
+      docInstall,
+      docUsage,
+      docUsageTemplate,
+      docPeriodKeys,
+      docPeriodExample,
+      docBookingKeys,
+      docBookingsExample,
+      docEvents,
+      docMethods,
+      docMethodsNote,
+      docI18nExample,
+      docSections,
       menuOpen: false,
       pickerKey: 0,
       checkIn: null,
@@ -433,6 +640,13 @@ export default {
 
       return lines.join('\n')
     },
+    filteredProps() {
+      const q = this.propFilter.trim().toLowerCase()
+
+      if (!q) return docProps
+
+      return docProps.filter((p) => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+    },
     nights() {
       if (!this.checkIn || !this.checkOut) return null
 
@@ -441,6 +655,8 @@ export default {
   },
   watch: {
     activeId(id) {
+      if (this.view !== 'examples') return
+
       try {
         window.history.replaceState(null, '', `#${id}`)
       } catch (e) {
@@ -508,6 +724,32 @@ export default {
           .join(', ')} }`
 
       return String(v)
+    },
+    segments(text) {
+      return text.split('`').map((t, i) => ({ t, code: i % 2 === 1 }))
+    },
+    setView(view) {
+      this.view = view
+      this.menuOpen = false
+      this.writeHash(view === 'docs' ? 'docs' : this.activeId)
+      window.scrollTo(0, 0)
+    },
+    openExample(id) {
+      this.select(id)
+      this.setView('examples')
+    },
+    goTo(id) {
+      this.writeHash(`docs-${id}`)
+      const el = document.getElementById(`docs-${id}`)
+
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    },
+    writeHash(h) {
+      try {
+        window.history.replaceState(null, '', `#${h}`)
+      } catch (e) {
+        /* history is optional */
+      }
     },
     select(id) {
       this.activeId = id
@@ -1064,6 +1306,289 @@ body {
     margin: 0;
     font-size: 0.88rem;
     color: var(--ink-soft);
+  }
+}
+
+/* ---- docs styles ---- */
+/* ---- tabs ---- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 24px;
+  background: var(--ink);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+  button {
+    background: none;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    padding: 8px 14px;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #b6c4c2;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--linen);
+    }
+
+    &.active {
+      color: #d9b25f;
+      border-bottom-color: #d9b25f;
+    }
+  }
+}
+
+/* ---- docs ---- */
+.docs {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+
+  &__nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    padding: 24px 16px 24px 24px;
+    border-right: 1px solid var(--rule);
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      display: block;
+      padding: 7px 10px;
+      border-left: 3px solid transparent;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+
+      &:hover {
+        color: var(--ink);
+        border-left-color: var(--brass);
+        background: var(--brass-bg);
+      }
+    }
+  }
+
+  &__body {
+    padding: 24px 32px 64px;
+    min-width: 0;
+    max-width: 52rem;
+    text-align: left;
+
+    section {
+      scroll-margin-top: 16px;
+    }
+
+    section + section {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 2.2rem;
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0 0 14px;
+      max-width: 62ch;
+    }
+
+    a {
+      color: var(--brass);
+      text-underline-offset: 3px;
+    }
+
+    :not(pre) > code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: rgba(19, 41, 43, 0.07);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .code {
+      margin: 0 0 12px;
+      padding: 12px 14px;
+      background: var(--ink);
+      color: #dbe7e4;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  &__filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+
+    input {
+      width: 14rem;
+      max-width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--paper);
+    }
+  }
+
+  &__empty {
+    color: var(--ink-soft);
+  }
+}
+
+.props {
+  margin: 0;
+
+  &__item {
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--rule);
+    scroll-margin-top: 16px;
+
+    dt {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 12px;
+    }
+
+    dd {
+      margin: 4px 0 0;
+      max-width: 62ch;
+      color: var(--ink-soft);
+    }
+  }
+
+  &__name {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  &__type {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--brass);
+  }
+
+  &__default {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  &__flag {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--brass-bg);
+    color: var(--brass);
+    padding: 1px 6px;
+    border-radius: 3px;
+
+    > span {
+      font-weight: 700;
+      text-transform: none;
+      font-family: 'Courier New', Courier, monospace;
+    }
+  }
+
+  &__try {
+    margin-left: 8px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+}
+
+.keys {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 16px;
+  font-size: 0.92rem;
+
+  th {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 2px solid var(--ink);
+    padding: 6px 10px 6px 0;
+  }
+
+  td {
+    padding: 8px 10px 8px 0;
+    border-bottom: 1px dashed var(--rule);
+    vertical-align: top;
+  }
+
+  td:first-child {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 760px) {
+  .tabs {
+    padding: 0 8px;
+  }
+
+  .docs {
+    grid-template-columns: minmax(0, 1fr);
+
+    &__nav {
+      position: static;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule);
+      padding: 8px 16px;
+
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 4px;
+      }
+    }
+
+    &__body {
+      padding: 20px 16px 48px;
+    }
+  }
+
+  .keys {
+    display: block;
+    overflow-x: auto;
   }
 }
 
