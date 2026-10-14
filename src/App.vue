@@ -25,7 +25,7 @@
     </header>
     <nav class="tabs" aria-label="Sections">
       <button type="button" :class="{ active: view === 'examples' }" @click="setView('examples')">Examples</button>
-      <button type="button" :class="{ active: view === 'docs' }" @click="setView('docs')">Docs</button>
+      <a :href="docsUrl" :class="{ active: view === 'docs' }" @click.prevent="setView('docs')">Docs</a>
     </nav>
 
     <div v-if="view === 'examples'" class="layout">
@@ -76,6 +76,7 @@
           </div>
           <div class="card__body">
             <HotelDatePicker
+              v-if="ready"
               :key="pickerKey"
               v-bind="pickerProps"
               :modelValue="true"
@@ -514,17 +515,22 @@ const sandboxGroups = [
 export default {
   name: 'HotelDatePicker-Examples',
   components: { HotelDatePicker },
+  props: {
+    // The view the server rendered; the browser syncs to the URL hash after mounting.
+    initialView: { type: String, default: 'examples' },
+  },
   data() {
     const languages = { pt, fr, en, es, es_419, it }
-    const navLangs = (navigator.languages || []).map((lang) => lang.replace('-', '_'))
-    const language = navLangs.find((l) => Object.keys(languages).includes(l)) || 'en'
-    const hash = window.location.hash.slice(1)
-    const activeId = scenarios.some((s) => s.id === hash) ? hash : 'sandbox'
-    const view = hash.startsWith('docs') ? 'docs' : 'examples'
+    // Nothing here may read window or navigator: this also runs while pre-rendering.
+    const language = 'en'
+    const activeId = 'sandbox'
+    const view = this.initialView
 
     return {
       languages,
       language,
+      ready: false,
+      docsUrl: `${import.meta.env.BASE_URL}docs/`,
       scenarios,
       sandboxGroups,
       activeId,
@@ -663,6 +669,22 @@ export default {
         /* history is optional */
       }
     },
+  },
+  mounted() {
+    const langs = (navigator.languages || []).map((l) => l.replace('-', '_'))
+
+    this.language = langs.find((l) => Object.keys(this.languages).includes(l)) || 'en'
+    const hash = window.location.hash.slice(1)
+
+    if (hash.startsWith('docs')) {
+      this.view = 'docs'
+    } else if (this.scenarios.some((s) => s.id === hash)) {
+      this.view = 'examples'
+      this.activeId = hash
+    }
+
+    this.ready = true
+    if (hash.startsWith('docs-')) this.$nextTick(() => this.goTo(hash.slice(5)))
   },
   methods: {
     samplePeriods() {
@@ -1318,10 +1340,12 @@ body {
   background: var(--ink);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 
-  button {
+  button,
+  a {
     background: none;
     border: 0;
     border-bottom: 3px solid transparent;
+    text-decoration: none;
     padding: 8px 14px;
     font-family: var(--display);
     font-weight: 600;
